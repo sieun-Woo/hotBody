@@ -1,14 +1,14 @@
-package com.sparta.hotbody.entity;
+package com.sparta.hotbody.comment;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
+import com.sparta.hotbody.post.Post;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,8 +20,8 @@ import lombok.NoArgsConstructor;
 
 // jpa
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name = "comment")
+public class Comment {
 
   /**
    * 컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
@@ -30,9 +30,6 @@ public class Post {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
-
-  @Column(nullable = false)
-  private String title;
 
   @Column(nullable = false)
   private String nickname;
@@ -47,11 +44,13 @@ public class Post {
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
 
+
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
-  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Comment> commentList = new ArrayList<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "post_id")
+  private Post post;
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

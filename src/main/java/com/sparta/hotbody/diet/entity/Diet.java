@@ -1,32 +1,48 @@
 package com.sparta.hotbody.diet.entity;
 
 import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Getter
 @Entity
 public class Diet {
 
   @Id
-  Long id;
+  private Long id;
+
+  @ElementCollection(fetch = FetchType.LAZY)
+  @CollectionTable(name = "foodNames", joinColumns = @JoinColumn(name = "DIET_ID"))
+  @Column
+  private List<String> foodName = new ArrayList<String>(); // 음식 이름
 
   @Column
-  String foodName; // 음식 이름
+  private double energy; // 에너지
 
   @Column
-  double energy; // 에너지
+  private double carbohydrate; // 탄수화물
 
   @Column
-  double carbohydrate; // 탄수화물
+  private double protein; // 단백질
 
   @Column
-  double protein; // 단백질
+  private double fat; // 지방
 
-  @Column
-  double fat; // 지방
-
+  public Diet(List<String> foodName, double energy, double carbohydrate, double protein,
+      double fat) {
+    this.foodName = foodName;
+    this.energy = energy;
+    this.carbohydrate = carbohydrate;
+    this.protein = protein;
+    this.fat = fat;
+  }
 }

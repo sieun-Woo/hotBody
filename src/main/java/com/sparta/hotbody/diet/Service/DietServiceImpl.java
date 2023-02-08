@@ -2,6 +2,7 @@ package com.sparta.hotbody.diet.service;
 
 
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
+import com.sparta.hotbody.diet.entity.Diet;
 import java.io.FileInputStream;
 import java.io.IOException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -47,7 +48,14 @@ public class DietServiceImpl implements DietService {
       }
     }
     Row row = food.getRow();
+    Diet diet = new Diet();
+    diet.getFoodName().add(food.getStringCellValue());
     return new FoodResponseDto(row);
   }
 
+  @Override
+  public FoodResponseDto saveDiet(String searchFoodText, String foodType) {
+
+    return null;
+  }
 }

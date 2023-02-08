@@ -1,6 +1,8 @@
 package com.sparta.hotbody.admin.service;
 
+import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.page.PageDto;
+import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import org.springframework.http.ResponseEntity;
 
 public interface AdminService {
@@ -11,11 +13,11 @@ public interface AdminService {
 
   ResponseEntity refuseTrainer(Long userId);
 
-  ResponseEntity updatePost(Long postId); // TODO: PostRequestDto 추가
+  ResponseEntity updatePost(Long postId, PostModifyRequestDto postModifyRequestDto);
 
   ResponseEntity deletePost(Long postId);
 
-  ResponseEntity updateComment(Long commentId가); // TODO: CommentRequestDto 추가
+  ResponseEntity updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto); // TODO: CommentRequestDto 추가
 
   ResponseEntity deleteComment(Long commentId);
 

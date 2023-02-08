@@ -1,7 +1,9 @@
 package com.sparta.hotbody.admin.controller;
 
 import com.sparta.hotbody.admin.service.AdminService;
+import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.page.PageDto;
+import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,8 +40,8 @@ public class AdminController {
 
   // ToDo: 관리자 게시글/댓글 수정/삭제 기능 유저 기능과 동일하게 수정 예정
   @PatchMapping("/posts/{postId}")
-  public ResponseEntity updatePost(@PathVariable Long postId) {  // TODO: PostRequestDto 추가
-    return adminService.updatePost(postId);  // TODO: PostRequestDto 추가
+  public ResponseEntity updatePost(@PathVariable Long postId, PostModifyRequestDto postModifyRequestDto) {  // TODO: PostRequestDto 추가
+    return adminService.updatePost(postId, postModifyRequestDto);
   }
 
   @DeleteMapping("/posts/{postId}")
@@ -48,8 +50,8 @@ public class AdminController {
   }
 
   @PatchMapping("/comments/{commentId}")
-  public ResponseEntity updateComment(@PathVariable Long commentId) {
-    return adminService.updateComment(commentId);
+  public ResponseEntity updateComment(@PathVariable Long commentId, CommentModifyRequestDto commentModifyRequestDto) {
+    return adminService.updateComment(commentId, commentModifyRequestDto);
   }
 
   @DeleteMapping("/comments/{commentId}")

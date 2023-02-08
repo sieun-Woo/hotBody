@@ -1,11 +1,10 @@
-package com.sparta.hotbody.diet.Service;
+package com.sparta.hotbody.diet.service;
 
+import com.sparta.hotbody.diet.dto.FoodResponseDto;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 public interface DietService {
-  public Map<Integer, List<String>> readExcel() throws IOException;
+  public FoodResponseDto searchFood(String text, String foodType) throws IOException;
 
 
   }

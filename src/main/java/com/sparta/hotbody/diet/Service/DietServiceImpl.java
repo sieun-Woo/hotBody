@@ -1,60 +1,53 @@
-package com.sparta.hotbody.diet.Service;
+package com.sparta.hotbody.diet.service;
 
+
+import com.sparta.hotbody.diet.dto.FoodResponseDto;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DietServiceImpl implements DietService {
 
-  public Map<Integer, List<String>> readExcel() throws IOException {
+  public FoodResponseDto searchFood(String searchFoodText, String foodType) throws IOException {
+    FileInputStream file = null;
+    switch (foodType) {
+      case ("농산물"):
+        file = new FileInputStream(
+            "src/main/resources/foodData/food.xlsx"); // 농산물 DB
+        break;
+      case ("수산물"):
+        file = new FileInputStream(
+            "src/main/resources/foodData/aquaticProducts.xlsx"); // 수산물 DB
+        break;
+      case ("음식"):
+        file = new FileInputStream(
+            "src/main/resources/foodData/food.xlsx"); // 음식 DB
+        break;
+      case ("가공식품"):
+        file = new FileInputStream(
+            "src/main/resources/foodData/food.xlsx"); // 가공식품 DB
+        break;
+    }
 
-    FileInputStream file = new FileInputStream("src/main/resources/foodNutrientsData/food.xlsx");
     Workbook workbook = new XSSFWorkbook(file);
     Sheet sheet = workbook.getSheetAt(0);
-    Map<Integer, List<String>> data = new HashMap<>();
-    int i = 0;
+    Cell food = null;
+
     for (Row row : sheet) {
-      data.put(i, new ArrayList<String>());
-      for (Cell cell : row) {
-        switch (cell.getCellType()) {
-          case STRING: {
-            data.get(i).add(cell.getRichStringCellValue().getString());
-            break;
-          }
-          case NUMERIC: {
-            if (DateUtil.isCellDateFormatted(cell)) {
-              data.get(i).add(cell.getDateCellValue() + "");
-            } else {
-              data.get(i).add(cell.getNumericCellValue() + "");
-            }
-            break;
-          }
-          case BOOLEAN: {
-            data.get(i).add(cell.getBooleanCellValue() + "");
-            break;
-          }
-          case FORMULA: {
-            data.get(i).add(cell.getCellFormula() + "");
-            break;
-          }
-          default:
-            data.get(i).add(" ");
-        }
+      Cell cell = row.getCell(5);
+      if (searchFoodText.equals(cell.getStringCellValue())) {
+        food = cell;
+        break;
       }
-      i++;
     }
-    return data;
-
+    Row row = food.getRow();
+    return new FoodResponseDto(row);
   }
-
 
 }

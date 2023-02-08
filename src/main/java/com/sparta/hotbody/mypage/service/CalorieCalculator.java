@@ -6,6 +6,8 @@ public class CalorieCalculator {
   private static final double MET_RUNNING = 8.0;
   private static final double MET_SWIMMING = 8.0;
   private static final double MET_CYCLING = 8.0;
+  private static final double MET_WEIGHT_TRAINING = 6.0;
+  private static final double MET_HIKING = 7.5;
   private static final double MET_WALKING = 3.0;
   private static final int KILO = 1000;
 
@@ -26,6 +28,12 @@ public class CalorieCalculator {
       case WALKING:
         met = MET_WALKING;
         break;
+      case WEIGHT_TRAINING:
+        met = MET_WEIGHT_TRAINING;
+        break;
+      case HIKING:
+        met = MET_HIKING;
+        break;
     }
 
     oxygenIntake = met * 3.5 * userWeight * exerciseDurationInMinutes;
@@ -33,6 +41,6 @@ public class CalorieCalculator {
   }
 
   public enum ExerciseType {
-    RUNNING, SWIMMING, CYCLING, WALKING
+    RUNNING, SWIMMING, CYCLING, WALKING, WEIGHT_TRAINING, HIKING
   }
 }

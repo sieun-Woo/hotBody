@@ -30,7 +30,7 @@ public class ExerciseRecordController {
 
   // 운동 기록 조회
   @GetMapping("/records/{recordId}")
-  public ExerciseRecordResponseDto getExerciseRecordById(@PathVariable Long id) {
+  public ExerciseRecordResponseDto getExerciseRecordById(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
     return exerciseRecordService.getExerciseRecordById(id);
   }
 

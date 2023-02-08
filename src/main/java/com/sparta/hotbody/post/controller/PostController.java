@@ -5,7 +5,7 @@ import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.service.PostService;
 import com.sparta.hotbody.user.entity.User;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

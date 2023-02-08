@@ -5,7 +5,7 @@ import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
-import com.sparta.hotbody.common.TimeStamp;
+
 import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService extends TimeStamp {
+public class CommentService {
 
   private final CommentRepository commentRepository;
 

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PostService extends TimeStamp {
+public class PostService {
 
   private final PostRepository postRepository;
 

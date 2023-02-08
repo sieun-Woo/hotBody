@@ -1,8 +1,10 @@
 package com.sparta.hotbody.diet.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 
+@NoArgsConstructor
 @Getter
 public class FoodResponseDto {
 
@@ -14,10 +16,10 @@ public class FoodResponseDto {
   String fat; // 지방
   public FoodResponseDto(Row row) {
     this.foodName = row.getCell(5).toString(); // 음식 이름
-    this.amountOfFood = row.getCell(11) + "g"; // 음식 양
-    this.energy = row.getCell(15) + "Kcal"; // 에너지
-    this.carbohydrate = row.getCell(19) + "g"; // 탄수화물
-    this.protein = row.getCell(17) + "g"; // 단백질
-    this.fat = row.getCell(18) + "g"; // 지방
+    this.amountOfFood = row.getCell(11).toString(); // 음식 양
+    this.energy = row.getCell(15).toString(); // 에너지
+    this.carbohydrate = row.getCell(19).toString(); // 탄수화물
+    this.protein = row.getCell(17).toString(); // 단백질
+    this.fat = row.getCell(18).toString(); // 지방
   }
 }

@@ -3,6 +3,7 @@ package com.sparta.hotbody.comment.entity;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.user.entity.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

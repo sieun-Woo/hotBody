@@ -53,7 +53,7 @@ public class Post {
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Post(PostRequestDto postRequestDto, User user) {
-    this.nickname = postRequestDto.getNickname();
+    this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
   }

@@ -87,4 +87,8 @@ public class AdminController {
     return adminService.updateUserInfo(userId); // TODO: UserRequestDto 추가
   }
 
+  @DeleteMapping("/users/{userId}")
+  public ResponseEntity deleteUser(@PathVariable Long userId) {
+    return adminService.deleteUser(userId);
+  }
 }

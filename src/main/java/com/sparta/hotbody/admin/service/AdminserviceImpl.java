@@ -109,4 +109,10 @@ public class AdminserviceImpl implements AdminService {
     return new ResponseEntity("사용자 정보 수정하였습니다.", HttpStatus.OK);
   }
 
+  @Override
+  public ResponseEntity deleteUser(Long userId) {
+//    User user = userRepository.findeById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+//    userRepository.delete(user);
+    return new ResponseEntity("사용자 계정를 삭제하였습니다.", HttpStatus.OK);
+  }
 }

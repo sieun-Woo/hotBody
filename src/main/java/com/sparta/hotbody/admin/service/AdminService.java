@@ -29,4 +29,5 @@ public interface AdminService {
 
   ResponseEntity updateUserInfo(Long userId); // TODO: UserRequestDto 추가
 
+  ResponseEntity deleteUser(Long userId);
 }

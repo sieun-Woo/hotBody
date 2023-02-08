@@ -56,4 +56,35 @@ public class AdminController {
   public ResponseEntity deleteComment(@PathVariable Long commentId) {
     return adminService.deleteComment(commentId);
   }
+
+  // 전체 유저 정보 조회
+  @GetMapping("/userlist")  // users가 더 나을 것 같습니다.
+  public ResponseEntity getUserList(PageDto pageDto) {
+    return adminService.getUserList(pageDto);
+  }
+
+  // 단건 유저 정보 조회
+  @GetMapping("/users/{userId}")
+  public ResponseEntity getUser(@PathVariable Long userId) {
+    return adminService.getUser(userId);
+  }
+
+  // 전체 트레이너 정보 조회
+  @GetMapping("/trainerlist")  // trainers가 더 나을 것 같습니다.
+  public ResponseEntity getTrainerList(PageDto pageDto) {
+    return adminService.getTrainerList(pageDto);
+  }
+
+  // 단건 트레이너 정보 조회
+  @GetMapping("/trainer/{trainerId}")
+  public ResponseEntity getTrainer(@PathVariable Long trainerId) {
+    return adminService.getTrainer(trainerId);
+  }
+
+  // 유저 정보 수정
+  @PatchMapping("/users/{userId}")
+  public ResponseEntity updateUserInfo(@PathVariable Long userId) { // TODO: UserRequestDto 추가
+    return adminService.updateUserInfo(userId); // TODO: UserRequestDto 추가
+  }
+
 }

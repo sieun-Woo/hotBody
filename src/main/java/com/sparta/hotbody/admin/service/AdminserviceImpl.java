@@ -75,4 +75,38 @@ public class AdminserviceImpl implements AdminService {
     return new ResponseEntity("댓글 삭제가 완료되었습니다.", HttpStatus.OK);
   }
 
+  @Override
+  public ResponseEntity getUserList(PageDto pageDto) {
+//    Page<User> userPage = userRepository.findAllByRole("USER", pageDto.toPageable());
+//    Page<UserResponseDto> userResponseDtoPage = UserResponseDto.toDtoPage(userPage);
+    return new ResponseEntity(HttpStatus.OK); // TODO: userResponseDtoPage 추가
+  }
+
+  @Override
+  public ResponseEntity getUser(Long userId) {
+//    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    return new ResponseEntity(HttpStatus.OK); // TODO: UserResponseDto 추가
+  }
+
+  @Override
+  public ResponseEntity getTrainerList(PageDto pageDto) {
+//    Page<User> userPage = userRepository.findAllByRole("TRAINER", pageDto.toPageable());
+//    Page<UserResponseDto> userResponseDtoPage = UserResponseDto.toDtoPage(userPage);
+    return new ResponseEntity(HttpStatus.OK); // TODO: userResponseDtoPage 추가
+  }
+
+  @Override
+  public ResponseEntity getTrainer(Long trainerId) {
+//    User user = userRepository.findById(trainerId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    return new ResponseEntity(HttpStatus.OK); // TODO: TrainerResponseDto 추가
+  }
+
+  @Override
+  public ResponseEntity updateUserInfo(Long userId) { // TODO: UserRequestDto 추가
+//    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+//    user.update(userRequestDto);
+//    userRepository.save(user);
+    return new ResponseEntity("사용자 정보 수정하였습니다.", HttpStatus.OK);
+  }
+
 }

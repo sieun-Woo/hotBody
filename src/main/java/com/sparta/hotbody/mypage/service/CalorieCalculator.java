@@ -7,9 +7,11 @@ public class CalorieCalculator {
   private static final double MET_SWIMMING = 8.0;
   private static final double MET_CYCLING = 8.0;
   private static final double MET_WALKING = 3.0;
+  private static final int KILO = 1000;
 
   public double calculateCaloriesBurned(double userWeight, int exerciseDurationInMinutes, ExerciseType exerciseType) {
     double met = 0.0;
+    double oxygenIntake = 0; // 산소 흡입량
 
     switch (exerciseType) {
       case RUNNING:
@@ -26,7 +28,8 @@ public class CalorieCalculator {
         break;
     }
 
-    return (met * 3.5 * userWeight * exerciseDurationInMinutes) / 200;
+    oxygenIntake = met * 3.5 * userWeight * exerciseDurationInMinutes;
+    return oxygenIntake * 5 / KILO; // oxygenIntake * 5 => 산소 1L당 약 5 Kcal소모
   }
 
   public enum ExerciseType {

@@ -15,28 +15,27 @@ public class ExerciseRecordService {
 
   private final ExerciseRecordRepository exerciseRecordRepository;
   //운동 기록
-  public List<ExerciseRecordResponseDto> getAllExercises() {
+  public List<ExerciseRecordResponseDto> getExerciseRecordById() {
     List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
     return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
   }
 
-  public ExerciseRecordResponseDto getExerciseById(Long id) {
+  public ExerciseRecordResponseDto getExerciseRecordById(Long id) {
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
     return new ExerciseRecordResponseDto(exerciseRecord);
   }
 
-  public ExerciseRecordResponseDto createExerciseRecord(ExerciseRecordRequestDto exerciseRecordRequestDto) {
+  public ExerciseRecordResponseDto createExerciseRecord(ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetails userDetails) {
+    User user = userRepository.findByUsername(userDetails.getUsername()).get();
+
     ExerciseRecord exerciseRecord = new ExerciseRecord();
-    exerciseRecord.setName(exerciseRecordRequestDto.getName());
-    exerciseRecord.setCaloriesBurnPerHour(exerciseRecordRequestDto.getCaloriesBurnPerHour());
     exerciseRecord = exerciseRecordRepository.save(exerciseRecord);
     return new ExerciseRecordResponseDto(exerciseRecord);
   }
 
   public ExerciseRecordResponseDto updateExerciseRecord(Long id, ExerciseRecordRequestDto exerciseRecordRequestDto) {
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Exercise not found"));
-    exerciseRecord.setName(exerciseRecordRequestDto.getName());
-    exerciseRecord.setCaloriesBurnPerHour(exerciseRecordRequestDto.getCaloriesBurnPerHour());
+    exerciseRecord.update(exerciseRecordRequestDto);
     exerciseRecord = exerciseRecordRepository.save(exerciseRecord);
     return new ExerciseRecordResponseDto(exerciseRecord);
   }

@@ -20,23 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExerciseRecordController {
 
   private final ExerciseRecordService exerciseRecordService;
-  @PostMapping("/record")
+
+  // 운동 기록
+  @PostMapping("/records")
   public ExerciseRecordResponseDto createExerciseRecord (@RequestBody ExerciseRecordRequestDto exerciseRecordRequestDto,
       @AuthenticationPrincipal UserDetails userDetails){
     return exerciseRecordService.createExerciseRecord (exerciseRecordRequestDto,userDetails);
   }
 
-  @GetMapping("/records/{id}")
-  public ExerciseRecordResponseDto getExerciseById(@PathVariable Long id) {
-    return exerciseRecordService.getExerciseById(id);
+  // 운동 기록 조회
+  @GetMapping("/records/{recordId}")
+  public ExerciseRecordResponseDto getExerciseRecordById(@PathVariable Long id) {
+    return exerciseRecordService.getExerciseRecordById(id);
   }
 
-
-  @PatchMapping("/records/{id}")
+  // 운동 기록 수정
+  @PatchMapping("/records/{recordId}")
   public ExerciseRecordResponseDto updateExercise(@PathVariable Long id, @RequestBody ExerciseRecordRequestDto exerciseRecordRequestDto) {
     return exerciseRecordService.updateExerciseRecord(id, exerciseRecordRequestDto);
   }
 
+  // 운동 기록 삭제
   @DeleteMapping("/records/{id}")
   public void deleteExerciseRecord(@PathVariable Long id) {
     exerciseRecordService.deleteExerciseRecord(id);

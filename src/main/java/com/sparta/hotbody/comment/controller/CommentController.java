@@ -4,6 +4,7 @@ import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.service.CommentService;
+import com.sparta.hotbody.user.entity.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;

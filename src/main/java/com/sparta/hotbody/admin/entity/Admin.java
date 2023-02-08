@@ -1,5 +1,6 @@
 package com.sparta.hotbody.admin.entity;
 
+import com.sparta.hotbody.user.entity.UserRole;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -35,7 +36,7 @@ public class Admin {
 
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
-  private Enum role;
+  private UserRole role;
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.

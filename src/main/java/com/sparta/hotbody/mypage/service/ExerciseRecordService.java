@@ -1,6 +1,7 @@
 package com.sparta.hotbody.mypage.service;
 
 import com.sparta.hotbody.mypage.dto.ExerciseRecordRequestDto;
+import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.mypage.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.mypage.entity.ExerciseRecord;
 import com.sparta.hotbody.mypage.repository.ExerciseRecordRepository;
@@ -15,7 +16,7 @@ public class ExerciseRecordService {
 
   private final ExerciseRecordRepository exerciseRecordRepository;
   //운동 기록
-  public List<ExerciseRecordResponseDto> getExerciseRecordById() {
+  public List<ExerciseRecordResponseDto> getAllExerciseRecords() {
     List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
     return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
   }

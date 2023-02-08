@@ -1,6 +1,8 @@
-package com.sparta.hotbody.post;
+package com.sparta.hotbody.post.entity;
 
-import com.sparta.hotbody.comment.Comment;
+import com.sparta.hotbody.comment.entity.Comment;
+import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.post.dto.PostRequestDto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -11,13 +13,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 // lombok
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 
 // jpa
 @Entity
@@ -33,10 +37,10 @@ public class Post {
   private Long id;
 
   @Column(nullable = false)
-  private String title;
+  private String nickname;
 
   @Column(nullable = false)
-  private String nickname;
+  private String title;
 
   @Column(nullable = false)
   private String content;
@@ -47,6 +51,11 @@ public class Post {
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
+  public Post(PostRequestDto postRequestDto, User user) {
+    this.nickname = postRequestDto.getNickname();
+    this.title = postRequestDto.getTitle();
+    this.content = postRequestDto.getContent();
+  }
 
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
@@ -61,4 +70,8 @@ public class Post {
   /**
    * 서비스 메소드 - 외부에서 엔티티를 수정할 메소드를 정의합니다. (단일 책임을 가지도록 주의합니다.)
    */
+  public void modifyPost(PostModifyRequestDto postModifyRequestDto) {
+    this.title = postModifyRequestDto.getTitle();
+    this.content = postModifyRequestDto.getContent();
+  }
 }

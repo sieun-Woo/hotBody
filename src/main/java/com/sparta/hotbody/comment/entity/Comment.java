@@ -1,6 +1,8 @@
-package com.sparta.hotbody.comment;
+package com.sparta.hotbody.comment.entity;
 
-import com.sparta.hotbody.post.Post;
+import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
+import com.sparta.hotbody.comment.dto.CommentRequestDto;
+import com.sparta.hotbody.post.entity.Post;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,13 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 // lombok
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 
 // jpa
 @Entity
@@ -38,12 +41,15 @@ public class Comment {
   private String content;
 
   @Column(nullable = false)
-  private int likes;
+  private Integer likes;
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
-
+  public Comment(CommentRequestDto commentRequestDto, User user) {
+    this.nickname = commentRequestDto.getNickname();
+    this.content = commentRequestDto.getContent();
+  }
 
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
@@ -59,4 +65,7 @@ public class Comment {
   /**
    * 서비스 메소드 - 외부에서 엔티티를 수정할 메소드를 정의합니다. (단일 책임을 가지도록 주의합니다.)
    */
+  public void modifyComment(CommentModifyRequestDto commentModifyRequestDto) {
+    this.content = commentModifyRequestDto.getContent();
+  }
 }

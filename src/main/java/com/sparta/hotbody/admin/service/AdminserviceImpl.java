@@ -29,6 +29,9 @@ public class AdminserviceImpl implements AdminService {
   @Override
   public ResponseEntity getRegistrations(PageDto pageDto) {
     Page<Registration> RequestList = registrationRepository.findAll(pageDto.toPageable());
+    if (RequestList.isEmpty()) {
+      throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
+    }
     return new ResponseEntity(RequestList, HttpStatus.OK);
   }
 
@@ -83,6 +86,9 @@ public class AdminserviceImpl implements AdminService {
   @Override
   public ResponseEntity getUserList(PageDto pageDto) {
 //    Page<User> userPage = userRepository.findAllByRole("USER", pageDto.toPageable());
+//    if (userPage.isEmpty()) {
+//      throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
+//    }
 //    Page<UserResponseDto> userResponseDtoPage = UserResponseDto.toDtoPage(userPage);
     return new ResponseEntity(HttpStatus.OK); // TODO: userResponseDtoPage 추가
   }
@@ -96,6 +102,9 @@ public class AdminserviceImpl implements AdminService {
   @Override
   public ResponseEntity getTrainerList(PageDto pageDto) {
 //    Page<User> userPage = userRepository.findAllByRole("TRAINER", pageDto.toPageable());
+//    if (userPage.isEmpty()) {
+//      throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
+//    }
 //    Page<UserResponseDto> userResponseDtoPage = UserResponseDto.toDtoPage(userPage);
     return new ResponseEntity(HttpStatus.OK); // TODO: userResponseDtoPage 추가
   }

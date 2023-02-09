@@ -29,8 +29,8 @@ public class ExerciseRecordController {
   }
 
   @GetMapping("/records")
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords(){
-    return exerciseRecordService.getAllExerciseRecords();
+  public List<ExerciseRecordResponseDto> getAllExerciseRecords(@AuthenticationPrincipal UserDetails userDetails){
+    return exerciseRecordService.getAllExerciseRecords(userDetails);
   }
 
   // 운동 기록 조회

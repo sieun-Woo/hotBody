@@ -16,7 +16,8 @@ public class ExerciseRecordService {
 
   private final ExerciseRecordRepository exerciseRecordRepository;
   //운동 기록
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords() {
+  public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetails userDetails) {
+    User user = userRepository.findByUsername(userDetails.getUsername()).get();
     List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
     return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
   }

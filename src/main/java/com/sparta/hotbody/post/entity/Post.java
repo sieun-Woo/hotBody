@@ -10,9 +10,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -62,6 +65,11 @@ public class Post extends TimeStamp {
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
+
+  // 게시글과 사용자의 연관 관계(N : 1)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   // 게시글과 댓글의 연관 관계(1 : N)
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

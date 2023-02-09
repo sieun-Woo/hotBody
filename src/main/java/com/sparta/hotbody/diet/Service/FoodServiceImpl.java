@@ -34,6 +34,7 @@ public class FoodServiceImpl implements FoodService {
 
   private File file;
   private static String searchFoodText;
+  private static String foodType;
   private static List<FoodResponseDto> foodResponseDtoList = new ArrayList<FoodResponseDto>();
 
   @Override
@@ -57,6 +58,7 @@ public class FoodServiceImpl implements FoodService {
         break;
     }
     this.searchFoodText = searchFoodText;
+    this.foodType = foodType;
 
     processAllSheets(file);
 
@@ -132,7 +134,7 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public void endSheet() {
       for (String[] row : rows) {
-        foodResponseDtoList.add(new FoodResponseDto(row));
+        foodResponseDtoList.add(new FoodResponseDto(foodType, row));
       }
     }
   }

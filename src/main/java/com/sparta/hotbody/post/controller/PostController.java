@@ -6,6 +6,7 @@ import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.service.PostService;
 import com.sparta.hotbody.user.entity.User;
 
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,8 +29,10 @@ public class PostController {
 
   // 1. 게시글 등록
   @PostMapping("")
-  public void createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl details){
-    postService.createPost(postRequestDto, details.getUser());
+  public void createPost(
+      @RequestBody PostRequestDto postRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    postService.createPost(postRequestDto, userDetails.getUser());
   }
 
   // 2. 게시글 전체 조회
@@ -51,26 +54,34 @@ public class PostController {
 
   // 4. 게시글 수정
   @PatchMapping("{postId}")
-  public void updatePost(@PathVariable Long postId,
-      @RequestBody PostModifyRequestDto postModifyRequestDto, User user) {
-    postService.updatePost(postId, postModifyRequestDto, user);
+  public void updatePost(
+      @PathVariable Long postId,
+      @RequestBody PostModifyRequestDto postModifyRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser());
   }
 
   // 5. 게시글 삭제
   @DeleteMapping("{postId}")
-  public void deletePost(@PathVariable Long postId, User user) {
-    postService.deletePost(postId, user);
+  public void deletePost(
+      @PathVariable Long postId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    postService.deletePost(postId, userDetails.getUser());
   }
 
   // 6. 게시글 좋아요
   @PostMapping("{postId}/likes")
-  public void okLikes(@PathVariable Long postId, User user) {
-    postService.okLikes(postId, user);
+  public void okLikes(
+      @PathVariable Long postId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    postService.okLikes(postId, userDetails.getUser());
   }
 
   // 7. 게시글 좋아요 취소
   @DeleteMapping("{postId}/likes")
-  public void cancelLikes(@PathVariable Long postId, User user) {
-    postService.cancelLikes(postId, user);
+  public void cancelLikes(
+      @PathVariable Long postId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    postService.cancelLikes(postId, userDetails.getUser());
   }
 }

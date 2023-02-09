@@ -5,6 +5,9 @@ import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.user.entity.User;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +37,7 @@ public class Comment extends TimeStamp {
    */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
+  @Column(name = "comment_id")
   private Long id;
 
   @Column(nullable = false)
@@ -56,9 +60,15 @@ public class Comment extends TimeStamp {
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
+
+  // 댓글과 게시글의 연관 관계(N : 1)
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
   private Post post;
+
+  // 댓글과 댓글 좋아요의 연관 관계(1 : N)
+  @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<CommentLike> commentLikeList = new ArrayList<>();
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

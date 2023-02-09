@@ -10,9 +10,12 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -38,8 +41,8 @@ public class Post extends TimeStamp {
   @Column(name = "post_id")
   private Long id;
 
-  @Column(nullable = false)
-  private String nickname;
+//  @Column(nullable = false)
+//  private String nickname;
 
   @Column(nullable = false)
   private String title;
@@ -48,13 +51,13 @@ public class Post extends TimeStamp {
   private String content;
 
   @Column(nullable = false)
-  private int likes;
+  private Integer likes;
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Post(PostRequestDto postRequestDto, User user) {
-    this.nickname = user.getNickname();
+    this.user = user;
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
   }
@@ -62,6 +65,11 @@ public class Post extends TimeStamp {
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
+
+  // 게시글과 사용자의 연관 관계(N : 1)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   // 게시글과 댓글의 연관 관계(1 : N)
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

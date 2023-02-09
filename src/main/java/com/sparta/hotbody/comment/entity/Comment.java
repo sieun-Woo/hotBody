@@ -40,8 +40,8 @@ public class Comment extends TimeStamp {
   @Column(name = "comment_id")
   private Long id;
 
-  @Column(nullable = false)
-  private String nickname;
+//  @Column(nullable = false)
+//  private String nickname;
 
   @Column(nullable = false)
   private String content;
@@ -53,13 +53,18 @@ public class Comment extends TimeStamp {
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Comment(CommentRequestDto commentRequestDto, User user) {
-    this.nickname = user.getNickname();
+    this.user = user;
     this.content = commentRequestDto.getContent();
   }
 
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
+
+  // 댓글과 사용자의 연관 관계(N : 1)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
 
   // 댓글과 게시글의 연관 관계(N : 1)
   @ManyToOne(fetch = FetchType.LAZY)

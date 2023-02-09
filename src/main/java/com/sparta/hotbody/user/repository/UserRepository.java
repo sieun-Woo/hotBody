@@ -1,6 +1,5 @@
 package com.sparta.hotbody.user.repository;
 
-import com.sparta.hotbody.user.entity.Promote;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import java.util.Optional;

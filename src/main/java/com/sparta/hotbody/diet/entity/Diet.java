@@ -26,23 +26,20 @@ public class Diet {
   private List<String> foodName = new ArrayList<String>(); // 음식 이름
 
   @Column
-  private double energy; // 에너지
-
+  private double totalEnergy; // 에너지
   @Column
-  private double carbohydrate; // 탄수화물
-
+  private double totalCarbohydrate; // 탄수화물
   @Column
-  private double protein; // 단백질
-
+  private double totalProtein; // 단백질
   @Column
-  private double fat; // 지방
+  private double totalFat; // 지방
 
   public Diet(List<String> foodName, double energy, double carbohydrate, double protein,
       double fat) {
     this.foodName = foodName;
-    this.energy = energy;
-    this.carbohydrate = carbohydrate;
-    this.protein = protein;
-    this.fat = fat;
+    this.totalEnergy = energy;
+    this.totalCarbohydrate = carbohydrate;
+    this.totalProtein = protein;
+    this.totalFat = fat;
   }
 }

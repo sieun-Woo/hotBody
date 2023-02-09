@@ -20,10 +20,8 @@ public class Food {
   @Id
   private Long id;
 
-  @ElementCollection(fetch = FetchType.LAZY)
-  @CollectionTable(name = "foodNames", joinColumns = @JoinColumn(name = "DIET_ID"))
   @Column
-  private List<String> foodName = new ArrayList<String>(); // 음식 이름
+  private String foodName; // 음식 이름
 
   @Column
   private double energy; // 에너지
@@ -37,7 +35,7 @@ public class Food {
   @Column
   private double fat; // 지방
 
-  public Food(List<String> foodName, double energy, double carbohydrate, double protein,
+  public Food(String foodName, double energy, double carbohydrate, double protein,
       double fat) {
     this.foodName = foodName;
     this.energy = energy;

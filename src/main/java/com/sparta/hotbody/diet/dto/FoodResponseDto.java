@@ -14,12 +14,13 @@ public class FoodResponseDto {
   String carbohydrate; // 탄수화물
   String protein; // 단백질
   String fat; // 지방
-  public FoodResponseDto(Row row) {
-    this.foodName = row.getCell(5).toString(); // 음식 이름
-    this.amountOfFood = row.getCell(11).toString(); // 음식 양
-    this.energy = row.getCell(15).toString(); // 에너지
-    this.carbohydrate = row.getCell(19).toString(); // 탄수화물
-    this.protein = row.getCell(17).toString(); // 단백질
-    this.fat = row.getCell(18).toString(); // 지방
+
+  public FoodResponseDto(String[] row) {
+    this.foodName = row[5]; // 음식 이름
+    this.amountOfFood = row[11]; // 음식 양
+    this.energy = row[15]; // 에너지
+    this.carbohydrate = row[19]; // 탄수화물
+    this.protein = row[17]; // 단백질
+    this.fat = row[18]; // 지방
   }
 }

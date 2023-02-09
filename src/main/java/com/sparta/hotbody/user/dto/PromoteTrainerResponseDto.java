@@ -1,6 +1,6 @@
 package com.sparta.hotbody.user.dto;
 
-import com.sparta.hotbody.user.entity.Promote;
+import com.sparta.hotbody.user.entity.Trainer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class PromoteTrainerResponseDto {
   private String introduce;
 
-  public PromoteTrainerResponseDto(Promote promote){
+  public PromoteTrainerResponseDto(Trainer promote){
     this.introduce = promote.getIntroduce();
   }
 

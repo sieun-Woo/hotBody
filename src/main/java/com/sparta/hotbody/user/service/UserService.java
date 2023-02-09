@@ -9,19 +9,17 @@ import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
-import com.sparta.hotbody.user.entity.Promote;
+import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
-import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -121,7 +119,7 @@ public class UserService {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new SecurityException("이미 판매자 전환 요청을 하였습니다.");
     }
-    Promote promote = new Promote(requestDto, user);
+    Trainer promote = new Trainer(requestDto, user);
     promoteRepository.save(promote);
     return new PromoteTrainerResponseDto(promote);
   }
@@ -134,7 +132,7 @@ public class UserService {
         () -> new IllegalArgumentException("유저가 없습니다.")
     );
 
-    Promote promote = promoteRepository.findByUserUsername(user1.getUsername()).orElseThrow(
+    Trainer promote = promoteRepository.findByUserUsername(user1.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("판매자 요청을 하지 않았습니다.")
     );
     promoteRepository.deleteByUserUsername(promote.getUser().getUsername());
@@ -168,7 +166,7 @@ public class UserService {
   @Transactional
   public UserProfileResponseDto getUserProfile(String username){
     User user = userRepository.findByUsername(username).orElseThrow(
-        ()-> new IllegalArgumentException("연결상태 불량입니다 다시 유저 조회해주시기 바랍니다.")
+        ()-> new IllegalArgumentException("연결상태 불량입니다 다시 유저조회해주시기 바랍니다.")
     );
     return UserProfileResponseDto.from(user);
   }

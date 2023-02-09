@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // JOINED는 다른 DB 생성. SINGLE은 안에 둘 다 있음
 @DiscriminatorColumn
 @Entity(name = "users")
 public class User extends TimeStamp {
@@ -36,11 +36,11 @@ public class User extends TimeStamp {
   private String password;
   @Column(nullable = false)
   private Integer gender;
-
-  private Date birthday;
   @Column(nullable = false)
+  private String age;
+  @Column
   private int height;
-  @Column(nullable = false)
+  @Column
   private int weight;
   @Column
   private String image;
@@ -48,32 +48,28 @@ public class User extends TimeStamp {
   private String introduce;
   @Column(nullable = false)
   private String nickname;
-
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
-
-  @Column
-  private int likes;
   @Column
   private String region;
 
-//  public User(String username, String password, UserRole role, String nickname, Integer gender, Date birthday) {
+//  public User(String username, String password, UserRole role, String nickname, Integer gender, String age) {
 //    this.username = username;
 //    this.password = password;
 //    this.nickname = nickname;
 //    this.gender = gender;
-//    this.birthday = birthday;
+//    this.age = age;
 //    this.role = role;
 //  }
 
-  public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
-    this.username = signUpRequestDto.getUsername();
-    this.nickname = signUpRequestDto.getNickname();
+  public User(SignUpRequestDto requestDto, String password, UserRole role) {
+    this.username = requestDto.getUsername();
+    this.nickname = requestDto.getNickname();
     this.password = password;
-    this.gender = signUpRequestDto.getGender();
+    this.gender = requestDto.getGender();
     this.role = role;
-    this.birthday = signUpRequestDto.getBirthday();
+    this.age = requestDto.getAge();
   }
 
   public void update(UserProfileRequestDto requestDto) {
@@ -84,20 +80,12 @@ public class User extends TimeStamp {
     this.image = requestDto.getImage();
   }
 
-
-    public void TrainerPermission(String image, String introduce) {
-    this.introduce = introduce;
-    this.image = image;
-  }
-
-
-
-  public void changeProfile(String password, String  region, int height, int weight, String image) {
-    this.password = password;
-    this.region = region;
-    this.height = height;
-    this.weight = weight;
-    this.image = image;
-  }
+//  public void changeProfile(String password, String region, int height, int weight, String image) {
+//    this.password = password;
+//    this.region = region;
+//    this.height = height;
+//    this.weight = weight;
+//    this.image = image;
+//  }
 
 }

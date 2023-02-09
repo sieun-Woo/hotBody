@@ -63,14 +63,12 @@ public class UserController {
 
   //4. 트레이너 요청
   @PostMapping("/auth/promote")
-  @PreAuthorize("hasRole('Trainer')")
   public PromoteTrainerResponseDto promoteUser(@RequestBody @Valid PromoteTrainerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
     return userService.promoteTrainer(requestDto, userDetails.getUser());
   }
 
   //4-1. 트레이너 승인 전 취소
   @DeleteMapping("/auth/permission")
-  @PreAuthorize("hasRole('Trainer')")
   public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails){
     userService.deletePermission(userDetails.getUser());
     return "삭제 완료되었습니다.";
@@ -80,11 +78,12 @@ public class UserController {
 
 
   //6. 유저 프로필 생성
-  @PostMapping("/auth/profile")
+  @PostMapping("/auth/create-profile")
   public String createProfile(UserProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
   ){
     return userService.createProfile(requestDto, userDetails.getUser().getUsername());
   }
+
 //  @PostMapping("/auth/profile")
 //  public String createProfile(
 //      @RequestPart("file") MultipartFile file,
@@ -97,16 +96,13 @@ public class UserController {
   //7. 유저 프로필 조회
   @Transactional
   @GetMapping ("/auth/profile")
-  public UserProfileResponseDto getUserProfile(String username){
-    User user = userRepository.findByUsername(username).orElseThrow(
-        ()-> new IllegalArgumentException("연결상태 불량입니다 다시 유저조회해주시기 바랍니다.")
-    );
-    return UserProfileResponseDto.from(user);
+  public UserProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    return userService.getUserProfile(userDetails.getUsername());
   }
 
   //8. 유저 프로필 수정
   @Transactional
-  @PatchMapping("/auth/profile")
+  @PatchMapping("/auth/update-profile")
   public UserProfileResponseDto changeProfile(String username){
     User user = userRepository.findByUsername(username).orElseThrow(
         ()-> new IllegalArgumentException("연결상태 불량입니다 다시 유저조회해주시기 바랍니다.")

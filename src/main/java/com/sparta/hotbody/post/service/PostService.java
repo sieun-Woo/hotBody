@@ -1,10 +1,12 @@
 package com.sparta.hotbody.post.service;
 
+import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
+import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PostService extends TimeStamp {
+public class PostService {
 
   private final PostRepository postRepository;
 

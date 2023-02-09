@@ -1,8 +1,10 @@
 package com.sparta.hotbody.post.entity;
 
 import com.sparta.hotbody.comment.entity.Comment;
+import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
+import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -26,7 +28,7 @@ import lombok.Setter;
 // jpa
 @Entity
 @Table(name = "post")
-public class Post {
+public class Post extends TimeStamp {
 
   /**
    * 컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
@@ -52,7 +54,7 @@ public class Post {
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Post(PostRequestDto postRequestDto, User user) {
-    this.nickname = postRequestDto.getNickname();
+    this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
   }

@@ -48,7 +48,7 @@ public class ExerciseRecord extends Timestamp {
     this.exercise = exerciseRecordRequestDto.getExercise();
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
-    this.calories = calorieCalculator.calculateCaloriesBurned(user.getWeight, time, exercise, reps);
+    this.calories = calorieCalculator.calculateCaloriesBurned(user.getWeight(), time, exercise, reps);
     this.date = getCreateAt();
   }
 

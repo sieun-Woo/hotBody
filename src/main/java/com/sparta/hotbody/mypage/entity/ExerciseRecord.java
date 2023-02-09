@@ -1,10 +1,13 @@
 package com.sparta.hotbody.mypage.entity;
 
+import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.mypage.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.mypage.service.CalorieCalculator;
+import com.sparta.hotbody.mypage.service.CalorieCalculator.ExerciseType;
 import com.sparta.hotbody.user.entity.User;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,10 +17,10 @@ import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
+@Entity(name = "record")
 @Getter
 @NoArgsConstructor
-public class ExerciseRecord extends Timestamp {
+public class ExerciseRecord extends TimeStamp {
 
 
   @Id
@@ -41,15 +44,16 @@ public class ExerciseRecord extends Timestamp {
   @Column
   private LocalDateTime date; // 운동 일시
 
-  private CalorieCalculator calorieCalculator;
+
 
   public ExerciseRecord(User user, ExerciseRecordRequestDto exerciseRecordRequestDto) {
+    CalorieCalculator calorieCalculator = new CalorieCalculator();
     this.user = user;
     this.exercise = exerciseRecordRequestDto.getExercise();
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
-    this.calories = calorieCalculator.calculateCaloriesBurned(user.getWeight(), time, exercise, reps);
-    this.date = getCreateAt();
+    this.calories = calorieCalculator.calculateCaloriesBurned(user.getWeight(), time,
+        ExerciseType.valueOf(exercise), reps);
   }
 
   public void update(ExerciseRecordRequestDto exerciseRecordRequestDto){
@@ -57,6 +61,5 @@ public class ExerciseRecord extends Timestamp {
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
   }
-
 
 }

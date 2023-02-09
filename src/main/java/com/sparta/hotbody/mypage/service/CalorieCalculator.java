@@ -1,5 +1,8 @@
 package com.sparta.hotbody.mypage.service;
 
+import lombok.RequiredArgsConstructor;
+
+
 public class CalorieCalculator {
 
   // MET: 1분간 소비되는 단위 체중당 에너지 소비량

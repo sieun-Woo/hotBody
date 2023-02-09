@@ -5,6 +5,8 @@ import com.sparta.hotbody.mypage.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.mypage.entity.ExerciseRecord;
 import com.sparta.hotbody.mypage.repository.ExerciseRecordRepository;
 import com.sparta.hotbody.user.entity.User;
+import com.sparta.hotbody.user.repository.UserRepository;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +18,10 @@ import org.springframework.stereotype.Service;
 public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   private final ExerciseRecordRepository exerciseRecordRepository;
+  private final UserRepository userRepository;
   //운동 기록
   @Override
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetails userDetails) {
+  public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
     List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
     return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
@@ -32,7 +35,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   @Override
   public ExerciseRecordResponseDto createExerciseRecord(
-      ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetails userDetails) {
+      ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
 
     ExerciseRecord exerciseRecord = new ExerciseRecord();

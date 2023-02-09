@@ -3,6 +3,7 @@ package com.sparta.hotbody.mypage.dto;
 
 import com.sparta.hotbody.mypage.entity.ExerciseRecord;
 import com.sparta.hotbody.mypage.service.CalorieCalculator;
+import com.sparta.hotbody.mypage.service.CalorieCalculator.ExerciseType;
 import java.time.LocalDateTime;
 
 
@@ -22,11 +23,12 @@ public class ExerciseRecordResponseDto {
 
 
   public ExerciseRecordResponseDto(ExerciseRecord exerciseRecord) {
+
     this.exercise = exerciseRecord.getExercise();
     this.time = exerciseRecord.getTime();
     this.reps = exerciseRecord.getReps();
     this.calories = exerciseRecord.getCalories();
-    this.date = exerciseRecord.getCreateAt();
+    this.date = exerciseRecord.getCreatedAt();
   }
 
 

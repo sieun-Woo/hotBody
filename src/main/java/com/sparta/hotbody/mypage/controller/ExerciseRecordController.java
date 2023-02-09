@@ -3,8 +3,12 @@ package com.sparta.hotbody.mypage.controller;
 import com.sparta.hotbody.mypage.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.mypage.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.mypage.service.ExerciseRecordService;
+import com.sparta.hotbody.mypage.service.ExerciseRecordServiceImpl;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,22 +18,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/user/mypage")
 public class ExerciseRecordController {
 
-  private final ExerciseRecordService exerciseRecordService;
+  private final ExerciseRecordServiceImpl exerciseRecordService;
 
   // 운동 기록
   @PostMapping("/records")
   public ExerciseRecordResponseDto createExerciseRecord (@RequestBody ExerciseRecordRequestDto exerciseRecordRequestDto,
-      @AuthenticationPrincipal UserDetails userDetails){
+      @AuthenticationPrincipal UserDetailsImpl userDetails){
     return exerciseRecordService.createExerciseRecord (exerciseRecordRequestDto,userDetails);
   }
 
   @GetMapping("/records")
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords(@AuthenticationPrincipal UserDetails userDetails){
+  public List<ExerciseRecordResponseDto> getAllExerciseRecords(@AuthenticationPrincipal UserDetailsImpl userDetails){
     return exerciseRecordService.getAllExerciseRecords(userDetails);
   }
 

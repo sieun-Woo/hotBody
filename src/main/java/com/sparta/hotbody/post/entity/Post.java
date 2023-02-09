@@ -41,8 +41,8 @@ public class Post extends TimeStamp {
   @Column(name = "post_id")
   private Long id;
 
-  @Column(nullable = false)
-  private String nickname;
+//  @Column(nullable = false)
+//  private String nickname;
 
   @Column(nullable = false)
   private String title;
@@ -51,13 +51,13 @@ public class Post extends TimeStamp {
   private String content;
 
   @Column(nullable = false)
-  private int likes;
+  private Integer likes;
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Post(PostRequestDto postRequestDto, User user) {
-    this.nickname = user.getNickname();
+    this.user = user;
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
   }

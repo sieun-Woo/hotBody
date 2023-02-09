@@ -40,8 +40,8 @@ public class Comment extends TimeStamp {
   @Column(name = "comment_id")
   private Long id;
 
-  @Column(nullable = false)
-  private String nickname;
+//  @Column(nullable = false)
+//  private String nickname;
 
   @Column(nullable = false)
   private String content;
@@ -53,7 +53,7 @@ public class Comment extends TimeStamp {
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Comment(CommentRequestDto commentRequestDto, User user) {
-    this.nickname = user.getNickname();
+    this.user = user;
     this.content = commentRequestDto.getContent();
   }
 

@@ -1,7 +1,7 @@
 package com.sparta.hotbody.user.entity;
 
 import com.sparta.hotbody.common.TimeStamp;
-import com.sparta.hotbody.user.dto.PromoteTrainerRequestDto;
+import com.sparta.hotbody.user.dto.TrainerRequestDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Promote extends TimeStamp {
+public class Trainer extends TimeStamp {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "Promote_ID")
+  @Column(name = "Trainer_ID")
   private Long id;
   @ManyToOne
   private User user;
@@ -26,7 +26,7 @@ public class Promote extends TimeStamp {
   private Integer isPromoted;
 
 
-  public Promote(PromoteTrainerRequestDto requestDto, User user){
+  public Trainer(TrainerRequestDto requestDto, User user){
     this.user = user;
     this.introduce = requestDto.getIntroduce();
   }

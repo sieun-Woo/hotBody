@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // JOINED는 다른 DB 생성. SINGLE은 안에 둘 다 있음
 @DiscriminatorColumn
 @Entity(name = "users")
 public class User extends TimeStamp {
@@ -36,11 +36,11 @@ public class User extends TimeStamp {
   private String password;
   @Column(nullable = false)
   private Integer gender;
-
-  private Date birthday;
   @Column(nullable = false)
+  private String age;
+  @Column
   private int height;
-  @Column(nullable = false)
+  @Column
   private int weight;
   @Column
   private String image;
@@ -73,31 +73,20 @@ public class User extends TimeStamp {
     this.password = password;
     this.gender = signUpRequestDto.getGender();
     this.role = role;
-    this.birthday = signUpRequestDto.getBirthday();
+    this.age = signUpRequestDto.getAge();
   }
 
   public void update(UserProfileRequestDto requestDto) {
-    this.password = requestDto.getPassword();
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
     this.region = requestDto.getRegion();
     this.image = requestDto.getImage();
   }
 
-
     public void TrainerPermission(String image, String introduce) {
     this.introduce = introduce;
     this.image = image;
   }
 
-
-
-  public void changeProfile(String password, String  region, int height, int weight, String image) {
-    this.password = password;
-    this.region = region;
-    this.height = height;
-    this.weight = weight;
-    this.image = image;
-  }
 
 }

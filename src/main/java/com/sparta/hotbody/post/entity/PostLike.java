@@ -1,14 +1,12 @@
 package com.sparta.hotbody.post.entity;
 
-import com.sparta.hotbody.user.entity.User;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +25,6 @@ public class PostLike {
    */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column
   private Long id;
 
   /**
@@ -43,11 +40,9 @@ public class PostLike {
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.
    */
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  // 게시글 좋아요와 게시글의 연관 관계
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
   private Post post;
 

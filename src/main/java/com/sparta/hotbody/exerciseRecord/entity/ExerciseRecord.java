@@ -1,11 +1,10 @@
-package com.sparta.hotbody.mypage.entity;
+package com.sparta.hotbody.exerciseRecord.entity;
 
 import com.sparta.hotbody.common.TimeStamp;
-import com.sparta.hotbody.mypage.dto.ExerciseRecordRequestDto;
-import com.sparta.hotbody.mypage.service.CalorieCalculator;
-import com.sparta.hotbody.mypage.service.CalorieCalculator.ExerciseType;
+import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
+import com.sparta.hotbody.exerciseRecord.service.CalorieCalculator;
+import com.sparta.hotbody.exerciseRecord.service.CalorieCalculator.ExerciseType;
 import com.sparta.hotbody.user.entity.User;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,7 +27,7 @@ public class ExerciseRecord extends TimeStamp {
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "userId")
+  @JoinColumn(name = "User_ID")
   User user;
 
   @Column
@@ -41,19 +40,14 @@ public class ExerciseRecord extends TimeStamp {
   @Column
   private double calories; // 소모 열량
 
-  @Column
-  private LocalDateTime date; // 운동 일시
-
-
 
   public ExerciseRecord(User user, ExerciseRecordRequestDto exerciseRecordRequestDto) {
-    CalorieCalculator calorieCalculator = new CalorieCalculator();
+
     this.user = user;
     this.exercise = exerciseRecordRequestDto.getExercise();
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
-    this.calories = calorieCalculator.calculateCaloriesBurned(user.getWeight(), time,
-        ExerciseType.valueOf(exercise), reps);
+    this.calories = calculateCalories();
   }
 
   public void update(ExerciseRecordRequestDto exerciseRecordRequestDto){
@@ -62,4 +56,9 @@ public class ExerciseRecord extends TimeStamp {
     this.reps = exerciseRecordRequestDto.getReps();
   }
 
+  public double calculateCalories(){
+    CalorieCalculator calorieCalculator = new CalorieCalculator();
+    return calorieCalculator.calculateCaloriesBurned(user.getWeight(), time,
+        ExerciseType.valueOf(exercise), reps);
+  }
 }

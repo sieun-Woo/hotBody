@@ -1,6 +1,4 @@
-package com.sparta.hotbody.mypage.service;
-
-import lombok.RequiredArgsConstructor;
+package com.sparta.hotbody.exerciseRecord.service;
 
 
 public class CalorieCalculator {

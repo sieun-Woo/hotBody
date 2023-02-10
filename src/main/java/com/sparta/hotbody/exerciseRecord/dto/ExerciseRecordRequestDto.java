@@ -1,8 +1,10 @@
-package com.sparta.hotbody.mypage.dto;
+package com.sparta.hotbody.exerciseRecord.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ExerciseRecordRequestDto {
 
   private String exercise; // 운동 명

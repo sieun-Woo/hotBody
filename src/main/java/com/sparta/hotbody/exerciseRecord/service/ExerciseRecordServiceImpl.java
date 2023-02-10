@@ -23,16 +23,17 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   private final ExerciseRecordRepository exerciseRecordRepository;
   private final UserRepository userRepository;
 
-  //운동 기록
+  //사용자별 모든 운동 기록
   @Override
   @Transactional
   public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetailsImpl userDetails) {
-    //User user = userRepository.findByUsername(userDetails.getUsername()).get();
+    User user = userRepository.findByUsername(userDetails.getUsername()).get();
 
     List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
     return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
   }
 
+  // 특정 기록 조회
   @Override
   @Transactional
   public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) {
@@ -47,6 +48,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   }
 
+  // 기록 작성
   @Override
   @Transactional
   public ExerciseRecordResponseDto createExerciseRecord(
@@ -57,6 +59,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
     return new ExerciseRecordResponseDto(exerciseRecord);
   }
 
+  //기록 수정
   @Override
   @Transactional
   public ExerciseRecordResponseDto updateExerciseRecord(Long id,
@@ -75,6 +78,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   }
 
+  // 기록삭제
   @Override
   @Transactional
   public ResponseEntity deleteExerciseRecord(Long id, UserDetailsImpl userDetails) {

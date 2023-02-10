@@ -69,7 +69,7 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-    if (post.getNickname().equals(user)) {
+    if (post.getUser().getId().equals(user.getId())) {
       post.modifyPost(postModifyRequestDto);
       postRepository.save(post);
     } else {
@@ -83,7 +83,7 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-    if (post.getNickname().equals(user)) {
+    if (post.getUser().getId().equals(user.getId())) {
       postRepository.delete(post);
     } else {
       throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");

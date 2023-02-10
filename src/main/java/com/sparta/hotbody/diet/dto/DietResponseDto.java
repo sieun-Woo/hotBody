@@ -16,9 +16,13 @@ import lombok.Getter;
 @Getter
 public class DietResponseDto {
 
-  private List<FoodResponseDto> foods = new ArrayList<>();
+  private List<FoodResponseDto> foods;
 
   public DietResponseDto(Diet diet) {
-    foods.add(new FoodResponseDto(diet));
+    List<FoodResponseDto> foods = new ArrayList<FoodResponseDto>();
+    for(Food food : diet.getFoods()) {
+      foods.add(new FoodResponseDto(food));
+    }
+    this.foods = foods;
   }
 }

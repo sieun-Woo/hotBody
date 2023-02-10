@@ -18,15 +18,13 @@ public class FoodResponseDto {
   String protein; // 단백질
   String fat; // 지방
 
-  public FoodResponseDto(Diet diet) {
-    for(Food food : diet.getFoods()) {
+  public FoodResponseDto(Food food) {
       this.foodName = food.getFoodName();
       this.amountOfFood = food.getAmountOfFood();
       this.energy = food.getEnergy();
       this.carbohydrate = food.getCarbohydrate();
       this.protein = food.getProtein();
       this.fat = food.getFat();
-    }
   }
 
   public FoodResponseDto(String foodType, String[] row) {

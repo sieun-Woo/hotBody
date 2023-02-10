@@ -1,10 +1,15 @@
 package com.sparta.hotbody.user.entity;
 
+import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
+import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -15,13 +20,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // JOINED는 다른 DB 생성. SINGLE은 안에 둘 다 있음
 @DiscriminatorColumn
 @Entity(name = "users")
 public class User extends TimeStamp {
@@ -36,11 +42,11 @@ public class User extends TimeStamp {
   private String password;
   @Column(nullable = false)
   private Integer gender;
-
-  private Date birthday;
   @Column(nullable = false)
+  private String age;
+  @Column
   private int height;
-  @Column(nullable = false)
+  @Column
   private int weight;
   @Column
   private String image;
@@ -58,6 +64,14 @@ public class User extends TimeStamp {
   @Column
   private String region;
 
+  // 유저와 게시글의 연관 관계(1 : N)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Post> postList = new ArrayList<>();
+
+  // 유저와 댓글의 연관 관계(1 : N)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Comment> commentList = new ArrayList<>();
+
 //  public User(String username, String password, UserRole role, String nickname, Integer gender, Date birthday) {
 //    this.username = username;
 //    this.password = password;
@@ -73,31 +87,20 @@ public class User extends TimeStamp {
     this.password = password;
     this.gender = signUpRequestDto.getGender();
     this.role = role;
-    this.birthday = signUpRequestDto.getBirthday();
+    this.age = signUpRequestDto.getAge();
   }
 
   public void update(UserProfileRequestDto requestDto) {
-    this.password = requestDto.getPassword();
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
     this.region = requestDto.getRegion();
     this.image = requestDto.getImage();
   }
 
-
     public void TrainerPermission(String image, String introduce) {
     this.introduce = introduce;
     this.image = image;
   }
 
-
-
-  public void changeProfile(String password, String  region, int height, int weight, String image) {
-    this.password = password;
-    this.region = region;
-    this.height = height;
-    this.weight = weight;
-    this.image = image;
-  }
 
 }

@@ -1,14 +1,14 @@
 package com.sparta.hotbody.diet.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CollectionTable;
+import com.sparta.hotbody.diet.dto.FoodRequestDto;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,30 +18,43 @@ import lombok.NoArgsConstructor;
 public class Food {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "DIET_ID")
+  private Diet diet;
   @Column
   private String foodName; // 음식 이름
 
   @Column
-  private double energy; // 에너지
+  private String amountOfFood; // 음식 양
 
   @Column
-  private double carbohydrate; // 탄수화물
+  private String energy; // 에너지
 
   @Column
-  private double protein; // 단백질
+  private String carbohydrate; // 탄수화물
 
   @Column
-  private double fat; // 지방
+  private String protein; // 단백질
 
-  public Food(String foodName, double energy, double carbohydrate, double protein,
-      double fat) {
-    this.foodName = foodName;
-    this.energy = energy;
-    this.carbohydrate = carbohydrate;
-    this.protein = protein;
-    this.fat = fat;
+  @Column
+  private String fat; // 지방
+
+  public Food(FoodRequestDto foodRequestDto) {
+    this.foodName = foodRequestDto.getFoodName();
+    this.amountOfFood = foodRequestDto.getAmountOfFood();
+    this.energy = foodRequestDto.getEnergy();
+    this.carbohydrate = foodRequestDto.getCarbohydrate();
+    this.protein = foodRequestDto.getProtein();
+    this.fat = foodRequestDto.getFat();
   }
 
+  public void setDiet(Diet diet) {
+    this.diet = diet;
+
+    if(!diet.getFoods().contains(this)) {
+      diet.getFoods().add(this);
+    }
+  }
 }

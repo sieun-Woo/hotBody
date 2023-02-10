@@ -48,7 +48,7 @@ public class WebSecurityConfig {
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests()
-        .antMatchers("/api/diet").permitAll() // 식단 기능에 접근하기 위해 잠시 열어두었습니다.
+        .antMatchers("/api/diet/**").permitAll() // 식단 기능에 접근하기 위해 잠시 열어두었습니다.
         .antMatchers("/api/user/sign-up").permitAll()
         .antMatchers("/api/user/log-in").permitAll()
         .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER")

@@ -1,14 +1,21 @@
 package com.sparta.hotbody.diet.service;
 
+import com.sparta.hotbody.diet.dto.FoodRequestDto;
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
+import com.sparta.hotbody.diet.entity.Diet;
+import com.sparta.hotbody.diet.entity.Food;
+import com.sparta.hotbody.diet.repository.DietRepository;
+import com.sparta.hotbody.diet.repository.FoodRepository;
 import java.io.File;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.openxml4j.opc.PackageAccess;
 
@@ -21,16 +28,21 @@ import org.apache.poi.xssf.eventusermodel.XSSFSheetXMLHandler.SheetContentsHandl
 import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+@RequiredArgsConstructor
 @Service
 public class FoodServiceImpl implements FoodService {
 
+  private final DietRepository dietRepository;
+  private final FoodRepository foodRepository;
 
   private File file;
   private static String searchFoodText;
@@ -113,7 +125,6 @@ public class FoodServiceImpl implements FoodService {
       this.row = new String[20];
       currColNum = 0;
     }
-
     @Override
     public void cell(String cellReference, String formattedValue, XSSFComment comment) {
       if (currColNum < 20) {
@@ -123,7 +134,6 @@ public class FoodServiceImpl implements FoodService {
       }
 
     }
-
     @Override
     public void endRow(int rowNum) {
       if (row[5].contains(searchFoodText)) {
@@ -138,5 +148,9 @@ public class FoodServiceImpl implements FoodService {
       }
     }
   }
-
+  @Transactional
+  @Override
+  public void createFood(FoodRequestDto foodRequestDto) {
+    Food food = foodRepository.save(new Food(foodRequestDto));
+  }
 }

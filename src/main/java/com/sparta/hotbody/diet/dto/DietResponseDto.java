@@ -1,7 +1,10 @@
 package com.sparta.hotbody.diet.dto;
 
+import com.sparta.hotbody.diet.entity.Diet;
+import com.sparta.hotbody.diet.entity.Food;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,17 +16,9 @@ import lombok.Getter;
 @Getter
 public class DietResponseDto {
 
-  private Long id;
+  private List<FoodResponseDto> foods = new ArrayList<>();
 
-  private List<String> foodName; // 음식 이름
-
-  private double energy; // 에너지
-
-
-  private double carbohydrate; // 탄수화물
-
-  private double protein; // 단백질
-
-  private double fat; // 지방
-
+  public DietResponseDto(Diet diet) {
+    foods.add(new FoodResponseDto(diet));
+  }
 }

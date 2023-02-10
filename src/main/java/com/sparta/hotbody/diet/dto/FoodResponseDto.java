@@ -1,5 +1,7 @@
 package com.sparta.hotbody.diet.dto;
 
+import com.sparta.hotbody.diet.entity.Diet;
+import com.sparta.hotbody.diet.entity.Food;
 import java.io.File;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +17,17 @@ public class FoodResponseDto {
   String carbohydrate; // 탄수화물
   String protein; // 단백질
   String fat; // 지방
+
+  public FoodResponseDto(Diet diet) {
+    for(Food food : diet.getFoods()) {
+      this.foodName = food.getFoodName();
+      this.amountOfFood = food.getAmountOfFood();
+      this.energy = food.getEnergy();
+      this.carbohydrate = food.getCarbohydrate();
+      this.protein = food.getProtein();
+      this.fat = food.getFat();
+    }
+  }
 
   public FoodResponseDto(String foodType, String[] row) {
     switch (foodType) {

@@ -10,7 +10,7 @@ public class CalorieCalculator {
   private static final double MET_WEIGHT_TRAINING = 6.0;
   private static final double MET_HIKING = 7.5;
   private static final double MET_WALKING = 3.0;
-  private static final int KILO = 1000;
+  private static final int KILO = 1000; //단위 변환
 
   public double calculateCaloriesBurned(double userWeight, int exerciseDurationInMinutes, ExerciseType exerciseType, int reps) {
     double met = 0.0;

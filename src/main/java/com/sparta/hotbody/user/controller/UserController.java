@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,6 +50,19 @@ public class UserController {
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     return new MessageResponseDto("로그인 되었습니다.");
   }
+
+  //2.1 REFRESH TOKEN 재발급
+//  @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급한다")
+//  @PostMapping(value = "/refresh")
+//  @ApiImplicitParams({
+//      @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "access-token", required = true, dataType = "String", paramType = "header"),
+//      @ApiImplicitParam(name = "REFRESH-TOKEN", value = "refresh-token", required = true, dataType = "String", paramType = "header")
+//  })
+//  public SingleResult<LoginResponseDto> refreshToken(
+//      @RequestHeader(value="X-AUTH-TOKEN") String token,
+//      @RequestHeader(value="REFRESH-TOKEN") String refreshToken ) {
+//    return responseService.handleSingleResult(signService.refreshToken(token, refreshToken));
+//  }
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")
@@ -84,7 +98,7 @@ public class UserController {
   @PutMapping("/auth/profile")
   public String createProfile(@RequestBody UserProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
   ){
-    return userService.createProfile(requestDto, userDetails.getUser());
+    return userService.createProfile(requestDto, userDetails.getUser().getUsername());
   }
 
 //  @PostMapping("/auth/profile")

@@ -48,6 +48,7 @@ public class WebSecurityConfig {
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests()
+        .antMatchers("/").permitAll()
         .antMatchers("/api/user/sign-up").permitAll()
         .antMatchers("/api/user/log-in").permitAll()
         .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER")

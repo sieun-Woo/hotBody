@@ -31,7 +31,6 @@ public class UserService {
   private final PromoteRepository promoteRepository;
   private final JwtUtil jwtUtil;
   private final PasswordEncoder passwordEncoder;
-  private final FileService fileService;
 
   //1.회원가입
 //  @Transactional
@@ -79,8 +78,8 @@ public class UserService {
     return new MessageResponseDto("회원가입 성공");
   }
 
-
   //2.로그인
+  // REFRESH X
   @Transactional
   public MessageResponseDto login(LoginRequestDto requestDto) {
     String username = requestDto.getUsername();
@@ -96,7 +95,40 @@ public class UserService {
     return new MessageResponseDto(jwtUtil.createToken(user.getUsername(), user.getRole()));
   }
 
-  //3.회원탈퇴
+  // REFRESH O
+//  @Transactional
+//  public MessageResponseDto login(LoginRequestDto requestDto) {
+//    User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(
+//        () -> new SecurityException("사용자를 찾을수 없습니다.")
+//    );
+//    if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword()))
+//      throw new SecurityException("사용자를 찾을수 없습니다.");
+//
+//    user.changeRefreshToken(jwtUtil.createRefreshToken()); // 리프레쉬 토큰 발급
+//    return new MessageResponseDto(user.getId(), jwtUtil.createToken(user.getUsername(), user.getRefreshToken()));
+//  }
+
+  // REFRESH 재발급
+//  @Transactional
+//  public UserLoginResponseDto refreshToken(String token, String refreshToken) {
+//    // 아직 만료되지 않은 토큰으로는 refresh 할 수 없음
+//    if(!jwtTokenProvider.validateTokenExceptExpiration(token)) throw new AccessDeniedException("");
+//    User user = userRepository.findById(Long.valueOf(jwtTokenProvider.getUserPk(token))).orElseThrow(UserNotFoundException::new);
+//    if(!jwtTokenProvider.validateToken(user.getRefreshToken()) || !refreshToken.equals(user.getRefreshToken()))
+//      throw new AccessDeniedException("");
+//    user.changeRefreshToken(jwtTokenProvider.createRefreshToken());
+//    return new UserLoginResponseDto(user.getId(), jwtTokenProvider.createToken(String.valueOf(user.getId())), user.getRefreshToken());
+//  }
+
+  //3. 로그아웃
+//  @Transactional
+//  public void logoutUser(String token) {
+//    redisTemplate.opsForValue().set(CacheKey.TOKEN + ":" + token, "v", jwtUtil.getRemainingSeconds(token));
+//    User user = userRepository.findById(Long.valueOf(jwtTokenProvider.getUserPk(token))).orElseThrow(UserNotFoundException::new);
+//    user.changeRefreshToken("invalidate");
+//  }
+
+  //4.회원탈퇴
   @Transactional
   public MessageResponseDto deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 
@@ -110,10 +142,10 @@ public class UserService {
     throw new SecurityException("가입한 회원만이 탈퇴할 수 있습니다.");
   }
 
-  //4. 게시판 조회
+  //5. 게시판 조회
 
 
-  //5. 트레이너 폼 요청
+  //6. 트레이너 폼 요청
   @Transactional
   public TrainerResponseDto promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
@@ -125,7 +157,7 @@ public class UserService {
   }
 
 
-  //6. 트레이너 폼 취소
+  //7. 트레이너 폼 취소
   @Transactional
   public void deletePermission(User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
@@ -138,15 +170,15 @@ public class UserService {
     promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
   }
 
-  //7. 유저 프로필 수정
+  //8. 유저 프로필 수정
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, User user){
-    User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
-        () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
+  public String createProfile(UserProfileRequestDto requestDto, String username){
+    User user = userRepository.findByUsername(username).orElseThrow(
+        () -> new IllegalArgumentException("일치하지 않습니다.")
     );
-    user1.update(requestDto);
-    userRepository.save(user1);
-    return "수정이 완료되었습니다.";
+    user.update(requestDto);
+    userRepository.save(user);
+    return "생성이 완료되었습니다.";
   }
 
 //  @Transactional
@@ -162,7 +194,7 @@ public class UserService {
 //  }
 
 
-  //8.유저 프로필 조회
+  //9.유저 프로필 조회
   @Transactional
   public UserProfileResponseDto getUserProfile(String username){
     User user = userRepository.findByUsername(username).orElseThrow(

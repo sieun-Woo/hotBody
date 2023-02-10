@@ -4,6 +4,7 @@ import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -71,6 +72,17 @@ public class JwtUtil {
             .compact();
   }
 
+  // jwt refresh 토큰 생성
+//  public String createRefreshToken() {
+//    Date now = new Date();
+//    return Jwts.builder()
+//        .setIssuedAt(now)
+//        .setExpiration(new Date(now.getTime() + refreshTokenValidMillisecond))
+//        .signWith(SignatureAlgorithm.HS256, secretKey)
+//        .compact();
+//  }
+
+  // jwt
   public boolean validateToken(String token, HttpServletResponse response) {
     try {
       Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -90,6 +102,19 @@ public class JwtUtil {
     }
     return false;
   }
+
+  // refresh
+//  public boolean validateTokenExceptExpiration(String jwtToken) {
+//    try {
+//      if(isLoggedOut(jwtToken)) return false;
+//      Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+//      return claims.getBody().getExpiration().before(new Date());
+//    } catch(ExpiredJwtException e) {
+//      return true;
+//    } catch (Exception e) {
+//      return false;
+//    }
+//  }
 
   // 인증 객체 생성
   public Authentication createAuthentication(String username) {

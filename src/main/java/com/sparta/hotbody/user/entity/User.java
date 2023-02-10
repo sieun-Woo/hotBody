@@ -59,8 +59,8 @@ public class User extends TimeStamp {
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
 
-  @Column
-  private int likes;
+  @Column(nullable = false)
+  private int likes = 0;
   @Column
   private String region;
 

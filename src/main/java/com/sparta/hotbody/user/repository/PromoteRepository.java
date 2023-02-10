@@ -11,7 +11,6 @@ public interface PromoteRepository extends JpaRepository<Trainer, Long> {
 
   Optional<Trainer> findByUserUsername(String username);
   void deleteByUserUsername(String username);
-  List<Trainer> findAllByIsPromoted(Integer isPromoted);
 
   //기준 없이 전부다 가져온다.
   Page<Trainer> findAll(Pageable pageable);

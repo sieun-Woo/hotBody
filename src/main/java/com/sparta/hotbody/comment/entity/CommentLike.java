@@ -1,5 +1,6 @@
 package com.sparta.hotbody.comment.entity;
 
+import com.sparta.hotbody.post.entity.Post;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,6 +38,10 @@ public class CommentLike {
    */
 
   // 댓글과 댓글 좋아요의 연관 관계
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private Comment user;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "comment_id")
   private Comment comment;

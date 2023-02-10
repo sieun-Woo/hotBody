@@ -70,7 +70,7 @@ public class CommentService {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new IllegalArgumentException("해당 댓글은 존재하지 않습니다.")
     );
-    if (comment.getNickname().equals(user)) {
+    if (comment.getUser().getId().equals(user.getId())) {
       comment.modifyComment(commentModifyRequestDto);
       commentRepository.save(comment);
     } else {
@@ -84,7 +84,7 @@ public class CommentService {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new IllegalArgumentException("해당 댓글은 존재하지 않습니다.")
     );
-    if (comment.getNickname().equals(user)) {
+    if (comment.getUser().getId().equals(user.getId())) {
       commentRepository.delete(comment);
     } else {
       throw new IllegalArgumentException("댓글을 삭제하려면 로그인이 필요합니다.");

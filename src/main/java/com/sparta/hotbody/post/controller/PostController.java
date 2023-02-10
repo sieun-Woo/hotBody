@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/posts/")
+@RequestMapping("/api")
 public class PostController {
 
   private final PostService postService;
 
   // 1. 게시글 등록
-  @PostMapping("")
+  @PostMapping("/posts")
   public void createPost(
       @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -36,7 +36,7 @@ public class PostController {
   }
 
   // 2. 게시글 전체 조회
-  @GetMapping("")
+  @GetMapping("/posts")
   public List<PostResponseDto> getAllPosts(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -47,13 +47,13 @@ public class PostController {
   }
 
   // 3. 게시글 선택 조회
-  @GetMapping("{postId}")
+  @GetMapping("/posts/{postId}")
   public PostResponseDto getPost(@PathVariable Long postId) {
     return postService.getPost(postId);
   }
 
   // 4. 게시글 수정
-  @PatchMapping("{postId}")
+  @PatchMapping("/posts/{postId}")
   public void updatePost(
       @PathVariable Long postId,
       @RequestBody PostModifyRequestDto postModifyRequestDto,
@@ -62,7 +62,7 @@ public class PostController {
   }
 
   // 5. 게시글 삭제
-  @DeleteMapping("{postId}")
+  @DeleteMapping("/posts/{postId}")
   public void deletePost(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -70,7 +70,7 @@ public class PostController {
   }
 
   // 6. 게시글 좋아요
-  @PostMapping("{postId}/likes")
+  @PostMapping("/posts/{postId}/likes")
   public void okLikes(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -78,7 +78,7 @@ public class PostController {
   }
 
   // 7. 게시글 좋아요 취소
-  @DeleteMapping("{postId}/likes")
+  @DeleteMapping("/posts/{postId}/likes")
   public void cancelLikes(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

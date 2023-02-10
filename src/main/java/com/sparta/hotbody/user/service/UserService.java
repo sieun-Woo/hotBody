@@ -3,25 +3,23 @@ package com.sparta.hotbody.user.service;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
-import com.sparta.hotbody.user.dto.PromoteTrainerRequestDto;
-import com.sparta.hotbody.user.dto.PromoteTrainerResponseDto;
+import com.sparta.hotbody.user.dto.TrainerRequestDto;
+import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
-import com.sparta.hotbody.user.entity.Promote;
+import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
-import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -117,13 +115,13 @@ public class UserService {
 
   //5. 트레이너 폼 요청
   @Transactional
-  public PromoteTrainerResponseDto promoteTrainer(PromoteTrainerRequestDto requestDto, User user) {
+  public TrainerResponseDto promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new SecurityException("이미 판매자 전환 요청을 하였습니다.");
     }
-    Promote promote = new Promote(requestDto, user);
-    promoteRepository.save(promote);
-    return new PromoteTrainerResponseDto(promote);
+    Trainer trainer = new Trainer(requestDto, user);
+    promoteRepository.save(trainer);
+    return new TrainerResponseDto(trainer);
   }
 
 
@@ -134,21 +132,21 @@ public class UserService {
         () -> new IllegalArgumentException("유저가 없습니다.")
     );
 
-    Promote promote = promoteRepository.findByUserUsername(user1.getUsername()).orElseThrow(
+    Trainer trainer = promoteRepository.findByUserUsername(user1.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("판매자 요청을 하지 않았습니다.")
     );
-    promoteRepository.deleteByUserUsername(promote.getUser().getUsername());
+    promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
   }
 
-  //7. 유저 프로필 생성
+  //7. 유저 프로필 수정
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, String username){
-    User user = userRepository.findByUsername(username).orElseThrow(
-        () -> new IllegalArgumentException("일치하지 않습니다.")
+  public String createProfile(UserProfileRequestDto requestDto, User user){
+    User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
+        () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
-    user.update(requestDto);
-    userRepository.save(user);
-    return "생성이 완료되었습니다.";
+    user1.update(requestDto);
+    userRepository.save(user1);
+    return "수정이 완료되었습니다.";
   }
 
 //  @Transactional
@@ -173,14 +171,6 @@ public class UserService {
     return UserProfileResponseDto.from(user);
   }
 
-  //9. 유저 프로필 수정
-  @Transactional
-  public UserProfileResponseDto updateProfile(String username){
-    User user = userRepository.findByUsername(username).orElseThrow(
-        ()-> new IllegalArgumentException("연결상태 불량입니다 다시 유저 조회해주시기 바랍니다.")
-    );
-    return UserProfileResponseDto.from(user);
-  }
 
 
 }

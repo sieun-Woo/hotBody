@@ -22,11 +22,11 @@ public class SignUpRequestDto {
   private String nickname;
   private Integer gender; // 0남자 1여자
   private boolean admin = false;
-  private String age;
+  private int age;
   private String adminToken = "";
 
   @Builder
-  public SignUpRequestDto(String username, String nickname, String password, String age, boolean admin, Integer gender) {
+  public SignUpRequestDto(String username, String nickname, String password, int age, boolean admin, Integer gender) {
     this.username = username;
     this.nickname = nickname;
     this.age = age;

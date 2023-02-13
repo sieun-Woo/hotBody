@@ -29,9 +29,15 @@ public class Trainer extends TimeStamp {
   public Trainer(TrainerRequestDto requestDto, User user){
     this.user = user;
     this.introduce = requestDto.getIntroduce();
+    this.isPromoted = 0;
   }
 
   public void isPromoted(Integer isPromoted) {
     this.isPromoted = isPromoted;
   }
+
+  public void promote() {
+    this.isPromoted = 1;
+  }
+
 }

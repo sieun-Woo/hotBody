@@ -3,7 +3,6 @@ package com.sparta.hotbody.admin.controller;
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
 import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
-import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
@@ -13,14 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,19 +71,19 @@ public class AdminController {
     return adminService.deletePost(postId);
   }
 
-  @PatchMapping("/comments/{commentId}")
+  @PatchMapping("/comments/{commentId}") // ToDo: 코멘트 수정 이후 다시 체크
   public ResponseEntity updateComment(@PathVariable Long commentId, @RequestBody CommentModifyRequestDto commentModifyRequestDto) {
     return adminService.updateComment(commentId, commentModifyRequestDto);
   }
 
-  @DeleteMapping("/comments/{commentId}")
+  @DeleteMapping("/comments/{commentId}") // ToDo: 코멘트 수정 이후 다시 체크
   public ResponseEntity deleteComment(@PathVariable Long commentId) {
     return adminService.deleteComment(commentId);
   }
 
   // 전체 유저 정보 조회
   @GetMapping("/userlist")  // users가 더 나을 것 같습니다.
-  public ResponseEntity getUserList(@RequestParam PageDto pageDto) {
+  public ResponseEntity getUserList(@RequestBody PageDto pageDto) {
     return adminService.getUserList(pageDto);
   }
 
@@ -98,12 +95,12 @@ public class AdminController {
 
   // 전체 트레이너 정보 조회
   @GetMapping("/trainerlist")  // trainers가 더 나을 것 같습니다.
-  public ResponseEntity getTrainerList(@RequestParam PageDto pageDto) {
+  public ResponseEntity getTrainerList(@RequestBody PageDto pageDto) {
     return adminService.getTrainerList(pageDto);
   }
 
   // 단건 트레이너 정보 조회
-  @GetMapping("/trainer/{trainerId}")
+  @GetMapping("/trainers/{trainerId}")
   public ResponseEntity getTrainer(@PathVariable Long trainerId) {
     return adminService.getTrainer(trainerId);
   }

@@ -75,11 +75,11 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity getRegistrations(PageDto pageDto) {
-    Page<Trainer> RequestList = promoteRepository.findAll(pageDto.toPageable());
-    if (RequestList.isEmpty()) {
+    Page<Trainer> requestList = promoteRepository.findAll(pageDto.toPageable());
+    if (requestList.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    return new ResponseEntity(RequestList, HttpStatus.OK);
+    return new ResponseEntity(requestList, HttpStatus.OK);
   }
 
   @Override
@@ -149,6 +149,7 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity getUserList(PageDto pageDto) {
+    Page<Trainer> RequestList = promoteRepository.findAll(pageDto.toPageable());
     Page<User> userPage = userRepository.findAllByRole(UserRole.USER, pageDto.toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
@@ -161,7 +162,10 @@ public class AdminServiceImpl implements AdminService {
   @Transactional
   public ResponseEntity getUser(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-    return new ResponseEntity(new UserProfileResponseDto(user) ,HttpStatus.OK);
+    if (!user.getRole().equals(UserRole.USER)) {
+      throw new IllegalArgumentException("유저가 아닙니다.");
+    }
+    return new ResponseEntity(new UserProfileResponseDto(user), HttpStatus.OK);
   }
 
   @Override
@@ -178,8 +182,11 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity getTrainer(Long trainerId) {
-    Trainer trainer = promoteRepository.findById(trainerId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-    return new ResponseEntity(new TrainerResponseDto(trainer), HttpStatus.OK); // TODO: TrainerResponseDto 내부에 트레이저 신청 정보가 아닌 유저 정보 필요
+    User user = userRepository.findById(trainerId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    if (!user.getRole().equals(UserRole.TRAINER)) {
+      throw new IllegalArgumentException("트레이너가 아닙니다.");
+    }
+    return new ResponseEntity(user, HttpStatus.OK);
   }
 
   @Override

@@ -106,7 +106,11 @@ public class AdminServiceImpl implements AdminService {
   public ResponseEntity cancelTrainer(Long userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-    user.cancelPermission();
+    if (user.getRole().equals(UserRole.TRAINER)) {
+      user.cancelPermission();
+    } else {
+      throw new IllegalArgumentException("해당 유저는 트레이너가 아닙니다.");
+    }
     return new ResponseEntity("트레이너 권한을 삭제하였습니다.", HttpStatus.OK);
   }
 

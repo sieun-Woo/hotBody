@@ -64,9 +64,8 @@ public class AdminController {
     return adminService.cancelTrainer(userId);
   }
 
-  // ToDo: 관리자 게시글/댓글 수정/삭제 기능 유저 기능과 동일하게 수정 예정
   @PatchMapping("/posts/{postId}")
-  public ResponseEntity updatePost(@PathVariable Long postId, PostModifyRequestDto postModifyRequestDto) {  // TODO: PostRequestDto 추가
+  public ResponseEntity updatePost(@PathVariable Long postId, @RequestBody PostModifyRequestDto postModifyRequestDto) {
     return adminService.updatePost(postId, postModifyRequestDto);
   }
 
@@ -76,7 +75,7 @@ public class AdminController {
   }
 
   @PatchMapping("/comments/{commentId}")
-  public ResponseEntity updateComment(@PathVariable Long commentId, CommentModifyRequestDto commentModifyRequestDto) {
+  public ResponseEntity updateComment(@PathVariable Long commentId, @RequestBody CommentModifyRequestDto commentModifyRequestDto) {
     return adminService.updateComment(commentId, commentModifyRequestDto);
   }
 

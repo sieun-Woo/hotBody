@@ -84,15 +84,11 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity permitTrainer(Long userId) {
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-    if(user.getRole() == UserRole.USER) {
-      Trainer trainer = promoteRepository.findById(userId)
-          .orElseThrow(() -> new IllegalArgumentException("요청이 존재하지 않습니다."));
-      user.TrainerPermission(trainer.getIntroduce());
-      trainer.promote();
-    } else {throw new IllegalArgumentException("유저만 트레이너 요청이 가능합니다.");}
+  public ResponseEntity permitTrainer(Long requestId) {
+    Trainer trainer = promoteRepository.findById(requestId)
+        .orElseThrow(() -> new IllegalArgumentException("요청이 존재하지 않습니다."));
+    trainer.getUser().TrainerPermission(trainer.getIntroduce());
+    trainer.promote();
     return new ResponseEntity("트레이너 권한을 부여하였습니다.", HttpStatus.OK);
   }
 

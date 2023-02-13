@@ -16,7 +16,7 @@ public interface AdminService {
 
   ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response);
 
-  ResponseEntity permitTrainer(Long userId);
+  ResponseEntity permitTrainer(Long requestId);
 
   ResponseEntity getRegistrations(PageDto pageDto);
 

@@ -106,13 +106,13 @@ public class AdminController {
   }
 
   // 유저 정보 수정
-  @PatchMapping("/users/{userId}")
+  @PatchMapping("/users/{userId}") // ToDo: 유저 기능이랑 중복
   public ResponseEntity updateUserInfo(@PathVariable Long userId, @RequestBody
       UserProfileRequestDto userProfileRequestDto) {
     return adminService.updateUserInfo(userId, userProfileRequestDto);
   }
 
-  @DeleteMapping("/users/{userId}")
+  @DeleteMapping("/users/{userId}") // ToDo: 유저 기능이랑 중복
   public ResponseEntity deleteUser(@PathVariable Long userId) {
     return adminService.deleteUser(userId);
   }

@@ -52,7 +52,7 @@ public class WebSecurityConfig {
         .antMatchers("/api/user/log-in").permitAll()
         .antMatchers("/api/admin/sign-up").permitAll()
         .antMatchers("/api/admin/log-in").permitAll()
-        .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER")
+        .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER", "ROLE_TRAINER", "ROLE_ADMIN")
         .antMatchers("/h2-console").permitAll()
         .antMatchers("/api/posts/**").permitAll()
         .antMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")

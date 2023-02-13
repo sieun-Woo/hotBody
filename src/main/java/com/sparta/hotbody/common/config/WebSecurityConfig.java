@@ -50,6 +50,8 @@ public class WebSecurityConfig {
     http.authorizeRequests()
         .antMatchers("/api/user/sign-up").permitAll()
         .antMatchers("/api/user/log-in").permitAll()
+        .antMatchers("/api/admin/sign-up").permitAll()
+        .antMatchers("/api/admin/log-in").permitAll()
         .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER")
         .antMatchers("/h2-console").permitAll()
         .antMatchers("/api/posts/**").permitAll()

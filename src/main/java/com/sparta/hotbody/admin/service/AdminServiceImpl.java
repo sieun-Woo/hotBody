@@ -94,10 +94,8 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity refuseTrainer(Long userId) {
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
-    Trainer trainer = promoteRepository.findById(userId)
+  public ResponseEntity refuseTrainer(Long requestId) {
+    Trainer trainer = promoteRepository.findById(requestId)
         .orElseThrow(() -> new IllegalArgumentException("요청이 존재하지 않습니다."));
     promoteRepository.delete(trainer);
     return new ResponseEntity("트레이너 요청이 삭제되었습니다.", HttpStatus.OK);

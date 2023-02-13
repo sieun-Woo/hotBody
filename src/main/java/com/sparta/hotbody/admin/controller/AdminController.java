@@ -47,15 +47,15 @@ public class AdminController {
   }
 
   // 트레이너 등록 요청 허용
-  @PatchMapping("/users/{requestId}/permissions")
+  @PatchMapping("/requests/{requestId}")
   public ResponseEntity permitTrainer(@PathVariable Long requestId) {
     return adminService.permitTrainer(requestId);
   }
 
   // 트레이너 등록 요청 거부
-  @DeleteMapping ("/users/{userId}/refuse")
-  public ResponseEntity refuseTrainer(@PathVariable Long userId) {
-    return adminService.refuseTrainer(userId);
+  @DeleteMapping ("/requests/{requestId}")
+  public ResponseEntity refuseTrainer(@PathVariable Long requestId) {
+    return adminService.refuseTrainer(requestId);
   }
 
   // 트레이너 권한 삭제

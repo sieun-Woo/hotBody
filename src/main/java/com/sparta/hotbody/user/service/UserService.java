@@ -117,7 +117,7 @@ public class UserService {
   @Transactional
   public TrainerResponseDto promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
-      throw new SecurityException("이미 판매자 전환 요청을 하였습니다.");
+      throw new SecurityException("이미 트레이너 전환 요청을 하였습니다.");
     }
     Trainer trainer = new Trainer(requestDto, user);
     promoteRepository.save(trainer);
@@ -133,7 +133,7 @@ public class UserService {
     );
 
     Trainer trainer = promoteRepository.findByUserUsername(user1.getUsername()).orElseThrow(
-        () -> new IllegalArgumentException("판매자 요청을 하지 않았습니다.")
+        () -> new IllegalArgumentException("트레이너 전환 요청을 하지 않았습니다.")
     );
     promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
   }

@@ -1,7 +1,10 @@
 package com.sparta.hotbody.user.service;
 
 import com.sparta.hotbody.common.dto.MessageResponseDto;
+import com.sparta.hotbody.common.jwt.dto.TokenDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
+import com.sparta.hotbody.common.jwt.entity.RefreshToken;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
@@ -24,11 +27,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
   private static final String ADMIN_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
 
   // 회원가입 로직
   private final UserRepository userRepository;
   private final PromoteRepository promoteRepository;
+  private final RefreshTokenRepository refreshTokenRepository; // 리프레쉬 토큰을 서버에 저장하기 위한 저장소
   private final JwtUtil jwtUtil;
   private final PasswordEncoder passwordEncoder;
   private final FileService fileService;
@@ -82,7 +87,7 @@ public class UserService {
 
   //2.로그인
   @Transactional
-  public MessageResponseDto login(LoginRequestDto requestDto) {
+  public TokenDto login(LoginRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = requestDto.getPassword();
 
@@ -93,7 +98,18 @@ public class UserService {
       throw new SecurityException("사용자를 찾을수 없습니다.");
     }
 
-    return new MessageResponseDto(jwtUtil.createToken(user.getUsername(), user.getRole()));
+    String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
+
+    String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
+
+    refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
+
+    TokenDto tokenDto = TokenDto.builder()
+        .accessToken(accessToken)
+        .refreshToken(refreshToken)
+        .build();
+
+    return tokenDto;
   }
 
   //3.회원탈퇴
@@ -140,7 +156,7 @@ public class UserService {
 
   //7. 유저 프로필 수정
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, User user){
+  public String createProfile(UserProfileRequestDto requestDto, User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
@@ -164,13 +180,12 @@ public class UserService {
 
   //8.유저 프로필 조회
   @Transactional
-  public UserProfileResponseDto getUserProfile(String username){
+  public UserProfileResponseDto getUserProfile(String username) {
     User user = userRepository.findByUsername(username).orElseThrow(
-        ()-> new IllegalArgumentException("연결상태 불량입니다 다시 유저 조회해주시기 바랍니다.")
+        () -> new IllegalArgumentException("연결상태 불량입니다 다시 유저 조회해주시기 바랍니다.")
     );
     return UserProfileResponseDto.from(user);
   }
-
 
 
 }

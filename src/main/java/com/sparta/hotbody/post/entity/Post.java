@@ -75,9 +75,9 @@ public class Post extends TimeStamp {
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
-  // 게시글과 게시글 좋아요의 연관 관계(1 : N)
-  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<PostLike> postLikeList = new ArrayList<>();
+//  // 게시글과 게시글 좋아요의 연관 관계(1 : N)
+//  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+//  private List<PostLike> postLikeList = new ArrayList<>();
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

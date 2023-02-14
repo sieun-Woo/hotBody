@@ -10,11 +10,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 // lombok
 @Getter
 @Setter
+@NoArgsConstructor
 
 // jpa
 @Entity
@@ -31,7 +33,10 @@ public class PostLike {
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
-
+  public PostLike(Long postId, User user) {
+//    this.postId = postId;
+//    this.userId = user.getId();
+  }
 
   /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
@@ -40,17 +45,11 @@ public class PostLike {
   // 게시글 좋아요와 게시글의 연관 관계
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private Post user;
+  private Post userId;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
-  private Post post;
-
-
-
-
-
-
+  private Post postId;
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

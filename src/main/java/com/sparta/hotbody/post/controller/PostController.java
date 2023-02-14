@@ -68,20 +68,4 @@ public class PostController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     postService.deletePost(postId, userDetails.getUser());
   }
-
-  // 6. 게시글 좋아요
-  @PostMapping("/posts/{postId}/likes")
-  public void okLikes(
-      @PathVariable Long postId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postService.okLikes(postId, userDetails.getUser());
-  }
-
-  // 7. 게시글 좋아요 취소
-  @DeleteMapping("/posts/{postId}/likes")
-  public void cancelLikes(
-      @PathVariable Long postId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postService.cancelLikes(postId, userDetails.getUser());
-  }
 }

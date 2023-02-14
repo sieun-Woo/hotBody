@@ -1,5 +1,8 @@
 package com.sparta.hotbody.common.jwt;
 
+import com.sparta.hotbody.admin.entity.Admin;
+import com.sparta.hotbody.admin.repository.AdminRepository;
+import com.sparta.hotbody.admin.service.AdminDetailsServiceImpl;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
@@ -15,7 +18,6 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,8 +39,10 @@ public class JwtUtil {
 
 
   private final UserRepository userRepository;
+  private final AdminRepository adminRepository;
   private final RefreshTokenRepository refreshTokenRepository;
   private final UserDetailsServiceImpl userDetailsService;
+  private final AdminDetailsServiceImpl adminDetailsService;
 
   public static final String AUTHORIZATION_HEADER = "Authorization";
   public static final String REFRESH_TOKEN = "RefreshToken";
@@ -90,8 +94,23 @@ public class JwtUtil {
             .compact();
   }
 
-  // 액세스 토큰 재발급
   public String reCreateAccessToken(String token) {
+    Claims claims = getUserInfoFromToken(token);
+    System.out.println(claims);
+    String role = claims.get(AUTHORIZATION_KEY).toString();
+
+    switch (role) {
+      case ("USER"):
+        return reCreateUserAccessToken(token);
+
+      case ("ADMIN"):
+        return reCreateAdminAccessToken(token);
+    }
+    return null;
+  }
+
+  // 유저 액세스 토큰 재발급
+  public String reCreateUserAccessToken(String token) {
     Date date = new Date();
     Claims claims = getUserInfoFromToken(token);
     String username = claims.getSubject();
@@ -107,22 +126,39 @@ public class JwtUtil {
             .compact();
   }
 
+  // 어드민 액세스 토큰 재발급
+  public String reCreateAdminAccessToken(String token) {
+    Date date = new Date();
+    Claims claims = getUserInfoFromToken(token);
+    String username = claims.getSubject();
+    Admin admin = adminRepository.findByUsername(username).get();
+
+    return BEARER_PREFIX +
+        Jwts.builder()
+            .setSubject(admin.getUsername())
+            .claim(AUTHORIZATION_KEY, admin.getRole())
+            .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
+            .setIssuedAt(date)
+            .signWith(key, signatureAlgorithm)
+            .compact();
+  }
+
   // 리프레쉬 토큰 생성
   public String createRefreshToken(String username, UserRole role) {
     Date date = new Date();
 
-
     return BEARER_PREFIX +
         Jwts.builder()
             .setSubject(username)
-            .claim(REFRESH_TOKEN, role)
+            .claim(AUTHORIZATION_KEY, role)
             .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
             .setIssuedAt(date)
             .signWith(key, signatureAlgorithm)
             .compact();
   }
 
-  public boolean validateToken(String token, HttpServletResponse response) throws ExpiredJwtException{
+  public boolean validateToken(String token, HttpServletResponse response)
+      throws ExpiredJwtException {
     try {
       Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
       return true;
@@ -165,9 +201,15 @@ public class JwtUtil {
     return false;
   }
 
-  // 인증 객체 생성
+  // 유저 인증 객체 생성
   public Authentication createAuthentication(String username) {
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+  }
+
+  // 어드민 인증 객체 생성
+  public Authentication createAdminAuthentication(String username) {
+    UserDetails userDetails = adminDetailsService.loadUserByUsername(username);
     return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
   }
 

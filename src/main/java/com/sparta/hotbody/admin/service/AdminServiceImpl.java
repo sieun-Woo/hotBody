@@ -7,6 +7,8 @@ import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
 import com.sparta.hotbody.common.jwt.JwtUtil;
+import com.sparta.hotbody.common.jwt.entity.RefreshToken;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
@@ -45,6 +47,7 @@ public class AdminServiceImpl implements AdminService {
   private final AdminRepository adminRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
+  private final RefreshTokenRepository refreshTokenRepository;
 
   @Override
   public ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto) {
@@ -71,7 +74,12 @@ public class AdminServiceImpl implements AdminService {
     if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
       throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
     }
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(admin.getUsername(), admin.getRole()));
+    String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
+    String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
+    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
+    refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), admin));
+
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
 

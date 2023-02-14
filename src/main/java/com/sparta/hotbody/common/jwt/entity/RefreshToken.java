@@ -1,5 +1,6 @@
 package com.sparta.hotbody.common.jwt.entity;
 
+import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.user.entity.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,8 +27,17 @@ public class RefreshToken {
   @JoinColumn(name = "user_id")
   private User user;
 
+  @ManyToOne
+  @JoinColumn(name = "admin_id")
+  private Admin admin;
+
   public RefreshToken(String refreshToken, User user) {
     this.refreshToken = refreshToken;
     this.user = user;
+  }
+
+  public RefreshToken(String refreshToken, Admin admin) {
+    this.refreshToken = refreshToken;
+    this.admin = admin;
   }
 }

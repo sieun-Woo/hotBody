@@ -67,20 +67,4 @@ public class CommentController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     commentService.deleteComment(commentId, userDetails.getUser());
   }
-
-  // 6. 댓글 좋아요
-  @PostMapping("/comments/{commentId}/likes")
-  public void okLikes(
-      @PathVariable Long commentId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.okLikes(commentId, userDetails.getUser());
-  }
-
-  // 7. 댓글 좋아요 취소
-  @DeleteMapping("/comments/{commentId}/likes")
-  public void cancelLikes(
-      @PathVariable Long commentId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.cancelLikes(commentId, userDetails.getUser());
-  }
 }

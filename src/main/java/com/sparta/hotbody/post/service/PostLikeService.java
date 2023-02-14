@@ -20,10 +20,14 @@ public class PostLikeService {
   // 6. 게시글 좋아요 추가
   @Transactional
   public void okLikes(Long postId, User user) {
-    PostLike postLike = new PostLike(postId, user);
-//    PostLike postLike = postLikeRepository.findById(postId).orElseThrow(
-//        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
-//    );
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new IllegalArgumentException("게시글 존재 유무 확인")
+    );
+    if (postLikeRepository.existsByPostIdAndUserId(postId, user.getId())) {
+      throw new IllegalArgumentException("이미 좋아요 버튼을 눌렀습니다.");
+    }
+    PostLike postLike = new PostLike(post, user);
+    post.plusLikes();
     postLikeRepository.save(postLike);
     // 게시글 좋아요의 유저 아이디와 현재 접속한 유저의 아이디를 비교하는 로직
 //    if (postLike.getUser().getId().equals(user.getId()) &&
@@ -35,11 +39,17 @@ public class PostLikeService {
   }
 
   // 7. 게시글 좋아요 취소
-  public void cancelLikes(Long postId, Long LikeId, User user) {
+  @Transactional
+  public void cancelLikes(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-    PostLike postLike = new PostLike();
+    if (!postLikeRepository.existsByPostIdAndUserId(postId, user.getId())) {
+      throw new IllegalArgumentException("이미 좋아요가 취소되었습니다.");
+    }
+//    PostLike postLike = new PostLike(post, user);
+    postLikeRepository.deleteByPostIdAndUserId(postId, user.getId());
+    post.minusLikes();
     // 게시글 좋아요의 유저 아이디와 현재 접속한 유저의 아이디를 비교하는 로직
 //    if (postLike.getUser().getId().equals(user.getId()) &&
 //        postLike.getPost().getId().equals(user.getId())) {

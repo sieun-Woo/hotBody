@@ -29,8 +29,7 @@ public class PostLikeController {
   @DeleteMapping("/posts/{postId}/likes/{likesId}")
   public void cancelLikes(
       @PathVariable Long postId,
-      @PathVariable Long likesId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postLikeService.cancelLikes(postId, likesId, userDetails.getUser());
+    postLikeService.cancelLikes(postId, userDetails.getUser());
   }
 }

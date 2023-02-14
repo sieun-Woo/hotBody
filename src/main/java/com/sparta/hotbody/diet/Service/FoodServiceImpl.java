@@ -40,8 +40,6 @@ import org.xml.sax.XMLReader;
 @RequiredArgsConstructor
 @Service
 public class FoodServiceImpl implements FoodService {
-
-  private final DietRepository dietRepository;
   private final FoodRepository foodRepository;
 
   private File file;

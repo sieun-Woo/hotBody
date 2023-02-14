@@ -47,12 +47,13 @@ public class Comment extends TimeStamp {
   private String content;
 
   @Column(nullable = false)
-  private Integer likes;
+  private Integer likes = 0;
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Comment(CommentRequestDto commentRequestDto, User user) {
+    this.user = user;
     this.nickname = commentRequestDto.getNickname();
     this.content = commentRequestDto.getContent();
   }
@@ -84,5 +85,13 @@ public class Comment extends TimeStamp {
    */
   public void modifyComment(CommentModifyRequestDto commentModifyRequestDto) {
     this.content = commentModifyRequestDto.getContent();
+  }
+
+  public void plusLikes() {
+    this.likes += 1;
+  }
+
+  public void minusLikes() {
+    this.likes -= 1;
   }
 }

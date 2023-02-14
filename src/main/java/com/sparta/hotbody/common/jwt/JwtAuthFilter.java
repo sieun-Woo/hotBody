@@ -3,6 +3,7 @@ package com.sparta.hotbody.common.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.hotbody.common.dto.SecurityExceptionDto;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     String token = jwtUtil.resolveToken(request);
+    String refreshToken = jwtUtil.resolveRefreshToken(request);
+  try {
     if(token != null) {
       if(!jwtUtil.validateToken(token, response)){
 
@@ -34,6 +37,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       Claims info = jwtUtil.getUserInfoFromToken(token);
       setAuthentication(info.getSubject());
     }
+  } catch (ExpiredJwtException e) {
+    if(refreshToken == null) {
+
+      jwtExceptionHandler(response, "Expired JWT token, 만료된 JWT token 입니다.", HttpStatus.BAD_REQUEST.value());
+      return;
+
+    } if(jwtUtil.validateRefreshToken(refreshToken)) {
+      String reCreateAccessToken = jwtUtil.reCreateAccessToken(refreshToken);
+      Claims info = jwtUtil.getUserInfoFromToken(reCreateAccessToken.substring(7));
+      response.setHeader(jwtUtil.AUTHORIZATION_HEADER, reCreateAccessToken);
+      setAuthentication(info.getSubject());
+      filterChain.doFilter(request,response);
+    }
+  }
     filterChain.doFilter(request,response);
   }
 
@@ -47,7 +64,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   //예외가 발생했을때 사용되는 메소드
   public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
     response.setStatus(statusCode);
-    response.setContentType("application/json");
+    response.setContentType("application/json; charset=utf-8");
     try {
       String json = new ObjectMapper().writeValueAsString(new SecurityExceptionDto(statusCode, msg));
       response.getWriter().write(json);

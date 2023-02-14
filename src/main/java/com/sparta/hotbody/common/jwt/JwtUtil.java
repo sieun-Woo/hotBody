@@ -1,6 +1,9 @@
 package com.sparta.hotbody.common.jwt;
 
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
+import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
+import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -12,11 +15,11 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -26,16 +29,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
+
+
+  private final UserRepository userRepository;
+  private final RefreshTokenRepository refreshTokenRepository;
   private final UserDetailsServiceImpl userDetailsService;
 
   public static final String AUTHORIZATION_HEADER = "Authorization";
+  public static final String REFRESH_TOKEN = "RefreshToken";
   public static final String AUTHORIZATION_KEY = "auth";
   private static final String BEARER_PREFIX = "Bearer ";
-  private static final long TOKEN_TIME = 60 * 60 * 1000L;
+  private static final long ACCESS_TOKEN_TIME = 30 * 1000L; // 1시간
+  private static final long REFRESH_TOKEN_TIME = 24 * 60 * 60 * 1000L; // 1일
 
   @Value("${jwt.secret.key}")
   private String secretKey;
@@ -48,7 +58,7 @@ public class JwtUtil {
     key = Keys.hmacShaKeyFor(bytes);
   }
 
-  // header 토큰을 가져오기
+  // header 액세스 토큰을 가져오기
   public String resolveToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
@@ -57,21 +67,62 @@ public class JwtUtil {
     return null;
   }
 
-  // 토큰 생성
-  public String createToken(String username, UserRole role) {
+  // header 리프레쉬 토큰을 가져오기
+  public String resolveRefreshToken(HttpServletRequest request) {
+    String bearerToken = request.getHeader(REFRESH_TOKEN);
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+      return bearerToken.substring(7);
+    }
+    return null;
+  }
+
+  // 액세스 토큰 생성
+  public String createAccessToken(String username, UserRole role) {
     Date date = new Date();
 
     return BEARER_PREFIX +
         Jwts.builder()
             .setSubject(username)
             .claim(AUTHORIZATION_KEY, role)
-            .setExpiration(new Date(date.getTime() + TOKEN_TIME))
+            .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
             .setIssuedAt(date)
             .signWith(key, signatureAlgorithm)
             .compact();
   }
 
-  public boolean validateToken(String token, HttpServletResponse response) {
+  // 액세스 토큰 재발급
+  public String reCreateAccessToken(String token) {
+    Date date = new Date();
+    Claims claims = getUserInfoFromToken(token);
+    String username = claims.getSubject();
+    User user = userRepository.findByUsername(username).get();
+
+    return BEARER_PREFIX +
+        Jwts.builder()
+            .setSubject(user.getUsername())
+            .claim(AUTHORIZATION_KEY, user.getRole())
+            .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
+            .setIssuedAt(date)
+            .signWith(key, signatureAlgorithm)
+            .compact();
+  }
+
+  // 리프레쉬 토큰 생성
+  public String createRefreshToken(String username, UserRole role) {
+    Date date = new Date();
+
+
+    return BEARER_PREFIX +
+        Jwts.builder()
+            .setSubject(username)
+            .claim(REFRESH_TOKEN, role)
+            .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
+            .setIssuedAt(date)
+            .signWith(key, signatureAlgorithm)
+            .compact();
+  }
+
+  public boolean validateToken(String token, HttpServletResponse response) throws ExpiredJwtException{
     try {
       Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
       return true;
@@ -80,6 +131,7 @@ public class JwtUtil {
 
     } catch (ExpiredJwtException e) {
       log.info("Expired JWT token, 만료된 JWT token 입니다.");
+      throw e;
 
     } catch (UnsupportedJwtException e) {
       log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
@@ -87,6 +139,28 @@ public class JwtUtil {
     } catch (IllegalArgumentException e) {
       log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
 
+    }
+    return false;
+  }
+
+  public boolean validateRefreshToken(String token) {
+    if (refreshTokenRepository.findByRefreshToken(token).isPresent()) {
+      try {
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        return true;
+      } catch (SecurityException | MalformedJwtException e) {
+        log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+
+      } catch (ExpiredJwtException e) {
+        log.info("Expired JWT token, 만료된 JWT token 입니다.");
+
+      } catch (UnsupportedJwtException e) {
+        log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+
+      } catch (IllegalArgumentException e) {
+        log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+
+      }
     }
     return false;
   }

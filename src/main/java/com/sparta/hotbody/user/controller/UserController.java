@@ -1,6 +1,7 @@
 package com.sparta.hotbody.user.controller;
 
 import com.sparta.hotbody.common.dto.MessageResponseDto;
+import com.sparta.hotbody.common.jwt.dto.TokenDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
@@ -21,7 +22,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,9 +44,9 @@ public class UserController {
   //2.로그인
   @PostMapping("/log-in")
   public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-    MessageResponseDto msg = userService.login(loginRequestDto);
-    String token = msg.getMessage();
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+    TokenDto tokenDto = userService.login(loginRequestDto);
+    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAccessToken());
+    response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     return new MessageResponseDto("로그인 되었습니다.");
   }
 

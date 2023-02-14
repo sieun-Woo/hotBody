@@ -82,8 +82,7 @@ public class UserController {
 //  }
 
   @PutMapping("/auth/profile")
-  public String createProfile(@RequestBody UserProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
-  ){
+  public String createProfile(@RequestBody UserProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
     return userService.createProfile(requestDto, userDetails.getUser());
   }
 

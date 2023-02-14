@@ -1,5 +1,6 @@
 package com.sparta.hotbody.user.entity;
 
+import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.entity.Post;
@@ -22,6 +23,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,7 +45,7 @@ public class User extends TimeStamp {
   @Column(nullable = false)
   private Integer gender;
   @Column(nullable = false)
-  private String age;
+  private int age;
   @Column
   private int height;
   @Column
@@ -72,14 +74,15 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
-//  public User(String username, String password, UserRole role, String nickname, Integer gender, Date birthday) {
-//    this.username = username;
-//    this.password = password;
-//    this.nickname = nickname;
-//    this.gender = gender;
+  public User(String username, String password, UserRole role, String nickname, Integer gender, int age) {
+    this.username = username;
+    this.password = password;
+    this.nickname = nickname;
+    this.gender = gender;
 //    this.birthday = birthday;
-//    this.role = role;
-//  }
+    this.role = role;
+    this.age = age;
+  }
 
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
     this.username = signUpRequestDto.getUsername();
@@ -90,6 +93,15 @@ public class User extends TimeStamp {
     this.age = signUpRequestDto.getAge();
   }
 
+  public User(AdminSignUpRequestDto adminSignUpRequestDto, String password, UserRole role) {
+    this.username = adminSignUpRequestDto.getUsername();
+    this.nickname = adminSignUpRequestDto.getNickname();
+    this.password = password;
+    this.gender = adminSignUpRequestDto.getGender();
+    this.role = role;
+    this.age = adminSignUpRequestDto.getAge();
+  }
+
   public void update(UserProfileRequestDto requestDto) {
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
@@ -97,10 +109,12 @@ public class User extends TimeStamp {
     this.image = requestDto.getImage();
   }
 
-    public void TrainerPermission(String image, String introduce) {
+    public void TrainerPermission(String introduce) {
     this.introduce = introduce;
-    this.image = image;
+    this.role = UserRole.TRAINER;
   }
 
-
+  public void cancelPermission() {
+    this.role = UserRole.USER;
+  }
 }

@@ -1,6 +1,5 @@
-package com.sparta.hotbody.user.dto;
+package com.sparta.hotbody.admin.dto;
 
-import java.util.Date;
 import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpRequestDto {
-
+public class AdminSignUpRequestDto {
 
   //정규식이 틀렸을때 발생하는 예외 MethodArgumentNotValidException
   @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)")
@@ -21,17 +19,16 @@ public class SignUpRequestDto {
   @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)")
   private String nickname;
   private Integer gender; // 0남자 1여자
-  private boolean admin = false;
   private int age;
   private String adminToken = "";
 
   @Builder
-  public SignUpRequestDto(String username, String nickname, String password, int age, boolean admin, Integer gender) {
+  public AdminSignUpRequestDto(String username, String nickname, String password, int age, Integer gender, String adminToken) {
     this.username = username;
     this.nickname = nickname;
     this.age = age;
     this.password = password;
-    this.admin = admin;
     this.gender = gender;
+    this.adminToken = adminToken;
   }
 }

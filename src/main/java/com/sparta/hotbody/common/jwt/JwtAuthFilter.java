@@ -35,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         return;
       }
       Claims info = jwtUtil.getUserInfoFromToken(token);
-      setAuthentication(info.getSubject());
+      setAuthentication(info.getSubject());   
     }
   } catch (ExpiredJwtException e) {
     if(refreshToken == null) {

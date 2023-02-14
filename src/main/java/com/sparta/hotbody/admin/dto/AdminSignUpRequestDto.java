@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class AdminSignUpRequestDto {
 
@@ -18,17 +17,15 @@ public class AdminSignUpRequestDto {
   private String password;
   @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)")
   private String nickname;
-  private Integer gender; // 0남자 1여자
-  private int age;
   private String adminToken = "";
+  private String image;
 
   @Builder
-  public AdminSignUpRequestDto(String username, String nickname, String password, int age, Integer gender, String adminToken) {
+  public AdminSignUpRequestDto(String username, String nickname, String password, String image, String adminToken) {
     this.username = username;
     this.nickname = nickname;
-    this.age = age;
     this.password = password;
-    this.gender = gender;
+    this.image = image;
     this.adminToken = adminToken;
   }
 }

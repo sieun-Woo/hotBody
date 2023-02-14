@@ -93,15 +93,6 @@ public class User extends TimeStamp {
     this.age = signUpRequestDto.getAge();
   }
 
-  public User(AdminSignUpRequestDto adminSignUpRequestDto, String password, UserRole role) {
-    this.username = adminSignUpRequestDto.getUsername();
-    this.nickname = adminSignUpRequestDto.getNickname();
-    this.password = password;
-    this.gender = adminSignUpRequestDto.getGender();
-    this.role = role;
-    this.age = adminSignUpRequestDto.getAge();
-  }
-
   public void update(UserProfileRequestDto requestDto) {
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();

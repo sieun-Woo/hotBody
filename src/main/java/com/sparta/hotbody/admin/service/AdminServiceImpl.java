@@ -1,6 +1,8 @@
 package com.sparta.hotbody.admin.service;
 
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
+import com.sparta.hotbody.admin.entity.Admin;
+import com.sparta.hotbody.admin.repository.AdminRepository;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
@@ -40,6 +42,7 @@ public class AdminServiceImpl implements AdminService {
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
   private final PromoteRepository promoteRepository;
+  private final AdminRepository adminRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
 
@@ -48,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
     String username = adminSignUpRequestDto.getUsername();
     String password = passwordEncoder.encode(adminSignUpRequestDto.getPassword());
 
-    Optional<User> found = userRepository.findByUsername(username);
+    Optional<Admin> found = adminRepository.findByUsername(username);
     if (found.isPresent()) {
       throw new IllegalArgumentException("중복된 아이디가 존재합니다.");
     }
@@ -56,19 +59,19 @@ public class AdminServiceImpl implements AdminService {
       throw new IllegalArgumentException("관리자 암호가 틀렸습니다.");
     }
     UserRole role = UserRole.ADMIN;
-    User user = new User(adminSignUpRequestDto, password, role);
-    userRepository.save(user);
+    Admin admin = new Admin(adminSignUpRequestDto, password, role);
+    adminRepository.save(admin);
     return new ResponseEntity("회원가입 완료", HttpStatus.OK);
   }
 
   @Override
   public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
-    User user = userRepository.findByUsername(loginRequestDto.getUsername())
+    Admin admin = adminRepository.findByUsername(loginRequestDto.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
-    if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
+    if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
       throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
     }
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
+    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(admin.getUsername(), admin.getRole()));
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
 

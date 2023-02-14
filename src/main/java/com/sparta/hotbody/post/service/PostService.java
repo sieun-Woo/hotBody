@@ -1,6 +1,5 @@
 package com.sparta.hotbody.post.service;
 
-import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
@@ -90,28 +89,5 @@ public class PostService {
     }
   }
 
-  // 6. 게시글 좋아요 추가
-  @Transactional
-  public void okLikes(Long postId, User user) {
-    Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
-    );
-    if (post.getNickname().equals(user)) {
-//      post.setLikes(+1);
-    } else {
-      throw new IllegalArgumentException("");
-    }
-  }
 
-  // 7. 게시글 좋아요 취소
-  public void cancelLikes(Long postId, User user) {
-    Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
-    );
-    if (post.getNickname().equals(user)) {
-//      post.setLikes(-1);
-    } else {
-      throw new IllegalArgumentException("");
-    }
-  }
 }

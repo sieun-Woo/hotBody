@@ -90,29 +90,4 @@ public class CommentService {
       throw new IllegalArgumentException("댓글을 삭제하려면 로그인이 필요합니다.");
     }
   }
-
-  // 6. 댓글 좋아요 추가
-  @Transactional
-  public void okLikes(Long commentId, User user) {
-    Comment comment = commentRepository.findById(commentId).orElseThrow(
-        () -> new IllegalArgumentException("해당 댓글은 존재하지 않습니다.")
-    );
-    if (comment.getNickname().equals(user)) {
-//      comment.setLikes(+1);
-    } else {
-      throw new IllegalArgumentException("");
-    }
-  }
-
-  // 7. 댓글 좋아요 취소
-  public void cancelLikes(Long commentId, User user) {
-    Comment comment = commentRepository.findById(commentId).orElseThrow(
-        () -> new IllegalArgumentException("해당 댓글은 존재하지 않습니다.")
-    );
-    if (comment.getNickname().equals(user)) {
-//      comment.setLikes(-1);
-    } else {
-      throw new IllegalArgumentException("");
-    }
-  }
 }

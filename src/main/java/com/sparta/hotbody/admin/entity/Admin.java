@@ -1,5 +1,6 @@
 package com.sparta.hotbody.admin.entity;
 
+import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
 import com.sparta.hotbody.user.entity.UserRole;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,9 +42,22 @@ public class Admin {
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
+  public Admin(String username, String password, UserRole role, String nickname, String image) {
+    this.username = username;
+    this.password = password;
+    this.nickname = nickname;
+    this.image = image;
+    this.role = role;
+  }
 
-
-  /**
+  public Admin(AdminSignUpRequestDto adminSignUpRequestDto, String password, UserRole role) {
+    this.username = adminSignUpRequestDto.getUsername();
+    this.password = password;
+    this.nickname = adminSignUpRequestDto.getNickname();
+    this.image = adminSignUpRequestDto.getImage();
+    this.role = role;
+  }
+/**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
 

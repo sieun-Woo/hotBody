@@ -33,9 +33,9 @@ public class PostLike {
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
-  public PostLike(Long postId, User user) {
-//    this.postId = postId;
-//    this.userId = user.getId();
+  public PostLike(Post post, User user) {
+    this.post = post;
+    this.user = user;
   }
 
   /**
@@ -45,11 +45,11 @@ public class PostLike {
   // 게시글 좋아요와 게시글의 연관 관계
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
-  private User userId;
+  private User user;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id")
-  private Post postId;
+  private Post post;
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

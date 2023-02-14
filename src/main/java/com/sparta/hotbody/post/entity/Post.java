@@ -51,18 +51,20 @@ public class Post extends TimeStamp {
   private String content;
 
   @Column(nullable = false)
-  private int likes;
+  private int likes = 0;
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Post(PostRequestDto postRequestDto, User user) {
+    this.user = user;
     this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
   }
 
   public Post(String title, String content, User user) {
+    this.user = user;
     this.nickname = user.getNickname();
     this.title = title;
     this.content = content;
@@ -81,9 +83,9 @@ public class Post extends TimeStamp {
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
-//  // 게시글과 게시글 좋아요의 연관 관계(1 : N)
-//  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//  private List<PostLike> postLikeList = new ArrayList<>();
+  // 게시글과 게시글 좋아요의 연관 관계(1 : N)
+  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PostLike> postLikeList = new ArrayList<>();
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.
@@ -95,5 +97,13 @@ public class Post extends TimeStamp {
   public void modifyPost(PostModifyRequestDto postModifyRequestDto) {
     this.title = postModifyRequestDto.getTitle();
     this.content = postModifyRequestDto.getContent();
+  }
+
+  public void plusLikes() {
+    this.likes += 1;
+  }
+
+  public void minusLikes() {
+    this.likes -= 1;
   }
 }

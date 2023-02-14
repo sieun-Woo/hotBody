@@ -27,26 +27,26 @@ public class InitData implements ApplicationRunner {
   public void run(ApplicationArguments args){
 
     Admin admin = new Admin("admin", passwordEncoder.encode("admin"), UserRole.ADMIN, "admin", "www.naver.com");
-    User user1 = new User("user1", passwordEncoder.encode("user1"), UserRole.USER, "user1", 1, 33);
-    User user2 = new User("user2", passwordEncoder.encode("user2"), UserRole.USER, "user2", 0, 44);
-    User user3 = new User("user3", passwordEncoder.encode("user3"), UserRole.TRAINER, "trainer1", 0, 55);
-    User user4 = new User("user4", passwordEncoder.encode("user4"), UserRole.TRAINER, "trainer2", 1, 66);
     adminRepository.save(admin);
+    User user1 = new User("user1", passwordEncoder.encode("user1"), UserRole.USER, "user1", 1, 33);
     userRepository.save(user1);
+    User user2 = new User("user2", passwordEncoder.encode("user2"), UserRole.USER, "user2", 0, 44);
     userRepository.save(user2);
+    User user3 = new User("user3", passwordEncoder.encode("user3"), UserRole.TRAINER, "trainer1", 0, 55);
     userRepository.save(user3);
+    User user4 = new User("user4", passwordEncoder.encode("user4"), UserRole.TRAINER, "trainer2", 1, 66);
     userRepository.save(user4);
     Post post1 = new Post("첫번째 게시글", "첫번째 글을 쓰다니! 영광입니다.", user1);
-    Post post2 = new Post("두번째 게시글", "기분이 좋아 하나 더 씁니다!", user1);
-    Post post3 = new Post("세번째 게시글", "세번째는 뺏기지 않았습니다.", user2);
-    Post post4 = new Post("네번째 게시글", "네째는 뺏기지 않았습니다.", user1);
-    Post post5 = new Post("다섯번째 게시글", "다섯번째는 뺏기지 않았습니다.", user2);
-    Post post6 = new Post("여섯번째 게시글", "여섯번째는 뺏기지 않았습니다.", user1);
     postRepository.save(post1);
+    Post post2 = new Post("두번째 게시글", "기분이 좋아 하나 더 씁니다!", user1);
     postRepository.save(post2);
+    Post post3 = new Post("세번째 게시글", "세번째는 뺏기지 않았습니다.", user2);
     postRepository.save(post3);
+    Post post4 = new Post("네번째 게시글", "네째는 뺏기지 않았습니다.", user1);
     postRepository.save(post4);
+    Post post5 = new Post("다섯번째 게시글", "다섯번째는 뺏기지 않았습니다.", user2);
     postRepository.save(post5);
+    Post post6 = new Post("여섯번째 게시글", "여섯번째는 뺏기지 않았습니다.", user1);
     postRepository.save(post6);
   }
 }

@@ -104,4 +104,10 @@ public class User extends TimeStamp {
   public void cancelPermission() {
     this.role = UserRole.USER;
   }
+
+  //신고 기능 중, 자기 자신을 신고하는지 판별
+  public boolean isReportMySelf(Long id) {
+    return this.id == id;
+  }
+
 }

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,7 @@ public class Trainer extends TimeStamp {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "Trainer_ID")
   private Long id;
-  @ManyToOne
+  @OneToOne
   private User user;
   private String introduce;
   @Column

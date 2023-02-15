@@ -121,6 +121,10 @@ public class AdminServiceImpl implements AdminService {
         .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
     if (user.getRole().equals(UserRole.TRAINER)) {
       user.cancelPermission();
+      if (promoteRepository.existsByUser(user)) {
+        Trainer trainer = promoteRepository.findByUser(user);
+        promoteRepository.delete(trainer);
+      }
     } else {
       throw new IllegalArgumentException("해당 유저는 트레이너가 아닙니다.");
     }

@@ -86,11 +86,13 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity getRegistrations(PageDto pageDto) {
-    Page<Trainer> requestList = promoteRepository.findAll(pageDto.toPageable());
-    if (requestList.isEmpty()) {
+    Page<Trainer> trainerList = promoteRepository.findAll(pageDto.toPageable());
+    if (trainerList.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    return new ResponseEntity(requestList, HttpStatus.OK);
+    List<TrainerResponseDto> result = trainerList.stream()
+        .map(m -> new TrainerResponseDto(m)).collect(Collectors.toList());
+    return new ResponseEntity(result, HttpStatus.OK);
   }
 
   @Override

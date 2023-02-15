@@ -112,8 +112,11 @@ public class AdminController {
     return adminService.updateUserInfo(userId, userProfileRequestDto);
   }
 
+  // 유저 회원 탈퇴
   @DeleteMapping("/users/{userId}") // ToDo: 유저 기능이랑 중복
   public ResponseEntity deleteUser(@PathVariable Long userId) {
     return adminService.deleteUser(userId);
   }
+
+  // 관리자 회원 탈퇴정
 }

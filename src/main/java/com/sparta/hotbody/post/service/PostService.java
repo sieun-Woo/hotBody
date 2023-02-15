@@ -3,6 +3,7 @@ package com.sparta.hotbody.post.service;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
+import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
@@ -63,34 +64,44 @@ public class PostService {
 
   // 키워드로 게시글 검색
   @Transactional
-  public List<PostResponseDto> searchPost(PostRequestDto postRequestDto,
+  public List<PostResponseDto> searchPost(PostSearchRequestDto postSearchRequestDto,
       int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    if (postRequestDto.getSearchType().equals("title")) {
-
-    }
-//    if (postRequestDto.getSearchType().equals("titleAndContent")) {
-//      Page<Post> posts = postRepository.findByTitleAndContentContaining(postRequestDto.getSearchKeyword(), pageable);
-//    }
-
-//    if (postRequestDto.getSearchType().equals("nickname")) {
-//      Page<Post> posts = postRepository.findByNicknameContaining(postRequestDto.getSearchKeyword(), pageable);
-//    }
-    Page<Post> posts = postRepository.findByTitleContaining(postRequestDto.getSearchKeyword(), pageable);
     List<PostResponseDto> postResponseDtoList = new ArrayList<>();
 
-    for (Post post : posts) {
-      PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-          post.getContent(), post.getLikes());
-      postResponseDtoList.add(postResponseDto);
+    if (postSearchRequestDto.getSearchType().equals("title")) {
+      Page<Post> posts = postRepository.findByTitleContaining(postSearchRequestDto.getSearchKeyword(), pageable);
+
+      for (Post post : posts) {
+        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+            post.getContent(), post.getLikes());
+        postResponseDtoList.add(postResponseDto);
+      }
     }
 
-//    Page<Post> posts = postRepository.findByTitleContaining(postRequestDto.getSearchKeyword(), pageable);
+    if (postSearchRequestDto.getSearchType().equals("content")) {
+      Page<Post> posts = postRepository.findByContentContaining(postSearchRequestDto.getSearchKeyword(), pageable);
 
+      for (Post post : posts) {
+        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+            post.getContent(), post.getLikes());
+        postResponseDtoList.add(postResponseDto);
+      }
+    }
+
+    if (postSearchRequestDto.getSearchType().equals("nickname")) {
+      Page<Post> posts = postRepository.findByNicknameContaining(postSearchRequestDto.getSearchKeyword(), pageable);
+
+      for (Post post : posts) {
+        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+            post.getContent(), post.getLikes());
+        postResponseDtoList.add(postResponseDto);
+      }
+    }
     return postResponseDtoList;
   }
 
@@ -121,6 +132,4 @@ public class PostService {
       throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");
     }
   }
-
-
 }

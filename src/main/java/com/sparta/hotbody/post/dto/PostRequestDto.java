@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostRequestDto {
 
-  private String nickname;
-
   private String title;
 
   private String content;

@@ -1,5 +1,6 @@
 package com.sparta.hotbody.comment.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +13,8 @@ public class CommentResponseDto {
   private String content;
 
   private Integer likes;
+
+  private LocalDateTime createdAt;
+
+  private LocalDateTime modifiedAt;
 }

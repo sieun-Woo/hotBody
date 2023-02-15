@@ -44,7 +44,7 @@ public class CommentService {
 
     for (Comment comment : comments) {
       CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getNickname(),
-          comment.getContent(), comment.getLikes());
+          comment.getContent(), comment.getLikes(), comment.getCreatedAt(), comment.getModifiedAt());
       commentResponseDtoList.add(commentResponseDto);
     }
     return commentResponseDtoList;
@@ -58,7 +58,7 @@ public class CommentService {
     );
 
     CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getNickname(),
-        comment.getContent(), comment.getLikes());
+        comment.getContent(), comment.getLikes(), comment.getCreatedAt(), comment.getModifiedAt());
 
     return commentResponseDto;
   }

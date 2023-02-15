@@ -60,9 +60,6 @@ public class User extends TimeStamp {
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
-
-  @Column
-  private int likes;
   @Column
   private String region;
 
@@ -79,7 +76,6 @@ public class User extends TimeStamp {
     this.password = password;
     this.nickname = nickname;
     this.gender = gender;
-//    this.birthday = birthday;
     this.role = role;
     this.age = age;
   }

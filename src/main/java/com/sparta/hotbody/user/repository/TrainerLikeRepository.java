@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TrainerLikeRepository extends JpaRepository<TrainerLike, Long> {
-  Optional<TrainerLike> findByUserAndTrainer(User user, Trainer trainer);
-  Optional<Trainer> findByTrainerId(Long trainerId);
+  boolean existsByTrainerIdAndUserId(Long trainerId, Long userId);
+
+  void deleteByTrainerIdAndUserId(Long trainerId, Long userId);
 }

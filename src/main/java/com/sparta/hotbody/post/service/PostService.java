@@ -43,7 +43,7 @@ public class PostService {
 
     for (Post post : posts) {
       PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-          post.getContent(), post.getLikes());
+          post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
       postResponseDtoList.add(postResponseDto);
     }
     return postResponseDtoList;
@@ -57,7 +57,7 @@ public class PostService {
     );
 
     PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-        post.getContent(), post.getLikes());
+        post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
 
     return postResponseDto;
   }
@@ -78,7 +78,7 @@ public class PostService {
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getLikes());
+            post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -88,7 +88,7 @@ public class PostService {
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getLikes());
+            post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -98,7 +98,7 @@ public class PostService {
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getLikes());
+            post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
       }
     }

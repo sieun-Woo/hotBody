@@ -52,6 +52,18 @@ public class PostController {
     return postService.getPost(postId);
   }
 
+  // 키워드로 게시글 검색
+  @GetMapping("/posts/search")
+  public List<PostResponseDto> searchPost(
+      @RequestBody PostRequestDto postRequestDto,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc
+  ) {
+    return postService.searchPost(postRequestDto, page - 1, size, sortBy, isAsc);
+  }
+
   // 4. 게시글 수정
   @PatchMapping("/posts/{postId}")
   public void updatePost(

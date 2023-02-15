@@ -8,6 +8,7 @@ import com.sparta.hotbody.post.service.PostService;
 import com.sparta.hotbody.user.entity.User;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,9 +34,10 @@ public class PostController {
   // 1. 게시글 등록
   @PostMapping("/posts")
   public void createPost(
-      @RequestBody PostRequestDto postRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails){
-    postService.createPost(postRequestDto, userDetails.getUser());
+      @RequestPart PostRequestDto postRequestDto,
+      @RequestPart(required = false) MultipartFile file,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    postService.createPost(postRequestDto, userDetails.getUser(), file);
   }
 
   // 2. 게시글 전체 조회

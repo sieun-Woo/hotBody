@@ -50,6 +50,9 @@ public class Post extends TimeStamp {
   @Column(nullable = false)
   private String content;
 
+  @Column
+  private String image;
+
   @Column(nullable = false)
   private int likes = 0;
 
@@ -61,6 +64,15 @@ public class Post extends TimeStamp {
     this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
+  }
+
+  // 이미지 추가 가능
+  public Post(PostRequestDto postRequestDto, User user, String storeFileName) {
+    this.user = user;
+    this.nickname = user.getNickname();
+    this.title = postRequestDto.getTitle();
+    this.content = postRequestDto.getContent();
+    this.image = storeFileName;
   }
 
   public Post(String title, String content, User user) {

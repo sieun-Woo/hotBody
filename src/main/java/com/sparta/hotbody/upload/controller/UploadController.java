@@ -30,7 +30,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UploadController {
 
   private final ImageRepository imageRepository;
-
   private final UploadService uploadService;
 
   @GetMapping("/upload")
@@ -54,6 +53,8 @@ public class UploadController {
     return "item-view";
 
   }
+
+  // 이미지 조회
   @ResponseBody
   @GetMapping("/image/{filename}")
   public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {

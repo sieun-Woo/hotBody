@@ -96,6 +96,13 @@ public class User extends TimeStamp {
     this.image = requestDto.getImage();
   }
 
+  public void update(UserProfileRequestDto requestDto, String storeFileName) {
+    this.height = requestDto.getHeight();
+    this.weight = requestDto.getWeight();
+    this.region = requestDto.getRegion();
+    this.image = storeFileName;
+  }
+
     public void TrainerPermission(String introduce) {
     this.introduce = introduce;
     this.role = UserRole.TRAINER;

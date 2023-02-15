@@ -20,6 +20,7 @@ public class UploadService {
   @Value("${file.dir}")
   private String fileDir;
 
+  // 이미지 저장된 주소
   public String getFullPath(String filename) {
     return fileDir + filename;
   }

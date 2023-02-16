@@ -111,4 +111,8 @@ public class User extends TimeStamp {
   public void cancelPermission() {
     this.role = UserRole.USER;
   }
+
+  // 신고가 누적된 유저 역할 변경
+  public void reportedUserChangeRole() { this.role = UserRole.REPORTED; }
+
 }

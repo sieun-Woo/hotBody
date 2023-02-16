@@ -3,9 +3,6 @@ name: Java CI with Gradle
 on:
   pull_request:
     branches: [ "develop" ]
-
-env:
-  jasypt.encryptor.password: IOuDpeuDpe2OgOy5mDYzNTI
   
 permissions:
   contents: read
@@ -14,6 +11,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    
+    env:
+      jasypt.encryptor.password: IOuDpeuDpe2OgOy5mDYzNTI
 
     steps:
     - uses: actions/checkout@v3

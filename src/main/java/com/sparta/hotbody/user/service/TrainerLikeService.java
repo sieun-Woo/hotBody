@@ -1,9 +1,13 @@
 package com.sparta.hotbody.user.service;
 
+import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.entity.PostLike;
 import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.TrainerLike;
 import com.sparta.hotbody.user.entity.User;
+import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.TrainerLikeRepository;
+import com.sparta.hotbody.user.repository.UserRepository;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,31 +16,34 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TrainerLikeService {
+
   private final TrainerLikeRepository trainerLikeRepository;
+  private final PromoteRepository promoteRepository;
 
-  public boolean addLike(User user, Long trainerId) {
-    Trainer trainer = trainerLikeRepository.findByTrainerId(trainerId).orElseThrow(
-        () -> new IllegalArgumentException("트레이너를 다시 확인 해주세요.")
+  public void addLike(Long trainerId, User user) {
+    Trainer trainer = promoteRepository.findById(trainerId).orElseThrow(
+        () -> new IllegalArgumentException("트레이너 존재 유무 확인")
     );
-
-    //좋아요 중복 방지
-    if (isNotAlreadyLike(user, trainer)) {
-      TrainerLike trainerLike = new TrainerLike();
-      trainerLike.setUser(user);
-      trainerLike.setTrainer(trainer);
-      trainerLikeRepository.save(trainerLike);
-      return true;
-    } else {
-      TrainerLike like = trainerLikeRepository.findByUserAndTrainer(user, trainer).orElseThrow(
-          () -> new IllegalArgumentException("이미 좋아요를 누르셨습니다.")
-      );
-      trainerLikeRepository.delete(like);
-      return false;
+    if (trainerLikeRepository.existsByTrainerIdAndUserId(trainerId, user.getId())) {
+      throw new IllegalArgumentException("이미 좋아요 버튼을 눌렀습니다.");
     }
+    TrainerLike trainerLike = new TrainerLike(trainer, user);
+    trainer.plusLikes();
+    trainerLikeRepository.save(trainerLike);
   }
 
-  private boolean isNotAlreadyLike(User user, Trainer trainer) {
-    return trainerLikeRepository.findByUserAndTrainer(user, trainer).isEmpty();
+  // 7. 트레이너 좋아요 취소
+  @org.springframework.transaction.annotation.Transactional
+  public void cancelLike(Long trainerId, User user) {
+    Trainer trainer = promoteRepository.findById(trainerId).orElseThrow(
+        () -> new IllegalArgumentException("트레이너 존재 유무 확인")
+    );
+    if (!trainerLikeRepository.existsByTrainerIdAndUserId(trainerId, user.getId())) {
+      throw new IllegalArgumentException("이미 좋아요가 취소되었습니다.");
+    }
+//    PostLike postLike = new PostLike(post, user);
+    trainerLikeRepository.deleteByTrainerIdAndUserId(trainerId, user.getId());
+    trainer.minusLikes();
   }
 
 }

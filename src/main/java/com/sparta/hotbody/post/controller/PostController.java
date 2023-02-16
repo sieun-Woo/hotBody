@@ -3,6 +3,7 @@ package com.sparta.hotbody.post.controller;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
+import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.service.PostService;
 import com.sparta.hotbody.user.entity.User;
 
@@ -50,6 +51,18 @@ public class PostController {
   @GetMapping("/posts/{postId}")
   public PostResponseDto getPost(@PathVariable Long postId) {
     return postService.getPost(postId);
+  }
+
+  // 키워드로 게시글 검색
+  @GetMapping("/posts/search")
+  public List<PostResponseDto> searchPost(
+      @RequestBody PostSearchRequestDto postSearchRequestDto,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc
+  ) {
+    return postService.searchPost(postSearchRequestDto, page - 1, size, sortBy, isAsc);
   }
 
   // 4. 게시글 수정

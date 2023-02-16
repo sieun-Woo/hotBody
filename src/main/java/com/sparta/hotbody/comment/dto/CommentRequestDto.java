@@ -7,7 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentRequestDto {
 
-  private String nickname;
-
   private String content;
 }

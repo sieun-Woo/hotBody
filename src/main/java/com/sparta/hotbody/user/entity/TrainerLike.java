@@ -19,23 +19,21 @@ import lombok.NoArgsConstructor;
 public class TrainerLike {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "postLikeId")
-  private Long trainerLikeId;
+  @Column(name = "Trainer_Like_Id")
+  private Long id;
 
   @ManyToOne(fetch = LAZY)
-  @JoinColumn(name = "username")
+  @JoinColumn(name = "User_ID")
   private User user;
 
   @ManyToOne(fetch = LAZY)
-  @JoinColumn(name = "trainerId")
+  @JoinColumn(name = "Trainer_ID")
   private Trainer trainer;
 
   // 연관 관계 편의 메소드
-  public void setUser(User user){
-    this.user = user;
-  }
-  public void setTrainer(Trainer trainer){
+  public TrainerLike(Trainer trainer, User user){
     this.trainer = trainer;
+    this.user = user;
   }
 
 }

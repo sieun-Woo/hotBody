@@ -57,12 +57,13 @@ public class User extends TimeStamp {
   @Column(nullable = false)
   private String nickname;
 
+  // 아이디, 비밀번호 찾기에 사용할 이메일 주소
+  @Column
+  private String email;
+
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
-
-  @Column
-  private int likes;
   @Column
   private String region;
 
@@ -79,7 +80,6 @@ public class User extends TimeStamp {
     this.password = password;
     this.nickname = nickname;
     this.gender = gender;
-//    this.birthday = birthday;
     this.role = role;
     this.age = age;
   }
@@ -87,6 +87,7 @@ public class User extends TimeStamp {
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
     this.username = signUpRequestDto.getUsername();
     this.nickname = signUpRequestDto.getNickname();
+    this.email = signUpRequestDto.getEmail();
     this.password = password;
     this.gender = signUpRequestDto.getGender();
     this.role = role;
@@ -108,4 +109,13 @@ public class User extends TimeStamp {
   public void cancelPermission() {
     this.role = UserRole.USER;
   }
+
+  // 비밀번호를 임시 비밀번호로 변경
+  public void modifyPassword(String encodePassword) {
+    this.password = encodePassword;
+  }
+
+  // 신고가 누적된 유저 역할 변경
+  public void reportedUserChangeRole() { this.role = UserRole.REPORTED; }
+
 }

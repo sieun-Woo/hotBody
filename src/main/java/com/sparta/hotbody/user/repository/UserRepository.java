@@ -12,6 +12,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Page<User> findAllByRole(UserRole role, Pageable pageable);
 
+  // 이메일로 아이디 찾기
+  Optional<User> findByEmail(String email);
+
+  // 아이디와 이메일로 비밀번호 찾기
+  Optional<User> findByUsernameAndEmail(String username, String email);
+
   void deleteByUsername(String username);
 
 }

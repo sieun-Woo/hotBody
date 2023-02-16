@@ -19,6 +19,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        jasypt.encryptor.password: ${{JASYPT_ENCRYPTOR_PASSWORD}}
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew

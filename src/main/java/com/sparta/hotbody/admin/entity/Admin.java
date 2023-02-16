@@ -35,6 +35,10 @@ public class Admin {
 
   private String image;
 
+  // 아이디, 비밀번호 찾기에 사용할 이메일 주소
+  @Column
+  private String email;
+
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
@@ -42,10 +46,11 @@ public class Admin {
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
-  public Admin(String username, String password, UserRole role, String nickname, String image) {
+  public Admin(String username, String password, UserRole role, String nickname, String image, String email) {
     this.username = username;
     this.password = password;
     this.nickname = nickname;
+    this.email = email;
     this.image = image;
     this.role = role;
   }
@@ -54,9 +59,12 @@ public class Admin {
     this.username = adminSignUpRequestDto.getUsername();
     this.password = password;
     this.nickname = adminSignUpRequestDto.getNickname();
+    this.email = adminSignUpRequestDto.getEmail();
     this.image = adminSignUpRequestDto.getImage();
     this.role = role;
   }
+
+
 /**
    * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
@@ -70,4 +78,8 @@ public class Admin {
   /**
    * 서비스 메소드 - 외부에서 엔티티를 수정할 메소드를 정의합니다. (단일 책임을 가지도록 주의합니다.)
    */
+  //
+  public void modifyPassword(String encodePassword) {
+    this.password = encodePassword;
+  }
 }

@@ -1,10 +1,18 @@
 package com.sparta.hotbody.admin.controller;
 
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminIdRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminIdResponseDto;
+import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
+import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
+import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
+import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import javax.servlet.http.HttpServletResponse;
@@ -118,6 +126,18 @@ public class AdminController {
   @DeleteMapping("/users/{userId}") // ToDo: 유저 기능이랑 중복
   public ResponseEntity deleteUser(@PathVariable Long userId) {
     return adminService.deleteUser(userId);
+  }
+
+  // Admin 아이디 찾기
+  @GetMapping("/find-id")
+  public FindAdminIdResponseDto findUserId(@RequestBody FindAdminIdRequestDto findAdminIdRequestDto) {
+    return adminService.findAdminId(findAdminIdRequestDto);
+  }
+
+  // Admin 비밀번호 찾기
+  @GetMapping("/find-pw")
+  public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto) {
+    return adminService.findAdminPw(findAdminPwRequestDto);
   }
 
   // 관리자 회원 탈퇴정

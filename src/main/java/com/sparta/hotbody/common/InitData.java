@@ -26,7 +26,7 @@ public class InitData implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args){
 
-    Admin admin = new Admin("admin", passwordEncoder.encode("admin"), UserRole.ADMIN, "admin", "www.naver.com");
+    Admin admin = new Admin("admin", passwordEncoder.encode("admin"), UserRole.ADMIN, "admin", "www.naver.com", "admin@gmail.com");
     adminRepository.save(admin);
     User user1 = new User("user1", passwordEncoder.encode("user1"), UserRole.USER, "user1", 1, 33);
     userRepository.save(user1);

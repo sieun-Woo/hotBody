@@ -4,6 +4,10 @@ import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.common.jwt.dto.TokenDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.post.dto.PostResponseDto;
+import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
+import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
+import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
+import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
@@ -99,5 +103,15 @@ public class UserController {
     return UserProfileResponseDto.from(user);
   }
 
+  // 유저 아이디 찾기
+  @GetMapping("/find-id")
+  public FindUserIdResponseDto findUserId(@RequestBody FindUserIdRequestDto findUserIdRequestDto) {
+    return userService.findUserId(findUserIdRequestDto);
+  }
 
+  // 유저 비밀번호 찾기
+  @GetMapping("/find-pw")
+  public FindUserPwResponseDto findUserPw(@RequestBody FindUserPwRequestDto findUserPwRequestDto) {
+    return userService.findUserPw(findUserPwRequestDto);
+  }
 }

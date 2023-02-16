@@ -7,6 +7,10 @@ import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.upload.entity.Image;
 import com.sparta.hotbody.upload.service.UploadService;
+import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
+import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
+import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
+import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
@@ -21,6 +25,8 @@ import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,10 +78,10 @@ public class UserService {
     String password = requestDto.getPassword();
 
     User user = userRepository.findByUsername(username).orElseThrow(
-        () -> new SecurityException("사용자를 찾을수 없습니다.")
+        () -> new SecurityException("존재하지 않는 아이디입니다.")
     );
     if (!passwordEncoder.matches(password, user.getPassword())) {
-      throw new SecurityException("사용자를 찾을수 없습니다.");
+      throw new SecurityException("틀린 비밀번호입니다.");
     }
 
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
@@ -163,5 +169,60 @@ public class UserService {
     return UserProfileResponseDto.from(user);
   }
 
+  // 유저 아이디 찾기
+  @Transactional
+  public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto) {
+    User user = userRepository.findByEmail(findUserIdRequestDto.getEmail()).orElseThrow(
+        () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
+    );
+    FindUserIdResponseDto findUserIdResponseDto = new FindUserIdResponseDto(user.getUsername());
+    return findUserIdResponseDto;
+  }
 
+  // 유저 비밀번호 찾기
+  @Transactional
+  public FindUserPwResponseDto findUserPw(FindUserPwRequestDto findUserPwRequestDto) {
+    User user = userRepository.findByUsernameAndEmail(findUserPwRequestDto.getUsername(),
+        findUserPwRequestDto.getEmail()).orElseThrow(
+        () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
+    );
+    // 임시 비밀번호 생성
+    String password = generateTempPassword();
+    FindUserPwResponseDto findUserPwResponseDto = new FindUserPwResponseDto(password);
+
+    // 비밀번호 encode 후 저장
+    String encodePassword = passwordEncoder.encode(password);
+    user.modifyPassword(encodePassword);
+    userRepository.save(user);
+
+    return findUserPwResponseDto;
+  }
+
+
+  // 임시 비밀번호 생성
+  public String generateTempPassword() {
+    char[] charSet = new char[] {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y', 'z'
+    };
+    SecureRandom secureRandom = new SecureRandom();
+    secureRandom.setSeed(new Date().getTime());
+
+    StringBuffer stringBuffer= new StringBuffer();
+
+    int index = 0;
+    int length = charSet.length;
+
+    for (int i = 0; i < 20; i++) {
+      index = secureRandom.nextInt(length);
+      stringBuffer.append(charSet[index]);
+    }
+
+    return stringBuffer.toString();
+  }
 }

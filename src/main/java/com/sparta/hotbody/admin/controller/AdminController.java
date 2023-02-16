@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
   private final AdminService adminService;
+  
 
   @PostMapping("/sign-up")
   public ResponseEntity signup(@RequestBody AdminSignUpRequestDto adminSignUpRequestDto) {

@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class ReportRequestDto {
-  private Long reportedUserId;
+  private String reportedUsername;
   private String content;
 }

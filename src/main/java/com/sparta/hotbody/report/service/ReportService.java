@@ -23,37 +23,35 @@ public class ReportService {
 
   @Transactional
   public ReportResponseDto reportUser(User reporter, ReportRequestDto reportRequestDto) {
-    validateUserReportRequest(reporter, reportRequestDto);
-    User reported = userRepository.findById(reportRequestDto.getReportedUserId()).orElseThrow(RuntimeException::new);
+    validateUserReportRequest(reporter, reportRequestDto); // 자기 자신 혹은 중복 신고인지 확인
+    User reported = userRepository.findByUsername(reportRequestDto.getReportedUsername()).orElseThrow(RuntimeException::new);
     ReportHistory userReportHistory = createUserReportHistory(reporter, reported, reportRequestDto);
+    userReportHistory.setReportCount(userReportHistoryRepository.findByReportedUsername(reportRequestDto.getReportedUsername()).size());
     checkUserStatusIsBeingReported(reported, reportRequestDto);
-    return new ReportResponseDto(userReportHistory.getId(), EditRequestDto.toDto(reported),
-        reportRequestDto.getContent(),
-        userReportHistory.getCreatedAt());
+    return new ReportResponseDto(userReportHistory.getReporter().getUsername(), reported.getUsername(), reportRequestDto.getContent(), userReportHistory.getCreatedAt());
   }
 
   private void checkUserStatusIsBeingReported(User reported, ReportRequestDto reportRequestDto) {
-    if (userReportHistoryRepository.findByReportedUserId(reportRequestDto.getReportedUserId()).size()
+    if (userReportHistoryRepository.findByReportedUsername(reportRequestDto.getReportedUsername()).size() //특정 유저의 신고된 횟수가 3이상 이면
         >= NORMAL_USER_REPORT_LIMIT_FOR_BEING_REPORTED) {
-      reported.setStatusIsBeingReported();
+      reported.reportedUserChangeRole(); // 역할을 REPORTED(신고된 유저)로 변경
     }
   }
 
   private ReportHistory createUserReportHistory(User reporter, User reported, ReportRequestDto reportRequestDto) {
-    ReportHistory userReportHistory = new ReportHistory(reporter.getId(), reported.getId(),
-        reportRequestDto.getContent());
+    ReportHistory userReportHistory = new ReportHistory(reporter, reported, reportRequestDto.getContent());
     userReportHistoryRepository.save(userReportHistory);
     return userReportHistory;
   }
 
   private void validateUserReportRequest(User reporter, ReportRequestDto reportRequestDto) {
-    if (reporter.isReportMySelf(reportRequestDto.getReportedUserId())) {
+    if (reporter.getUsername().equals(reportRequestDto.getReportedUsername())) {
       throw new NotSelfReportException();
     }
-
-    if (userReportHistoryRepository.existsByReporterIdAndReportedUserId(reporter.getId(),
-        reportRequestDto.getReportedUserId())) {
+    if (userReportHistoryRepository.existsByReporterUsernameAndReportedUsername(reporter.getUsername(), reportRequestDto.getReportedUsername())) {
       throw new AlreadyReportException();
     }
   }
+
+
 }

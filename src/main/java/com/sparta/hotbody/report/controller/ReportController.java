@@ -3,10 +3,13 @@ package com.sparta.hotbody.report.controller;
 import com.sparta.hotbody.report.dto.ReportRequestDto;
 import com.sparta.hotbody.report.dto.ReportResponseDto;
 import com.sparta.hotbody.report.service.ReportService;
+import com.sparta.hotbody.user.entity.User;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +25,8 @@ public class ReportController {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("/reports/users")
-  public ResponseEntity reportUser(@Valid @RequestBody ReportRequestDto reportRequestDto) {
-    return new ResponseEntity(reportService.reportUser(userReportRequest),HttpStatus.OK);
+  public ResponseEntity reportUser(@RequestBody ReportRequestDto reportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return new ResponseEntity(reportService.reportUser(userDetails.getUser(), reportRequestDto),HttpStatus.OK);
   }
 
 }

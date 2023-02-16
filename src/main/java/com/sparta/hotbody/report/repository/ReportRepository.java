@@ -4,11 +4,10 @@ import com.sparta.hotbody.report.entity.ReportHistory;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReportRepository extends JpaRepository<ReportHistory, Long> {
+public interface ReportRepository extends JpaRepository<ReportHistory, String> {
 
-  boolean existsByReporterIdAndReportedUserId(Long reporterId, Long reportedUserId);
+  boolean existsByReporterUsernameAndReportedUsername(String reporterUsername, String reportedUsername);
 
-  List<ReportHistory> findByReportedUserId(Long reportedId);
+  List<ReportHistory> findByReportedUsername(String reportedUsername);
 
-  void deleteAllByReportedUserId(Long id);
 }

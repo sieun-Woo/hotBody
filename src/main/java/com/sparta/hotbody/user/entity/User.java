@@ -105,9 +105,7 @@ public class User extends TimeStamp {
     this.role = UserRole.USER;
   }
 
-  //신고 기능 중, 자기 자신을 신고하는지 판별
-  public boolean isReportMySelf(Long id) {
-    return this.id == id;
-  }
+  // 신고가 누적된 유저 역할 변경
+  public void reportedUserChangeRole() { this.role = UserRole.REPORTED; }
 
 }

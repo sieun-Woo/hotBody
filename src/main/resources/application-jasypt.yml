@@ -1,0 +1,3 @@
+jasypt:
+  encryptor:
+    password: ${DECODE_PASSWORD}

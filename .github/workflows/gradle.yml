@@ -19,11 +19,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-      
-    - name: Set yaml file
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: src/main/resources/application.yml
       env:
         DECODE_PASSWORD: ${{ secrets.DI_FROM_SECRET }}
         

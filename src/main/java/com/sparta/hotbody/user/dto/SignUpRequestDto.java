@@ -20,6 +20,7 @@ public class SignUpRequestDto {
   private String password;
   @Pattern(regexp = "(?=.*[a-z])(?=.*[0-9])^[a-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)")
   private String nickname;
+  private String email;
   private Integer gender; // 0남자 1여자
   private boolean admin = false;
   private int age;

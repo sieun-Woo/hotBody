@@ -1,6 +1,10 @@
 package com.sparta.hotbody.admin.service;
 
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminIdRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminIdResponseDto;
+import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
@@ -44,4 +48,7 @@ public interface AdminService {
 
   ResponseEntity deleteUser(Long userId);
 
+  FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto);
+
+  FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto);
 }

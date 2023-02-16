@@ -1,6 +1,10 @@
 package com.sparta.hotbody.admin.service;
 
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminIdRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminIdResponseDto;
+import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
+import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.admin.repository.AdminRepository;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
@@ -13,6 +17,10 @@ import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
+import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
+import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
+import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
+import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -22,6 +30,8 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -220,5 +230,62 @@ public class AdminServiceImpl implements AdminService {
     User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
     userRepository.delete(user);
     return new ResponseEntity("사용자 계정를 삭제하였습니다.", HttpStatus.OK);
+  }
+
+  // 관리자 아이디 찾기
+  @Transactional
+  public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto) {
+    Admin admin = adminRepository.findByEmail(findAdminIdRequestDto.getEmail()).orElseThrow(
+        () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
+    );
+    FindAdminIdResponseDto findAdminIdResponseDto = new FindAdminIdResponseDto(admin.getUsername());
+    return findAdminIdResponseDto;
+  }
+
+  // 관리자 비밀번호 찾기
+  @Transactional
+  public FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto) {
+    Admin admin = adminRepository.findByUsernameAndEmail(findAdminPwRequestDto.getUsername(),
+        findAdminPwRequestDto.getEmail()).orElseThrow(
+        () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
+    );
+    // 임시 비밀번호 생성
+    String password = generateTempPassword();
+    FindAdminPwResponseDto findAdminPwResponseDto = new FindAdminPwResponseDto(password);
+
+    // 비밀번호 encode 후 저장
+    String encodePassword = passwordEncoder.encode(password);
+    admin.modifyPassword(encodePassword);
+    adminRepository.save(admin);
+
+    return findAdminPwResponseDto;
+  }
+
+
+  // 임시 비밀번호 생성
+  public String generateTempPassword() {
+    char[] charSet = new char[] {
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y', 'z'
+    };
+    SecureRandom secureRandom = new SecureRandom();
+    secureRandom.setSeed(new Date().getTime());
+
+    StringBuffer stringBuffer= new StringBuffer();
+
+    int index = 0;
+    int length = charSet.length;
+
+    for (int i = 0; i < 20; i++) {
+      index = secureRandom.nextInt(length);
+      stringBuffer.append(charSet[index]);
+    }
+
+    return stringBuffer.toString();
   }
 }

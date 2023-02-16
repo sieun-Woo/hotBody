@@ -1,4 +1,4 @@
-package com.sparta.hotbody.upload.config;
+package com.sparta.hotbody.common.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

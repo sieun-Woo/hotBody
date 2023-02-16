@@ -55,7 +55,6 @@ cmake-build-*/
 
 # IntelliJ
 out/
-application-aws.properties
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

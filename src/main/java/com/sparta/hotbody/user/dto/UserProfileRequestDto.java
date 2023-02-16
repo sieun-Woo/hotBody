@@ -11,4 +11,5 @@ public class UserProfileRequestDto {
   private String region;
   private String image;
 
+  
 }

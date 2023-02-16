@@ -57,6 +57,10 @@ public class User extends TimeStamp {
   @Column(nullable = false)
   private String nickname;
 
+  // 아이디, 비밀번호 찾기에 사용할 이메일 주소
+  @Column
+  private String email;
+
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
@@ -103,5 +107,10 @@ public class User extends TimeStamp {
 
   public void cancelPermission() {
     this.role = UserRole.USER;
+  }
+
+  // 비밀번호를 임시 비밀번호로 변경
+  public void modifyPassword(String password) {
+    this.password = password;
   }
 }

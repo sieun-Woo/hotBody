@@ -87,6 +87,7 @@ public class User extends TimeStamp {
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
     this.username = signUpRequestDto.getUsername();
     this.nickname = signUpRequestDto.getNickname();
+    this.email = signUpRequestDto.getEmail();
     this.password = password;
     this.gender = signUpRequestDto.getGender();
     this.role = role;
@@ -110,7 +111,7 @@ public class User extends TimeStamp {
   }
 
   // 비밀번호를 임시 비밀번호로 변경
-  public void modifyPassword(String password) {
-    this.password = password;
+  public void modifyPassword(String encodePassword) {
+    this.password = encodePassword;
   }
 }

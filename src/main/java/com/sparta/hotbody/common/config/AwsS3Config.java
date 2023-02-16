@@ -25,6 +25,7 @@ public class AwsS3Config {
     return new BasicAWSCredentials(accessKey, secretKey);
   }
 
+  
   @Bean
   public AmazonS3 amazonS3(BasicAWSCredentials basicAWSCredentials) {
     return AmazonS3ClientBuilder.standard()

@@ -84,7 +84,7 @@ public class UserController {
   @PutMapping("/auth/profile")
   public String createProfile(
       @RequestPart UserProfileRequestDto requestDto,
-      @RequestPart MultipartFile file,
+      @RequestPart(required = false) MultipartFile file,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
     return userService.createProfile(requestDto, userDetails, file);
   }

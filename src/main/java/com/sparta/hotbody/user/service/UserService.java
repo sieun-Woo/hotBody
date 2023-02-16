@@ -82,7 +82,8 @@ public class UserService {
 
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-    refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
+    refreshTokenRepository.save(
+        new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
     TokenDto tokenDto = TokenDto.builder()
         .accessToken(accessToken)
@@ -134,17 +135,21 @@ public class UserService {
     promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
   }
 
-  //7. 유저 프로필 수정
+  //7. 유저 프로필 생성
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails, MultipartFile file)
+  public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails,
+      MultipartFile file)
       throws IOException {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
-
-    Image image = uploadService.storeFile(file);
-    String storeFileName = image.getStoreFileName();
-    user.update(requestDto, storeFileName);
+    if (file != null) {
+      Image image = uploadService.storeFile(file);
+      String resourcePath = image.getResourcePath();
+      user.update(requestDto, resourcePath);
+      return "수정이 완료되었습니다.";
+    }
+    user.update(requestDto);
     userRepository.save(user);
     return "수정이 완료되었습니다.";
   }

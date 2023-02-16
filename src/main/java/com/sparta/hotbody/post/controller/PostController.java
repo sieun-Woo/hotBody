@@ -73,9 +73,10 @@ public class PostController {
   @PatchMapping("/posts/{postId}")
   public void updatePost(
       @PathVariable Long postId,
-      @RequestBody PostModifyRequestDto postModifyRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser());
+      @RequestPart PostModifyRequestDto postModifyRequestDto,
+      @RequestPart(required = false) MultipartFile file,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser(), file);
   }
 
   // 5. 게시글 삭제

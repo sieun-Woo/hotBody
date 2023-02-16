@@ -66,13 +66,13 @@ public class Post extends TimeStamp {
     this.content = postRequestDto.getContent();
   }
 
-  // 이미지 추가 가능
-  public Post(PostRequestDto postRequestDto, User user, String storeFileName) {
+  // 이미지 추가
+  public Post(PostRequestDto postRequestDto, User user, String resourcePath) {
     this.user = user;
     this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
-    this.image = storeFileName;
+    this.image = resourcePath;
   }
 
   public Post(String title, String content, User user) {
@@ -109,6 +109,13 @@ public class Post extends TimeStamp {
   public void modifyPost(PostModifyRequestDto postModifyRequestDto) {
     this.title = postModifyRequestDto.getTitle();
     this.content = postModifyRequestDto.getContent();
+  }
+
+  // 이미지도 함께 수정
+  public void modifyPost(PostModifyRequestDto postModifyRequestDto,String resourcePath) {
+    this.title = postModifyRequestDto.getTitle();
+    this.content = postModifyRequestDto.getContent();
+    this.image = resourcePath;
   }
 
   public void plusLikes() {

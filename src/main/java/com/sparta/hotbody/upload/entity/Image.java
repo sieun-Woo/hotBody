@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,9 +22,16 @@ public class Image {
   private String uploadFileName;
   @Column
   private String storeFileName;
+  @Column
+  private String filePath;
+  @Column
+  private String resourcePath;
 
-  public Image(String uploadFileName, String storeFileName) {
+  @Builder
+  public Image(String uploadFileName, String storeFileName, String resourcePath, String filePath) {
     this.uploadFileName = uploadFileName;
     this.storeFileName = storeFileName;
+    this.resourcePath = resourcePath;
+    this.filePath = filePath;
   }
 }

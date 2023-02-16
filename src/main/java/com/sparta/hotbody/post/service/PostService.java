@@ -33,9 +33,9 @@ public class PostService {
   @Transactional
   public void createPost(PostRequestDto postRequestDto, User user, MultipartFile file)
       throws IOException {
-    if( file != null ) {
+    if (file != null) {
       Image image = uploadService.storeFile(file);
-      String storeFileName = image.getStoreFileName();
+      String storeFileName = image.getResourcePath();
       Post post = new Post(postRequestDto, user, storeFileName);
       postRepository.save(post);
       return;
@@ -88,7 +88,8 @@ public class PostService {
     List<PostResponseDto> postResponseDtoList = new ArrayList<>();
 
     if (postSearchRequestDto.getSearchType().equals("title")) {
-      Page<Post> posts = postRepository.findByTitleContaining(postSearchRequestDto.getSearchKeyword(), pageable);
+      Page<Post> posts = postRepository.findByTitleContaining(
+          postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
@@ -98,7 +99,8 @@ public class PostService {
     }
 
     if (postSearchRequestDto.getSearchType().equals("content")) {
-      Page<Post> posts = postRepository.findByContentContaining(postSearchRequestDto.getSearchKeyword(), pageable);
+      Page<Post> posts = postRepository.findByContentContaining(
+          postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
@@ -108,7 +110,8 @@ public class PostService {
     }
 
     if (postSearchRequestDto.getSearchType().equals("nickname")) {
-      Page<Post> posts = postRepository.findByNicknameContaining(postSearchRequestDto.getSearchKeyword(), pageable);
+      Page<Post> posts = postRepository.findByNicknameContaining(
+          postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
@@ -122,11 +125,19 @@ public class PostService {
   // 4. 게시글 수정
   @Transactional
   public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
-      User user) {
+      User user, MultipartFile file) throws IOException {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
+
     if (post.getUser().getId().equals(user.getId())) {
+      if (file != null) {
+        Image image = uploadService.storeFile(file);
+        uploadService.remove(post.getImage());
+        post.modifyPost(postModifyRequestDto, image.getResourcePath());
+        postRepository.save(post);
+        return;
+      }
       post.modifyPost(postModifyRequestDto);
       postRepository.save(post);
     } else {
@@ -141,6 +152,7 @@ public class PostService {
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
     if (post.getUser().getId().equals(user.getId())) {
+      uploadService.remove(post.getImage());
       postRepository.delete(post);
     } else {
       throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");

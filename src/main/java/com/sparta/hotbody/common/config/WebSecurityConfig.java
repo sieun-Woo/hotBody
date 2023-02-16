@@ -49,6 +49,7 @@ public class WebSecurityConfig {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests()
         .antMatchers("/api/**").permitAll()
+        .antMatchers("/s3/**").permitAll()
         .antMatchers("/api/user/sign-up").permitAll()
         .antMatchers("/api/user/log-in").permitAll()
         .antMatchers("/api/admin/sign-up").permitAll()

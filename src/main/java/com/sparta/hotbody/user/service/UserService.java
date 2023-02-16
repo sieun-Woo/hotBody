@@ -5,6 +5,8 @@ import com.sparta.hotbody.common.jwt.dto.TokenDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
+import com.sparta.hotbody.upload.entity.Image;
+import com.sparta.hotbody.upload.service.UploadService;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -22,13 +24,16 @@ import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -42,32 +47,7 @@ public class UserService {
   private final RefreshTokenRepository refreshTokenRepository; // 리프레쉬 토큰을 서버에 저장하기 위한 저장소
   private final JwtUtil jwtUtil;
   private final PasswordEncoder passwordEncoder;
-  private final FileService fileService;
-
-  //1.회원가입
-//  @Transactional
-//  public MessageResponseDto signUp(SignUpRequestDto requestDto) {
-//    String username = requestDto.getUsername();
-//    String password = passwordEncoder.encode(requestDto.getPassword());
-//    String nickname = requestDto.getNickname();
-//    Integer gender  = requestDto.getGender();
-//    Date birthday = requestDto.getBirthday();
-//
-//    Optional<User> found = userRepository.findByUsername(username);
-//    if (found.isPresent()) {
-//      throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
-//    }
-//    UserRole role = UserRole.USER;
-//    if (requestDto.isAdmin()) {
-//      if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-//        throw new SecurityException("관리자 암호가 틀렸습니다.");
-//      }
-//      role = UserRole.ADMIN;
-//    }
-//    User user = new User(username, password, role, nickname, gender, birthday);
-//    userRepository.save(user);
-//    return new MessageResponseDto("회원가입 성공");
-//  }
+  private final UploadService uploadService;
 
   @Transactional
   public MessageResponseDto signUp(SignUpRequestDto requestDto) {
@@ -108,7 +88,8 @@ public class UserService {
 
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-    refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
+    refreshTokenRepository.save(
+        new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
     TokenDto tokenDto = TokenDto.builder()
         .accessToken(accessToken)
@@ -160,29 +141,24 @@ public class UserService {
     promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
   }
 
-  //7. 유저 프로필 수정
+  //7. 유저 프로필 생성
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, User user) {
-    User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
+  public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails,
+      MultipartFile file)
+      throws IOException {
+    User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
-    user1.update(requestDto);
-    userRepository.save(user1);
+    if (file != null) {
+      Image image = uploadService.storeFile(file);
+      String resourcePath = image.getResourcePath();
+      user.update(requestDto, resourcePath);
+      return "수정이 완료되었습니다.";
+    }
+    user.update(requestDto);
+    userRepository.save(user);
     return "수정이 완료되었습니다.";
   }
-
-//  @Transactional
-//  public String createProfile(MultipartFile file, UserProfileRequestDto requestDto, User user){
-//    String saveLocal = "local";
-//    String saveImageName = user.getUsername();
-//    String updateImageData= saveLocal+saveImageName;
-//    user.changeProfile(requestDto.getPassword(), requestDto.getRegion(), requestDto.getHeight(),
-//        requestDto.getWeight(), updateImageData);
-//    fileService.upload(file, saveImageName);
-//    userRepository.save(user);
-//    return "생성이 완료되었습니다.";
-//  }
-
 
   //8.유저 프로필 조회
   @Transactional

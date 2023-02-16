@@ -19,6 +19,7 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserService;
+import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
+
   private final UserService userService;
   private final UserRepository userRepository;
 
@@ -49,7 +53,8 @@ public class UserController {
 
   //2.로그인
   @PostMapping("/log-in")
-  public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+  public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto,
+      HttpServletResponse response) {
     TokenDto tokenDto = userService.login(loginRequestDto);
     response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAccessToken());
     response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
@@ -58,52 +63,39 @@ public class UserController {
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")
-  public MessageResponseDto delete(@RequestBody UserDeleteRequestDto deleteRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+  public MessageResponseDto delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.deleteUser(deleteRequestDto, userDetails.getUser());
   }
 
   //4. 트레이너 요청
   @PostMapping("/auth/promote")
   @PreAuthorize("hasRole('USER')")
-  public TrainerResponseDto promoteUser(@RequestBody @Valid TrainerRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+  public TrainerResponseDto promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.promoteTrainer(requestDto, userDetails.getUser());
   }
 
   //4-1. 트레이너 승인 전 취소
   @DeleteMapping("/auth/permission")
   @PreAuthorize("hasRole('USER')")
-  public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails){
+  public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     userService.deletePermission(userDetails.getUser());
     return "삭제 완료되었습니다.";
   }
 
-  //5. 게시판 조회
-
-
-  //6. 유저 프로필 수정
-//  @PatchMapping("/auth/profile")
-//  public String createProfile(UserProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails
-//  ){
-//    return userService.createProfile(requestDto, userDetails.getUser().getUsername());
-//  }
-
+  //5. 유저 프로필 작성
   @PutMapping("/auth/profile")
-  public String createProfile(@RequestBody UserProfileRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-    return userService.createProfile(requestDto, userDetails.getUser());
+  public String createProfile(
+      @RequestPart UserProfileRequestDto requestDto,
+      @RequestPart(required = false) MultipartFile file,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    return userService.createProfile(requestDto, userDetails, file);
   }
-
-//  @PostMapping("/auth/profile")
-//  public String createProfile(
-//      @RequestPart("file") MultipartFile file,
-//      @RequestPart("profile") UserProfileRequestDto requestDto,
-//      @AuthenticationPrincipal UserDetailsImpl userDetails
-//  ){
-//    return userService.createProfile(file, requestDto, userDetails.getUser());
-//  }
 
   //7. 유저 프로필 조회
   @Transactional
-  @GetMapping ("/auth/profile")
+  @GetMapping("/auth/profile")
   public UserProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("연결상태 불량입니다. 다시 조회 해주시기 바랍니다.")

@@ -41,6 +41,9 @@ public class UserController {
   private final UserService userService;
   private final UserRepository userRepository;
 
+  @GetMapping("/auth/profile")
+  public String newFile(){ return "address"; }
+
   //1.회웝가입
   @PostMapping("/sign-up")
   public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {

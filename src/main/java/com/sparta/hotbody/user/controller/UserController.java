@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class UserController {
   private final UserService userService;
   private final UserRepository userRepository;
 
+  //@Controller 아래 메서드를 사용하기위해 필요함
   @GetMapping("/auth/profile")
   public String newFile(){ return "address"; }
 

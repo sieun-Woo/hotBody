@@ -25,10 +25,16 @@ import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.net.http.HttpResponse;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,7 +79,7 @@ public class UserService {
 
   //2.로그인
   @Transactional
-  public TokenDto login(LoginRequestDto requestDto) {
+  public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response) {
     String username = requestDto.getUsername();
     String password = requestDto.getPassword();
 
@@ -85,18 +91,21 @@ public class UserService {
     }
 
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
-
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
+
+    URLEncoder.encode(accessToken, "utf-8");
+
+
+    Cookie cookie = new Cookie(jwtUtil.AUTHORIZATION_HEADER, accessToken);
+    response.addCookie(cookie);
+
+    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
 
     refreshTokenRepository.save(
         new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
-    TokenDto tokenDto = TokenDto.builder()
-        .accessToken(accessToken)
-        .refreshToken(refreshToken)
-        .build();
-
-    return tokenDto;
+    return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
 
   //3.회원탈퇴

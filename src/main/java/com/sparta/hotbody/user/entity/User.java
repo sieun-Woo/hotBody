@@ -42,7 +42,7 @@ public class User extends TimeStamp {
   private String username;
   @Column(nullable = false)
   private String password;
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Integer gender;
   @Column(nullable = false)
   private int age;

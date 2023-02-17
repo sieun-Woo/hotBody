@@ -4,10 +4,12 @@ import com.sparta.hotbody.common.exception.CustomAccessDeniedHandler;
 import com.sparta.hotbody.common.exception.CustomAuthenticationEntryPoint;
 import com.sparta.hotbody.common.jwt.JwtAuthFilter;
 import com.sparta.hotbody.common.jwt.JwtUtil;
+import javax.persistence.OrderBy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,13 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(prePostEnabled = true) // @Secured 어노테이션 활성화
 @EnableScheduling // @Scheduled 어노테이션 활성화
-public class WebSecurityConfig {
+public class WebSecurityConfig implements WebMvcConfigurer {
 
   private final JwtUtil jwtUtil;
   private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -48,6 +52,7 @@ public class WebSecurityConfig {
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests()
+        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
         .antMatchers("/api/**").permitAll()
         .antMatchers("/s3/**").permitAll()
         .antMatchers("/api/user/sign-up").permitAll()
@@ -64,5 +69,16 @@ public class WebSecurityConfig {
     http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
     http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
     return http.build();
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+//        .allowedMethods("GET", "SET", "PUT", "DELETE", "OPTIONS", "HEAD")
+//        .exposedHeaders("Authorization");
+            .allowedOrigins("http://localhost:8080", "http://localhost:8081", "http://127.0.0.1:5500") // 허용할 출처
+            .allowedMethods("GET", "POST") // 허용할 HTTP method
+            .allowCredentials(true) // 쿠키 인증 요청 허용
+            .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
   }
 }

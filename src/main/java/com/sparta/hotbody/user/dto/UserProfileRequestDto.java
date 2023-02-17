@@ -10,6 +10,5 @@ public class UserProfileRequestDto {
   private int weight;
   private String region;
   private String image;
-
-
+  private String nickname;
 }

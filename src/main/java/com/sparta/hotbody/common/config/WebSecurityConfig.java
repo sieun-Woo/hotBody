@@ -53,6 +53,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests()
         .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+        .antMatchers("/**").permitAll()
         .antMatchers("/api/**").permitAll()
         .antMatchers("/s3/**").permitAll()
         .antMatchers("/api/user/sign-up").permitAll()

@@ -25,6 +25,7 @@ import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.net.http.HttpResponse;
 import java.security.SecureRandom;
@@ -79,7 +80,8 @@ public class UserService {
 
   //2.로그인
   @Transactional
-  public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response) {
+  public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response)
+      throws UnsupportedEncodingException {
     String username = requestDto.getUsername();
     String password = requestDto.getPassword();
 
@@ -93,14 +95,14 @@ public class UserService {
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-    URLEncoder.encode(accessToken, "utf-8");
+    String encodedAccessToken = urlEncoder(accessToken);
+    String encodedRefreshToken = urlEncoder(refreshToken);
 
+    Cookie cookieAccessToken = new Cookie(jwtUtil.AUTHORIZATION_HEADER, encodedAccessToken);
+    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
 
-    Cookie cookie = new Cookie(jwtUtil.AUTHORIZATION_HEADER, accessToken);
-    response.addCookie(cookie);
-
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
+    response.addCookie(cookieAccessToken);
+    response.addCookie(cookieRefreshToken);
 
     refreshTokenRepository.save(
         new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
@@ -205,6 +207,11 @@ public class UserService {
     userRepository.save(user);
 
     return findUserPwResponseDto;
+  }
+
+  // 쿠키에 저장하기 위한 인코더
+  public String urlEncoder(String token) throws UnsupportedEncodingException {
+    return URLEncoder.encode(token, "utf-8");
   }
 
 

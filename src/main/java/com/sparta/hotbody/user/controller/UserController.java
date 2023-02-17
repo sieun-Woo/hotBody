@@ -20,6 +20,7 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserService;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class UserController {
   //2.로그인
   @PostMapping("/log-in")
   public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto,
-      HttpServletResponse response) {
+      HttpServletResponse response) throws UnsupportedEncodingException {
     return userService.login(loginRequestDto, response);
   }
 

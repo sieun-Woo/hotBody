@@ -132,12 +132,6 @@
             </a>
           </li>
           <li>
-            <a href="index.html" class="block">
-              <i class="fas fa-link"></i>
-              <span>트레이너 요청</span>
-            </a>
-          </li>
-          <li>
             <a class="block">
               <i class="fas fa-link"></i>
               <span>나의 글 / 댓글</span>
@@ -156,6 +150,12 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li>
+            <a href="request-trainer.html" class="block">
+              <i class="fas fa-link"></i>
+              <span>트레이너 요청</span>
+            </a>
           </li>
           <li>
             <a href="stat.html" class="block">
@@ -322,6 +322,11 @@ a {
   margin: auto;
 }
 
+.main {
+  width: 1000px;
+  margin: auto;
+}
+
 .min-height-100vh {
   min-height:100vh;
 }
@@ -351,9 +356,6 @@ a {
 }
 
 /* 커스텀 */
-.con-min-width {
-  min-width:1200px;
-}
 
 .con {
   width:1000px;
@@ -580,7 +582,7 @@ a {
     font-family: Arial;
     height: 46px;
     left: 0;
-    position: fixed;
+    position: absolute;
     top: 0;
     width: 100%;
     z-index: 9999;

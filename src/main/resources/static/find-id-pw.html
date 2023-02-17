@@ -12,8 +12,8 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li><a href="index.html">홈으로</a></li>
-        <li><a href="admin-login.html">로그인</a></li>
+        <li><a href="login.html">로그인</a></li>
+        <li><a href="signup.html">회원가입</a></li>
     </ul>
 </header>
 
@@ -44,24 +44,23 @@
 
     <form action="doJoin" method="POST" class="joinForm" onsubmit="DoJoinForm__submit(this); return false;">
                                                                                                
-        <h2>관리자 회원가입</h2>
+        <h2>아이디 찾기</h2>
+        <div class="textForm">
+          <input name="loginId" type="text" class="email" placeholder="이메일 주소">
+          </input>
+        </div>
+        <input type="submit" class="btn" value="아이디 찾기">
+
+        <h2>비밀번호 찾기</h2>
         <div class="textForm">
           <input name="loginId" type="text" class="id" placeholder="아이디">
           </input>
         </div>
         <div class="textForm">
-          <input name="loginPw" type="password" class="pw" placeholder="비밀번호">
+          <input name="loginPw" type="password" class="email" placeholder="이메일 주소">
         </div>
-        <div class="textForm">
-          <input name="name" type="password" class="name" placeholder="닉네임">
-        </div>
-         <div class="textForm">
-          <input name="email" type="text" class="email" placeholder="이메일">
-        </div>
-        <div class="textForm">
-          <input name="nickname" type="text" class="adminToken" placeholder="관리자 토큰">
-        </div>
-        <input type="submit" class="btn" value="J O I N"/>
+        <input type="submit" class="btn" value="비밀번호 찾기">
+        
       </form>
 </body>
 <style>
@@ -179,12 +178,8 @@ a {
 }
 
 /* 커스텀 */
-.con-min-width {
-  min-width:1200px;
-}
-
 .con {
-  width:1000px;
+  width:100%px;
 }
 
 .info-article {
@@ -352,16 +347,6 @@ body {
 }
 
 .cellphoneNo {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.adminToken {
   width: 100%;
   border:none;
   outline:none;

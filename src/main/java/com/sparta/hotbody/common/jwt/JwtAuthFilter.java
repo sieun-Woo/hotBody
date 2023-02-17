@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.hotbody.common.dto.SecurityExceptionDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import javax.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
-    String token = jwtUtil.resolveTokenFromCookie(request);
+    String token = jwtUtil.resolveToken(request);
     String refreshToken = jwtUtil.resolveRequestTokenFromCookie(request);
     try {
       if (token != null) {
@@ -50,7 +51,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (jwtUtil.validateRefreshToken(refreshToken)) {
         String reCreateAccessToken = jwtUtil.reCreateAccessToken(refreshToken);
         Claims info = jwtUtil.getUserInfoFromToken(reCreateAccessToken.substring(7));
-        response.setHeader(jwtUtil.AUTHORIZATION_HEADER, reCreateAccessToken);
+
+        response.addHeader(jwtUtil.AUTHORIZATION_HEADER, reCreateAccessToken);
+
         setAuthentication(info.getSubject(), info.get(jwtUtil.AUTHORIZATION_KEY).toString());
         filterChain.doFilter(request, response);
       }

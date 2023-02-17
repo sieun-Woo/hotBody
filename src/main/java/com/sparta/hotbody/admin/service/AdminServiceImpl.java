@@ -30,6 +30,7 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
@@ -91,23 +92,32 @@ public class AdminServiceImpl implements AdminService {
     String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
     String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
 
-    String encodedAccessToken = urlEncoder(accessToken);
-    String encodedRefreshToken = urlEncoder(refreshToken);
+//    String encodedAccessToken = jwtUtil.urlEncoder(accessToken);
+    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
 
 
-    Cookie cookieAccessToken = new Cookie(jwtUtil.AUTHORIZATION_HEADER, encodedAccessToken);
+//    Cookie cookieAccessToken = new Cookie(jwtUtil.AUTHORIZATION_HEADER, encodedAccessToken);
     Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+    cookieRefreshToken.setPath("/");
 
-    response.addCookie(cookieAccessToken);
+
+    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     response.addCookie(cookieRefreshToken);
 
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
+//    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+//    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
 
     refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), admin));
 
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
+
+  @Transactional
+  public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
+    jwtUtil.logout(userDetails);
+    return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+  }
+
 
   @Override
   @Transactional
@@ -275,11 +285,6 @@ public class AdminServiceImpl implements AdminService {
     adminRepository.save(admin);
 
     return findAdminPwResponseDto;
-  }
-
-  // 쿠키에 저장하기 위한 인코더
-  public String urlEncoder(String token) throws UnsupportedEncodingException {
-    return URLEncoder.encode(token, "utf-8");
   }
 
   // 임시 비밀번호 생성

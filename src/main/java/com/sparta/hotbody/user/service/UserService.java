@@ -95,19 +95,25 @@ public class UserService {
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-    String encodedAccessToken = urlEncoder(accessToken);
-    String encodedRefreshToken = urlEncoder(refreshToken);
+    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
 
-    Cookie cookieAccessToken = new Cookie(jwtUtil.AUTHORIZATION_HEADER, encodedAccessToken);
     Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+    cookieRefreshToken.setPath("/");
 
-    response.addCookie(cookieAccessToken);
+    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     response.addCookie(cookieRefreshToken);
 
     refreshTokenRepository.save(
         new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
+  }
+
+  // 로그아웃
+  @Transactional
+  public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
+    jwtUtil.logout(userDetails);
+    return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
   }
 
   //3.회원탈퇴
@@ -209,12 +215,6 @@ public class UserService {
     return findUserPwResponseDto;
   }
 
-  // 쿠키에 저장하기 위한 인코더
-  public String urlEncoder(String token) throws UnsupportedEncodingException {
-    return URLEncoder.encode(token, "utf-8");
-  }
-
-
   // 임시 비밀번호 생성
   public String generateTempPassword() {
     char[] charSet = new char[] {
@@ -241,4 +241,5 @@ public class UserService {
 
     return stringBuffer.toString();
   }
+
 }

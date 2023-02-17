@@ -1,9 +1,6 @@
 package com.sparta.hotbody.user.controller;
 
 import com.sparta.hotbody.common.dto.MessageResponseDto;
-import com.sparta.hotbody.common.jwt.dto.TokenDto;
-import com.sparta.hotbody.common.jwt.JwtUtil;
-import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -24,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -59,6 +55,13 @@ public class UserController {
       HttpServletResponse response) throws UnsupportedEncodingException {
     return userService.login(loginRequestDto, response);
   }
+
+  // 로그아웃
+  @DeleteMapping("/log-out")
+  public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return userService.logout(userDetails);
+  }
+
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")

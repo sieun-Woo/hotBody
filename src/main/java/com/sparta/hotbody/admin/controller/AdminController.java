@@ -15,6 +15,7 @@ import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
 import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
+import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,8 @@ public class AdminController {
   }
 
   @PostMapping("/log-in")
-  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response)
+      throws UnsupportedEncodingException {
     return adminService.login(loginRequestDto, response);
   };
 

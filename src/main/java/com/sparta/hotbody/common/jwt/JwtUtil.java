@@ -15,10 +15,13 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import java.net.URLDecoder;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -62,7 +65,7 @@ public class JwtUtil {
     key = Keys.hmacShaKeyFor(bytes);
   }
 
-  // header 액세스 토큰을 가져오기
+  // Header 액세스 토큰을 가져오기
   public String resolveToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
@@ -71,11 +74,39 @@ public class JwtUtil {
     return null;
   }
 
-  // header 리프레쉬 토큰을 가져오기
+  // Header 리프레쉬 토큰을 가져오기
   public String resolveRefreshToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(REFRESH_TOKEN);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
       return bearerToken.substring(7);
+    }
+    return null;
+  }
+
+  // Cookie 액세스 토큰을 가져오기
+  public String resolveTokenFromCookie(HttpServletRequest request) {
+    return getToken(request, AUTHORIZATION_HEADER);
+  }
+
+  // Cookie 리프레쉬 토큰을 가져오기
+  public String resolveRequestTokenFromCookie(HttpServletRequest request) {
+    return getToken(request, REFRESH_TOKEN);
+  }
+
+  private String getToken(HttpServletRequest request, String Token) {
+    Cookie[] cookies = request.getCookies();
+    if(cookies == null) {
+      return null;
+    }
+    for (Cookie cookie : cookies) {
+      if (Optional.of(cookie).isPresent()) {
+        if (cookie.getName().equals(Token)) {
+          String bearerToken = URLDecoder.decode(cookie.getValue());
+          if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+          }
+        }
+      }
     }
     return null;
   }

@@ -30,11 +30,15 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +82,8 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response)
+      throws UnsupportedEncodingException {
     Admin admin = adminRepository.findByUsername(loginRequestDto.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
     if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
@@ -86,12 +91,33 @@ public class AdminServiceImpl implements AdminService {
     }
     String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
     String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
+
+//    String encodedAccessToken = jwtUtil.urlEncoder(accessToken);
+    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
+
+
+//    Cookie cookieAccessToken = new Cookie(jwtUtil.AUTHORIZATION_HEADER, encodedAccessToken);
+    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+    cookieRefreshToken.setPath("/");
+
+
+    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
+    response.addCookie(cookieRefreshToken);
+
+//    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+//    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
+
     refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), admin));
 
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
+
+  @Transactional
+  public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
+    jwtUtil.logout(userDetails);
+    return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+  }
+
 
   @Override
   @Transactional
@@ -260,7 +286,6 @@ public class AdminServiceImpl implements AdminService {
 
     return findAdminPwResponseDto;
   }
-
 
   // 임시 비밀번호 생성
   public String generateTempPassword() {

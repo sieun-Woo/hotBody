@@ -3,10 +3,12 @@ package com.sparta.hotbody.common.jwt;
 import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.admin.repository.AdminRepository;
 import com.sparta.hotbody.admin.service.AdminDetailsServiceImpl;
+import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.UserRepository;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -15,15 +17,21 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.sl.draw.geom.GuideIf.Op;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,7 +56,7 @@ public class JwtUtil {
   public static final String REFRESH_TOKEN = "RefreshToken";
   public static final String AUTHORIZATION_KEY = "auth";
   private static final String BEARER_PREFIX = "Bearer ";
-  private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 1시간
+  private static final long ACCESS_TOKEN_TIME = 30 * 1000L; // 1시간
   private static final long REFRESH_TOKEN_TIME = 24 * 60 * 60 * 1000L; // 1일
 
   @Value("${jwt.secret.key}")
@@ -62,7 +70,7 @@ public class JwtUtil {
     key = Keys.hmacShaKeyFor(bytes);
   }
 
-  // header 액세스 토큰을 가져오기
+  // Header 액세스 토큰을 가져오기
   public String resolveToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
@@ -71,11 +79,39 @@ public class JwtUtil {
     return null;
   }
 
-  // header 리프레쉬 토큰을 가져오기
+  // Header 리프레쉬 토큰을 가져오기
   public String resolveRefreshToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(REFRESH_TOKEN);
     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
       return bearerToken.substring(7);
+    }
+    return null;
+  }
+
+  // Cookie 액세스 토큰을 가져오기
+  public String resolveTokenFromCookie(HttpServletRequest request) {
+    return getToken(request, AUTHORIZATION_HEADER);
+  }
+
+  // Cookie 리프레쉬 토큰을 가져오기
+  public String resolveRequestTokenFromCookie(HttpServletRequest request) {
+    return getToken(request, REFRESH_TOKEN);
+  }
+
+  private String getToken(HttpServletRequest request, String Token) {
+    Cookie[] cookies = request.getCookies();
+    if(cookies == null) {
+      return null;
+    }
+    for (Cookie cookie : cookies) {
+      if (Optional.of(cookie).isPresent()) {
+        if (cookie.getName().equals(Token)) {
+          String bearerToken = URLDecoder.decode(cookie.getValue());
+          if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(7);
+          }
+        }
+      }
     }
     return null;
   }
@@ -199,6 +235,29 @@ public class JwtUtil {
       }
     }
     return false;
+  }
+
+  //로그아웃
+  public void logout(UserDetailsImpl userDetails) {
+    UserRole role = userDetails.getUser().getRole();
+    switch (role) {
+      case USER :
+        Long userId = userDetails.getUser().getId();
+        Optional<RefreshToken> userRefreshToken = refreshTokenRepository.findByUser_Id(userId);
+        refreshTokenRepository.delete(userRefreshToken.get());
+        break;
+
+      case ADMIN:
+        Long adminId = userDetails.getUser().getId();
+        RefreshToken adminRefreshToken = refreshTokenRepository.findByAdmin_Id(adminId).get();
+        refreshTokenRepository.delete(adminRefreshToken);
+        break;
+    }
+  }
+
+  // 쿠키에 저장하기 위한 인코더
+  public String urlEncoder(String token) throws UnsupportedEncodingException {
+    return URLEncoder.encode(token, "utf-8");
   }
 
   // 유저 인증 객체 생성

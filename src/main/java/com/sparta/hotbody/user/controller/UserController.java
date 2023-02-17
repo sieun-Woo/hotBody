@@ -1,9 +1,6 @@
 package com.sparta.hotbody.user.controller;
 
 import com.sparta.hotbody.common.dto.MessageResponseDto;
-import com.sparta.hotbody.common.jwt.dto.TokenDto;
-import com.sparta.hotbody.common.jwt.JwtUtil;
-import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -20,10 +17,11 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserService;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,13 +51,17 @@ public class UserController {
 
   //2.로그인
   @PostMapping("/log-in")
-  public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto,
-      HttpServletResponse response) {
-    TokenDto tokenDto = userService.login(loginRequestDto);
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAccessToken());
-    response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
-    return new MessageResponseDto("로그인 되었습니다.");
+  public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto,
+      HttpServletResponse response) throws UnsupportedEncodingException {
+    return userService.login(loginRequestDto, response);
   }
+
+  // 로그아웃
+  @DeleteMapping("/log-out")
+  public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return userService.logout(userDetails);
+  }
+
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")

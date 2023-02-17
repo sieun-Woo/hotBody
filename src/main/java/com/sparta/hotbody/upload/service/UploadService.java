@@ -10,6 +10,8 @@ import com.sparta.hotbody.upload.repository.ImageRepository;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -103,6 +105,7 @@ public class UploadService {
   // S3에 업로드를 위한 변환
   public File convertMultipartFileToFile(MultipartFile multipartFile, String storeFileName)
       throws IOException {
+
     File file = new File(getFullPath(storeFileName));
     multipartFile.transferTo(file);
     return file;

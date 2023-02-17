@@ -15,9 +15,12 @@ import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
 import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
+import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -43,9 +46,15 @@ public class AdminController {
   }
 
   @PostMapping("/log-in")
-  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response)
+      throws UnsupportedEncodingException {
     return adminService.login(loginRequestDto, response);
   };
+
+  @DeleteMapping("/log-out")
+  public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return adminService.logout(userDetails);
+  }
 
   // 트레이너 등록 요청 조회
   @GetMapping("/requests")

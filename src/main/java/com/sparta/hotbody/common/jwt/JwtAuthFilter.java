@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.hotbody.common.dto.SecurityExceptionDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import javax.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         setAuthentication(info.getSubject(), info.get(jwtUtil.AUTHORIZATION_KEY).toString());
       }
     } catch (ExpiredJwtException e) {
-      String refreshToken = jwtUtil.resolveRequestTokenFromCookie(request);
+      String refreshToken = jwtUtil.resolveRefreshTokenFromCookie(request);
       if (refreshToken == null) {
         jwtExceptionHandler(response, "Expired JWT token, 만료된 JWT token 입니다.",
             HttpStatus.BAD_REQUEST.value());

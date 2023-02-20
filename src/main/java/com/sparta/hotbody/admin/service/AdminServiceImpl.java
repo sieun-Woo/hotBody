@@ -82,8 +82,11 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response)
+  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException {
+    if(!jwtUtil.validate(request)) {
+      return new ResponseEntity<>("중복 로그인 입니다.", HttpStatus.OK);
+    }
     Admin admin = adminRepository.findByUsername(loginRequestDto.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
     if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
@@ -108,9 +111,13 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Transactional
-  public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
-    jwtUtil.logout(userDetails);
-    return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+  public ResponseEntity<String> logout(HttpServletRequest request) {
+    if(jwtUtil.logout(request)) {
+      return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+
+    } else {
+      return new ResponseEntity<>("로그인되어 있지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
   }
 
 

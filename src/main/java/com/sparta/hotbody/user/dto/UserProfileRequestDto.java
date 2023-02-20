@@ -9,7 +9,5 @@ public class UserProfileRequestDto {
   private int height;
   private int weight;
   private String region;
-  private String image;
-
 
 }

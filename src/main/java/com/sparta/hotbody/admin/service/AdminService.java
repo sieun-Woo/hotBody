@@ -12,6 +12,7 @@ import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public interface AdminService {
 
   ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto);
 
-  ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response)
+  ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException;
 
   ResponseEntity permitTrainer(Long requestId);
@@ -55,5 +56,5 @@ public interface AdminService {
 
   FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto);
 
-  ResponseEntity logout(UserDetailsImpl userDetails);
+  ResponseEntity logout(HttpServletRequest request);
 }

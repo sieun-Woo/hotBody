@@ -8,7 +8,6 @@ import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.UserRepository;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,7 +30,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.sl.draw.geom.GuideIf.Op;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -88,19 +86,19 @@ public class JwtUtil {
     return null;
   }
 
-  // Cookie 액세스 토큰을 가져오기
+  // Cookie 액세스 토큰을 가져오기 (사용 안함)
   public String resolveTokenFromCookie(HttpServletRequest request) {
     return getToken(request, AUTHORIZATION_HEADER);
   }
 
   // Cookie 리프레쉬 토큰을 가져오기
-  public String resolveRequestTokenFromCookie(HttpServletRequest request) {
+  public String resolveRefreshTokenFromCookie(HttpServletRequest request) {
     return getToken(request, REFRESH_TOKEN);
   }
 
   private String getToken(HttpServletRequest request, String Token) {
     Cookie[] cookies = request.getCookies();
-    if(cookies == null) {
+    if (cookies == null) {
       return null;
     }
     for (Cookie cookie : cookies) {
@@ -238,20 +236,24 @@ public class JwtUtil {
   }
 
   //로그아웃
-  public void logout(UserDetailsImpl userDetails) {
-    UserRole role = userDetails.getUser().getRole();
-    switch (role) {
-      case USER :
-        Long userId = userDetails.getUser().getId();
-        Optional<RefreshToken> userRefreshToken = refreshTokenRepository.findByUser_Id(userId);
-        refreshTokenRepository.delete(userRefreshToken.get());
-        break;
+  public boolean logout(HttpServletRequest request) {
+    String cookie = resolveRefreshTokenFromCookie(request);
+    if (cookie != null) {
+      RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(cookie).get();
+      refreshTokenRepository.delete(refreshToken);
+      return true;
+    }
+    return false;
+  }
 
-      case ADMIN:
-        Long adminId = userDetails.getUser().getId();
-        RefreshToken adminRefreshToken = refreshTokenRepository.findByAdmin_Id(adminId).get();
-        refreshTokenRepository.delete(adminRefreshToken);
-        break;
+
+  // 중복 로그인 검증
+  public boolean validate(HttpServletRequest request) {
+    String token = resolveRefreshTokenFromCookie(request);
+    if (token != null && refreshTokenRepository.findByRefreshToken(token).isPresent()) {
+      return false;
+    } else {
+      return true;
     }
   }
 

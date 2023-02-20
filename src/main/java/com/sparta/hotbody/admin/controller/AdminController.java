@@ -7,6 +7,7 @@ import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
@@ -17,6 +18,7 @@ import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
   private final AdminService adminService;
-
-
+  private final RefreshTokenRepository refreshTokenRepository;
 
   @PostMapping("/sign-up")
   public ResponseEntity signup(@RequestBody AdminSignUpRequestDto adminSignUpRequestDto) {
@@ -46,14 +47,14 @@ public class AdminController {
   }
 
   @PostMapping("/log-in")
-  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response)
+  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException {
-    return adminService.login(loginRequestDto, response);
+    return adminService.login(loginRequestDto, response, request);
   };
 
   @DeleteMapping("/log-out")
-  public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return adminService.logout(userDetails);
+  public ResponseEntity logout(HttpServletRequest request) {
+    return adminService.logout(request);
   }
 
   // 트레이너 등록 요청 조회

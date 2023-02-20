@@ -104,10 +104,7 @@ public class User extends TimeStamp {
     this.region = requestDto.getRegion();
   }
 
-  public void update(UserProfileRequestDto requestDto, String resourcePath) {
-    this.height = requestDto.getHeight();
-    this.weight = requestDto.getWeight();
-    this.region = requestDto.getRegion();
+  public void updateImage(String resourcePath) {
     this.image = resourcePath;
   }
 

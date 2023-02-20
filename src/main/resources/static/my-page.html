@@ -190,6 +190,7 @@
         <div class="article-list" style="position: relative; z-index: 1;">
           <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
             <a href="#" style="width: 300px; height: 300px; border: 1px solid black">프로필 사진</a>
+            <img id="img" src="">
             <div class="profile">
               <ul>
                 <li style="margin-top: 10px;">닉네임: <input type="nickname"></li>
@@ -743,5 +744,19 @@ $(document).on('click', '.page-box .btn.number', function(){
   $(this).addClass('on');
   return false;
 })
+
+var settings = {
+  "url": "http://localhost:8080/api/user/auth/profile/image",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem("accessToken")
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  $("#img").append(response);
+  console.log(response);
+});
 </script>
 </html>

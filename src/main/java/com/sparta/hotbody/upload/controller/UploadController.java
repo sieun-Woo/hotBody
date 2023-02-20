@@ -49,7 +49,6 @@ public class UploadController {
     Image image = imageRepository.findById(id).get();
     model.addAttribute("item", image);
     return "item-view";
-
   }
 
   // 이미지 조회

@@ -1,7 +1,6 @@
 package com.sparta.hotbody.user.service;
 
 import com.sparta.hotbody.common.dto.MessageResponseDto;
-import com.sparta.hotbody.common.jwt.dto.TokenDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
@@ -27,12 +26,11 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.net.http.HttpResponse;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -82,8 +80,14 @@ public class UserService {
 
   //2.로그인
   @Transactional
-  public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response)
+  public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response,
+      HttpServletRequest request)
       throws UnsupportedEncodingException {
+
+    if (!jwtUtil.validate(request)) {
+      return new ResponseEntity<>("중복 로그인 입니다.", HttpStatus.BAD_REQUEST);
+    }
+
     String username = requestDto.getUsername();
     String password = requestDto.getPassword();
 
@@ -113,9 +117,12 @@ public class UserService {
 
   // 로그아웃
   @Transactional
-  public ResponseEntity<String> logout(UserDetailsImpl userDetails) {
-    jwtUtil.logout(userDetails);
-    return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+  public ResponseEntity<String> logout(HttpServletRequest request) {
+    if (jwtUtil.logout(request)) {
+      return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>("로그인 되어 있지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
   }
 
   //3.회원탈퇴
@@ -165,7 +172,7 @@ public class UserService {
         () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
     if (file != null) {
-      if(user.getImage() != null) {
+      if (user.getImage() != null) {
         Image image = imageRepository.findByResourcePath(user.getImage()).get();
         uploadService.remove(image.getResourcePath());
       }

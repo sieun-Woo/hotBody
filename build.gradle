@@ -39,6 +39,10 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32' // jpa와 mysql 연동을 위한 의존성 주입
+
+
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws
 
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4' // 민감정보 암호화

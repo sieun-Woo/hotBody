@@ -6,6 +6,7 @@ import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.upload.entity.Image;
+import com.sparta.hotbody.upload.repository.ImageRepository;
 import com.sparta.hotbody.upload.service.UploadService;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
@@ -55,6 +56,7 @@ public class UserService {
   private final JwtUtil jwtUtil;
   private final PasswordEncoder passwordEncoder;
   private final UploadService uploadService;
+  private final ImageRepository imageRepository;
 
   @Transactional
   public MessageResponseDto signUp(SignUpRequestDto requestDto) {
@@ -130,9 +132,6 @@ public class UserService {
     throw new SecurityException("가입한 회원만이 탈퇴할 수 있습니다.");
   }
 
-  //4. 게시판 조회
-
-
   //5. 트레이너 폼 요청
   @Transactional
   public TrainerResponseDto promoteTrainer(TrainerRequestDto requestDto, User user) {
@@ -143,7 +142,6 @@ public class UserService {
     promoteRepository.save(trainer);
     return new TrainerResponseDto(trainer);
   }
-
 
   //6. 트레이너 폼 취소
   @Transactional
@@ -167,13 +165,17 @@ public class UserService {
         () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
     if (file != null) {
+      if(user.getImage() != null) {
+        Image image = imageRepository.findByResourcePath(user.getImage()).get();
+        uploadService.remove(image.getResourcePath());
+      }
       Image image = uploadService.storeFile(file);
       String resourcePath = image.getResourcePath();
       user.update(requestDto, resourcePath);
-      return "수정이 완료되었습니다.";
+    } else {
+      user.update(requestDto);
+      userRepository.save(user);
     }
-    user.update(requestDto);
-    userRepository.save(user);
     return "수정이 완료되었습니다.";
   }
 
@@ -217,7 +219,7 @@ public class UserService {
 
   // 임시 비밀번호 생성
   public String generateTempPassword() {
-    char[] charSet = new char[] {
+    char[] charSet = new char[]{
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
         'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
@@ -229,7 +231,7 @@ public class UserService {
     SecureRandom secureRandom = new SecureRandom();
     secureRandom.setSeed(new Date().getTime());
 
-    StringBuffer stringBuffer= new StringBuffer();
+    StringBuffer stringBuffer = new StringBuffer();
 
     int index = 0;
     int length = charSet.length;

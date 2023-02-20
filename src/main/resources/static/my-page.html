@@ -26,7 +26,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 <!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
 
 
 <div class="body-content min-height-100vh flex flex-column">
@@ -177,7 +177,7 @@
     <section id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
         <div class="article-search">
-          <form">
+          <form>
             <div style="width: 650px; margin: auto;">
                 <div style="display:flex; position: relative; margin-top: 5px;">
                     <h1>
@@ -189,16 +189,17 @@
         </div>
         <div class="article-list" style="position: relative; z-index: 1;">
           <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-            <a href="#" style="width: 300px; height: 300px; border: 1px solid black">프로필 사진</a>
+            <a href="#" style="width: 300px; height: 300px; border: 1px solid black" id="image">프로필 사진</a>
             <div class="profile">
               <ul>
-                <li style="margin-top: 10px;">닉네임: <input type="nickname"></li>
-                <li>성별: <input type="gender"></li>
-                <li>나이: <input type="age"></li>
-                <li>신장: <input type="height"></li>
-                <li>체중: <input type="weight"></li>
-                <li><button style="width: 100px; height: 30px; margin-right: 10px;">수정하기</button></li>
-                <li><button style="width: 100px; height: 30px; margin-right: 10px;">탈퇴하기</button></li>
+                <li style="margin-top: 10px;">닉네임: <input type="nickname" id="nickname" name="nickname"></li>
+                <li>지역: <input type="region" id="region" name="region"></li>
+                <li>신장: <input type="height" id="height" name="height"></li>
+                <li>체중: <input type="weight" id="weight" name="weight"></input></li>
+                <li><button style="width: 100px; height: 30px; margin-right: 10px;" onclick="updateProfile()">프로필 수정</button></li>
+                <li><button style="width: 100px; height: 30px; margin-right: 10px;">이미지 변경</button></li>
+                <li>비밀번호: <input type="password" id="password" name="password"></input></li>
+                <li><button style="width: 100px; height: 30px; margin-right: 10px;" onclick="signout()">탈퇴</button></li>
               </ul>
             </div>
           </div>
@@ -623,125 +624,84 @@ a {
 
 </style>
 <script>
-// vue 헤더
-console.clear();
-const articleList = [];
+  jQuery(document).ready(function($) {
 
-$.get(
-  'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
-  {},
-  function(data) {
-    data.forEach((row, index) => {
-      console.log(row);
-      
-      const article = {
-        id:index + 1,
-        regDate:row.commit.author.date,
-        writer:row.commit.author.name,
-        title:row.commit.message,
-        body:row.commit.message
-      };
-      
-      articleList.push(article);
-    });
-  },
-  'json'
-);
+    getUserMe();
 
-const articleListBox = new Vue({
-  el: "#article-list-wrap",
-  data: {
-    articleList:articleList,
-    searchKeyword:''
-  },
-  methods: {
-    search:_.debounce(function(e) {
-      this.searchKeyword = e.target.value;
-    }, 500)
-  },
-  
-  computed: {
-    filterKey:function() {
-      return this.searchKeyword.toLowerCase();
-    },
-    filtered:function() {
-      if ( this.filterKey.length == 0 ) {
-        return this.articleList;
+  })
+
+  function getUserMe() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/profile",
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      if (!response.image === null) {
+        $('#image').empty();
+        $('#image').append(response.image);
       }
-      
-      return this.articleList.filter((row) => {
-        if ( row.title.toLowerCase().indexOf(this.filterKey) > -1 ) {
-          return true;
-        } else if (row.writer.toLowerCase().indexOf(this.filterKey) > -1) {
-          return true;
-        } else if (row.body.toLowerCase().indexOf(this.filterKey) > -1) {
-          return true;
-        }
-      });
-    },
+      $('input[name=nickname]').attr('value', response.nickname);
+      $('input[name=height]').attr('value', response.height);
+      $('input[name=weight]').attr('value', response.weight);
+      $('input[name=region]').attr('value', response.region);
+    });
   }
-});
 
-    // 드롭다운 메뉴
-    var App = {
+  function updateProfile() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/profile",
+      "method": "PUT",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('acceessToken')
+      },
+      "data": JSON.stringify({
+        "nickname": $('#nickname').val(),
+        "region": $('#region').val(),
+        "height": $('#height').val(),
+        "weight": $('#weight').val()
+      }),
+    };
 
-accessibleMenu: function(){
-    $menu = $('.access-menu');
-    $menuItem = $menu.find('> li > a');
-
-    $subMenu = $('.access-submenu');
-    $subMenuItem = $subMenu.find('> li > a');
-    $submenuLastItem = $subMenu.find('> li:last-child > a');
-
-    $menuItem.bind({
-        focus: function(){
-            $subMenu.removeClass('is-show');
-            if($(this).next($subMenu)){
-                $(this).next($subMenu).addClass('is-show');
-            }
-        },
-
-        blur: function(){
-            $subMenu.removeClass('is-show');
-        }
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("수정이 완료되었습니다.")
     });
+  }
 
-    $subMenuItem.bind({
-        focus: function(){
-            $(this).parent().parent().addClass('is-show');
-        }
-    });
+  function signout() {
 
-    $submenuLastItem.bind({
-        blur: function(){
-            $subMenu.removeClass('is-show');
-        }
-    });
-},
+    var password = $('#password').val()
 
-cancelAccessibleMenu: function(){
-    $(document).click(function(){
-        if($subMenu.hasClass('is-show')){
-            $subMenu.removeClass('is-show');
-        }
-    });
-}
-
+    if (password === '') {
+      alert("비밀번호를 입력하세요.")
+    }
+    
+    var settings = {
+  "url": "http://localhost:8080/api/user/auth/delete",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken'),
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    "password": password
+  }),
 };
 
-$(function(){
-App.accessibleMenu();
-App.cancelAccessibleMenu();
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  alert("회원 탈퇴가 완료되었습니다.")
+}).fail(function(response){
+  alert("비밀번호를 다시 확인하세요.")
 });
-// 게시판
-$('.check.all').on('change', function(){
-  $('.check').prop('checked', $(this).prop('checked'));
-});
-
-$(document).on('click', '.page-box .btn.number', function(){
-  $('.page-box .btn.number').removeClass('on');
-  $(this).addClass('on');
-  return false;
-})
+  }
 </script>
 </html>

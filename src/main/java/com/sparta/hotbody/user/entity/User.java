@@ -3,6 +3,7 @@ package com.sparta.hotbody.user.entity;
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
+import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -75,6 +76,9 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<RefreshToken> refreshTokenList = new ArrayList<>();
+
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age) {
     this.username = username;
     this.password = password;
@@ -98,7 +102,6 @@ public class User extends TimeStamp {
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
     this.region = requestDto.getRegion();
-    this.image = requestDto.getImage();
   }
 
   public void update(UserProfileRequestDto requestDto, String resourcePath) {

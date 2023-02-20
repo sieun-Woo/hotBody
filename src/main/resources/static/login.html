@@ -399,8 +399,10 @@ body {
       }),
     };
 
-  $.ajax(settings).done(function (response) {
+  $.ajax(settings).done(function (response, status, xhr) {
     console.log(response);
+    console.log(xhr.getResponseHeader('Authorization'))
+    localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
     alert("로그인 완료")
     window.location = "/index.html"
   }).fail(function(response) {

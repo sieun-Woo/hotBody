@@ -25,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 <!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
 
 
 <div class="body-content min-height-100vh flex flex-column">
@@ -173,7 +173,7 @@ a {
 
 /* 커스텀 */
 .con {
-  width:100%px;
+  width:100%;
 }
 
 .info-article {
@@ -401,10 +401,10 @@ body {
 
   $.ajax(settings).done(function (response, status, xhr) {
     console.log(response);
-    console.log(xhr.getResponseHeader('Authorization'))
-    localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'))
+    localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
+    console.log(xhr.getResponseHeader('Authorization'));
     alert("로그인 완료")
-    window.location = "/index.html"
+    window.location = "index.html"
   }).fail(function(response) {
     alert(response.responseJSON.message);
   })

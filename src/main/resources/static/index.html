@@ -26,7 +26,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 <!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
 
 <div class="body-content min-height-100vh flex flex-column">
@@ -644,124 +644,124 @@ a {
 </style>
 <script>
 // vue 헤더
-console.clear();
-const articleList = [];
+// console.clear();
+// const articleList = [];
 
-$.get(
-  'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
-  {},
-  function(data) {
-    data.forEach((row, index) => {
-      console.log(row);
+// $.get(
+//   'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
+//   {},
+//   function(data) {
+//     data.forEach((row, index) => {
+//       console.log(row);
       
-      const article = {
-        id:index + 1,
-        regDate:row.commit.author.date,
-        writer:row.commit.author.name,
-        title:row.commit.message,
-        body:row.commit.message
-      };
+//       const article = {
+//         id:index + 1,
+//         regDate:row.commit.author.date,
+//         writer:row.commit.author.name,
+//         title:row.commit.message,
+//         body:row.commit.message
+//       };
       
-      articleList.push(article);
-    });
-  },
-  'json'
-);
+//       articleList.push(article);
+//     });
+//   },
+//   'json'
+// );
 
-const articleListBox = new Vue({
-  el: "#article-list-wrap",
-  data: {
-    articleList:articleList,
-    searchKeyword:''
-  },
-  methods: {
-    search:_.debounce(function(e) {
-      this.searchKeyword = e.target.value;
-    }, 500)
-  },
+// const articleListBox = new Vue({
+//   el: "#article-list-wrap",
+//   data: {
+//     articleList:articleList,
+//     searchKeyword:''
+//   },
+//   methods: {
+//     search:_.debounce(function(e) {
+//       this.searchKeyword = e.target.value;
+//     }, 500)
+//   },
   
-  computed: {
-    filterKey:function() {
-      return this.searchKeyword.toLowerCase();
-    },
-    filtered:function() {
-      if ( this.filterKey.length == 0 ) {
-        return this.articleList;
-      }
+//   computed: {
+//     filterKey:function() {
+//       return this.searchKeyword.toLowerCase();
+//     },
+//     filtered:function() {
+//       if ( this.filterKey.length == 0 ) {
+//         return this.articleList;
+//       }
       
-      return this.articleList.filter((row) => {
-        if ( row.title.toLowerCase().indexOf(this.filterKey) > -1 ) {
-          return true;
-        } else if (row.writer.toLowerCase().indexOf(this.filterKey) > -1) {
-          return true;
-        } else if (row.body.toLowerCase().indexOf(this.filterKey) > -1) {
-          return true;
-        }
-      });
-    },
-  }
-});
+//       return this.articleList.filter((row) => {
+//         if ( row.title.toLowerCase().indexOf(this.filterKey) > -1 ) {
+//           return true;
+//         } else if (row.writer.toLowerCase().indexOf(this.filterKey) > -1) {
+//           return true;
+//         } else if (row.body.toLowerCase().indexOf(this.filterKey) > -1) {
+//           return true;
+//         }
+//       });
+//     },
+//   }
+// });
 
-    // 드롭다운 메뉴
-    var App = {
+//     // 드롭다운 메뉴
+//     var App = {
 
-accessibleMenu: function(){
-    $menu = $('.access-menu');
-    $menuItem = $menu.find('> li > a');
+// accessibleMenu: function(){
+//     $menu = $('.access-menu');
+//     $menuItem = $menu.find('> li > a');
 
-    $subMenu = $('.access-submenu');
-    $subMenuItem = $subMenu.find('> li > a');
-    $submenuLastItem = $subMenu.find('> li:last-child > a');
+//     $subMenu = $('.access-submenu');
+//     $subMenuItem = $subMenu.find('> li > a');
+//     $submenuLastItem = $subMenu.find('> li:last-child > a');
 
-    $menuItem.bind({
-        focus: function(){
-            $subMenu.removeClass('is-show');
-            if($(this).next($subMenu)){
-                $(this).next($subMenu).addClass('is-show');
-            }
-        },
+//     $menuItem.bind({
+//         focus: function(){
+//             $subMenu.removeClass('is-show');
+//             if($(this).next($subMenu)){
+//                 $(this).next($subMenu).addClass('is-show');
+//             }
+//         },
 
-        blur: function(){
-            $subMenu.removeClass('is-show');
-        }
-    });
+//         blur: function(){
+//             $subMenu.removeClass('is-show');
+//         }
+//     });
 
-    $subMenuItem.bind({
-        focus: function(){
-            $(this).parent().parent().addClass('is-show');
-        }
-    });
+//     $subMenuItem.bind({
+//         focus: function(){
+//             $(this).parent().parent().addClass('is-show');
+//         }
+//     });
 
-    $submenuLastItem.bind({
-        blur: function(){
-            $subMenu.removeClass('is-show');
-        }
-    });
-},
+//     $submenuLastItem.bind({
+//         blur: function(){
+//             $subMenu.removeClass('is-show');
+//         }
+//     });
+// },
 
-cancelAccessibleMenu: function(){
-    $(document).click(function(){
-        if($subMenu.hasClass('is-show')){
-            $subMenu.removeClass('is-show');
-        }
-    });
-}
+// cancelAccessibleMenu: function(){
+//     $(document).click(function(){
+//         if($subMenu.hasClass('is-show')){
+//             $subMenu.removeClass('is-show');
+//         }
+//     });
+// }
 
-};
+// };
 
-$(function(){
-App.accessibleMenu();
-App.cancelAccessibleMenu();
-});
-// 게시판
-$('.check.all').on('change', function(){
-  $('.check').prop('checked', $(this).prop('checked'));
-});
+// $(function(){
+// App.accessibleMenu();
+// App.cancelAccessibleMenu();
+// });
+// // 게시판
+// $('.check.all').on('change', function(){
+//   $('.check').prop('checked', $(this).prop('checked'));
+// });
 
-$(document).on('click', '.page-box .btn.number', function(){
-  $('.page-box .btn.number').removeClass('on');
-  $(this).addClass('on');
-  return false;
-})
+// $(document).on('click', '.page-box .btn.number', function(){
+//   $('.page-box .btn.number').removeClass('on');
+//   $(this).addClass('on');
+//   return false;
+// })
 </script>
 </html>

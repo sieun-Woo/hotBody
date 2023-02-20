@@ -38,10 +38,11 @@ public class PostService {
       String storeFileName = image.getResourcePath();
       Post post = new Post(postRequestDto, user, storeFileName);
       postRepository.save(post);
-      return;
+
+    } else {
+      Post post = new Post(postRequestDto, user);
+      postRepository.save(post);
     }
-    Post post = new Post(postRequestDto, user);
-    postRepository.save(post);
   }
 
   // 2. 게시글 전체 조회
@@ -57,7 +58,8 @@ public class PostService {
 
     for (Post post : posts) {
       PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-          post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
+          post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
+          post.getModifiedAt());
       postResponseDtoList.add(postResponseDto);
     }
     return postResponseDtoList;
@@ -71,7 +73,8 @@ public class PostService {
     );
 
     PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-        post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
+        post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
+        post.getModifiedAt());
 
     return postResponseDto;
   }
@@ -93,7 +96,8 @@ public class PostService {
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
+            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
+            post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -104,7 +108,8 @@ public class PostService {
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
+            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
+            post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -115,7 +120,8 @@ public class PostService {
 
       for (Post post : posts) {
         PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getLikes(), post.getCreatedAt(), post.getModifiedAt());
+            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
+            post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
       }
     }

@@ -1,6 +1,7 @@
 package com.sparta.hotbody.common.batch.agriculturalAndLivestockProducts;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -13,10 +14,12 @@ import org.springframework.core.io.ClassPathResource;
 @RequiredArgsConstructor
 public class AgriculturalAndLivestockProductsCsvReader {
   @Bean
-  public FlatFileItemReader<AgriculturalAndLivestockProducts> csvFileItemReader() {
+  @StepScope
+  public FlatFileItemReader<AgriculturalAndLivestockProducts> agriculturalAndLivestockProductsCsvFileItemReader() {
     /* file read */
     FlatFileItemReader<AgriculturalAndLivestockProducts> flatFileItemReader = new FlatFileItemReader<>();
-    flatFileItemReader.setResource(new ClassPathResource("agriculturalAndLivestockProducts.csv"));
+    flatFileItemReader.setResource(new ClassPathResource(
+        "foodData/agriculturalAndLivestockProducts.csv"));
     flatFileItemReader.setLinesToSkip(1); // header line skip
     flatFileItemReader.setEncoding("UTF-8"); // encoding
 

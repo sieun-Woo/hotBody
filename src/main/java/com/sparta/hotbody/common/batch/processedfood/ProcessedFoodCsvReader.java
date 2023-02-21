@@ -12,11 +12,12 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 @RequiredArgsConstructor
 public class ProcessedFoodCsvReader {
+
   @Bean
-  public FlatFileItemReader<ProcessedFood> csvFileItemReader() {
+  public FlatFileItemReader<ProcessedFood> processedFoodCsvFileItemReader() {
     /* file read */
     FlatFileItemReader<ProcessedFood> flatFileItemReader = new FlatFileItemReader<>();
-    flatFileItemReader.setResource(new ClassPathResource("processedFood.csv"));
+    flatFileItemReader.setResource(new ClassPathResource("foodData/processedFood.csv"));
     flatFileItemReader.setLinesToSkip(1); // header line skip
     flatFileItemReader.setEncoding("UTF-8"); // encoding
 

@@ -24,9 +24,6 @@
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
-
 
 <div class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
@@ -399,15 +396,15 @@ body {
       }),
     };
 
-  $.ajax(settings).done(function (response, status, xhr) {
-    console.log(response);
-    localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
-    console.log(xhr.getResponseHeader('Authorization'));
-    alert("로그인 완료")
-    window.location = "index.html"
-  }).fail(function(response) {
-    alert(response.responseJSON.message);
-  })
+    $.ajax(settings).done(function (response, status, xhr) {
+      console.log(response);
+      localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
+      console.log(xhr.getResponseHeader('Authorization'));
+      alert("로그인 완료")
+      location.href = "index.html"
+    }).fail(function(response) {
+      alert(response.responseJSON.message);
+    })
   }
 </script>
 </html>

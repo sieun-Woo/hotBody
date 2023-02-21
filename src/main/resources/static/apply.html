@@ -11,11 +11,11 @@
     <!-- 회원가입/로그인 -->
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
-    <ul>
-        <li><a href="signup.html">회원가입</a></li>
-        <li><a href="login.html">로그인</a></li>
-        <li><a href="index.html">로그아웃</a></li>
-    </ul>
+  <ul>
+    <li id="signup"><a href="signup.html">회원가입</a></li>
+    <li id="signin"><a href="login.html">로그인</a></li>
+    <li id="logout"><a onclick="logout()">로그아웃</a></li>
+</ul>
 </header>
 
 <!-- vue 헤더 -->
@@ -38,7 +38,7 @@
     </div>
   </header>
   <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 트레이너 요청</div>
+  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 트레이너 신청</div>
   <!-- 메뉴바 시작 -->
   <header class="menu-bar con-min-width">
     <div class="con height-100p" style="position: relative; z-index: 3;">
@@ -605,44 +605,78 @@ a {
 
 </style>
 <script>
-function apply() {
-  var settings = {
-  "url": "http://localhost:8080/api/user/auth/promote",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken'),
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    "introduce": $('#introduce').val()
-  }),
-};
+  jQuery(document).ready(function($) {
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  alert("신청이 완료되었습니다.")
-}).fail(function(response) {
-  alert("이미 신청되었습니다.")
-});
-}
+    if (localStorage.getItem('accessToken')) {
+      $("#logout").show();
+      $("#signup").hide();
+      $("#signin").hide();
+    } else {
+      $("#logout").hide();
+      $("#signup").show();
+      $("#signin").show();
+    }
+  })
 
-function cancel() {
-  var settings = {
-  "url": "http://localhost:8080/api/user/auth/permission",
-  "method": "DELETE",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem("accessToken")
-  },
-};
+  function logout() {
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  alert("취소되었습니다.")
-}).fail(function(response) {
-  alert("신청이 존재하지 않습니다.")
-});
-}
+    var settings = {
+    "url": "http://localhost:8080/api/user/log-out",
+    "method": "DELETE",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.removeItem('accessToken')
+    },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      localStorage.removeItem('accessToken');
+      var now = new Date();
+      now.setDate(now.getDate()-1);
+      document.cookie = "RefreshToken=; expires="+now.toUTCString();
+      location.reload();
+    });
+  }
+
+  function apply() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/promote",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "introduce": $('#introduce').val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("신청이 완료되었습니다.")
+    }).fail(function(response) {
+      alert("이미 신청되었습니다.")
+    });
+  }
+
+  function cancel() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/permission",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem("accessToken")
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("취소되었습니다.")
+    }).fail(function(response) {
+      alert("신청이 존재하지 않습니다.")
+    });
+  }
 </script>
 </html>

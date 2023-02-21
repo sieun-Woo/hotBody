@@ -11,23 +11,17 @@
     <!-- 회원가입/로그인 -->
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
-    <ul>
-        <li><a href="signup.html">회원가입</a></li>
-        <li><a href="login.html">로그인</a></li>
-        <li><a href="index.html">로그아웃</a></li>
-    </ul>
+  <ul>
+    <li id="signup"><a href="signup.html">회원가입</a></li>
+    <li id="signin"><a href="login.html">로그인</a></li>
+    <li id="logout"><a onclick="logout()">로그아웃</a></li>
+</ul>
 </header>
-
-<!-- vue 헤더 -->
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
-
 
 <div class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
@@ -155,7 +149,7 @@
         <li>
           <a href="apply.html" class="block">
             <i class="fa-solid fa-wrench"></i>
-            <span>트레이너 요청</span>
+            <span>트레이너 신청</span>
           </a>
         </li>
         <li>
@@ -196,8 +190,12 @@
                 <li>지역: <input type="region" id="region" name="region"></li>
                 <li>신장: <input type="height" id="height" name="height"></li>
                 <li>체중: <input type="weight" id="weight" name="weight"></input></li>
+                <li>
+                  <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="file" id="upload-image" style="width: 160px; height: 30px; margin-right: 10px;">
+                  </form>
+                </li>
                 <li><button style="width: 100px; height: 30px; margin-right: 10px;" onclick="updateProfile()">프로필 수정</button></li>
-                <li><button style="width: 100px; height: 30px; margin-right: 10px;">이미지 변경</button></li>
                 <li>비밀번호: <input type="password" id="password" name="password"></input></li>
                 <li><button style="width: 100px; height: 30px; margin-right: 10px;" onclick="signout()">탈퇴</button></li>
               </ul>
@@ -626,11 +624,39 @@ a {
 <script>
   jQuery(document).ready(function($) {
 
-    getUserMe();
+    if (localStorage.getItem('accessToken')) {
+      $("#logout").show();
+      $("#signup").hide();
+      $("#signin").hide();
+    } else {
+      $("#logout").hide();
+      $("#signup").show();
+      $("#signin").show();
+    }
+
+    getImage();
+    getUser();
 
   })
 
-  function getUserMe() {
+  function getImage() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/profile/image",
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    }).fail(
+      alert("이미지 불러오기 실패")
+    );
+  }
+
+  function getUser() {
     var settings = {
       "url": "http://localhost:8080/api/user/auth/profile",
       "method": "GET",
@@ -641,11 +667,7 @@ a {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
-      if (!response.image === null) {
-        $('#image').empty();
-        $('#image').append(response.image);
-      }
+      // console.log(response);
       $('input[name=nickname]').attr('value', response.nickname);
       $('input[name=height]').attr('value', response.height);
       $('input[name=weight]').attr('value', response.weight);
@@ -653,25 +675,76 @@ a {
     });
   }
 
+function logout() {
+
+  var settings = {
+  "url": "http://localhost:8080/api/user/log-out",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.removeItem('accessToken')
+  },
+  };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    localStorage.removeItem('accessToken');
+    var now = new Date();
+    now.setDate(now.getDate()-1);
+    document.cookie = "RefreshToken=; expires="+now.toUTCString();
+    location.reload();
+  });
+}
+
+  // function updateProfile() {
+
+    // updateImage();
+
+
+    // updateImage();
+
+    // var settings = {
+    //   "url": "http://localhost:8080/api/user/auth/profile",
+    //   "method": "PUT",
+    //   "timeout": 0,
+    //   "headers": {
+    //     "Authorization": localStorage.getItem('accessToken'),
+    //     "Content-Type": "application/json"
+    //   },
+    //   "data": JSON.stringify({
+    //     "nickname": $('#nickname').val(),
+    //       "region": $('#region').val(),
+    //       "height": $('#height').val(),
+    //       "weight": $('#weight').val()
+    //   }),
+    // };
+
+    // $.ajax(settings).done(function (response) {
+    //   console.log(response);
+    //   alert("수정이 완료되었습니다.")
+    // });
+  // }
+
   function updateProfile() {
+
+    var form = new FormData();
+    form.append("file", $("#upload-image")[0].files[0]);
+    
     var settings = {
-      "url": "http://localhost:8080/api/user/auth/profile",
-      "method": "PUT",
+      "url": "http://localhost:8080/api/user/auth/profile/image",
+      "method": "POST",
       "timeout": 0,
       "headers": {
-        "Authorization": localStorage.getItem('acceessToken')
+        "Authorization": localStorage.getItem('accessToken')
       },
-      "data": JSON.stringify({
-        "nickname": $('#nickname').val(),
-        "region": $('#region').val(),
-        "height": $('#height').val(),
-        "weight": $('#weight').val()
-      }),
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": form
     };
 
     $.ajax(settings).done(function (response) {
       console.log(response);
-      alert("수정이 완료되었습니다.")
     });
   }
 
@@ -685,31 +758,31 @@ a {
     }
     
     var settings = {
-  "url": "http://localhost:8080/api/user/auth/delete",
-  "method": "DELETE",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken'),
-    "Content-Type": "application/json"
-  },
-  "data": JSON.stringify({
-    "password": password
-  }),
-};
+      "url": "http://localhost:8080/api/user/auth/delete",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "password": password
+      }),
+    };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
+    $.ajax(settings).done(function (response) {
+      console.log(response);
 
-  localStorage.removeItem('accessToken');
-  var now = new Date();
-  now.setDate(now.getDate()-1);
-  document.cookie = "RefreshToken=; expires="+now.toUTCString();
-  
-  alert("회원 탈퇴가 완료되었습니다.")
-  window.location = "index.html"
-}).fail(function(response){
-  alert("비밀번호를 다시 확인하세요.")
-});
+      localStorage.removeItem('accessToken');
+      var now = new Date();
+      now.setDate(now.getDate()-1);
+      document.cookie = "RefreshToken=; expires="+now.toUTCString();
+      
+      alert("회원 탈퇴가 완료되었습니다.")
+      window.location = "index.html"
+    }).fail(function(response){
+      alert("비밀번호를 다시 확인하세요.")
+    });
   }
 </script>
 </html>

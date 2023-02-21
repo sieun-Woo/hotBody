@@ -99,6 +99,7 @@ public class User extends TimeStamp {
   }
 
   public void update(UserProfileRequestDto requestDto) {
+    this.nickname = requestDto.getNickname();
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
     this.region = requestDto.getRegion();

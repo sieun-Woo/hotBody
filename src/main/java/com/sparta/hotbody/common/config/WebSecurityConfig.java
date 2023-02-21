@@ -76,10 +76,10 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
 //        .allowedMethods("GET", "SET", "PUT", "DELETE", "OPTIONS", "HEAD")
-//        .exposedHeaders("Authorization");
-            .allowedOrigins("http://localhost:8080", "http://localhost:8081", "http://127.0.0.1:5500") // 허용할 출처
-            .allowedMethods("GET", "POST") // 허용할 HTTP method
-            .allowCredentials(true) // 쿠키 인증 요청 허용
-            .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
+        .exposedHeaders("Authorization")
+        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500") // 허용할 출처
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD") // 허용할 HTTP method
+        .allowCredentials(true) // 쿠키 인증 요청 허용
+        .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
   }
 }

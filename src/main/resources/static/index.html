@@ -12,9 +12,9 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li><a id="signup" href="signup.html">회원가입</a></li>
-        <li><a id="signin" href="login.html">로그인</a></li>
-        <li><a id="logout" href="index.html">로그아웃</a></li>
+        <li id="signup"><a href="signup.html">회원가입</a></li>
+        <li id="signin"><a href="login.html">로그인</a></li>
+        <li id="logout"><a onclick="logout()">로그아웃</a></li>
     </ul>
 </header>
 
@@ -645,16 +645,40 @@ a {
 <script>
 jQuery(document).ready(function($) {
 
+  $("#logout").hide();
+  $("#signup").show();
+  $("#signin").show();
+
   if (localStorage.getItem('accessToken')) {
     $("#logout").show();
     $("#signup").hide();
     $("#signin").hide();
   } else {
-    $("#logout").hide();
-    $("#signup").show();
-    $("#signin").show();
-  }
 
+  }
 })
+
+function logout() {
+
+  var settings = {
+  "url": "http://localhost:8080/api/user/log-out",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.removeItem('accessToken')
+  },
+};
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    localStorage.removeItem('accessToken');
+    var now = new Date();
+    now.setDate(now.getDate()-1);
+    document.cookie = "RefreshToken=; expires="+now.toUTCString();
+  });
+
+  location.reload();
+}
+
 </script>
 </html>

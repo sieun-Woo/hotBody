@@ -108,7 +108,7 @@ public class UserController {
     return userService.createProfile(requestDto, userDetails);
   }
 
-  //6. 유저 프로필 사진 첨부
+  // 유저 프로필 사진 첨부
   @PostMapping("/auth/profile/image")
   public ResponseEntity<String> saveProfileImage(
       @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
@@ -120,7 +120,7 @@ public class UserController {
 
   // 프로필 이미지 조회
   @GetMapping("/auth/profile/image")
-  public Resource downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
+  public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
     return userService.viewImage(userDetails);
   }
 

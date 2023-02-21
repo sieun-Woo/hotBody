@@ -196,11 +196,10 @@ public class UserService {
     return image;
   }
 
-  public Resource viewImage(UserDetailsImpl userDetails) throws MalformedURLException {
+  public String viewImage(UserDetailsImpl userDetails) throws MalformedURLException {
     Optional<String> image = Optional.of(userDetails.getUser().getImage());
     if(image.isPresent()){
-      UrlResource urlResource = new UrlResource(image.get());
-      return urlResource;
+      return image.get();
     } else {
       return null;
     }

@@ -26,6 +26,7 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
@@ -33,6 +34,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -164,25 +167,43 @@ public class UserService {
 
   //7. 유저 프로필 생성
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails,
-      MultipartFile file)
+  public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails)
       throws IOException {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
     );
-    if (file != null) {
-      if (user.getImage() != null) {
-        Image image = imageRepository.findByResourcePath(user.getImage()).get();
-        uploadService.remove(image.getResourcePath());
-      }
-      Image image = uploadService.storeFile(file);
-      String resourcePath = image.getResourcePath();
-      user.update(requestDto, resourcePath);
-    } else {
-      user.update(requestDto);
-      userRepository.save(user);
-    }
+
+    user.update(requestDto);
+    userRepository.save(user);
+
     return "수정이 완료되었습니다.";
+  }
+
+  @Transactional
+  public Image uploadImage(MultipartFile file, UserDetails userDetails) throws IOException {
+
+    User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
+        () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
+    );
+    if (user.getImage() != null) {
+      Image image = imageRepository.findByResourcePath(user.getImage()).get();
+      uploadService.remove(image.getResourcePath());
+    }
+    Image image = uploadService.storeFile(file);
+    String resourcePath = image.getResourcePath();
+    user.updateImage(resourcePath);
+
+    return image;
+  }
+
+  public Resource viewImage(UserDetailsImpl userDetails) throws MalformedURLException {
+    Optional<String> image = Optional.of(userDetails.getUser().getImage());
+    if(image.isPresent()){
+      UrlResource urlResource = new UrlResource(image.get());
+      return urlResource;
+    } else {
+      return null;
+    }
   }
 
   //8.유저 프로필 조회
@@ -249,5 +270,6 @@ public class UserService {
 
     return stringBuffer.toString();
   }
+
 
 }

@@ -7,6 +7,9 @@ import com.sparta.hotbody.common.batch.agriculturalAndLivestockProducts.Agricult
 import com.sparta.hotbody.common.batch.aquaticProducts.AquaticProducts;
 import com.sparta.hotbody.common.batch.aquaticProducts.AquaticProductsCsvReader;
 import com.sparta.hotbody.common.batch.aquaticProducts.AquaticProductsCsvWriter;
+import com.sparta.hotbody.common.batch.food.Food;
+import com.sparta.hotbody.common.batch.food.FoodCsvReader;
+import com.sparta.hotbody.common.batch.food.FoodCsvWriter;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFood;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFoodCsvReader;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFoodCsvWriter;
@@ -33,6 +36,8 @@ public class FileItemReaderJobConfig {
   private final AquaticProductsCsvWriter aquaticProductsCsvWriter;
   private final ProcessedFoodCsvReader processedFoodCsvReader;
   private final ProcessedFoodCsvWriter processedFoodCsvWriter;
+  private final FoodCsvReader foodCsvReader;
+  private final FoodCsvWriter foodCsvWriter;
   private static final int chunkSize = 1000;
 
   @Bean
@@ -41,6 +46,7 @@ public class FileItemReaderJobConfig {
         .start(agriculturalAndLivestockProductsCsvFileItemReaderStep())
         .next(aquaticProductsCsvFileItemReaderStep())
         .next(processedFoodCsvFileItemReaderStep())
+        .next(foodCsvFileItemReaderStep())
         .build();
   }
 
@@ -75,5 +81,14 @@ public class FileItemReaderJobConfig {
 
   }
 
+  @Bean
+  public Step foodCsvFileItemReaderStep() {
+    return stepBuilderFactory.get("processedFoodCsvFileItemReaderStep")
+        .<Food, Food>chunk(chunkSize)
+        .reader(foodCsvReader.foodCsvFileItemReader())
+        .writer(foodCsvWriter)
+        .build();
+
+  }
 
 }

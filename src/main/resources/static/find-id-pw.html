@@ -39,26 +39,24 @@
   </header>
   <!-- 로고바 끝 -->
 
-    <form action="doJoin" method="POST" class="joinForm" onsubmit="DoJoinForm__submit(this); return false;">
+    <div class="joinForm">
                                                                                                
-        <h2>아이디 찾기</h2>
-        <div class="textForm">
-          <input name="loginId" type="email" class="email" placeholder="이메일 주소">
-          </input>
-        </div>
-        <button type="submit" class="btn" onclick="find-id">아이디 찾기</button>
+      <h2>아이디 찾기</h2>
+      <div class="textForm">
+        <input name="loginId" type="text" class="email-id" id="email-id" placeholder="이메일 주소">
+      </div>
+      <button type="submit" class="btn" onclick="findId()">아이디 찾기</button>
 
-        <h2>비밀번호 찾기</h2>
-        <div class="textForm">
-          <input name="loginId" type="text" class="id" placeholder="아이디">
-          </input>
-        </div>
-        <div class="textForm">
-          <input name="loginPw" type="email" class="email" placeholder="이메일 주소">
-        </div>
-        <button type="submit" class="btn" onclick="find-pw">비밀번호 찾기</button>
-        
-      </form>
+      <h2>비밀번호 찾기</h2>
+      <div class="textForm">
+        <input name="loginPw" type="text" class="id" id="id" placeholder="아이디">
+      </div>
+      <div class="textForm">
+        <input name="loginPw" type="email" class="email-pw" id="email-pw" placeholder="이메일 주소">
+      </div>
+      <button type="submit" class="btn" onclick="findPw()">비밀번호 찾기</button>
+      
+    </div>
 </body>
 <style>
 /* vue 헤더 */
@@ -333,6 +331,26 @@ body {
   background: none;
 }
 
+.email-id {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.email-pw {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
 .nickname {
   width: 100%;
   border:none;
@@ -375,4 +393,51 @@ body {
   background-position: right;
 }
 </style>
+<script>
+  function findId() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/find-id",
+      "method": "PUT",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "email": $('#email-id').val(),
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("이메일 발송이 완료되었습니다.")
+      location.reload();
+    }).fail(function(response) {
+      console.log(response)
+      alert("이메일 발송에 실패하였습니다.")
+    });
+  }
+
+  function findPw() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/find-pw",
+      "method": "PUT",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "email": $("#email-pw").val(),
+        "username": $("#id").val(),
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("이메일 발송이 완료되었습니다.")
+      location.reload();
+    }).fail(function(response) {
+      alert("이메일 발송에 실패하였습니다.")
+    });
+  }
+</script>
 </html>

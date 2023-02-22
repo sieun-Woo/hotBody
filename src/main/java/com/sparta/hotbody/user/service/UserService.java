@@ -133,10 +133,9 @@ public class UserService {
   public MessageResponseDto deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 
     if (user.getRole().equals(UserRole.ADMIN) ||
-        user.getUsername().equals(deleteRequestDto.getUsername()) &&
-            passwordEncoder.matches(deleteRequestDto.getPassword(), user.getPassword())) {
+      passwordEncoder.matches(deleteRequestDto.getPassword(), user.getPassword())) {
 
-      userRepository.deleteByUsername(deleteRequestDto.getUsername());
+      userRepository.deleteByUsername(user.getUsername());
       return new MessageResponseDto("삭제 성공");
     }
     throw new SecurityException("가입한 회원만이 탈퇴할 수 있습니다.");

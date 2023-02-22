@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>식단 기록</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
-</head>
 
 <body>
   <!-- 로그아웃/ -->
@@ -18,15 +17,11 @@
     </ul>
   </header>
 
-  <!-- vue 헤더 -->
   <!-- 제이쿼리 불러오기 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- lodash 불러오기 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-  <!-- vue 불러오기 -->
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 
   <div class="body-content min-height-100vh flex flex-column">
@@ -125,9 +120,47 @@
       </div>
     </header>
     <!-- 메뉴바 끝 -->
+  </div>
+  <div class="board_list">
+    <div>
+      <h2>음식 검색</h2>
+      <div>
+        식품 종류 :
+        <select name="식품종류" id="foodType">
+          <option value="농축산물">농축산물</option>
+          <option value="수산물">수산물</option>
+          <option value="음식">음식</option>
+          <option value="가공식품">가공식품</option>
+        </select>
+        식품명 :
+        <input id="foodName" type="textarea" placeholder="한글로 적어주세요.">
+        <button type="button" onclick="searchFood(1)">검색하기</button>
+      </div>
+    </div>
+    <table class="table">
+      <colgroup>
+        <col width="10%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>NO</th>
+          <th>식품명</th>
+          <th>제조사/유통사</th>
+          <th>1회제공량(g)</th>
+          <th>에너지(㎉)</th>
+          <th>단백질(g)</th>
+          <th>지방(g)</th>
+          <th>탄수화물(g)</th>
+          <th>총당류(g)</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="paging">
 
-    <form action="POSTING" method="POST" class="WriteForm_diet" onsubmit="DoDietForm__submit(this); return false;">
-
+    </div>
+    <div>
       <h2>식단 기록</h2>
       <div class="textForm">
         날짜 : <input name="date" type="date" class="title" placeholder="제목">
@@ -142,25 +175,10 @@
       <div class="textForm">
         음식 양 : <input name="amountOfFood" type="number" class="text" placeholder="그램(g)으로 적어주세요.">
       </div>
-
       <input type="submit" class="btn" value="글 올리기" />
-    </form>
+    </div>
+  </div>
 
-    <form action="POSTING" method="GET" class="ReadForm_diet" onsubmit="DoDietForm__submit(this); return false;">
-      <h2>음식 검색</h2>
-      <div>
-        <select class="select_box" name="음식 종류">
-          <option value="">농축산물</option>
-          <option value="학생">수산물</option>
-          <option value="회사원">음식</option>
-          <option value="기타">가공음식</option>
-        </select>
-      식품명 : <input name="fooName" type="textarea" class="text" placeholder="한글로 적어주세요.">
-      </div>
-      <input type="submit" class="btn" value="검색하기" />
-    </form>
-
-    < </div>
 
 </body>
 <style>
@@ -614,10 +632,6 @@
     border-radius: 15px;
   }
 
-  .select_box {
-    margin: 30px;
-  }
-
   .textForm {
     border-bottom: 2px solid #adadad;
     margin: 30px;
@@ -645,129 +659,182 @@
   .btn:hover {
     background-position: right;
   }
+
+  table {
+    width: 100%;
+    table-layout: fixed
+  }
+
+  .board_list {
+    margin: 0 auto;
+    width: 1200px
+  }
+
+  .board_list table {
+    text-align: center;
+    font-size: 16px
+  }
+
+  .board_list th,
+  .board_list td {
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc
+  }
+
+  .board_list th {
+    font-weight: 500;
+    border-top: 2px solid #000;
+    background: #efefef
+  }
+
+  .board_list tbody tr:last-child {
+    border-bottom: 2px solid #000
+  }
+
+  .board_list table a {
+    display: block
+  }
+
+  .board_list .even {
+    background: #efefef
+  }
+
+  /* 페이징 */
+  .paging {
+    margin: 0 auto;
+    width: 1000px;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0
+  }
+
+  .paging .current {
+    color: #00f;
+    font-weight: bold
+  }
+
+  .paging a {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #000;
+    font-size: 12px
+  }
+
+  .paging a+a {
+    margin-left: 5px
+  }
+
+  .paging a.on {
+    color: #f00
+  }
 </style>
 
 <script>
-  // vue 헤더
-  console.clear();
-  const articleList = [];
-
-  $.get(
-    'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
-    {},
-    function (data) {
-      data.forEach((row, index) => {
-        console.log(row);
-
-        const article = {
-          id: index + 1,
-          regDate: row.commit.author.date,
-          writer: row.commit.author.name,
-          title: row.commit.message,
-          body: row.commit.message
-        };
-
-        articleList.push(article);
-      });
-    },
-    'json'
-  );
-
-  const articleListBox = new Vue({
-    el: "#article-list-wrap",
-    data: {
-      articleList: articleList,
-      searchKeyword: ''
-    },
-    methods: {
-      search: _.debounce(function (e) {
-        this.searchKeyword = e.target.value;
-      }, 500)
-    },
-
-    computed: {
-      filterKey: function () {
-        return this.searchKeyword.toLowerCase();
-      },
-      filtered: function () {
-        if (this.filterKey.length == 0) {
-          return this.articleList;
-        }
-
-        return this.articleList.filter((row) => {
-          if (row.title.toLowerCase().indexOf(this.filterKey) > -1) {
-            return true;
-          } else if (row.writer.toLowerCase().indexOf(this.filterKey) > -1) {
-            return true;
-          } else if (row.body.toLowerCase().indexOf(this.filterKey) > -1) {
-            return true;
-          }
-        });
-      },
-    }
-  });
-
-  // 드롭다운 메뉴
-  var App = {
-
-    accessibleMenu: function () {
-      $menu = $('.access-menu');
-      $menuItem = $menu.find('> li > a');
-
-      $subMenu = $('.access-submenu');
-      $subMenuItem = $subMenu.find('> li > a');
-      $submenuLastItem = $subMenu.find('> li:last-child > a');
-
-      $menuItem.bind({
-        focus: function () {
-          $subMenu.removeClass('is-show');
-          if ($(this).next($subMenu)) {
-            $(this).next($subMenu).addClass('is-show');
-          }
-        },
-
-        blur: function () {
-          $subMenu.removeClass('is-show');
-        }
-      });
-
-      $subMenuItem.bind({
-        focus: function () {
-          $(this).parent().parent().addClass('is-show');
-        }
-      });
-
-      $submenuLastItem.bind({
-        blur: function () {
-          $subMenu.removeClass('is-show');
-        }
-      });
-    },
-
-    cancelAccessibleMenu: function () {
-      $(document).click(function () {
-        if ($subMenu.hasClass('is-show')) {
-          $subMenu.removeClass('is-show');
-        }
-      });
-    }
-
-  };
-
-  $(function () {
-    App.accessibleMenu();
-    App.cancelAccessibleMenu();
-  });
-  // 게시판
-  $('.check.all').on('change', function () {
-    $('.check').prop('checked', $(this).prop('checked'));
-  });
-
-  $(document).on('click', '.page-box .btn.number', function () {
-    $('.page-box .btn.number').removeClass('on');
-    $(this).addClass('on');
+  // 페이징 버튼
+  $(document).on('click', 'a', function (e) {
+    page = parseInt($(this).data('page'));
+    searchFood(page)
     return false;
-  })
+  });
+
+  function searchFood(page) {
+    let foodType = $('#foodType').val();
+    console.log(foodType);
+    let foodName = $('#foodName').val();
+    console.log(foodName);
+
+    var settings = {
+      "url": `http://localhost:8080/api/diet/food?foodType=${foodType}&searchWord=${foodName}&page=${page}`,
+      "method": "GET",
+      "timeout": 0,
+    };
+
+    $.ajax(settings).done(function (response) {
+      const TOTAL_DATA = response.totalElements; // 데이터 총개수
+      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+      const TOTAL_PAGE = response.totalPages // 총페이지
+
+      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지)  
+
+      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+      console.log(response);
+
+      board_list();
+
+      function board_list() {
+        var start = VIEW_DATA - VIEW_DATA;
+        var end = VIEW_DATA;
+        var str = '';
+
+        for (var i = start; i < end; i++) {
+          str += '<tr>';
+          str += '<td>' + (TOTAL_DATA - i) + '</td>';
+          str += '<td>' + (response.content[i].foodName) + '</td>';
+          str += '<td>' + (response.content[i].factory) + '</td>';
+          str += '<td>' + (response.content[i].oneTimeSupply) + '</td>';
+          str += '<td>' + (response.content[i].energy) + '</td>';
+          str += '<td>' + (response.content[i].protein) + '</td>';
+          str += '<td>' + (response.content[i].fat) + '</td>';
+          str += '<td>' + (response.content[i].carbohydrate) + '</td>';
+          str += '<td>' + (response.content[i].sugar) + '</td>';
+          str += '</tr>';
+        }
+
+        $('.table tbody').empty();
+        $('.table tbody').append(str);
+
+        pageing_list();
+      }
+
+
+      // 페이징 목록
+      function pageing_list() {
+        //page  = page < 0 ? 0 : page;
+        var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+        var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+        var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+        var next = end = (setion_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+        var first = 1; // 처음 페이지
+        var last = TOTAL_PAGE; // 마지막 페이지
+        var pageNums = [];
+
+        console.log('page:', page, ' setion_page:', setion_page, ' :start:', start, ' end:', end);
+
+        $('.paging').empty();
+
+        if (page != 1) {
+          pageNums.push("<a href='#' class='first' data-page=" + first + ">처음</a>");
+        }
+
+        if (setion_page != 1) {
+          pageNums.push("<a href='#' class='prev' data-page=" + prev + ">이전</a>");
+        }
+        // 페이징 번호 출력
+        for (var i = start; i < end; i++) {
+          if (page == i) {
+            pageNums.push('<a href="#" class="on" data-page=' + i + '>' + i + '</a>');
+            continue;
+          }
+          pageNums.push('<a href="#" data-page=' + i + '>' + i + '</a>');
+        }
+
+        if (setion_page != TOTAL_SECTION) {
+          pageNums.push("<a href='#' class='next' data-page=" + next + ">다음</a>");
+        }
+
+        if (page != last) {
+          pageNums.push("<a href='#' class='last' data-page=" + last + ">마지막</a>");
+        }
+
+        $('.paging').append(pageNums);
+      }
+    }
+    )
+  }
+
 </script>
 
 </html>

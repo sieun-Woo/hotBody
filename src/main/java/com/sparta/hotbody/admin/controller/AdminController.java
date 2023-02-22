@@ -10,19 +10,14 @@ import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
-import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
-import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
-import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
-import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -139,16 +134,16 @@ public class AdminController {
   }
 
   // Admin 아이디 찾기
-  @GetMapping("/find-id")
-  public FindAdminIdResponseDto findUserId(@RequestBody FindAdminIdRequestDto findAdminIdRequestDto) {
+  @PutMapping("/find-id")
+  public FindAdminIdResponseDto findUserId(@RequestBody FindAdminIdRequestDto findAdminIdRequestDto)
+      throws MessagingException {
     return adminService.findAdminId(findAdminIdRequestDto);
   }
 
   // Admin 비밀번호 찾기
-  @GetMapping("/find-pw")
-  public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto) {
+  @PutMapping("/find-pw")
+  public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto)
+      throws MessagingException {
     return adminService.findAdminPw(findAdminPwRequestDto);
   }
-
-  // 관리자 회원 탈퇴정
 }

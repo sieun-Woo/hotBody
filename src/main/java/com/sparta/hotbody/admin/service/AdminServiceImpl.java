@@ -17,10 +17,7 @@ import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
-import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
-import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
-import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -30,21 +27,24 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +62,9 @@ public class AdminServiceImpl implements AdminService {
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
   private final RefreshTokenRepository refreshTokenRepository;
+  private final JavaMailSender javaMailSender;
+  @Value("${spring.mail.username}")
+  private String from;
 
   @Override
   public ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto) {
@@ -262,17 +265,29 @@ public class AdminServiceImpl implements AdminService {
 
   // 관리자 아이디 찾기
   @Transactional
-  public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto) {
+  public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
+      throws MessagingException {
     Admin admin = adminRepository.findByEmail(findAdminIdRequestDto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
     );
     FindAdminIdResponseDto findAdminIdResponseDto = new FindAdminIdResponseDto(admin.getUsername());
+
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    mimeMessageHelper.setSubject("[hotbody] 아이디 송부");
+    mimeMessageHelper.setFrom(from);
+    mimeMessageHelper.setTo(findAdminIdRequestDto.getEmail());
+    mimeMessageHelper.setText("아이디: " + admin.getUsername());
+
+    javaMailSender.send(mimeMessage);
+
     return findAdminIdResponseDto;
   }
 
   // 관리자 비밀번호 찾기
   @Transactional
-  public FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto) {
+  public FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto)
+      throws MessagingException {
     Admin admin = adminRepository.findByUsernameAndEmail(findAdminPwRequestDto.getUsername(),
         findAdminPwRequestDto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
@@ -285,6 +300,15 @@ public class AdminServiceImpl implements AdminService {
     String encodePassword = passwordEncoder.encode(password);
     admin.modifyPassword(encodePassword);
     adminRepository.save(admin);
+
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    mimeMessageHelper.setSubject("[hotbody] 임시 비밀번호 송부");
+    mimeMessageHelper.setFrom(from);
+    mimeMessageHelper.setTo(findAdminPwRequestDto.getEmail());
+    mimeMessageHelper.setText("임시 비밀번호: " + password);
+
+    javaMailSender.send(mimeMessage);
 
     return findAdminPwResponseDto;
   }

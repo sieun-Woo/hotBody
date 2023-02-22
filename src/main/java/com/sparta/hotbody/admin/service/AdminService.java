@@ -12,6 +12,7 @@ import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -52,9 +53,11 @@ public interface AdminService {
 
   ResponseEntity deleteUser(Long userId);
 
-  FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto);
+  FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
+      throws MessagingException;
 
-  FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto);
+  FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto)
+      throws MessagingException;
 
   ResponseEntity logout(HttpServletRequest request);
 }

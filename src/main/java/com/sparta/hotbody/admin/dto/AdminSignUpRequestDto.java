@@ -22,12 +22,11 @@ public class AdminSignUpRequestDto {
   private String image;
 
   @Builder
-  public AdminSignUpRequestDto(String username, String nickname, String password, String email, String image, String adminToken) {
+  public AdminSignUpRequestDto(String username, String nickname, String password, String email, String adminToken) {
     this.username = username;
     this.nickname = nickname;
     this.password = password;
     this.email = email;
-    this.image = image;
     this.adminToken = adminToken;
   }
 }

@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class FoodCsvWriter implements ItemWriter<Food> {
 
-  private final FoodRepositroy foodRepositroy;
+  private final FoodRepository foodRepository;
   @Override
   public void write(List<? extends Food> list) throws Exception {
-    foodRepositroy.saveAll(new ArrayList<Food>(list));
+    foodRepository.saveAll(new ArrayList<Food>(list));
   }
 }

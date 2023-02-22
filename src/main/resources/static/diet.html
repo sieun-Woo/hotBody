@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,120 +8,122 @@
   <title>식단 기록</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-<!-- 로그아웃/ -->
-<!-- Wordpress Site header-bar -->
-<header class="wp-header" role="banner">
-  <ul>
-    <li><a href="index.html">로그아웃</a></li>
-  </ul>
-</header>
-
-<!-- vue 헤더 -->
-<!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- lodash 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-
-
-<div class="body-content min-height-100vh flex flex-column">
-  <!-- 로고바 시작 -->
-  <header class="logo-bar con-min-width">
-    <div class="con height-100p flex flex-jc-c">
-      <a href="index.html" class="logo flex flex-ai-c">
-        <i class="fa-solid fa-dumbbell"></i>
-        <span>
-          Hot<span></span>body
-        </span>
-      </a>
-    </div>
+  <!-- 로그아웃/ -->
+  <!-- Wordpress Site header-bar -->
+  <header class="wp-header" role="banner">
+    <ul>
+      <li><a href="index.html">로그아웃</a></li>
+    </ul>
   </header>
-  <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 마이페이지</div>
+
+  <!-- vue 헤더 -->
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- lodash 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+  <!-- vue 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+
+  <div class="body-content min-height-100vh flex flex-column">
+    <!-- 로고바 시작 -->
+    <header class="logo-bar con-min-width">
+      <div class="con height-100p flex flex-jc-c">
+        <a href="index.html" class="logo flex flex-ai-c">
+          <i class="fa-solid fa-dumbbell"></i>
+          <span>
+            Hot<span></span>body
+          </span>
+        </a>
+      </div>
+    </header>
+    <!-- 로고바 끝 -->
+    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 마이페이지
+    </div>
     <!-- 메뉴바 시작 -->
     <header class="menu-bar con-min-width">
-        <div class="con height-100p" style="position: relative; z-index: 2;">
-          <nav class="menu-bar__menu-1">
-    
-            <ul class="flex">
-              <li>
-                <a href="index.html" class="block">
-                  <i class="fas fa-home"></i>
-                  <span>홈</span>
-                </a>
-              </li>
-              <li>
-                <a class="block">
-                  <i class="fas fa-list"></i>
-                  <span>커뮤니티</span>
-                </a>
-                <ul>
-                  <li>
-                    <a href="communities_exercise.html" class="block">
-                      <i class="fa-solid fa-person-walking"></i>
-                      <span>운동 게시판</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="communities_diet.html" class="block">
-                      <i class="fa-regular fa-clipboard"></i>
-                      <span>식단 게시판</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="communities_trainer.html" class="block">
-                      <i class="fa-solid fa-square-h"></i>
-                      <span>트레이너 게시판</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="communities_etc.html" class="block">
-                      <i class="fa-regular fa-comments"></i>
-                      <span>잡담 게시판</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a class="block">
-                  <i class="fa-solid fa-gear"></i>
-                  <span>마이페이지</span>
-                </a>
-                <ul>
-                  <li>
-                    <a href="exercise.html" class="block">
-                      <i class="fa-solid fa-person-walking"></i>
-                      <span>운동</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="diet.html" class="block">
-                      <i class="fa-regular fa-clipboard"></i>
-                      <span>식단</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="my-page.html" class="block">
-                      <i class="fa-regular fa-address-card"></i>
-                      <span>프로필</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="map.html" class="block">
-                  <i class="fa-solid fa-map-location-dot"></i>
-                  <span>주변 헬스장</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+      <div class="con height-100p" style="position: relative; z-index: 2;">
+        <nav class="menu-bar__menu-1">
+
+          <ul class="flex">
+            <li>
+              <a href="index.html" class="block">
+                <i class="fas fa-home"></i>
+                <span>홈</span>
+              </a>
+            </li>
+            <li>
+              <a class="block">
+                <i class="fas fa-list"></i>
+                <span>커뮤니티</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="communities_exercise.html" class="block">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <span>운동 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_diet.html" class="block">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>식단 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_trainer.html" class="block">
+                    <i class="fa-solid fa-square-h"></i>
+                    <span>트레이너 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_etc.html" class="block">
+                    <i class="fa-regular fa-comments"></i>
+                    <span>잡담 게시판</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="block">
+                <i class="fa-solid fa-gear"></i>
+                <span>마이페이지</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="exercise.html" class="block">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <span>운동</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="diet.html" class="block">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>식단</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="my-page.html" class="block">
+                    <i class="fa-regular fa-address-card"></i>
+                    <span>프로필</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="map.html" class="block">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>주변 헬스장</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
     <!-- 메뉴바 끝 -->
 
     <form action="POSTING" method="POST" class="WriteForm_diet" onsubmit="DoDietForm__submit(this); return false;">
@@ -139,23 +142,56 @@
       <div class="textForm">
         음식 양 : <input name="amountOfFood" type="number" class="text" placeholder="그램(g)으로 적어주세요.">
       </div>
-    
-      <input type="submit" class="btn" value="글 올리기"/>
+
+      <input type="submit" class="btn" value="글 올리기" />
     </form>
 
-    <
-  </div>
+    <form action="POSTING" method="GET" class="ReadForm_diet" onsubmit="DoDietForm__submit(this); return false;">
+      <h2>음식 검색</h2>
+      <div>
+        <select class="select_box" name="음식 종류">
+          <option value="">농축산물</option>
+          <option value="학생">수산물</option>
+          <option value="회사원">음식</option>
+          <option value="기타">가공음식</option>
+        </select>
+      식품명 : <input name="fooName" type="textarea" class="text" placeholder="한글로 적어주세요.">
+      </div>
+      <input type="submit" class="btn" value="검색하기" />
+    </form>
+
+    < </div>
 
 </body>
 <style>
   /* 회원가입 메뉴 */
   /* reset */
-  body {padding: 10px; margin: 10px;}
-  h1, ul {margin:0; padding: 0;}
-  ul {list-style: none;}
-  header + header {margin-top: 50px;}
-  nav {display:block;}
-  a {text-decoration: none;}
+  body {
+    padding: 10px;
+    margin: 10px;
+  }
+
+  h1,
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  header+header {
+    margin-top: 50px;
+  }
+
+  nav {
+    display: block;
+  }
+
+  a {
+    text-decoration: none;
+  }
 
   h1:hover {
     cursor: pointer;
@@ -169,36 +205,45 @@
     font-weight: 400;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
   }
+
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 700;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
   }
+
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 300;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
   }
+
   html {
     font-family: 'LotteMartDream', sans-serif;
   }
 
   /* 노말라이즈 */
-  body, ul, li, h1, h2, h3 {
-    margin:0;
-    padding:0;
-    list-style:none;
+  body,
+  ul,
+  li,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
+
   a {
-    color:inherit;
-    text-decoration:none;
+    color: inherit;
+    text-decoration: none;
   }
 
   /* 라이브러리 */
   .hover-underline:hover {
-    text-decoration:underline;
+    text-decoration: underline;
   }
 
   .hover-pointer:hover {
@@ -206,27 +251,27 @@
   }
 
   .flex {
-    display:flex;
+    display: flex;
   }
 
   .flex-jc-c {
-    justify-content:center;
+    justify-content: center;
   }
 
   .flex-ai-c {
-    align-items:center;
+    align-items: center;
   }
 
   .flex-wrap {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
   }
 
   .flex-column {
-    flex-direction:column;
+    flex-direction: column;
   }
 
   .flex-grow-1 {
-    flex-grow:1;
+    flex-grow: 1;
   }
 
   .flex-none {
@@ -247,40 +292,40 @@
   }
 
   .min-height-100vh {
-    min-height:100vh;
+    min-height: 100vh;
   }
 
   .bg-pink {
-    background-color:pink;
+    background-color: pink;
   }
 
   .bd-green {
-    border:10px solid green;
+    border: 10px solid green;
   }
 
   .bg-red {
-    background-color:red;
+    background-color: red;
   }
 
   .bg-blue {
-    background-color:blue;
+    background-color: blue;
   }
 
   .height-100p {
-    height:100%;
+    height: 100%;
   }
 
   .block {
-    display:block;
+    display: block;
   }
 
   /* 커스텀 */
   .con-min-width {
-    min-width:1200px;
+    min-width: 1200px;
   }
 
   .con {
-    width:1000px;
+    width: 1000px;
   }
 
   .info-article {
@@ -291,106 +336,111 @@
 
   /* 로고 시작 */
   .logo {
-    font-size:4rem;
+    font-size: 4rem;
     color: white;
   }
 
-  .logo > span {
-    margin-left:10px;
+  .logo>span {
+    margin-left: 10px;
     color: white;
   }
 
-  .logo > span > span {
-    color:red;
+  .logo>span>span {
+    color: red;
   }
 
   .logo--mini {
-    font-size:2rem;
+    font-size: 2rem;
   }
+
   /* 로고 끝 */
 
   /* 로고바 시작 */
   .logo-bar {
-    background-color:black;
-    color:white;
-    height:200px;
+    background-color: black;
+    color: white;
+    height: 200px;
   }
+
   /* 로고바 끝 */
 
   /* 메뉴바 시작 */
   .menu-bar {
-    background-color:black;
-    color:white;
+    background-color: black;
+    color: white;
   }
 
-  .menu-bar__menu-1 > ul > li {
-    width:25%;
-    position:relative;
+  .menu-bar__menu-1>ul>li {
+    width: 25%;
+    position: relative;
   }
 
-  .menu-bar__menu-1 ul > li > a {
-    text-align:center;
-    padding:20px 0;
+  .menu-bar__menu-1 ul>li>a {
+    text-align: center;
+    padding: 20px 0;
   }
 
-  .menu-bar__menu-1 ul > li:hover > a {
-    background-color:white;
-    color:black;
+  .menu-bar__menu-1 ul>li:hover>a {
+    background-color: white;
+    color: black;
   }
 
-  .menu-bar__menu-1 > ul > li > a {
-    border-radius:10px 10px 0 0;
+  .menu-bar__menu-1>ul>li>a {
+    border-radius: 10px 10px 0 0;
   }
 
-  .menu-bar__menu-1 > ul ul {
-    display:none;
-    position:absolute;
-    top:100%;
-    left:-10px;
-    width:100%;
-    background-color:black;
-    border:10px solid black;
-    border-top-width:0;
-    border-radius:0 0 20px 20px;
+  .menu-bar__menu-1>ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    width: 100%;
+    background-color: black;
+    border: 10px solid black;
+    border-top-width: 0;
+    border-radius: 0 0 20px 20px;
   }
 
-  .menu-bar__menu-1 > ul > li:hover > ul {
-    display:block;
+  .menu-bar__menu-1>ul>li:hover>ul {
+    display: block;
   }
 
-  .menu-bar__menu-1 > ul ul > li:last-child > a {
-    border-radius:0 0 10px 10px;
+  .menu-bar__menu-1>ul ul>li:last-child>a {
+    border-radius: 0 0 10px 10px;
   }
+
   /* 메뉴바 끝 */
 
   /* 타이틀바 시작 */
   .title-bar {
-    margin-top:30px;
-    margin-bottom:30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
+
   /* 타이틀바 끝 */
 
   /* 하단바 시작 */
   .bottom-bar {
-    margin-top:30px;
-    background-color:black;
-    color:white;
-    padding-top:30px;
-    padding-bottom:30px;
+    margin-top: 30px;
+    background-color: black;
+    color: white;
+    padding-top: 30px;
+    padding-bottom: 30px;
   }
 
   .bottom-bar__site-info {
-    margin-left:20px;
+    margin-left: 20px;
   }
+
   /* 하단바 끝 */
 
   /* 게시물 검색 시작 */
 
-  .article-search > form {
-    display:flex;
+  .article-search>form {
+    display: flex;
     width: 1000px;
     margin: auto;
-    padding:10px;
+    padding: 10px;
   }
 
   /* 게시물 검색 끝 */
@@ -399,93 +449,95 @@
 
   /* 게시물 리스트 */
   :root {
-    --article-list__cell-id__width:100px;
-    --article-list__cell-reg-date__width:220px;
-    --article-list__cell-writer__width:150px;
-    --article-list__cell-like__width:100px;
-    --article-list__cell-title__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
+    --article-list__cell-id__width: 100px;
+    --article-list__cell-reg-date__width: 220px;
+    --article-list__cell-writer__width: 150px;
+    --article-list__cell-like__width: 100px;
+    --article-list__cell-title__width: calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
   }
 
-  .article-list > * > div {
-    display:flex;
+  .article-list>*>div {
+    display: flex;
   }
 
-  .article-list > header > div > div {
-    position:relative;
+  .article-list>header>div>div {
+    position: relative;
   }
 
-  .article-list > header > div > div:not(:last-child)::after {
-    content:"";
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    right:0;
-    width:1px;
-    height:10px;
-    background-color:black;
+  .article-list>header>div>div:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    height: 10px;
+    background-color: black;
   }
 
-  .article-list > * > div > div {
-    box-sizing:border-box;
-    text-align:center;
-    padding-top:10px;
-    padding-bottom:10px;
+  .article-list>*>div>div {
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .article-list__cell-id {
-    width:var(--article-list__cell-id__width);
+    width: var(--article-list__cell-id__width);
   }
 
   .article-list__cell-reg-date {
-    width:var(--article-list__cell-reg-date__width);
+    width: var(--article-list__cell-reg-date__width);
   }
 
   .article-list__cell-writer {
-    width:var(--article-list__cell-writer__width);
+    width: var(--article-list__cell-writer__width);
   }
 
   .article-list__cell-title {
-    width:var(--article-list__cell-title__width);
+    width: var(--article-list__cell-title__width);
   }
 
   .article-list__cell-like {
-    width:var(--article-list__cell-like__width);
+    width: var(--article-list__cell-like__width);
   }
 
-  .article-list > .main .article-list__cell-title {
-    text-align:left;
-    padding-left:10px;
+  .article-list>.main .article-list__cell-title {
+    text-align: left;
+    padding-left: 10px;
   }
 
-  .article-list > .main > div {
-    border-top:1px solid black;
+  .article-list>.main>div {
+    border-top: 1px solid black;
   }
+
   /* 게시물 리스트 끝 */
 
   /* 게시물 리스트 페이지 메뉴 시작 */
   .article-page-menu {
-    margin-top:20px;
+    margin-top: 20px;
   }
 
-  .article-page-menu > ul > li > a {
-    padding:7px;
+  .article-page-menu>ul>li>a {
+    padding: 7px;
   }
 
-  .article-page-menu > ul > li:not(:first-child):not(:last-child) > a {
-    border:1px solid transparent;
-    padding-left:0;
-    padding-right:0;
-    min-width:30px;
-    justify-content:center;
+  .article-page-menu>ul>li:not(:first-child):not(:last-child)>a {
+    border: 1px solid transparent;
+    padding-left: 0;
+    padding-right: 0;
+    min-width: 30px;
+    justify-content: center;
   }
 
-  .article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
-    border-color:#afafaf;
+  .article-page-menu>ul>li:not(:first-child):not(:last-child):hover>a {
+    border-color: #afafaf;
   }
 
   .article-page-menu__link--selected {
-    color:red;
+    color: red;
   }
+
   /* 게시물 리스트 페이지 메뉴 끝 */
 
   /* Wordpress Site header-bar */
@@ -498,8 +550,9 @@
     width: 100%;
     z-index: 9999;
   }
+
   .wp-header h1 {
-    float:left;
+    float: left;
     padding-left: 40px;
     color: #78c8e6;
     font-size: 20px;
@@ -509,17 +562,20 @@
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
   }
+
   .wp-header h1:hover {
     color: #fff;
     cursor: pointer;
   }
+
   .wp-header li {
-    float:right;
+    float: right;
     height: 46px;
     padding-right: 20px;
     line-height: 46px;
   }
-  .wp-header li > a {
+
+  .wp-header li>a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -527,50 +583,68 @@
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
   }
-  .wp-header li:hover > a {
+
+  .wp-header li:hover>a {
     color: #78c8e6;
   }
 
   .WriteForm_diet {
-  position:absolute;
-  width:400px;
-  height:400px;
-  padding: 30px, 20px;
-  background-color:#FFFFFF;
-  text-align:center;
-  top: 80%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  border-radius: 15px;
-}
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    padding: 30px, 20px;
+    background-color: #FFFFFF;
+    text-align: center;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+  }
 
-.textForm {
-  border-bottom: 2px solid #adadad;
-  margin: 30px;
-  padding: 10px 10px;
-}
-.btn {
-  position:relative;
-  left:40%;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:80%;
-  height:40px;
-  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
-  background-position: left;
-  background-size: 200%;
-  color:white;
-  font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
-}
+  .ReadForm_diet {
+    position: absolute;
+    margin-top: 300px;
+    margin-bottom: 300px;
+    padding: 30px, 20px;
+    background-color: #FFFFFF;
+    text-align: center;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+  }
 
-.btn:hover {
-  background-position: right;
-}
+  .select_box {
+    margin: 30px;
+  }
 
+  .textForm {
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+  }
+
+  .btn {
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
+  .btn:hover {
+    background-position: right;
+  }
 </style>
 
 <script>
@@ -579,49 +653,49 @@
   const articleList = [];
 
   $.get(
-      'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
-      {},
-      function(data) {
-        data.forEach((row, index) => {
-          console.log(row);
+    'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
+    {},
+    function (data) {
+      data.forEach((row, index) => {
+        console.log(row);
 
-          const article = {
-            id:index + 1,
-            regDate:row.commit.author.date,
-            writer:row.commit.author.name,
-            title:row.commit.message,
-            body:row.commit.message
-          };
+        const article = {
+          id: index + 1,
+          regDate: row.commit.author.date,
+          writer: row.commit.author.name,
+          title: row.commit.message,
+          body: row.commit.message
+        };
 
-          articleList.push(article);
-        });
-      },
-      'json'
+        articleList.push(article);
+      });
+    },
+    'json'
   );
 
   const articleListBox = new Vue({
     el: "#article-list-wrap",
     data: {
-      articleList:articleList,
-      searchKeyword:''
+      articleList: articleList,
+      searchKeyword: ''
     },
     methods: {
-      search:_.debounce(function(e) {
+      search: _.debounce(function (e) {
         this.searchKeyword = e.target.value;
       }, 500)
     },
 
     computed: {
-      filterKey:function() {
+      filterKey: function () {
         return this.searchKeyword.toLowerCase();
       },
-      filtered:function() {
-        if ( this.filterKey.length == 0 ) {
+      filtered: function () {
+        if (this.filterKey.length == 0) {
           return this.articleList;
         }
 
         return this.articleList.filter((row) => {
-          if ( row.title.toLowerCase().indexOf(this.filterKey) > -1 ) {
+          if (row.title.toLowerCase().indexOf(this.filterKey) > -1) {
             return true;
           } else if (row.writer.toLowerCase().indexOf(this.filterKey) > -1) {
             return true;
@@ -636,7 +710,7 @@
   // 드롭다운 메뉴
   var App = {
 
-    accessibleMenu: function(){
+    accessibleMenu: function () {
       $menu = $('.access-menu');
       $menuItem = $menu.find('> li > a');
 
@@ -645,34 +719,34 @@
       $submenuLastItem = $subMenu.find('> li:last-child > a');
 
       $menuItem.bind({
-        focus: function(){
+        focus: function () {
           $subMenu.removeClass('is-show');
-          if($(this).next($subMenu)){
+          if ($(this).next($subMenu)) {
             $(this).next($subMenu).addClass('is-show');
           }
         },
 
-        blur: function(){
+        blur: function () {
           $subMenu.removeClass('is-show');
         }
       });
 
       $subMenuItem.bind({
-        focus: function(){
+        focus: function () {
           $(this).parent().parent().addClass('is-show');
         }
       });
 
       $submenuLastItem.bind({
-        blur: function(){
+        blur: function () {
           $subMenu.removeClass('is-show');
         }
       });
     },
 
-    cancelAccessibleMenu: function(){
-      $(document).click(function(){
-        if($subMenu.hasClass('is-show')){
+    cancelAccessibleMenu: function () {
+      $(document).click(function () {
+        if ($subMenu.hasClass('is-show')) {
           $subMenu.removeClass('is-show');
         }
       });
@@ -680,19 +754,20 @@
 
   };
 
-  $(function(){
+  $(function () {
     App.accessibleMenu();
     App.cancelAccessibleMenu();
   });
   // 게시판
-  $('.check.all').on('change', function(){
+  $('.check.all').on('change', function () {
     $('.check').prop('checked', $(this).prop('checked'));
   });
 
-  $(document).on('click', '.page-box .btn.number', function(){
+  $(document).on('click', '.page-box .btn.number', function () {
     $('.page-box .btn.number').removeClass('on');
     $(this).addClass('on');
     return false;
   })
 </script>
+
 </html>

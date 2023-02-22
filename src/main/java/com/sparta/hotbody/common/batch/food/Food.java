@@ -20,7 +20,7 @@ public class Food {
   @Column
   String foodName;
   @Column
-  String oneTime;
+  String OneTimeSupply;
   @Column
   String energy;
   @Column
@@ -28,19 +28,19 @@ public class Food {
   @Column
   String fat;
   @Column
-  String car;
+  String carbohydrate;
   @Column
   String sugar;
 
-  public Food(Long id, String foodName, String oneTime, String energy, String protein, String fat,
-      String car, String sugar) {
+  public Food(Long id, String foodName, String OneTimeSupply, String energy, String protein, String fat,
+      String carbohydrate, String sugar) {
     this.id = id;
     this.foodName = foodName;
-    this.oneTime = oneTime;
+    this.OneTimeSupply = OneTimeSupply;
     this.energy = energy;
     this.protein = protein;
     this.fat = fat;
-    this.car = car;
+    this.carbohydrate = carbohydrate;
     this.sugar = sugar;
   }
 }

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +19,7 @@ public class AquaticProducts {
   Long id;
   @Column
   String foodName;
-  String oneTime;
+  String OneTimeSupply;
   @Column
   String energy;
   @Column
@@ -28,16 +27,16 @@ public class AquaticProducts {
   @Column
   String fat;
   @Column
-  String car;
+  String carbohydrate;
 
-  public AquaticProducts(Long id, String foodName, String oneTime, String energy, String protein,
-      String fat, String car) {
+  public AquaticProducts(Long id, String foodName, String OneTimeSupply, String energy, String protein,
+      String fat, String carbohydrate) {
     this.id = id;
     this.foodName = foodName;
-    this.oneTime = oneTime;
+    this.OneTimeSupply = OneTimeSupply;
     this.energy = energy;
     this.protein = protein;
     this.fat = fat;
-    this.car = car;
+    this.carbohydrate = carbohydrate;
   }
 }

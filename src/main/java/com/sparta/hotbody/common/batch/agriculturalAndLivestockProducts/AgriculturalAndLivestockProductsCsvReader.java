@@ -28,7 +28,7 @@ public class AgriculturalAndLivestockProductsCsvReader {
 
     /* delimitedLineTokenizer : setNames를 통해 각각의 데이터의 이름 설정 */
     DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer(",");
-    delimitedLineTokenizer.setNames("foodName", "oneTime", "energy", "protein", "fat", "car", "sugar");
+    delimitedLineTokenizer.setNames("foodName", "OneTimeSupply", "energy", "protein", "fat", "carbohydrate", "sugar");
     defaultLineMapper.setLineTokenizer(delimitedLineTokenizer);
 
     /* beanWrapperFieldSetMapper : Tokenizer에서 가지고온 데이터들을 VO로 바인드하는 역할 */

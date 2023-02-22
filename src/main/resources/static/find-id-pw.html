@@ -12,7 +12,7 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li><a href="index.html">홈으로</a></li>
+        <li><a href="login.html">로그인</a></li>
         <li><a href="signup.html">회원가입</a></li>
     </ul>
 </header>
@@ -39,20 +39,26 @@
   </header>
   <!-- 로고바 끝 -->
 
-    <div class="joinForm">
+    <form action="doJoin" method="POST" class="joinForm" onsubmit="DoJoinForm__submit(this); return false;">
                                                                                                
-      <h2>로그인</h2>
-      <div class="textForm">
-        <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
-        </input>
-      </div>
-      <div class="textForm">
-        <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
-      </div>
-      <button type="submit" onclick="login()" class="btn">로그인</button>
-      <button type="button" onclick="location.href='find-id-pw.html'" class="btn" >아이디 / 비밀번호 찾기</button>
-      
-    </div>
+        <h2>아이디 찾기</h2>
+        <div class="textForm">
+          <input name="loginId" type="email" class="email" placeholder="이메일 주소">
+          </input>
+        </div>
+        <button type="submit" class="btn" onclick="find-id">아이디 찾기</button>
+
+        <h2>비밀번호 찾기</h2>
+        <div class="textForm">
+          <input name="loginId" type="text" class="id" placeholder="아이디">
+          </input>
+        </div>
+        <div class="textForm">
+          <input name="loginPw" type="email" class="email" placeholder="이메일 주소">
+        </div>
+        <button type="submit" class="btn" onclick="find-pw">비밀번호 찾기</button>
+        
+      </form>
 </body>
 <style>
 /* vue 헤더 */
@@ -369,42 +375,4 @@ body {
   background-position: right;
 }
 </style>
-<script>
-  function login() {
-
-    let username = $('#id').val();
-    let password = $('#pw').val();
-
-    if (username == '') {
-      alert('ID를 입력해주세요.');
-      return;
-    } else if(password == '') {
-      alert('비밀번호를 입력해주세요.');
-      return;
-    }
-
-    var settings = {
-      "url": "http://localhost:8080/api/user/log-in",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "username": username,
-        "password": password
-      }),
-    };
-
-    $.ajax(settings).done(function (response, status, xhr) {
-      console.log(response);
-      localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
-      console.log(xhr.getResponseHeader('Authorization'));
-      alert("로그인 완료")
-      location.href = "index.html"
-    }).fail(function(response) {
-      alert(response.responseJSON.message);
-    })
-  }
-</script>
 </html>

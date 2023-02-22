@@ -10,7 +10,6 @@ public class UserProfileResponseDto {
   private int height;
   private int weight;
   private String region;
-  private String image;
   private String nickname;
 
   public UserProfileResponseDto() {}
@@ -19,16 +18,14 @@ public class UserProfileResponseDto {
     this.height= user.getHeight();
     this.weight = user.getWeight();
     this.region = user.getRegion();
-    this.image = user.getImage();
     this.nickname = user.getNickname();
   }
 
   @Builder
-  public UserProfileResponseDto(int height, int weight, String region, String image, String nickname){
+  public UserProfileResponseDto(int height, int weight, String region, String nickname){
     this.height = height;
     this.weight = weight;
     this.region = region;
-    this.image = image;
     this.nickname = nickname;
   }
 
@@ -42,7 +39,6 @@ public class UserProfileResponseDto {
             .height(m.getHeight())
             .weight(m.getWeight())
             .region(m.getRegion())
-            .image(m.getImage())
             .nickname(m.getNickname())
             .build());
     return userProfileResponseDtoPage;

@@ -79,13 +79,14 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<RefreshToken> refreshTokenList = new ArrayList<>();
 
-  public User(String username, String password, UserRole role, String nickname, Integer gender, int age) {
+  public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;
     this.password = password;
     this.nickname = nickname;
     this.gender = gender;
     this.role = role;
     this.age = age;
+    this.email = email;
   }
 
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
@@ -99,6 +100,7 @@ public class User extends TimeStamp {
   }
 
   public void update(UserProfileRequestDto requestDto) {
+    this.nickname = requestDto.getNickname();
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
     this.region = requestDto.getRegion();

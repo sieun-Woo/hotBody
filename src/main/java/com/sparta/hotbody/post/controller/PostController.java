@@ -36,18 +36,17 @@ public class PostController {
 
   // 1. 게시글 등록
   @PostMapping("/posts")
-  public Long createPost(
+  public ResponseEntity<String> createPost(
       @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return postService.createPost(postRequestDto, userDetails);
   }
 
+  // 2. 이미지 등록
   @PostMapping("/posts/image")
-  public ResponseEntity<String> createImage(
-      @RequestPart MultipartFile file,
-      @RequestPart Long id,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    return postService.createImage(file, id);
+  public String createImage(
+      @RequestPart MultipartFile file) throws IOException {
+    return postService.createImage(file);
   }
 
   // 2. 게시글 전체 조회

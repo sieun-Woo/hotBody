@@ -27,8 +27,8 @@ public class FoodResponseDto {
     this.carbohydrate = agriculturalAndLivestockProducts.getCarbohydrate();
     this.sugar = agriculturalAndLivestockProducts.getSugar();
   }
-
   public FoodResponseDto(AquaticProducts aquaticProducts) {
+
     this.foodName = aquaticProducts.getFoodName();
     this.oneTimeSupply = aquaticProducts.getOneTimeSupply();
     this.energy = aquaticProducts.getEnergy();

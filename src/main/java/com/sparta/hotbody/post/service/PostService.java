@@ -37,27 +37,20 @@ public class PostService {
 
   // 1. 게시글 등록
   @Transactional
-  public Long createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+  public ResponseEntity<String> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
-    Long id = postRepository.saveAndFlush(post).getId();
+    postRepository.saveAndFlush(post);
 
-    return id;
+    return new ResponseEntity<>("작성 완료", HttpStatus.OK);
   }
 
   @Transactional
-  public ResponseEntity<String> createImage(MultipartFile file, Long id)
+  public String createImage(MultipartFile file)
       throws IOException {
-    Post post = postRepository.findById(id).get();
-    if (post.getImage() != null) {
-      Image image = imageRepository.findByResourcePath(post.getImage()).get();
-      uploadService.remove(image.getResourcePath());
-    }
     Image image = uploadService.storeFile(file);
     String resourcePath = image.getResourcePath();
-    post.updateImage(resourcePath);
-
-    return new ResponseEntity("사진이 등록되었습니다.", HttpStatus.OK);
+    return resourcePath;
   }
 
 

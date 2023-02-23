@@ -732,7 +732,7 @@
 
 <script>
   // 페이징 버튼
-  $(document).on('click', 'a', function (e) {
+  $(document).on('click', '#p', function (e) {
     page = parseInt($(this).data('page'));
     searchFood(page)
     return false;
@@ -765,12 +765,16 @@
 
       function board_list() {
         var start = VIEW_DATA - VIEW_DATA;
+        // page * VIEW_DATA - (VIEW_DATA - 1);
         var end = VIEW_DATA;
+        // page * VIEW_DATA + VIEW_DATA - (VIEW_DATA - 1);
         var str = '';
+
+        var j = (page - 1) * 10;
 
         for (var i = start; i < end; i++) {
           str += '<tr>';
-          str += '<td>' + (TOTAL_DATA - i) + '</td>';
+          str += '<td>' + (TOTAL_DATA - j) + '</td>';
           str += '<td>' + (response.content[i].foodName) + '</td>';
           str += '<td>' + (response.content[i].factory) + '</td>';
           str += '<td>' + (response.content[i].oneTimeSupply) + '</td>';
@@ -780,6 +784,7 @@
           str += '<td>' + (response.content[i].carbohydrate) + '</td>';
           str += '<td>' + (response.content[i].sugar) + '</td>';
           str += '</tr>';
+          j += 1 
         }
 
         $('.table tbody').empty();
@@ -806,27 +811,27 @@
         $('.paging').empty();
 
         if (page != 1) {
-          pageNums.push("<a href='#' class='first' data-page=" + first + ">처음</a>");
+          pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
         }
 
         if (setion_page != 1) {
-          pageNums.push("<a href='#' class='prev' data-page=" + prev + ">이전</a>");
+          pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
         }
         // 페이징 번호 출력
         for (var i = start; i < end; i++) {
           if (page == i) {
-            pageNums.push('<a href="#" class="on" data-page=' + i + '>' + i + '</a>');
+            pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
             continue;
           }
-          pageNums.push('<a href="#" data-page=' + i + '>' + i + '</a>');
+          pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
         }
 
         if (setion_page != TOTAL_SECTION) {
-          pageNums.push("<a href='#' class='next' data-page=" + next + ">다음</a>");
+          pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
         }
 
         if (page != last) {
-          pageNums.push("<a href='#' class='last' data-page=" + last + ">마지막</a>");
+          pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
         }
 
         $('.paging').append(pageNums);

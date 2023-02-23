@@ -28,13 +28,13 @@ public class InitData implements ApplicationRunner {
 
     Admin admin = new Admin("admin", passwordEncoder.encode("admin"), UserRole.ADMIN, "admin", "www.naver.com", "admin@gmail.com");
     adminRepository.save(admin);
-    User user1 = new User("user1", passwordEncoder.encode("user1"), UserRole.USER, "user1", 1, 33, "aba@abc.com");
+    User user1 = new User("user1", passwordEncoder.encode("user1"), UserRole.USER, "user1_nickname", 1, 33, "aba@abc.com");
     userRepository.save(user1);
-    User user2 = new User("user2", passwordEncoder.encode("user2"), UserRole.USER, "user2", 0, 44, "aba@abc.com");
+    User user2 = new User("user2", passwordEncoder.encode("user2"), UserRole.USER, "user2_nickname", 0, 44, "aba@abc.com");
     userRepository.save(user2);
-    User user3 = new User("user3", passwordEncoder.encode("user3"), UserRole.TRAINER, "trainer1", 0, 55, "aba@abc.com");
+    User user3 = new User("user3", passwordEncoder.encode("user3"), UserRole.TRAINER, "trainer1_nickname", 0, 55, "aba@abc.com");
     userRepository.save(user3);
-    User user4 = new User("user4", passwordEncoder.encode("user4"), UserRole.TRAINER, "trainer2", 1, 66, "aba@abc.com");
+    User user4 = new User("user4", passwordEncoder.encode("user4"), UserRole.TRAINER, "trainer2_nickname", 1, 66, "aba@abc.com");
     userRepository.save(user4);
     Post post1 = new Post("첫번째 게시글", "첫번째 글을 쓰다니! 영광입니다.", user1);
     postRepository.save(post1);
@@ -48,5 +48,17 @@ public class InitData implements ApplicationRunner {
     postRepository.save(post5);
     Post post6 = new Post("여섯번째 게시글", "여섯번째는 뺏기지 않았습니다.", user1);
     postRepository.save(post6);
+    Post post7 = new Post("일곱번째 게시글", "안녕하세요. 첫 트레이너입니다.", user3);
+    postRepository.save(post7);
+    Post post8 = new Post("여덟번째 게시글", "안녕하세요. 두번째 트레이너입니다.", user4);
+    postRepository.save(post8);
+    Post post9 = new Post("아홉번째 게시글", "여러분도 할 수 있습니다.", user3);
+    postRepository.save(post9);
+    Post post10 = new Post("열번째 게시글", "삼두 이렇게 만들면 됩니다.", user4);
+    postRepository.save(post10);
+    Post post11 = new Post("열한번째 게시글", "난 트1이 좋더라.", user2);
+    postRepository.save(post11);
+    Post post12 = new Post("열두번째 게시글", "나는 트2가 좋음.", user1);
+    postRepository.save(post12);
   }
 }

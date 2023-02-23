@@ -12,8 +12,6 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li id="signup"><a href="signup.html">회원가입</a></li>
-        <li id="signin"><a href="login.html">로그인</a></li>
         <li id="logout"><a onclick="logout()">로그아웃</a></li>
     </ul>
 </header>
@@ -25,15 +23,12 @@
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<!-- vue 불러오기 -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
-
 
 <div class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
-      <a href="index.html" class="logo flex flex-ai-c">
+      <a href="admin.html" class="logo flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>body
@@ -48,41 +43,29 @@
     <div class="con height-100p" style="position: relative; z-index: 2;">
       <nav class="menu-bar__menu-1">
 
-        <ul class="flex">
+        <ul class="flex" style="justify-content: center;">
           <li>
-            <a href="index.html" class="block">
-              <i class="fas fa-home"></i>
-              <span>홈</span>
+            <a href="admin-user.html" class="block">
+              <i class="fa-regular fa-address-card"></i>
+              <span>유저</span>
             </a>
           </li>
           <li>
             <a class="block">
               <i class="fas fa-list"></i>
-              <span>커뮤니티</span>
+              <span>트레이너</span>
             </a>
             <ul>
               <li>
-                <a href="communities_exercise.html" class="block">
+                <a href="admin-trainer.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
-                  <span>운동 게시판</span>
+                  <span>트레이너 조회</span>
                 </a>
               </li>
               <li>
-                <a href="communities_diet.html" class="block">
+                <a href="admin-trainer-apply.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
-                  <span>식단 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_trainer.html" class="block">
-                  <i class="fa-solid fa-square-h"></i>
-                  <span>트레이너 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_etc.html" class="block">
-                  <i class="fa-regular fa-comments"></i>
-                  <span>잡담 게시판</span>
+                  <span>트레이너 신청</span>
                 </a>
               </li>
             </ul>
@@ -90,34 +73,34 @@
           <li>
             <a class="block">
               <i class="fa-solid fa-gear"></i>
-              <span>마이페이지</span>
+              <span>신고</span>
             </a>
             <ul>
               <li>
                 <a href="exercise.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
-                  <span>운동</span>
+                  <span>유저 신고</span>
                 </a>
               </li>
               <li>
                 <a href="diet.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
-                  <span>식단</span>
+                  <span>트레이너 신고</span>
                 </a>
               </li>
               <li>
                 <a href="my-page.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
-                  <span>프로필</span>
+                  <span>게시글 신고</span>
+                </a>
+              </li>
+              <li>
+                <a href="my-page.html" class="block">
+                  <i class="fa-regular fa-address-card"></i>
+                  <span>댓글 신고</span>
                 </a>
               </li>
             </ul>
-          </li>
-          <li>
-            <a href="map.html" class="block">
-              <i class="fa-solid fa-map-location-dot"></i>
-              <span>주변 헬스장</span>
-            </a>
           </li>
         </ul>
       </nav>
@@ -155,8 +138,8 @@
         </div>
         <div class="article-list" style="position: relative; z-index: 1;">
           <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-            <h1 class="flex-0 info-article" style="margin-right: 50px;">오늘의 식단</h1>
-            <h1 class="flex-0 info-article">운동 기록</h1>
+            <h1 class="flex-0 info-article" style="margin-right: 50px;">전체 회원 수</h1>
+            <h1 class="flex-0 info-article">전체 트레이너 수</h1>
           </div>
           <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트 게시글</div>
           <header>
@@ -241,7 +224,7 @@
 
   <footer class="bottom-bar con-min-width">
     <div class="con flex flex-ai-c">
-      <a href="admin-login.html" class="logo logo--mini flex flex-ai-c">
+      <a href="admin.html" class="logo logo--mini flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>Body
@@ -645,17 +628,8 @@ a {
 <script>
 jQuery(document).ready(function($) {
 
-  $("#logout").hide();
-  $("#signup").show();
-  $("#signin").show();
+  getUsers();
 
-  if (localStorage.getItem('accessToken')) {
-    $("#logout").show();
-    $("#signup").hide();
-    $("#signin").hide();
-  } else {
-
-  }
 })
 
 function logout() {
@@ -677,7 +651,7 @@ function logout() {
     document.cookie = "RefreshToken=; expires="+now.toUTCString();
   });
 
-  location.reload();
+  location.href = "index.html";
 }
 
 </script>

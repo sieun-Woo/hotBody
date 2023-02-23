@@ -12,8 +12,6 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li id="signup"><a href="signup.html">회원가입</a></li>
-        <li id="signin"><a href="login.html">로그인</a></li>
         <li id="logout"><a onclick="logout()">로그아웃</a></li>
     </ul>
 </header>
@@ -25,15 +23,12 @@
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<!-- vue 불러오기 -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
-
 
 <div class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
-      <a href="index.html" class="logo flex flex-ai-c">
+      <a href="admin.html" class="logo flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>body
@@ -42,47 +37,35 @@
     </div>
   </header>
   <!-- 로고바 끝 -->
-<div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 홈</div>
+<div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 트레이너</div>
   <!-- 메뉴바 시작 -->
   <header class="menu-bar con-min-width">
     <div class="con height-100p" style="position: relative; z-index: 2;">
       <nav class="menu-bar__menu-1">
 
-        <ul class="flex">
+        <ul class="flex" style="justify-content: center;">
           <li>
-            <a href="index.html" class="block">
-              <i class="fas fa-home"></i>
-              <span>홈</span>
+            <a href="admin-user.html" class="block">
+              <i class="fa-regular fa-address-card"></i>
+              <span>유저</span>
             </a>
           </li>
           <li>
             <a class="block">
               <i class="fas fa-list"></i>
-              <span>커뮤니티</span>
+              <span>트레이너</span>
             </a>
             <ul>
               <li>
-                <a href="communities_exercise.html" class="block">
+                <a href="admin-trainer.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
-                  <span>운동 게시판</span>
+                  <span>트레이너 조회</span>
                 </a>
               </li>
               <li>
-                <a href="communities_diet.html" class="block">
+                <a href="admin-trainer-apply.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
-                  <span>식단 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_trainer.html" class="block">
-                  <i class="fa-solid fa-square-h"></i>
-                  <span>트레이너 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_etc.html" class="block">
-                  <i class="fa-regular fa-comments"></i>
-                  <span>잡담 게시판</span>
+                  <span>트레이너 신청</span>
                 </a>
               </li>
             </ul>
@@ -90,34 +73,34 @@
           <li>
             <a class="block">
               <i class="fa-solid fa-gear"></i>
-              <span>마이페이지</span>
+              <span>신고</span>
             </a>
             <ul>
               <li>
                 <a href="exercise.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
-                  <span>운동</span>
+                  <span>유저 신고</span>
                 </a>
               </li>
               <li>
                 <a href="diet.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
-                  <span>식단</span>
+                  <span>트레이너 신고</span>
                 </a>
               </li>
               <li>
                 <a href="my-page.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
-                  <span>프로필</span>
+                  <span>게시글 신고</span>
+                </a>
+              </li>
+              <li>
+                <a href="my-page.html" class="block">
+                  <i class="fa-regular fa-address-card"></i>
+                  <span>댓글 신고</span>
                 </a>
               </li>
             </ul>
-          </li>
-          <li>
-            <a href="map.html" class="block">
-              <i class="fa-solid fa-map-location-dot"></i>
-              <span>주변 헬스장</span>
-            </a>
           </li>
         </ul>
       </nav>
@@ -133,115 +116,55 @@
         <div class="article-search">
           <form">
             <div style="width: 650px; margin: auto;">
-                <h1 style="margin-top: 20px; margin-left: 110px; cursor: default;">
+                <div style="display:flex; position: relative; margin-top: 20px;">
+                  <h1 style="margin-top: 7px; margin-right: 10px; cursor: default;">
                     <span>Search</span>
-                </h1>
-                <div style="display:flex; position: relative; margin-top: 5px;">
-                    <h1>
-                        <select style="width: 100px; height: 35px; font-size: 16px; margin-right: 10px; padding-left: 5px;">
-                            <option value="title">제목</option>
-                            <option value="titleAndContent">내용</option>
-                            <option value="nickname">작성자</option>
-                        </select>
-                    </h1>
-                    <input type="text" @input="search" :value="searchKeyword"
-                       placeholder=" 검색어 입력" style="width: 100%; height: 30px; font-size: 20px;">
-                    <h1 style="position: absolute; right: 10px; top: 5px">
-                        <i class="fas fa-search"></i>
-                    </h1>
+                  </h1>
+                  <input type="text" @input="search" :value="searchKeyword"
+                      placeholder=" 유저 입력" style="width: 100%; height: 30px; font-size: 20px;">
+                  <h1 style="position: absolute; right: 10px; top: 5px">
+                      <i class="fas fa-search" onclick="searchFood()"></i>
+                  </h1>
                 </div>
             </div>
           </form>
         </div>
         <div class="article-list" style="position: relative; z-index: 1;">
-          <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-            <h1 class="flex-0 info-article" style="margin-right: 50px;">오늘의 식단</h1>
-            <h1 class="flex-0 info-article">운동 기록</h1>
-          </div>
-          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트 게시글</div>
+          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">트레이너 리스트</div>
           <header>
             <div>
               <div class="article-list__cell-id">번호</div>
-              <div class="article-list__cell-reg-date">날짜</div>
-              <div class="article-list__cell-writer">작성자</div>
-              <div class="article-list__cell-title">제목</div>
-              <div class="article-list__cell-like">좋아요</div>
+              <div class="article-list__cell-nickname">닉네임</div>
+              <div class="article-list__cell-gender">성별</div>
+              <div class="article-list__cell-age">나이</div>
+              <div class="article-list__cell-region">지역</div>
+              <div class="article-list__cell-email">이메일</div>
             </div>
           </header>
           <div class="main">
             <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
+              <div class="article-list__cell-id">id</div>
+              <div class="article-list__cell-nickname">
+                <a :href="'article_' + article.id + '.html'" class="hover-pointer">nickname</a>
               </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
+              <div class="article-list__cell-gender">gender</div>
+              <div class="article-list__cell-age">age</div>
+              <div class="article-list__cell-region">region</div>
+              <div class="article-list__cell-email">email</div>
             </div>
           </div>
         </div>
       </div>
     </section>
+
+    <section>
+      <div id="table tbody"></div>
+    </section>
   </div>
 
   <footer class="bottom-bar con-min-width">
     <div class="con flex flex-ai-c">
-      <a href="admin-login.html" class="logo logo--mini flex flex-ai-c">
+      <a href="admin.html" class="logo logo--mini flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>Body
@@ -511,10 +434,11 @@ a {
 /* 게시물 리스트 */
 :root {
   --article-list__cell-id__width:100px;
-  --article-list__cell-reg-date__width:220px;
-  --article-list__cell-writer__width:150px;
-  --article-list__cell-like__width:100px;
-  --article-list__cell-title__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
+  --article-list__cell-nickname__width:200px;
+  --article-list__cell-gender__width:100px;
+  --article-list__cell-age__width:100px;
+  --article-list__cell-region__width:150px;
+  --article-list__cell-email__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-nickname__width) - var(--article-list__cell-gender__width) - var(--article-list__cell-age__width) - var(--article-list__cell-region__width));
 }
 
 .article-list > * > div {
@@ -547,20 +471,24 @@ a {
   width:var(--article-list__cell-id__width);
 }
 
-.article-list__cell-reg-date {
-  width:var(--article-list__cell-reg-date__width);
+.article-list__cell-nickname {
+  width:var(--article-list__cell-nickname__width);
 }
 
-.article-list__cell-writer {
-  width:var(--article-list__cell-writer__width);
+.article-list__cell-gender {
+  width:var(--article-list__cell-gender__width);
 }
 
-.article-list__cell-title {
-  width:var(--article-list__cell-title__width);
+.article-list__cell-age {
+  width:var(--article-list__cell-age__width);
 }
 
-.article-list__cell-like {
-  width:var(--article-list__cell-like__width);
+.article-list__cell-region {
+  width:var(--article-list__cell-region__width);
+}
+
+.article-list__cell-email {
+  width:var(--article-list__cell-email__width);
 }
 
 .article-list > .main .article-list__cell-title {
@@ -645,17 +573,8 @@ a {
 <script>
 jQuery(document).ready(function($) {
 
-  $("#logout").hide();
-  $("#signup").show();
-  $("#signin").show();
+  getTrainers();
 
-  if (localStorage.getItem('accessToken')) {
-    $("#logout").show();
-    $("#signup").hide();
-    $("#signin").hide();
-  } else {
-
-  }
 })
 
 function logout() {
@@ -677,8 +596,167 @@ function logout() {
     document.cookie = "RefreshToken=; expires="+now.toUTCString();
   });
 
-  location.reload();
+  location.href = "index.html";
 }
+
+function getTrainers() {
+  var settings = {
+    "url": "http://localhost:8080/api/admin/apply?pageNum=1",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.getItem('accessToken'),
+    },
+  };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+  });
+}
+
+function board_list(data) {
+  var str = '';
+  data.forEach((post) => {
+    str += `<div class="main">
+              <div v-for="article in filtered">
+                <div class="article-list__cell-id">${post.id}</div>
+                <div class="article-list__cell-nickname">
+                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">${post.nickname}</a>
+                </div>
+                <div class="article-list__cell-gender">${post.gender}</div>
+                <div class="article-list__cell-age">${post.age}</div>
+                <div class="article-list__cell-region">${post.region}</div>
+                <div class="article-list__cell-email">${post.email}</div>
+              </div>
+            </div>`
+  });
+
+  $('.article-list').append(str);
+}
+
+var settings = {
+  "url": "http://localhost:8080/api/admin/apply?pageNum=1",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken'),
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+
+// 페이징 버튼
+$(document).on('click', '#p', function (e) {
+    page = parseInt($(this).data('page'));
+    searchFood(page)
+    return false;
+  });
+
+  function searchFood(page) {
+    let foodType = $('#foodType').val();
+    console.log(foodType);
+    let foodName = $('#foodName').val();
+    console.log(foodName);
+
+    var settings = {
+      "url": `http://localhost:8080/api/admin/apply?pageNum=1`,
+      "method": "GET",
+      "timeout": 0,
+    };
+
+    $.ajax(settings).done(function (response) {
+      const TOTAL_DATA = response.totalElements; // 데이터 총개수
+      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+      const TOTAL_PAGE = response.totalPages // 총페이지
+
+      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지)  
+
+      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+      console.log(response);
+
+      board_list();
+
+      function board_list() {
+        var start = VIEW_DATA - VIEW_DATA;
+        // page * VIEW_DATA - (VIEW_DATA - 1);
+        var end = VIEW_DATA;
+        // page * VIEW_DATA + VIEW_DATA - (VIEW_DATA - 1);
+        var str = '';
+
+        var j = (page - 1) * 10;
+
+        for (var i = start; i < end; i++) {
+          str += '<tr>';
+          str += '<td>' + (TOTAL_DATA - j) + '</td>';
+          str += '<td>' + (response.content[i].foodName) + '</td>';
+          str += '<td>' + (response.content[i].factory) + '</td>';
+          str += '<td>' + (response.content[i].oneTimeSupply) + '</td>';
+          str += '<td>' + (response.content[i].energy) + '</td>';
+          str += '<td>' + (response.content[i].protein) + '</td>';
+          str += '<td>' + (response.content[i].fat) + '</td>';
+          str += '<td>' + (response.content[i].carbohydrate) + '</td>';
+          str += '<td>' + (response.content[i].sugar) + '</td>';
+          str += '</tr>';
+          j += 1 
+        }
+
+        $('.table tbody').empty();
+        $('.table tbody').append(str);
+
+        pageing_list();
+      }
+
+
+      // 페이징 목록
+      function pageing_list() {
+        //page  = page < 0 ? 0 : page;
+        var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+        var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+        var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+        var next = end = (setion_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+        var first = 1; // 처음 페이지
+        var last = TOTAL_PAGE; // 마지막 페이지
+        var pageNums = [];
+
+        console.log('page:', page, ' setion_page:', setion_page, ' :start:', start, ' end:', end);
+
+        $('.paging').empty();
+
+        if (page != 1) {
+          pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+        }
+
+        if (setion_page != 1) {
+          pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+        }
+        // 페이징 번호 출력
+        for (var i = start; i < end; i++) {
+          if (page == i) {
+            pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+            continue;
+          }
+          pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+        }
+
+        if (setion_page != TOTAL_SECTION) {
+          pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+        }
+
+        if (page != last) {
+          pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+        }
+
+        $('.paging').append(pageNums);
+      }
+    }
+    )
+  }
+
+          
 
 </script>
 </html>

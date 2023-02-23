@@ -635,8 +635,8 @@ a {
       var now = new Date();
       now.setDate(now.getDate()-1);
       document.cookie = "RefreshToken=; expires="+now.toUTCString();
-      location.reload();
     });
+    location.href = "index.html";
   }
 
   function apply() {

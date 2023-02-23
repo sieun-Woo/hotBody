@@ -12,8 +12,8 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li><a href="login.html">로그인</a></li>
-        <li><a href="signup.html">회원가입</a></li>
+        <li><a href="index.html">홈으로</a></li>
+        <li><a href="admin-signup.html">회원가입</a></li>
     </ul>
 </header>
 
@@ -41,20 +41,16 @@
 
     <div class="joinForm">
                                                                                                
-      <h2>아이디 찾기</h2>
+      <h2>관리자 로그인</h2>
       <div class="textForm">
-        <input name="loginId" type="text" class="email-id" id="email-id" placeholder="이메일 주소">
-      </div>
-      <button type="submit" class="btn" onclick="findId()">아이디 찾기</button>
-
-      <h2>비밀번호 찾기</h2>
-      <div class="textForm">
-        <input name="loginPw" type="text" class="id" id="id" placeholder="아이디">
+        <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
+        </input>
       </div>
       <div class="textForm">
-        <input name="loginPw" type="email" class="email-pw" id="email-pw" placeholder="이메일 주소">
+        <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
       </div>
-      <button type="submit" class="btn" onclick="findPw()">비밀번호 찾기</button>
+      <button type="submit" onclick="login()" class="btn">로그인</button>
+      <button type="button" onclick="location.href='admin-find-id-pw.html'" class="btn" >아이디 / 비밀번호 찾기</button>
       
     </div>
 </body>
@@ -331,26 +327,6 @@ body {
   background: none;
 }
 
-.email-id {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
-.email-pw {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
-
 .nickname {
   width: 100%;
   border:none;
@@ -394,50 +370,41 @@ body {
 }
 </style>
 <script>
-  function findId() {
+  function login() {
+
+    let username = $('#id').val();
+    let password = $('#pw').val();
+
+    if (username == '') {
+      alert('ID를 입력해주세요.');
+      return;
+    } else if(password == '') {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+
     var settings = {
-      "url": "http://localhost:8080/api/user/find-id",
-      "method": "PUT",
+      "url": "http://localhost:8080/api/admin/log-in",
+      "method": "POST",
       "timeout": 0,
       "headers": {
         "Content-Type": "application/json"
       },
       "data": JSON.stringify({
-        "email": $('#email-id').val(),
+        "username": username,
+        "password": password
       }),
     };
 
-    $.ajax(settings).done(function (response) {
+    $.ajax(settings).done(function (response, status, xhr) {
       console.log(response);
-      alert("이메일 발송이 완료되었습니다.")
-      location.reload();
+      localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
+      console.log(xhr.getResponseHeader('Authorization'));
+      alert("로그인 완료")
+      location.href = "admin.html"
     }).fail(function(response) {
-      console.log(response)
-      alert("이메일 발송에 실패하였습니다.")
-    });
-  }
-
-  function findPw() {
-    var settings = {
-      "url": "http://localhost:8080/api/user/find-pw",
-      "method": "PUT",
-      "timeout": 0,
-      "headers": {
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "email": $("#email-pw").val(),
-        "username": $("#id").val(),
-      }),
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      alert("이메일 발송이 완료되었습니다.")
-      location.reload();
-    }).fail(function(response) {
-      alert("이메일 발송에 실패하였습니다.")
-    });
+      alert(response.responseJSON.message);
+    })
   }
 </script>
 </html>

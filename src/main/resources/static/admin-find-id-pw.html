@@ -12,8 +12,8 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li><a href="login.html">로그인</a></li>
-        <li><a href="signup.html">회원가입</a></li>
+        <li><a href="admin-login.html">로그인</a></li>
+        <li><a href="admin-signup.html">회원가입</a></li>
     </ul>
 </header>
 
@@ -41,13 +41,13 @@
 
     <div class="joinForm">
                                                                                                
-      <h2>아이디 찾기</h2>
+      <h2>관리자 아이디 찾기</h2>
       <div class="textForm">
         <input name="loginId" type="text" class="email-id" id="email-id" placeholder="이메일 주소">
       </div>
       <button type="submit" class="btn" onclick="findId()">아이디 찾기</button>
 
-      <h2>비밀번호 찾기</h2>
+      <h2>관리자 비밀번호 찾기</h2>
       <div class="textForm">
         <input name="loginPw" type="text" class="id" id="id" placeholder="아이디">
       </div>
@@ -396,7 +396,7 @@ body {
 <script>
   function findId() {
     var settings = {
-      "url": "http://localhost:8080/api/user/find-id",
+      "url": "http://localhost:8080/api/admin/find-id",
       "method": "PUT",
       "timeout": 0,
       "headers": {
@@ -406,6 +406,8 @@ body {
         "email": $('#email-id').val(),
       }),
     };
+
+    console.log($('#email-id').val())
 
     $.ajax(settings).done(function (response) {
       console.log(response);
@@ -419,7 +421,7 @@ body {
 
   function findPw() {
     var settings = {
-      "url": "http://localhost:8080/api/user/find-pw",
+      "url": "http://localhost:8080/api/admin/find-pw",
       "method": "PUT",
       "timeout": 0,
       "headers": {

@@ -141,6 +141,10 @@
           <div id="content"></div>
           <br/><br/>
         </div>
+        <div class="textForm">
+          <div id="comments"></div>
+          <br/><br/>
+        </div>
       </div>
     </section>
 
@@ -549,23 +553,22 @@ $.ajax(settings).done(function (response) {
 
 function commentUp(){
 
-var formValues = $("form[name=sampleForm]").serialize() ;
-
-var settings = {
-  "url": "http://localhost:8080/api/posts",
+  var settings = {
+  "url": "http://localhost:8080/api/comments/${post.id}",
   "method": "POST",
   "timeout": 0,
   "headers": {
     "Authorization": localStorage.getItem('accessToken'),
+    "Content-Type": "application/json",
+    
   },
-  "processData": false,
-  "mimeType": "multipart/form-data",
-  "contentType": false,
-  "data": formValues
+  "data": JSON.stringify({
+    "content": $('#comment').val()
+  }),
 };
 
 $.ajax(settings).done(function (response) {
-console.log(response);
+  console.log(response);
 });
 
 }

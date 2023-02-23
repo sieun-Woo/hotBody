@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>포스팅</title>
+  <title>글 쓰기</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
+<body>
 <!-- 로그아웃/ -->
 <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
@@ -119,40 +120,38 @@
       </div>
     </header>
     <!-- 메뉴바 끝 -->
-
-    
-
-      <h2>글 쓰기</h2>
-      <div class="textForm">
-        <span>제목</span><br/><br/>
-        <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
-        </input>
-        <br/><br/>
-      </div>
-      <div class="textForm">
-        <div type="nickname" id="nickname" name="nickname" disabled>
+    <div class="WriteForm_post">
+        <div class="article-list">
+          <h2>글 쓰기</h2>
+          <div class="textForm">
+            <span>제목</span><br/><br/>
+            <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
+            </input>
+            <br/><br/>
+          </div>
+          <div class="textForm">
+            <div type="nickname" id="nickname" name="nickname" disabled>
+            </div>
+            <br/>
+          </div>
+          <div class="textForm">
+            <span>글 내용</span><br/><br/>
+            <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" >
+            </textarea>
+            <br/><br/>
+          </div>
+          <div class="textForm">
+            <label for="avatar">이미지 업로드 :</label><br/><br/>
+            <form class="textForm1" action="communities_exercise.html" enctype="multipart/form-data" method="POST" >
+              <input type="file" name="file" id="upload-image" onchange="imageUp()"/>
+            </form>
+            <br/><br/>
+          </div>
+        
+          <input type="submit" class="btn" value="글 올리기" id="upload" onclick="postUp()"/>
         </div>
-        <br/>
-      </div>
-      <div class="textForm">
-        <span>글 내용</span><br/><br/>
-        <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" >
-        </textarea>
-        <br/><br/>
-      </div>
-      <div class="textForm">
-        <label for="avatar">이미지 업로드 :</label><br/><br/>
-        <form action="communities_exercise.html" enctype="multipart/form-data" method="POST" onsubmit="imageUp(this);">
-          <input type="file" name="file" id="upload-image" accept="image/png, image/jpeg" />
-        </form>
-        <br/><br/>
-      </div>
-    
-      <input type="submit" class="btn" value="글 올리기" id="upload" onclick="postUp(this);"/>
-
-    </form>
   </div>
-
+  </div>
 </body>
 <style>
   /* 회원가입 메뉴 */
@@ -168,7 +167,6 @@
     cursor: pointer;
   }
 
-  /* vue 헤더 */
   /* 폰트 */
   @font-face {
     font-family: 'LotteMartDream';
@@ -413,12 +411,8 @@
   /* 게시물 리스트 시작 */
 
   /* 게시물 리스트 */
-  :root {
-    --article-list__cell-id__width:100px;
-    --article-list__cell-reg-date__width:220px;
-    --article-list__cell-writer__width:150px;
-    --article-list__cell-like__width:100px;
-    --article-list__cell-title__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
+  .article-list{
+
   }
 
   .article-list > * > div {
@@ -445,31 +439,6 @@
     text-align:center;
     padding-top:10px;
     padding-bottom:10px;
-  }
-
-  .article-list__cell-id {
-    width:var(--article-list__cell-id__width);
-  }
-
-  .article-list__cell-reg-date {
-    width:var(--article-list__cell-reg-date__width);
-  }
-
-  .article-list__cell-writer {
-    width:var(--article-list__cell-writer__width);
-  }
-
-  .article-list__cell-title {
-    width:var(--article-list__cell-title__width);
-  }
-
-  .article-list__cell-like {
-    width:var(--article-list__cell-like__width);
-  }
-
-  .article-list > .main .article-list__cell-title {
-    text-align:left;
-    padding-left:10px;
   }
 
   .article-list > .main > div {
@@ -546,7 +515,13 @@
     color: #78c8e6;
   }
 
-  .WriteForm_post {
+.textForm {
+  border-bottom: 2px solid #adadad;
+  margin: 30px;
+  padding: 10px 10px;
+}
+
+.WriteForm_post {
     position: absolute;
     width: 600px;
     height: 400px;
@@ -559,17 +534,21 @@
     border-radius: 15px;
 }
 
-.textForm {
-  border-bottom: 2px solid #adadad;
-  margin: 30px;
-  padding: 10px 10px;
+
+.textForm1 {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 0px; 
+  /* padding: 10px 10px; */
 }
+
 .btn {
   position:relative;
   left:50%;
   transform: translateX(-50%);
   margin-bottom: 40px;
-  width:80%;
+  width: 90%;
   height:40px;
   background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
   background-position: left;
@@ -644,8 +623,33 @@ function logout() {
     location.reload();
   });
 }
+function imageUp(){
 
-function postUp(){
+var form = new FormData();
+form.append("file", $("#upload-image")[0].files[0]);
+
+var settings = {
+"url": "http://localhost:8080/api/posts/image",
+"method": "POST",
+"timeout": 0,
+"headers": {
+  "Authorization": localStorage.getItem('accessToken')
+  
+},
+"processData": false,
+"encType": "multipart/form-data",
+"contentType": false,
+"data": form
+};
+
+$.ajax(settings).done(function (response) {
+console.log(response);
+postUp(response);
+});
+
+}
+
+function postUp(response){
 
   var settings = {
   "url": "http://localhost:8080/api/posts",
@@ -665,32 +669,10 @@ $.ajax(settings).done(function (response) {
   console.log(response);
   imageUp(response);
 });
-}
 
-function imageUp(response){
-
-var form = new FormData();
-form.append("file", $("#upload-image"));
-form.append("id", response);
-
-var settings = {
-"url": "http://localhost:8080/api/posts/image",
-"method": "POST",
-"timeout": 0,
-"headers": {
-  "Authorization": localStorage.getItem('accessToken')
-  
-},
-"processData": false,
-"encType": "multipart/form-data",
-"contentType": false,
-"data": form
-};
-
-$.ajax(settings).done(function (response) {
-console.log(response);
-});
 
 }
+
+
 </script>
 </html>

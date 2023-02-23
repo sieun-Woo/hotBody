@@ -141,18 +141,21 @@
           <div id="content"></div>
           <br/><br/>
         </div>
-        <div class="textForm">
-          <div id="comments"></div>
-          <br/><br/>
+
+
+        <div id="comments"></div>
+        <!-- 댓글 들어오는 공간 -->
         </div>
-      </div>
     </section>
+
+    
+    
 
     <div id="comment-box" class="commentForm">
       <textarea id="comment" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" 
       >
       </textarea><br/><br/>
-      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp(this)"/>
+      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
     </div>
 </form>
 </div>
@@ -513,6 +516,7 @@ jQuery(document).ready(function($) {
       $("#signin").show();
     }
     getUser();
+    commentUp(param[1]);
 })
 
 function getUser() {
@@ -532,46 +536,50 @@ function getUser() {
 
   function logout() {
 
-var settings = {
-"url": "http://localhost:8080/api/user/log-out",
-"method": "DELETE",
-"timeout": 0,
-"headers": {
-  "Authorization": localStorage.removeItem('accessToken')
-},
-};
+    var settings = {
+    "url": "http://localhost:8080/api/user/log-out",
+    "method": "DELETE",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.removeItem('accessToken')
+    },
+    };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  localStorage.removeItem('accessToken');
-  var now = new Date();
-  now.setDate(now.getDate()-1);
-  document.cookie = "RefreshToken=; expires="+now.toUTCString();
-  location.reload();
-});
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      localStorage.removeItem('accessToken');
+      var now = new Date();
+      now.setDate(now.getDate()-1);
+      document.cookie = "RefreshToken=; expires="+now.toUTCString();
+      location.reload();
+    });
 }
 
-function commentUp(){
+  function commentUp(param){
+    console.log(param)
 
-  var settings = {
-  "url": "http://localhost:8080/api/comments/${post.id}",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken'),
-    "Content-Type": "application/json",
-    
-  },
-  "data": JSON.stringify({
-    "content": $('#comment').val()
-  }),
-};
+    var settings = {
+    "url": "http://localhost:8080/api/comments/" + param,
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.getItem('accessToken'),
+      "Content-Type": "application/json",
+      
+    },
+    "data": JSON.stringify({
+      "content": $('#comment').val()
+    }),
+    };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
+    $.ajax(settings).done(function (response) {
+    console.log(response);
+    $('#comments').append(response);
+    });
+  }
 
-}
+
+
 
 let temp_html = `<div class="textForm" id="comments">
                     <div id="commentnickname"  disabled>닉넴</div>

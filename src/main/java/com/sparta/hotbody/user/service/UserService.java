@@ -12,9 +12,9 @@ import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
 import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
+import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
-import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
@@ -30,14 +30,17 @@ import java.net.MalformedURLException;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,6 +61,9 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final UploadService uploadService;
   private final ImageRepository imageRepository;
+  private final JavaMailSender javaMailSender;
+  @Value("${spring.mail.username}")
+  private String from;
 
   @Transactional
   public MessageResponseDto signUp(SignUpRequestDto requestDto) {
@@ -216,31 +222,55 @@ public class UserService {
 
   // 유저 아이디 찾기
   @Transactional
-  public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto) {
+  public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto)
+      throws MessagingException {
     User user = userRepository.findByEmail(findUserIdRequestDto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
     );
     FindUserIdResponseDto findUserIdResponseDto = new FindUserIdResponseDto(user.getUsername());
+
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    mimeMessageHelper.setSubject("[hotbody] 아이디 송부");
+    mimeMessageHelper.setFrom(from);
+    mimeMessageHelper.setTo(findUserIdRequestDto.getEmail());
+    mimeMessageHelper.setText("아이디: " + user.getUsername());
+
+    javaMailSender.send(mimeMessage);
+
     return findUserIdResponseDto;
   }
 
   // 유저 비밀번호 찾기
   @Transactional
-  public FindUserPwResponseDto findUserPw(FindUserPwRequestDto findUserPwRequestDto) {
+  public FindUserPwResponseDto findUserPw(FindUserPwRequestDto findUserPwRequestDto)
+      throws MessagingException {
     User user = userRepository.findByUsernameAndEmail(findUserPwRequestDto.getUsername(),
         findUserPwRequestDto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
     );
-    // 임시 비밀번호 생성
-    String password = generateTempPassword();
-    FindUserPwResponseDto findUserPwResponseDto = new FindUserPwResponseDto(password);
+    if (user.getUsername().equals(findUserPwRequestDto.getUsername())) {
+      // 임시 비밀번호 생성
+      String password = generateTempPassword();
+      FindUserPwResponseDto findUserPwResponseDto = new FindUserPwResponseDto(password);
 
-    // 비밀번호 encode 후 저장
-    String encodePassword = passwordEncoder.encode(password);
-    user.modifyPassword(encodePassword);
-    userRepository.save(user);
+      // 비밀번호 encode 후 저장
+      String encodePassword = passwordEncoder.encode(password);
+      user.modifyPassword(encodePassword);
+      userRepository.save(user);
 
-    return findUserPwResponseDto;
+      MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+      MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+      mimeMessageHelper.setSubject("[hotbody] 임시 비밀번호 송부");
+      mimeMessageHelper.setFrom(from);
+      mimeMessageHelper.setTo(findUserPwRequestDto.getEmail());
+      mimeMessageHelper.setText("임시 비밀번호: " + password);
+
+      javaMailSender.send(mimeMessage);
+
+      return findUserPwResponseDto;
+    }
+    return null;
   }
 
   // 임시 비밀번호 생성

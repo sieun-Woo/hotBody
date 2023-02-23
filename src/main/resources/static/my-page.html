@@ -183,7 +183,7 @@
         </div>
         <div class="article-list" style="position: relative; z-index: 1;">
           <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-            <a href="#" style="width: 300px; height: 300px; border: 1px solid black" id="image">프로필 사진</a>
+            <img style="width: 300px; height: 300px; border: 1px solid black" id="image">
             <div class="profile">
               <ul>
                 <li style="margin-top: 10px;">닉네임: <input type="nickname" id="nickname" name="nickname"></li>
@@ -208,7 +208,7 @@
 
   <footer class="bottom-bar con-min-width">
     <div class="con flex flex-ai-c">
-      <a href="#" class="logo logo--mini flex flex-ai-c">
+      <a href="index.html" class="logo logo--mini flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>Body
@@ -650,10 +650,9 @@ a {
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
-    }).fail(
-      alert("이미지 불러오기 실패")
-    );
+      console.log(response)
+      $("#image").attr("src", response)
+    });
   }
 
   function getUser() {
@@ -692,40 +691,40 @@ function logout() {
     var now = new Date();
     now.setDate(now.getDate()-1);
     document.cookie = "RefreshToken=; expires="+now.toUTCString();
-    location.reload();
   });
+  location.href = "index.html";
 }
 
-  // function updateProfile() {
-
-    // updateImage();
-
-
-    // updateImage();
-
-    // var settings = {
-    //   "url": "http://localhost:8080/api/user/auth/profile",
-    //   "method": "PUT",
-    //   "timeout": 0,
-    //   "headers": {
-    //     "Authorization": localStorage.getItem('accessToken'),
-    //     "Content-Type": "application/json"
-    //   },
-    //   "data": JSON.stringify({
-    //     "nickname": $('#nickname').val(),
-    //       "region": $('#region').val(),
-    //       "height": $('#height').val(),
-    //       "weight": $('#weight').val()
-    //   }),
-    // };
-
-    // $.ajax(settings).done(function (response) {
-    //   console.log(response);
-    //   alert("수정이 완료되었습니다.")
-    // });
-  // }
-
   function updateProfile() {
+
+    if ($("#upload-image").val()) {
+      updateImage();
+    }
+
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/profile",
+      "method": "PUT",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "nickname": $('#nickname').val(),
+          "region": $('#region').val(),
+          "height": $('#height').val(),
+          "weight": $('#weight').val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      alert("수정이 완료되었습니다.")
+      location.reload();
+    });
+  }
+
+  function updateImage() {
 
     var form = new FormData();
     form.append("file", $("#upload-image")[0].files[0]);

@@ -10,19 +10,14 @@ import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
-import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
-import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
-import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
-import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -58,9 +54,9 @@ public class AdminController {
   }
 
   // 트레이너 등록 요청 조회
-  @GetMapping("/requests")
-  public ResponseEntity getRegistrations(@RequestBody PageDto pageDto) {
-    return adminService.getRegistrations(pageDto);
+  @GetMapping("/apply")
+  public ResponseEntity getRegistrations(@RequestParam int pageNum) {
+    return adminService.getRegistrations(pageNum);
   }
 
   // 트레이너 등록 요청 허용
@@ -102,9 +98,9 @@ public class AdminController {
   }
 
   // 전체 유저 정보 조회
-  @GetMapping("/userlist")  // users가 더 나을 것 같습니다.
-  public ResponseEntity getUserList(@RequestBody PageDto pageDto) {
-    return adminService.getUserList(pageDto);
+  @GetMapping("/users")  // users가 더 나을 것 같습니다.
+  public ResponseEntity getUserList(@RequestParam(value="currentPage") int pageNum) {
+    return adminService.getUserList(pageNum);
   }
 
   // 단건 유저 정보 조회
@@ -114,9 +110,9 @@ public class AdminController {
   }
 
   // 전체 트레이너 정보 조회
-  @GetMapping("/trainerlist")  // trainers가 더 나을 것 같습니다.
-  public ResponseEntity getTrainerList(@RequestBody PageDto pageDto) {
-    return adminService.getTrainerList(pageDto);
+  @GetMapping("/trainers")  // trainers가 더 나을 것 같습니다.지
+  public ResponseEntity getTrainerList(@RequestParam(value="currentPage") int pageNum) {
+    return adminService.getTrainerList(pageNum);
   }
 
   // 단건 트레이너 정보 조회
@@ -139,16 +135,16 @@ public class AdminController {
   }
 
   // Admin 아이디 찾기
-  @GetMapping("/find-id")
-  public FindAdminIdResponseDto findUserId(@RequestBody FindAdminIdRequestDto findAdminIdRequestDto) {
+  @PutMapping("/find-id")
+  public FindAdminIdResponseDto findUserId(@RequestBody FindAdminIdRequestDto findAdminIdRequestDto)
+      throws MessagingException {
     return adminService.findAdminId(findAdminIdRequestDto);
   }
 
   // Admin 비밀번호 찾기
-  @GetMapping("/find-pw")
-  public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto) {
+  @PutMapping("/find-pw")
+  public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto)
+      throws MessagingException {
     return adminService.findAdminPw(findAdminPwRequestDto);
   }
-
-  // 관리자 회원 탈퇴정
 }

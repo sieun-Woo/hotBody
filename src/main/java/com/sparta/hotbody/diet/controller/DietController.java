@@ -26,4 +26,9 @@ public class DietController {
     return dietService.searchFood(foodType, searchWord, page);
   }
 
+//  @GetMapping("/diet")
+//  public Page<FoodResponseDto> createDiet() {
+//    return dietService.searchFood();
+//  }
+
 }

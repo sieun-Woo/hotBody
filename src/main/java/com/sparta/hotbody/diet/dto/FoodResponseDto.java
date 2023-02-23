@@ -1,71 +1,60 @@
 package com.sparta.hotbody.diet.dto;
 
-import com.sparta.hotbody.diet.entity.Diet;
-import com.sparta.hotbody.diet.entity.Food;
-import java.io.File;
+import com.sparta.hotbody.common.batch.agriculturalAndLivestockProducts.AgriculturalAndLivestockProducts;
+import com.sparta.hotbody.common.batch.aquaticProducts.AquaticProducts;
+import com.sparta.hotbody.common.batch.food.Food;
+import com.sparta.hotbody.common.batch.processedfood.ProcessedFood;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.apache.poi.ss.usermodel.Row;
 
-@NoArgsConstructor
 @Getter
 public class FoodResponseDto {
 
-  String foodName; // 음식 이름
-  String amountOfFood; // 음식 양
-  String energy; // 에너지
-  String carbohydrate; // 탄수화물
-  String protein; // 단백질
-  String fat; // 지방
+  String foodName = "정보 없음";
+  String factory = "정보 없음";
+  String oneTimeSupply = "정보 없음";
+  String energy = "정보 없음";
+  String protein = "정보 없음";
+  String fat = "정보 없음";
+  String carbohydrate = "정보 없음";
+  String sugar = "정보 없음";
+
+  public FoodResponseDto(AgriculturalAndLivestockProducts agriculturalAndLivestockProducts) {
+    this.foodName = agriculturalAndLivestockProducts.getFoodName();
+    this.oneTimeSupply = agriculturalAndLivestockProducts.getOneTimeSupply();
+    this.energy = agriculturalAndLivestockProducts.getEnergy();
+    this.protein = agriculturalAndLivestockProducts.getProtein();
+    this.fat = agriculturalAndLivestockProducts.getFat();
+    this.carbohydrate = agriculturalAndLivestockProducts.getCarbohydrate();
+    this.sugar = agriculturalAndLivestockProducts.getSugar();
+  }
+
+  public FoodResponseDto(AquaticProducts aquaticProducts) {
+    this.foodName = aquaticProducts.getFoodName();
+    this.oneTimeSupply = aquaticProducts.getOneTimeSupply();
+    this.energy = aquaticProducts.getEnergy();
+    this.protein = aquaticProducts.getProtein();
+    this.fat = aquaticProducts.getFat();
+    this.carbohydrate = aquaticProducts.getCarbohydrate();
+  }
 
   public FoodResponseDto(Food food) {
-      this.foodName = food.getFoodName();
-      this.amountOfFood = food.getAmountOfFood();
-      this.energy = food.getEnergy();
-      this.carbohydrate = food.getCarbohydrate();
-      this.protein = food.getProtein();
-      this.fat = food.getFat();
+    this.foodName = food.getFoodName();
+    this.oneTimeSupply = food.getOneTimeSupply();
+    this.energy = food.getEnergy();
+    this.protein = food.getProtein();
+    this.fat = food.getFat();
+    this.carbohydrate = food.getCarbohydrate();
+    this.sugar = food.getSugar();
   }
 
-  public FoodResponseDto(String foodType, String[] row) {
-    switch (foodType) {
-      case ("농축산물"):
-        this.foodName = row[5]; // 음식 이름
-        this.amountOfFood = row[10]; // 음식 양
-        this.energy = row[11]; // 에너지
-        this.protein = row[13]; // 단백질
-        this.fat = row[14]; // 지방
-        this.carbohydrate = row[16]; // 탄수화물
-        break;
-
-      case ("수산물"):
-        this.foodName = row[5]; // 음식 이름
-        this.amountOfFood = row[11]; // 음식 양
-        this.energy = row[13]; // 에너지
-        this.protein = row[15]; // 단백질
-        this.fat = row[16]; // 지방
-        this.carbohydrate = row[18]; // 탄수화물
-        break;
-
-      case ("음식"):
-        this.foodName = row[5]; // 음식 이름
-        this.amountOfFood = row[11]; // 음식 양
-        this.energy = row[15]; // 에너지
-        this.protein = row[17]; // 단백질
-        this.fat = row[18]; // 지방
-        this.carbohydrate = row[19]; // 탄수화물
-        break;
-
-      case ("가공음식"):
-        this.foodName = row[5]; // 음식 이름
-        this.amountOfFood = row[10]; // 음식 양
-        this.energy = row[14]; // 에너지
-        this.protein = row[16]; // 단백질
-        this.fat = row[17]; // 지방
-        this.carbohydrate = row[18]; // 탄수화물
-        break;
-    }
+  public FoodResponseDto(ProcessedFood processedFood) {
+    this.foodName = processedFood.getFoodName();
+    this.factory = processedFood.getFactory();
+    this.oneTimeSupply = processedFood.getOneTimeSupply();
+    this.energy = processedFood.getEnergy();
+    this.protein = processedFood.getProtein();
+    this.fat = processedFood.getFat();
+    this.carbohydrate = processedFood.getCarbohydrate();
+    this.sugar = processedFood.getSugar();
   }
-
 }
-

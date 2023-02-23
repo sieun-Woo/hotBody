@@ -120,7 +120,7 @@
     </header>
     <!-- 메뉴바 끝 -->
 
-    <form action="communities_exercise.html" id="uploadForm" method="POST" class="WriteForm_post" onsubmit="postUp(this);">
+    
 
       <h2>글 쓰기</h2>
       <div class="textForm">
@@ -142,11 +142,13 @@
       </div>
       <div class="textForm">
         <label for="avatar">이미지 업로드 :</label><br/><br/>
-        <input type="file" name="file" accept="image/png, image/jpeg" />
+        <form action="communities_exercise.html" enctype="multipart/form-data" method="POST" onsubmit="imageUp(this);">
+          <input type="file" name="file" id="upload-image" accept="image/png, image/jpeg" />
+        </form>
         <br/><br/>
       </div>
     
-      <input type="submit" class="btn" value="글 올리기" id="upload"/>
+      <input type="submit" class="btn" value="글 올리기" id="upload" onclick="postUp(this);"/>
 
     </form>
   </div>
@@ -645,24 +647,48 @@ function logout() {
 
 function postUp(){
 
-var form = new FormData();
-form.append("postRequestDto", "{\"title\" : \"제목3\",\"content\" : \"내용3\"}");
-
-var settings = {
-  "url": "http://localhost:8080/api/posts/",
+  var settings = {
+  "url": "http://localhost:8080/api/posts",
   "method": "POST",
   "timeout": 0,
   "headers": {
-    "Authorization": localStorage.getItem('accessToken')
+    "Authorization": localStorage.getItem('accessToken'),
+    "Content-Type": "application/json"
   },
-  "processData": false,
-  "mimeType": "multipart/form-data",
-  "contentType": false,
-  "data": form
+  "data": JSON.stringify({
+    "title": $("#title").val(),
+    "content": $("#content").val()
+  }),
 };
 
 $.ajax(settings).done(function (response) {
   console.log(response);
+  imageUp(response);
+});
+}
+
+function imageUp(response){
+
+var form = new FormData();
+form.append("file", $("#upload-image"));
+form.append("id", response);
+
+var settings = {
+"url": "http://localhost:8080/api/posts/image",
+"method": "POST",
+"timeout": 0,
+"headers": {
+  "Authorization": localStorage.getItem('accessToken')
+  
+},
+"processData": false,
+"encType": "multipart/form-data",
+"contentType": false,
+"data": form
+};
+
+$.ajax(settings).done(function (response) {
+console.log(response);
 });
 
 }

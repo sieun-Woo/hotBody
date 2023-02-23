@@ -49,7 +49,6 @@ public class PostController {
     return postService.createImage(file, id);
   }
 
-
   // 2. 게시글 전체 조회
   @GetMapping("/posts")
   public List<PostResponseDto> getAllPosts(
@@ -60,6 +59,7 @@ public class PostController {
   ) {
     return postService.getAllPosts(page - 1, size, sortBy, isAsc);
   }
+
   // 3. 게시글 선택 조회
   @GetMapping("/posts/{postId}")
   public PostResponseDto getPost(@PathVariable Long postId) {

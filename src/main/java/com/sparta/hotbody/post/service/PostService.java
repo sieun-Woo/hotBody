@@ -63,22 +63,16 @@ public class PostService {
 
 
   // 2. 게시글 전체 조회
-  public List<PostResponseDto> getAllPosts(int page, int size, String sortBy, boolean isAsc) {
+  public Page<PostResponseDto> getAllPosts(int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
     Page<Post> posts = postRepository.findAll(pageable);
-    List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+    Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
 
-    for (Post post : posts) {
-      PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-          post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-          post.getModifiedAt());
-      postResponseDtoList.add(postResponseDto);
-    }
-    return postResponseDtoList;
+    return postResponseDto;
   }
 
   // 3. 게시글 선택 조회

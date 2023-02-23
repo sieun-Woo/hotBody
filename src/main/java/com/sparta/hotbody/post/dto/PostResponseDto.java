@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.dto;
 
+import com.sparta.hotbody.post.entity.Post;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,15 @@ public class PostResponseDto {
 
   private LocalDateTime modifiedAt;
 
-
+  public PostResponseDto(Post post) {
+    this.nickname = post.getNickname();
+    this.title = post.getTitle();
+    this.content = post.getContent();
+    this.image = post.getImage();
+    this.likes = post.getLikes();
+    this.createdAt = post.getCreatedAt();
+    this.modifiedAt = post.getModifiedAt();
+  }
 }
 
 

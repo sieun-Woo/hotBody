@@ -129,8 +129,8 @@
             </div>
           </form>
         </div>
-        <div class="article-list" style="position: relative; z-index: 1;">
-          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">유저 리스트</div>
+        <div class="article-header" style="position: relative; z-index: 1;">
+          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 30px; margin-bottom: 20px;">유저 리스트</div>
           <header>
             <div>
               <div class="article-list__cell-id">번호</div>
@@ -141,21 +141,20 @@
               <div class="article-list__cell-email">이메일</div>
             </div>
           </header>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">id</div>
-              <div class="article-list__cell-nickname">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">nickname</a>
-              </div>
-              <div class="article-list__cell-gender">gender</div>
-              <div class="article-list__cell-age">age</div>
-              <div class="article-list__cell-region">region</div>
-              <div class="article-list__cell-email">email</div>
-            </div>
           </div>
+        </div>
+        <div class="article-list" style="position: relative; z-index: 1;">
+
+        </div>
+        <div class="paging">
+
         </div>
       </div>
     </section>
+
+
+
+
   </div>
 
   <footer class="bottom-bar con-min-width">
@@ -463,6 +462,32 @@ a {
   padding-bottom:10px;
 }
 
+.article-header > * > div {
+  display:flex;
+}
+
+.article-header > header > div > div {
+  position:relative;
+}
+
+.article-header > header > div > div:not(:last-child)::after {
+  content:"";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  right:0;
+  width:1px;
+  height:10px;
+  background-color:black;
+}
+
+.article-header > * > div > div {
+  box-sizing:border-box;
+  text-align:center;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
 .article-list__cell-id {
   width:var(--article-list__cell-id__width);
 }
@@ -493,6 +518,15 @@ a {
 }
 
 .article-list > .main > div {
+  border-top:1px solid black;
+}
+
+.article-header > .main .article-list__cell-title {
+  text-align:left;
+  padding-left:10px;
+}
+
+.article-header > .main > div {
   border-top:1px solid black;
 }
 /* 게시물 리스트 끝 */
@@ -565,14 +599,36 @@ a {
 .wp-header li:hover > a {
     color: #78c8e6;
 }
+/* 페이징 */
+.paging {
+  margin: 0 auto;
+  width: 1000px;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 0
+}
+
+.paging .current {
+  color: #00f;
+  font-weight: bold
+}
+
+.paging a {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #000;
+  font-size: 12px
+}
+
+.paging a+a {
+  margin-left: 5px
+}
+
+.paging a.on {
+  color: #f00
+}
 </style>
 <script>
-jQuery(document).ready(function($) {
-
-  getUsers();
-
-})
-
 function logout() {
 
   var settings = {
@@ -582,7 +638,7 @@ function logout() {
   "headers": {
     "Authorization": localStorage.removeItem('accessToken')
   },
-};
+  };
 
   $.ajax(settings).done(function (response) {
     console.log(response);
@@ -595,9 +651,22 @@ function logout() {
   location.href = "index.html";
 }
 
-function getUsers() {
+jQuery(document).ready(function($) {
+
+  getUsers(1);
+
+})
+
+// 페이징 버튼
+$(document).on('click', '#p', function (e) {
+    page = parseInt($(this).data('page'));
+    getUsers(page)
+    return false;
+  });
+
+function getUsers(page) {
   var settings = {
-  "url": "http://localhost:8080/api/admin/users?currentPage=1",
+  "url": `http://localhost:8080/api/admin/users?currentPage=${page}`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -605,33 +674,89 @@ function getUsers() {
   },
 };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  board_list(response.content);
-});
-}
+  $.ajax(settings).done(function (response) {
+    const TOTAL_DATA = response.totalElements; // 데이터 총개수
+    const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+    const TOTAL_PAGE = response.totalPages // 총페이지
 
-function board_list(data) {
-  var str = '';
-  data.forEach((post) => {
-    str += `<div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">${post.id}</div>
-                <div class="article-list__cell-nickname">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">${post.nickname}</a>
-                </div>
-                <div class="article-list__cell-gender">${post.gender}</div>
-                <div class="article-list__cell-age">${post.age}</div>
-                <div class="article-list__cell-region">${post.region}</div>
-                <div class="article-list__cell-email">${post.email}</div>
-              </div>
-            </div>`
+    const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+    const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+    
+    var start = VIEW_DATA - VIEW_DATA;
+    // page * VIEW_DATA - (VIEW_DATA - 1);
+    var end = VIEW_DATA;
+    // page * VIEW_DATA + VIEW_DATA - (VIEW_DATA - 1);
+
+    console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+    console.log(response);
+    board_list(response.content);
+    pageing_list();
+
+
+    function board_list(data) {
+      var str = '';
+      data.forEach((post) => {
+        str += `<div class="main">
+                  <div v-for="article in filtered">
+                    <div class="article-list__cell-id">${post.id}</div>
+                    <div class="article-list__cell-nickname">
+                      <a :href="'article_' + article.id + '.html'" class="hover-pointer">${post.nickname}</a>
+                    </div>
+                    <div class="article-list__cell-gender">${post.gender}</div>
+                    <div class="article-list__cell-age">${post.age}</div>
+                    <div class="article-list__cell-region">${post.region}</div>
+                    <div class="article-list__cell-email">${post.email}</div>
+                  </div>
+                </div>`
+      });
+
+      $('.article-list').empty();
+      $('.article-list').append(str);
+    }
+
+    function pageing_list() {
+      //page  = page < 0 ? 0 : page;
+      var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+      var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+      var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+      var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+      var next = end = (setion_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+      var first = 1; // 처음 페이지
+      var last = TOTAL_PAGE; // 마지막 페이지
+      var pageNums = [];
+
+      console.log('page:', page, ' setion_page:', setion_page, ' :start:', start, ' end:', end);
+
+      $('.paging').empty();
+
+      if (page != 1) {
+        pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+      }
+
+      if (setion_page != 1) {
+        pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+      }
+      // 페이징 번호 출력
+      for (var i = start; i < end; i++) {
+        if (page == i) {
+          pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+          continue;
+        }
+        pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+      }
+
+      if (setion_page != TOTAL_SECTION) {
+        pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+      }
+
+      if (page != last) {
+        pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+      }
+
+      $('.paging').append(pageNums);
+      }
   });
-
-  $('.article-list').append(str);
 }
-
-          
 
 </script>
 </html>

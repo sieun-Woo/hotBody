@@ -8,9 +8,11 @@ import com.sparta.hotbody.post.service.PostService;
 import com.sparta.hotbody.user.entity.User;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +35,20 @@ public class PostController {
 
   // 1. 게시글 등록
   @PostMapping("/posts")
-  public void createPost(
-      @RequestPart PostRequestDto postRequestDto,
-      @RequestPart(required = false) MultipartFile file,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    postService.createPost(postRequestDto, userDetails.getUser(), file);
+  public Long createPost(
+      @RequestBody PostRequestDto postRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return postService.createPost(postRequestDto, userDetails);
   }
+
+  @PostMapping("/posts/image")
+  public ResponseEntity<String> createImage(
+      @RequestPart MultipartFile file,
+      @RequestPart Long id,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    return postService.createImage(file, id);
+  }
+
 
   // 2. 게시글 전체 조회
   @GetMapping("/posts")
@@ -50,7 +60,6 @@ public class PostController {
   ) {
     return postService.getAllPosts(page - 1, size, sortBy, isAsc);
   }
-
   // 3. 게시글 선택 조회
   @GetMapping("/posts/{postId}")
   public PostResponseDto getPost(@PathVariable Long postId) {

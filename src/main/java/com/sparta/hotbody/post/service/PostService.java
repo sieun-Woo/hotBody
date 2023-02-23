@@ -7,16 +7,22 @@ import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.upload.entity.Image;
+import com.sparta.hotbody.upload.repository.ImageRepository;
 import com.sparta.hotbody.upload.service.UploadService;
 import com.sparta.hotbody.user.entity.User;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,27 +32,37 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostService {
 
   private final PostRepository postRepository;
-
   private final UploadService uploadService;
+  private final ImageRepository imageRepository;
 
   // 1. 게시글 등록
   @Transactional
-  public void createPost(PostRequestDto postRequestDto, User user, MultipartFile file)
-      throws IOException {
-    if (file != null) {
-      Image image = uploadService.storeFile(file);
-      String storeFileName = image.getResourcePath();
-      Post post = new Post(postRequestDto, user, storeFileName);
-      postRepository.save(post);
+  public Long createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+    User user = userDetails.getUser();
+    Post post = new Post(postRequestDto, user);
+    Long id = postRepository.saveAndFlush(post).getId();
 
-    } else {
-      Post post = new Post(postRequestDto, user);
-      postRepository.save(post);
-    }
+    return id;
   }
 
-  // 2. 게시글 전체 조회
   @Transactional
+  public ResponseEntity<String> createImage(MultipartFile file, Long id)
+      throws IOException {
+    Post post = postRepository.findById(id).get();
+    if (post.getImage() != null) {
+      Image image = imageRepository.findByResourcePath(post.getImage()).get();
+      uploadService.remove(image.getResourcePath());
+    }
+    Image image = uploadService.storeFile(file);
+    String resourcePath = image.getResourcePath();
+    post.updateImage(resourcePath);
+
+    return new ResponseEntity("사진이 등록되었습니다.", HttpStatus.OK);
+  }
+
+
+
+  // 2. 게시글 전체 조회
   public List<PostResponseDto> getAllPosts(int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;

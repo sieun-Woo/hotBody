@@ -401,7 +401,7 @@ body {
       localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
       console.log(xhr.getResponseHeader('Authorization'));
       alert("로그인 완료")
-      location.href = "index.html"
+      location.href = "admin.html"
     }).fail(function(response) {
       alert(response.responseJSON.message);
     })

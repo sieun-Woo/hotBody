@@ -22,6 +22,7 @@ import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
@@ -126,8 +127,8 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity getRegistrations(PageDto pageDto) {
-    Page<Trainer> trainerList = promoteRepository.findAll(pageDto.toPageable());
+  public ResponseEntity getRegistrations(int pageNum) {
+    Page<Trainer> trainerList = promoteRepository.findAll(new PageDto(pageNum).toPageable());
     if (trainerList.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
@@ -206,13 +207,12 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity getUserList(PageDto pageDto) {
-    Page<Trainer> RequestList = promoteRepository.findAll(pageDto.toPageable());
-    Page<User> userPage = userRepository.findAllByRole(UserRole.USER, pageDto.toPageable());
+  public ResponseEntity getUserList(int pageNum) {
+    Page<User> userPage = userRepository.findAllByRole(UserRole.USER, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    Page<UserProfileResponseDto> userResponseDtoPage = new UserProfileResponseDto().toDtoPage(userPage);
+    Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
     return new ResponseEntity(userResponseDtoPage, HttpStatus.OK);
   }
 
@@ -228,12 +228,12 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity getTrainerList(PageDto pageDto) {
-    Page<User> userPage = userRepository.findAllByRole(UserRole.TRAINER, pageDto.toPageable());
+  public ResponseEntity getTrainerList(int pageNum) {
+    Page<User> userPage = userRepository.findAllByRole(UserRole.TRAINER, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    Page<UserProfileResponseDto> userResponseDtoPage = new UserProfileResponseDto().toDtoPage(userPage);
+      Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
     return new ResponseEntity(userResponseDtoPage, HttpStatus.OK);
   }
 

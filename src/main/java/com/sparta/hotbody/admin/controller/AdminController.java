@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -53,9 +54,9 @@ public class AdminController {
   }
 
   // 트레이너 등록 요청 조회
-  @GetMapping("/requests")
-  public ResponseEntity getRegistrations(@RequestBody PageDto pageDto) {
-    return adminService.getRegistrations(pageDto);
+  @GetMapping("/apply")
+  public ResponseEntity getRegistrations(@RequestParam int pageNum) {
+    return adminService.getRegistrations(pageNum);
   }
 
   // 트레이너 등록 요청 허용
@@ -97,9 +98,9 @@ public class AdminController {
   }
 
   // 전체 유저 정보 조회
-  @GetMapping("/userlist")  // users가 더 나을 것 같습니다.
-  public ResponseEntity getUserList(@RequestBody PageDto pageDto) {
-    return adminService.getUserList(pageDto);
+  @GetMapping("/users")  // users가 더 나을 것 같습니다.
+  public ResponseEntity getUserList(@RequestParam(value="currentPage") int pageNum) {
+    return adminService.getUserList(pageNum);
   }
 
   // 단건 유저 정보 조회
@@ -109,9 +110,9 @@ public class AdminController {
   }
 
   // 전체 트레이너 정보 조회
-  @GetMapping("/trainerlist")  // trainers가 더 나을 것 같습니다.
-  public ResponseEntity getTrainerList(@RequestBody PageDto pageDto) {
-    return adminService.getTrainerList(pageDto);
+  @GetMapping("/trainers")  // trainers가 더 나을 것 같습니다.지
+  public ResponseEntity getTrainerList(@RequestParam(value="currentPage") int pageNum) {
+    return adminService.getTrainerList(pageNum);
   }
 
   // 단건 트레이너 정보 조회

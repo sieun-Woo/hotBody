@@ -27,7 +27,7 @@ public interface AdminService {
 
   ResponseEntity permitTrainer(Long requestId);
 
-  ResponseEntity getRegistrations(PageDto pageDto);
+  ResponseEntity getRegistrations(int pageNum);
 
   ResponseEntity refuseTrainer(Long userId);
 
@@ -41,11 +41,11 @@ public interface AdminService {
 
   ResponseEntity deleteComment(Long commentId);
 
-  ResponseEntity getUserList(PageDto pageDto);
+  ResponseEntity getUserList(int pageNum);
 
   ResponseEntity getUser(Long userId);
 
-  ResponseEntity getTrainerList(PageDto pageDto);
+  ResponseEntity getTrainerList(int pageNum);
 
   ResponseEntity getTrainer(Long trainerId);
 

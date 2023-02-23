@@ -6,6 +6,8 @@ import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 
+import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +24,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
   private final CommentRepository commentRepository;
+  private final PostRepository postRepository;
 
   // 1. 댓글 등록
   @Transactional
-  public void createComment(CommentRequestDto commentRequestDto, User user) {
+  public void createComment(CommentRequestDto commentRequestDto, User user, Long postId) {
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+    );
+
     Comment comment = new Comment(commentRequestDto, user);
     commentRepository.save(comment);
   }

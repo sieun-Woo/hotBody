@@ -27,11 +27,12 @@ public class CommentController {
   private final CommentService commentService;
 
   // 1. 댓글 등록
-  @PostMapping("/comments")
+  @PostMapping("/comments/{postId}")
   public void createComment(
       @RequestBody CommentRequestDto commentRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.createComment(commentRequestDto, userDetails.getUser());
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @PathVariable Long postId) {
+    commentService.createComment(commentRequestDto, userDetails.getUser(), postId);
   }
 
   // 2. 댓글 전체 조회

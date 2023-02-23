@@ -40,19 +40,14 @@ public class Post extends TimeStamp {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "post_id")
   private Long id;
-
   @Column(nullable = false)
   private String nickname;
-
   @Column(nullable = false)
   private String title;
-
   @Column(nullable = false)
   private String content;
-
   @Column
   private String image;
-
   @Column(nullable = false)
   private int likes = 0;
 
@@ -124,5 +119,9 @@ public class Post extends TimeStamp {
 
   public void minusLikes() {
     this.likes -= 1;
+  }
+
+  public void updateImage(String resourcePath) {
+    this.image = resourcePath;
   }
 }

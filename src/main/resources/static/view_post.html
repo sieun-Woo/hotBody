@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,42 +8,44 @@
   <title>글</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-<!-- 로그아웃/ -->
-<!-- Wordpress Site header-bar -->
-<header class="wp-header" role="banner">
-  <ul>
-    <li><a href="index.html">로그아웃</a></li>
-  </ul>
-</header>
-
-<!-- vue 헤더 -->
-<!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- lodash 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-
-<div class="body-content min-height-100vh flex flex-column">
-  <!-- 로고바 시작 -->
-  <header class="logo-bar con-min-width">
-    <div class="con height-100p flex flex-jc-c">
-      <a href="index.html" class="logo flex flex-ai-c">
-        <i class="fa-solid fa-dumbbell"></i>
-        <span>
-          Hot<span></span>body
-        </span>
-      </a>
-    </div>
+  <!-- 로그아웃/ -->
+  <!-- Wordpress Site header-bar -->
+  <header class="wp-header" role="banner">
+    <ul>
+      <li><a href="index.html">로그아웃</a></li>
+    </ul>
   </header>
-  <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티</div>
+
+  <!-- vue 헤더 -->
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- lodash 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+
+  <div class="body-content min-height-100vh flex flex-column">
+    <!-- 로고바 시작 -->
+    <header class="logo-bar con-min-width">
+      <div class="con height-100p flex flex-jc-c">
+        <a href="index.html" class="logo flex flex-ai-c">
+          <i class="fa-solid fa-dumbbell"></i>
+          <span>
+            Hot<span></span>body
+          </span>
+        </a>
+      </div>
+    </header>
+    <!-- 로고바 끝 -->
+    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
+    </div>
     <!-- 메뉴바 시작 -->
     <header class="menu-bar con-min-width">
       <div class="con height-100p" style="position: relative; z-index: 2;">
         <nav class="menu-bar__menu-1">
-  
+
           <ul class="flex">
             <li>
               <a href="index.html" class="block">
@@ -120,7 +123,7 @@
     </header>
     <!-- 메뉴바 끝 -->
 
-    <nav >
+    <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티</li>
       </ol>
@@ -130,73 +133,81 @@
       <div class="con">
         <div class="textForm">
           <div id="title"></div>
-          <br/><br/>
+          <br /><br />
         </div>
         <div class="textForm">
-          <div type="nickname" id="nickname" name="nickname" disabled> 
+          <div type="nickname" id="nickname" name="nickname" disabled>
           </div>
-          <br/>
+          <br />
         </div>
         <div class="textForm">
           <div id="content"></div>
-          <br/><br/>
+          <br /><br />
         </div>
         <div class="textForm">
           <div id="comments"></div>
-          <br/><br/>
+          <br /><br />
         </div>
       </div>
     </section>
 
     <div id="comment-box" class="commentForm">
-      <textarea id="comment" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" 
-      >
-      </textarea><br/><br/>
-      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp(this)"/>
+      <textarea id="comment" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;">
+      </textarea><br /><br />
+      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()" />
     </div>
-</form>
-</div>
+    </form>
+  </div>
   </div>
 
 </body>
 <style>
-    /* 폰트 */
+  /* 폰트 */
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 400;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
   }
+
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 700;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
   }
+
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 300;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
   }
+
   html {
     font-family: 'LotteMartDream', sans-serif;
   }
 
   /* 노말라이즈 */
-  body, ul, li, h1, h2, h3 {
-    margin:0;
-    padding:0;
-    list-style:none;
+  body,
+  ul,
+  li,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
+
   a {
-    color:inherit;
-    text-decoration:none;
+    color: inherit;
+    text-decoration: none;
   }
 
   /* 라이브러리 */
   .hover-underline:hover {
-    text-decoration:underline;
+    text-decoration: underline;
   }
 
   .hover-pointer:hover {
@@ -204,27 +215,27 @@
   }
 
   .flex {
-    display:flex;
+    display: flex;
   }
 
   .flex-jc-c {
-    justify-content:center;
+    justify-content: center;
   }
 
   .flex-ai-c {
-    align-items:center;
+    align-items: center;
   }
 
   .flex-wrap {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
   }
 
   .flex-column {
-    flex-direction:column;
+    flex-direction: column;
   }
 
   .flex-grow-1 {
-    flex-grow:1;
+    flex-grow: 1;
   }
 
   .flex-none {
@@ -245,40 +256,40 @@
   }
 
   .min-height-100vh {
-    min-height:100vh;
+    min-height: 100vh;
   }
 
   .bg-pink {
-    background-color:pink;
+    background-color: pink;
   }
 
   .bd-green {
-    border:10px solid green;
+    border: 10px solid green;
   }
 
   .bg-red {
-    background-color:red;
+    background-color: red;
   }
 
   .bg-blue {
-    background-color:blue;
+    background-color: blue;
   }
 
   .height-100p {
-    height:100%;
+    height: 100%;
   }
 
   .block {
-    display:block;
+    display: block;
   }
 
   /* 커스텀 */
   .con-min-width {
-    min-width:1200px;
+    min-width: 1200px;
   }
 
   .con {
-    width:1000px;
+    width: 1000px;
   }
 
   .info-article {
@@ -289,100 +300,105 @@
 
   /* 로고 시작 */
   .logo {
-    font-size:4rem;
+    font-size: 4rem;
     color: white;
   }
 
-  .logo > span {
-    margin-left:10px;
+  .logo>span {
+    margin-left: 10px;
     color: white;
   }
 
-  .logo > span > span {
-    color:red;
+  .logo>span>span {
+    color: red;
   }
 
   .logo--mini {
-    font-size:2rem;
+    font-size: 2rem;
   }
+
   /* 로고 끝 */
 
   /* 로고바 시작 */
   .logo-bar {
-    background-color:black;
-    color:white;
-    height:200px;
+    background-color: black;
+    color: white;
+    height: 200px;
   }
+
   /* 로고바 끝 */
 
   /* 메뉴바 시작 */
   .menu-bar {
-    background-color:black;
-    color:white;
+    background-color: black;
+    color: white;
   }
 
-  .menu-bar__menu-1 > ul > li {
-    width:25%;
-    position:relative;
+  .menu-bar__menu-1>ul>li {
+    width: 25%;
+    position: relative;
   }
 
-  .menu-bar__menu-1 ul > li > a {
-    text-align:center;
-    padding:20px 0;
+  .menu-bar__menu-1 ul>li>a {
+    text-align: center;
+    padding: 20px 0;
   }
 
-  .menu-bar__menu-1 ul > li:hover > a {
-    background-color:white;
-    color:black;
+  .menu-bar__menu-1 ul>li:hover>a {
+    background-color: white;
+    color: black;
   }
 
-  .menu-bar__menu-1 > ul > li > a {
-    border-radius:10px 10px 0 0;
+  .menu-bar__menu-1>ul>li>a {
+    border-radius: 10px 10px 0 0;
   }
 
-  .menu-bar__menu-1 > ul ul {
-    display:none;
-    position:absolute;
-    top:100%;
-    left:-10px;
-    width:100%;
-    background-color:black;
-    border:10px solid black;
-    border-top-width:0;
-    border-radius:0 0 20px 20px;
+  .menu-bar__menu-1>ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    width: 100%;
+    background-color: black;
+    border: 10px solid black;
+    border-top-width: 0;
+    border-radius: 0 0 20px 20px;
   }
 
-  .menu-bar__menu-1 > ul > li:hover > ul {
-    display:block;
+  .menu-bar__menu-1>ul>li:hover>ul {
+    display: block;
   }
 
-  .menu-bar__menu-1 > ul ul > li:last-child > a {
-    border-radius:0 0 10px 10px;
+  .menu-bar__menu-1>ul ul>li:last-child>a {
+    border-radius: 0 0 10px 10px;
   }
+
   /* 메뉴바 끝 */
 
   /* 타이틀바 시작 */
   .title-bar {
-    margin-top:30px;
-    margin-bottom:30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
+
   /* 타이틀바 끝 */
 
   /* 하단바 시작 */
   .bottom-bar {
-    margin-top:30px;
-    background-color:black;
-    color:white;
-    padding-top:30px;
-    padding-bottom:30px;
+    margin-top: 30px;
+    background-color: black;
+    color: white;
+    padding-top: 30px;
+    padding-bottom: 30px;
   }
 
   .bottom-bar__site-info {
-    margin-left:20px;
+    margin-left: 20px;
   }
+
   /* 하단바 끝 */
 
- 
+
   /* Wordpress Site header-bar */
   .wp-header {
     font-family: Arial;
@@ -393,8 +409,9 @@
     width: 100%;
     z-index: 9999;
   }
+
   .wp-header h1 {
-    float:left;
+    float: left;
     padding-left: 40px;
     color: #78c8e6;
     font-size: 20px;
@@ -404,17 +421,20 @@
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
   }
+
   .wp-header h1:hover {
     color: #fff;
     cursor: pointer;
   }
+
   .wp-header li {
-    float:right;
+    float: right;
     height: 46px;
     padding-right: 20px;
     line-height: 46px;
   }
-  .wp-header li > a {
+
+  .wp-header li>a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -422,72 +442,76 @@
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
   }
-  .wp-header li:hover > a {
+
+  .wp-header li:hover>a {
     color: #78c8e6;
   }
 
-.textForm {
-  border-bottom: 2px solid #adadad;
-  margin: 30px;
-  padding: 10px 10px;
-}
+  .textForm {
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+  }
 
-.commentForm {
-  position: relative;
-  margin-left: 290px;
-  width: 800px;
-}
+  .commentForm {
+    position: relative;
+    margin-left: 290px;
+    width: 800px;
+  }
 
-.commentbtn {
-  position:relative;
-  left:250px;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:500px;
-  height:40px;
-  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
-  background-position: left;
-  background-size: 200%;
-  color:white;
-  font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
-}
+  .commentbtn {
+    position: relative;
+    left: 250px;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 500px;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
 
 
-.btn {
-  position:relative;
-  left:40%;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:80%;
-  height:40px;
-  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
-  background-position: left;
-  background-size: 200%;
-  color:white;
-  font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
-}
+  .btn {
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
 
-.btn:hover {
-  background-position: right;
-}
-
+  .btn:hover {
+    background-position: right;
+  }
 </style>
 
 <script>
-jQuery(document).ready(function($) {
+  var page = 0;
+  
+  jQuery(document).ready(function ($) {
 
-  var param = document.location.href.split("?");
-  console.log("해당 게시글번호 : "+ param[1])
+    var param = document.location.href.split("?");
+    console.log("해당 게시글번호 : " + param[1])
 
-  var settings = { 
+    page = param[1];
+
+    var settings = {
       "url": "http://localhost:8080/api/posts/" + param[1],
       "method": "GET",
       "timeout": 0,
@@ -497,11 +521,11 @@ jQuery(document).ready(function($) {
       }
     };
 
-  $.ajax(settings).done(function (response) {
-    $('#nickname').text(response.nickname);
-    $('#title').text(response.title);
-    $('#content').text(response.content);
-  })
+    $.ajax(settings).done(function (response) {
+      $('#nickname').text(response.nickname);
+      $('#title').text(response.title);
+      $('#content').text(response.content);
+    })
 
     if (localStorage.getItem('accessToken')) {
       $("#logout").show();
@@ -513,9 +537,9 @@ jQuery(document).ready(function($) {
       $("#signin").show();
     }
     getUser();
-})
+  })
 
-function getUser() {
+  function getUser() {
     var settings = {
       "url": "http://localhost:8080/api/user/auth/profile",
       "method": "GET",
@@ -532,60 +556,61 @@ function getUser() {
 
   function logout() {
 
-var settings = {
-"url": "http://localhost:8080/api/user/log-out",
-"method": "DELETE",
-"timeout": 0,
-"headers": {
-  "Authorization": localStorage.removeItem('accessToken')
-},
-};
+    var settings = {
+      "url": "http://localhost:8080/api/user/log-out",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.removeItem('accessToken')
+      },
+    };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  localStorage.removeItem('accessToken');
-  var now = new Date();
-  now.setDate(now.getDate()-1);
-  document.cookie = "RefreshToken=; expires="+now.toUTCString();
-  location.reload();
-});
-}
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      localStorage.removeItem('accessToken');
+      var now = new Date();
+      now.setDate(now.getDate() - 1);
+      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+      location.reload();
+    });
+  }
 
-function commentUp(){
+  function commentUp() {
 
-  var settings = {
-  "url": "http://localhost:8080/api/comments/${post.id}",
-  "method": "POST",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken'),
-    "Content-Type": "application/json",
-    
-  },
-  "data": JSON.stringify({
-    "content": $('#comment').val()
-  }),
-};
+    var settings = {
+      "url": "http://localhost:8080/api/comments/" + page,
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
+      },
+      "data": JSON.stringify({
+        "content": $('#comment').val()
+      }),
+    };
 
-}
-
-let temp_html = `<div class="textForm" id="comments">
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      let temp_html = `<div class="textForm" id="comments">
                     <div id="commentnickname"  disabled>닉넴</div>
                     <div id="comment">댓글</div>  
                   </div>`
 
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+      $('#comments').append(temp_html)
+
+    });
+
+  }
 
 
 </script>
+
 </html>

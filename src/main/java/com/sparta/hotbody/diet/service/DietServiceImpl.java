@@ -9,15 +9,18 @@ import com.sparta.hotbody.common.batch.food.FoodRepository;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFood;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFoodRepository;
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
-import java.util.ArrayList;
-import java.util.List;
+import com.sparta.hotbody.diet.entity.Diet;
+import com.sparta.hotbody.diet.repository.DietRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class DietServiceImpl implements DietService {
   private final AquaticProductsRepository aquaticProductsRepository;
   private final FoodRepository foodRepository;
   private final ProcessedFoodRepository processedFoodRepository;
+  private final DietRepository dietRepository;
 
   public Page<FoodResponseDto> searchFood(String FoodType, String searchWord, int page) {
     Sort sort = Sort.by(Direction.DESC, "id");
@@ -69,5 +73,18 @@ public class DietServiceImpl implements DietService {
     }
     return null;
   }
+
+  @Transactional
+  @Override
+  public ResponseEntity<String> saveDiet(Diet diet) {
+    dietRepository.saveAndFlush(diet);
+    return new ResponseEntity<>("기록되었습니다.",HttpStatus.OK);
+  }
+
+  @Override
+  public String readDiet(String time) {
+    return dietRepository.findByTime(time).get().getDietFood();
+  }
+
 
 }

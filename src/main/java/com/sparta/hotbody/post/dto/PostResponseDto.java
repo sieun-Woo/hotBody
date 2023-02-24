@@ -10,6 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostResponseDto {
 
+  private Long id;
+
   private String nickname;
 
   private String title;
@@ -25,6 +27,7 @@ public class PostResponseDto {
   private LocalDateTime modifiedAt;
 
   public PostResponseDto(Post post) {
+    this.id = post.getId();
     this.nickname = post.getNickname();
     this.title = post.getTitle();
     this.content = post.getContent();

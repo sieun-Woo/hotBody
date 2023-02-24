@@ -12,10 +12,11 @@
 <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
   <ul>
-    <li><a href="index.html">로그아웃</a></li>
+      <li id="signup"><a href="signup.html">회원가입</a></li>
+      <li id="signin"><a href="login.html">로그인</a></li>
+      <li id="logout"><a onclick="logout()">로그아웃</a></li>
   </ul>
 </header>
-
 <!-- vue 헤더 -->
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,8 +24,8 @@
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- 페이징 불러오기 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
 <div class="body-content min-height-100vh flex flex-column">
@@ -151,93 +152,39 @@
           </form>
         </div>
 
-        <div class="article-list" style="position: relative; z-index: 1;">
+        <div class="article-header" style="position: relative; z-index: 1;">
           <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트 게시글</div>
-          <header>
-            <div>
-              <div class="article-list__cell-id">번호</div>
-              <div class="article-list__cell-reg-date">날짜</div>
-              <div class="article-list__cell-writer">작성자</div>
-              <div class="article-list__cell-title">제목</div>
-              <div class="article-list__cell-like">좋아요</div>
-            </div>
-          </header>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" target="_blank" class="hover-pointer">{{article.title}}</a>
+            <header>
+              <div>
+                <div class="article-list__cell-id">번호</div>
+                <div class="article-list__cell-title">제목</div>
+                <div class="article-list__cell-writer">작성자</div>
+                <div class="article-list__cell-reg-date">날짜</div>
+                <div class="article-list__cell-like">좋아요</div>
               </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
+            </header>
           </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" target="_blank" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" target="_blank" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" target="_blank" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" target="_blank" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" target="_blank" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-        </div>
 
-        <div class="write">
-          <ul class="flex-write">
-            <li>
-              <a href="write_post.html" class="block">
-                <span>글쓰기</span>
-              </a>
-              </li>
+          <div class="article-list" style="position: relative; z-index: 1;">
+          </div>
+          
+      </div>
+      <div class="write" style="position:center;">
+        <ul class="flex-write">
+          <li>
+            <a href="write_post_trainer.html" class="block">
+              <span>글쓰기</span>
+            </a>
+            </li>
+      </div>
+      
+        <div class="paging">
+
         </div>
+        <br><br>
+    
+
+        
       </div>
     </section>
   </div>
@@ -259,20 +206,6 @@
 </div>
 </body>
 <style>
-  /* 회원가입 메뉴 */
-  /* reset */
-  body {padding: 10px; margin: 10px;}
-  h1, ul {margin:0; padding: 0;}
-  ul {list-style: none;}
-  header + header {margin-top: 50px;}
-  nav {display:block;}
-  a {text-decoration: none;}
-
-  h1:hover {
-    cursor: pointer;
-  }
-
-  /* vue 헤더 */
   /* 폰트 */
   @font-face {
     font-family: 'LotteMartDream';
@@ -514,6 +447,7 @@
   /* 게시물 리스트 시작 */
 
   /* 게시물 리스트 */
+
   :root {
     --article-list__cell-id__width:100px;
     --article-list__cell-reg-date__width:220px;
@@ -576,6 +510,42 @@
   .article-list > .main > div {
     border-top:1px solid black;
   }
+
+ /* 위에는 본문 아래는 헤더 */
+  .article-header > * > div {
+    display:flex;
+  }
+
+  .article-header > header > div > div {
+    position:relative;
+  }
+
+  .article-header > header > div > div:not(:last-child)::after {
+    content:"";
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    right:0;
+    width:1px;
+    height:10px;
+    background-color:black;
+  }
+
+  .article-header > * > div > div {
+    box-sizing:border-box;
+    text-align:center;
+    padding-top:10px;
+    padding-bottom:10px;
+  }
+
+  .article-header > .main .article-list__cell-title {
+    text-align:left;
+    padding-left:10px;
+  }
+
+  .article-header > .main > div {
+    border-top:1px solid black;
+  }
   /* 게시물 리스트 끝 */
 
   /* 게시물 리스트 페이지 메뉴 시작 */
@@ -601,6 +571,10 @@
 
   .article-page-menu__link--selected {
     color:red;
+  }
+
+  .write{
+    margin-left: 50%;
   }
   /* 게시물 리스트 페이지 메뉴 끝 */
 
@@ -646,127 +620,179 @@
   .wp-header li:hover > a {
     color: #78c8e6;
   }
+/* 페이징 */
+.paging {
+  margin: 0 auto;
+  width: 1000px;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 0
+}
+
+.paging .current {
+  color: #00f;
+  font-weight: bold
+}
+
+.paging a {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #000;
+  font-size: 12px
+}
+
+.paging a+a {
+  margin-left: 5px
+}
+
+.paging a.on {
+  color: #f00
+}
 </style>
 <script>
-  // vue 헤더
-  console.clear();
-  const articleList = [];
+  jQuery(document).ready(function($) {
 
-  $.get(
-      'https://api.github.com/repos/rbqja5597/site/commits?per_page=20&sha=master',
-      {},
-      function(data) {
-        data.forEach((row, index) => {
-          console.log(row);
+  $("#logout").hide();
+  $("#signup").show();
+  $("#signin").show();
 
-          const article = {
-            id:index + 1,
-            regDate:row.commit.author.date,
-            writer:row.commit.author.name,
-            title:row.commit.message,
-            body:row.commit.message
-          };
+  if (localStorage.getItem('accessToken')) {
+    $("#logout").show();
+    $("#signup").hide();
+    $("#signin").hide();
+  } else {
 
-          articleList.push(article);
-        });
-      },
-      'json'
-  );
+  }
+  getPosts(1);
+})
 
-  const articleListBox = new Vue({
-    el: "#article-list-wrap",
-    data: {
-      articleList:articleList,
-      searchKeyword:''
-    },
-    methods: {
-      search:_.debounce(function(e) {
-        this.searchKeyword = e.target.value;
-      }, 500)
-    },
+function logout() {
 
-    computed: {
-      filterKey:function() {
-        return this.searchKeyword.toLowerCase();
-      },
-      filtered:function() {
-        if ( this.filterKey.length == 0 ) {
-          return this.articleList;
-        }
-
-        return this.articleList.filter((row) => {
-          if ( row.title.toLowerCase().indexOf(this.filterKey) > -1 ) {
-            return true;
-          } else if (row.writer.toLowerCase().indexOf(this.filterKey) > -1) {
-            return true;
-          } else if (row.body.toLowerCase().indexOf(this.filterKey) > -1) {
-            return true;
-          }
-        });
-      },
-    }
-  });
-
-  // 드롭다운 메뉴
-  var App = {
-
-    accessibleMenu: function(){
-      $menu = $('.access-menu');
-      $menuItem = $menu.find('> li > a');
-
-      $subMenu = $('.access-submenu');
-      $subMenuItem = $subMenu.find('> li > a');
-      $submenuLastItem = $subMenu.find('> li:last-child > a');
-
-      $menuItem.bind({
-        focus: function(){
-          $subMenu.removeClass('is-show');
-          if($(this).next($subMenu)){
-            $(this).next($subMenu).addClass('is-show');
-          }
-        },
-
-        blur: function(){
-          $subMenu.removeClass('is-show');
-        }
-      });
-
-      $subMenuItem.bind({
-        focus: function(){
-          $(this).parent().parent().addClass('is-show');
-        }
-      });
-
-      $submenuLastItem.bind({
-        blur: function(){
-          $subMenu.removeClass('is-show');
-        }
-      });
-    },
-
-    cancelAccessibleMenu: function(){
-      $(document).click(function(){
-        if($subMenu.hasClass('is-show')){
-          $subMenu.removeClass('is-show');
-        }
-      });
-    }
-
+  var settings = {
+  "url": "http://localhost:8080/api/user/log-out",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.removeItem('accessToken')
+  },
   };
 
-  $(function(){
-    App.accessibleMenu();
-    App.cancelAccessibleMenu();
-  });
-  // 게시판
-  $('.check.all').on('change', function(){
-    $('.check').prop('checked', $(this).prop('checked'));
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    localStorage.removeItem('accessToken');
+    var now = new Date();
+    now.setDate(now.getDate()-1);
+    document.cookie = "RefreshToken=; expires="+now.toUTCString();
   });
 
-  $(document).on('click', '.page-box .btn.number', function(){
-    $('.page-box .btn.number').removeClass('on');
-    $(this).addClass('on');
+  location.href = "index.html";
+}
+
+// 페이징 버튼
+$(document).on('click', '#p', function (e) {
+    page = parseInt($(this).data('page'));
+    getPosts(page)
     return false;
-  })
+  });
+  
+function getPosts(page){
+  var settings = {
+    "url": `http://localhost:8080/api/posts?page=${page}&size=10&sortBy=id&isAsc=true`,
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.getItem('accessToken'),
+      "Content-Type": "application/json"
+    }
+  };
+
+  $.ajax(settings).done(function (response) {
+    const TOTAL_DATA = response.totalElements; // 데이터 총개수
+    const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+    const TOTAL_PAGE = response.totalPages // 총페이지
+
+    const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+    const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+    
+    var start = VIEW_DATA - VIEW_DATA;
+    var end = VIEW_DATA;
+    var j = 1;
+
+    
+
+    console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+    console.log(response);
+    board_list(response.content);
+    paging_list();
+
+    // 게시물 목록
+  function board_list(data) {
+    var k = (page-1)*10 +j;
+    var str = '';
+    data.forEach((post) => {
+      str += `<div class="main">
+                <div v-for="article in filtered">
+                  <div class="article-list__cell-id">`+k+`</div>              
+                  <div class="article-list__cell-title">
+                    <a href="view_post.html?`+k+`" target="_blank" class="hover-pointer">${post.title}</a>
+                  </div>
+                  <div class="article-list__cell-writer">${post.nickname}</div>
+                  <div class="article-list__cell-reg-date">${post.createdAt}</div>
+                  <div class="article-list__cell-like">${post.likes}</div>
+                </div>
+              </div>`
+              k++
+    });
+
+    $('.article-list').empty();
+    $('.article-list').append(str);
+
+  }
+
+  function paging_list() {
+      //page  = page < 0 ? 0 : page;
+      var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+      var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+      var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+      var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+      var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+      var first = 1; // 처음 페이지
+      var last = TOTAL_PAGE; // 마지막 페이지
+      var pageNum = [];
+
+      console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
+
+      $('.paging').empty();
+
+      if (page != 1) {
+        pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+      }
+
+      if (section_page != 1) {
+        pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+      }
+      // 페이징 번호 출력
+      for (var i = start; i < end; i++) {
+        if (page == i) {
+          pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+          continue;
+        }
+        pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+      }
+
+      if (section_page != TOTAL_SECTION) {
+        pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+      }
+
+      if (page != last) {
+        pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+      }
+
+      $('.paging').append(pageNum);
+      }
+  });
+}
+  
+  
 </script>
 </html>

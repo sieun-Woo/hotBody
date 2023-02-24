@@ -28,7 +28,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     String token = jwtUtil.resolveToken(request);
-    String refreshToken = jwtUtil.resolveRefreshToken(request);
     try {
       if (token != null) {
         if (!jwtUtil.validateToken(token, response)) {
@@ -40,8 +39,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         setAuthentication(info.getSubject(), info.get(jwtUtil.AUTHORIZATION_KEY).toString());
       }
     } catch (ExpiredJwtException e) {
+      String refreshToken = jwtUtil.resolveRefreshTokenFromCookie(request);
       if (refreshToken == null) {
-
         jwtExceptionHandler(response, "Expired JWT token, 만료된 JWT token 입니다.",
             HttpStatus.BAD_REQUEST.value());
         return;
@@ -50,7 +49,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (jwtUtil.validateRefreshToken(refreshToken)) {
         String reCreateAccessToken = jwtUtil.reCreateAccessToken(refreshToken);
         Claims info = jwtUtil.getUserInfoFromToken(reCreateAccessToken.substring(7));
-        response.setHeader(jwtUtil.AUTHORIZATION_HEADER, reCreateAccessToken);
+
+        response.addHeader(jwtUtil.AUTHORIZATION_HEADER, reCreateAccessToken);
+
         setAuthentication(info.getSubject(), info.get(jwtUtil.AUTHORIZATION_KEY).toString());
         filterChain.doFilter(request, response);
       }

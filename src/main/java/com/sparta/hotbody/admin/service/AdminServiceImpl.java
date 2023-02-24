@@ -17,30 +17,35 @@ import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
-import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
-import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
-import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
+import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +63,9 @@ public class AdminServiceImpl implements AdminService {
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
   private final RefreshTokenRepository refreshTokenRepository;
+  private final JavaMailSender javaMailSender;
+  @Value("${spring.mail.username}")
+  private String from;
 
   @Override
   public ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto) {
@@ -78,7 +86,11 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
+      throws UnsupportedEncodingException {
+    if(!jwtUtil.validate(request)) {
+      return new ResponseEntity<>("중복 로그인 입니다.", HttpStatus.OK);
+    }
     Admin admin = adminRepository.findByUsername(loginRequestDto.getUsername())
         .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
     if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
@@ -86,17 +98,37 @@ public class AdminServiceImpl implements AdminService {
     }
     String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
     String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-    response.addHeader(JwtUtil.REFRESH_TOKEN, refreshToken);
+
+    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
+
+
+    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+    cookieRefreshToken.setPath("/");
+
+
+    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
+    response.addCookie(cookieRefreshToken);
+
     refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), admin));
 
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
 
+  @Transactional
+  public ResponseEntity<String> logout(HttpServletRequest request) {
+    if(jwtUtil.logout(request)) {
+      return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+
+    } else {
+      return new ResponseEntity<>("로그인되어 있지 않습니다.", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+
   @Override
   @Transactional
-  public ResponseEntity getRegistrations(PageDto pageDto) {
-    Page<Trainer> trainerList = promoteRepository.findAll(pageDto.toPageable());
+  public ResponseEntity getRegistrations(int pageNum) {
+    Page<Trainer> trainerList = promoteRepository.findAll(new PageDto(pageNum).toPageable());
     if (trainerList.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
@@ -175,13 +207,12 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity getUserList(PageDto pageDto) {
-    Page<Trainer> RequestList = promoteRepository.findAll(pageDto.toPageable());
-    Page<User> userPage = userRepository.findAllByRole(UserRole.USER, pageDto.toPageable());
+  public ResponseEntity getUserList(int pageNum) {
+    Page<User> userPage = userRepository.findAllByRole(UserRole.USER, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    Page<UserProfileResponseDto> userResponseDtoPage = new UserProfileResponseDto().toDtoPage(userPage);
+    Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
     return new ResponseEntity(userResponseDtoPage, HttpStatus.OK);
   }
 
@@ -197,12 +228,12 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity getTrainerList(PageDto pageDto) {
-    Page<User> userPage = userRepository.findAllByRole(UserRole.TRAINER, pageDto.toPageable());
+  public ResponseEntity getTrainerList(int pageNum) {
+    Page<User> userPage = userRepository.findAllByRole(UserRole.TRAINER, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    Page<UserProfileResponseDto> userResponseDtoPage = new UserProfileResponseDto().toDtoPage(userPage);
+      Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
     return new ResponseEntity(userResponseDtoPage, HttpStatus.OK);
   }
 
@@ -234,17 +265,29 @@ public class AdminServiceImpl implements AdminService {
 
   // 관리자 아이디 찾기
   @Transactional
-  public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto) {
+  public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
+      throws MessagingException {
     Admin admin = adminRepository.findByEmail(findAdminIdRequestDto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
     );
     FindAdminIdResponseDto findAdminIdResponseDto = new FindAdminIdResponseDto(admin.getUsername());
+
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    mimeMessageHelper.setSubject("[hotbody] 아이디 송부");
+    mimeMessageHelper.setFrom(from);
+    mimeMessageHelper.setTo(findAdminIdRequestDto.getEmail());
+    mimeMessageHelper.setText("아이디: " + admin.getUsername());
+
+    javaMailSender.send(mimeMessage);
+
     return findAdminIdResponseDto;
   }
 
   // 관리자 비밀번호 찾기
   @Transactional
-  public FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto) {
+  public FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto)
+      throws MessagingException {
     Admin admin = adminRepository.findByUsernameAndEmail(findAdminPwRequestDto.getUsername(),
         findAdminPwRequestDto.getEmail()).orElseThrow(
         () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
@@ -258,9 +301,17 @@ public class AdminServiceImpl implements AdminService {
     admin.modifyPassword(encodePassword);
     adminRepository.save(admin);
 
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+    mimeMessageHelper.setSubject("[hotbody] 임시 비밀번호 송부");
+    mimeMessageHelper.setFrom(from);
+    mimeMessageHelper.setTo(findAdminPwRequestDto.getEmail());
+    mimeMessageHelper.setText("임시 비밀번호: " + password);
+
+    javaMailSender.send(mimeMessage);
+
     return findAdminPwResponseDto;
   }
-
 
   // 임시 비밀번호 생성
   public String generateTempPassword() {

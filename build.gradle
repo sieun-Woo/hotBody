@@ -23,9 +23,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-batch:2.7.8'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    compileOnly 'org.projectlombok:lombok'
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
+    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
@@ -39,9 +40,15 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+//     https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32' // jpa와 mysql 연동을 위한 의존성 주입
+
+
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws
 
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4' // 민감정보 암호화
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일
 
 }
 

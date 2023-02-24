@@ -6,6 +6,8 @@ import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 
+import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +26,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
   private final CommentRepository commentRepository;
+  private final PostRepository postRepository;
 
   // 1. 댓글 등록
   @Transactional
-  public void createComment(CommentRequestDto commentRequestDto, User user) {
-    Comment comment = new Comment(commentRequestDto, user);
+  public CommentResponseDto createComment(User user, Post post, CommentRequestDto requestDto) {
+    Comment comment = new Comment(user, requestDto, post);
     commentRepository.save(comment);
+    post.addCommentList(comment);
+    return new CommentResponseDto(comment);
   }
 
   // 2. 댓글 전체 조회
   @Transactional
-  public List<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
+  public Page<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
 
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -40,14 +47,9 @@ public class CommentService {
     Pageable pageable = PageRequest.of(page, size, sort);
 
     Page<Comment> comments = commentRepository.findAll(pageable);
-    List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+    Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));
 
-    for (Comment comment : comments) {
-      CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getNickname(),
-          comment.getContent(), comment.getLikes(), comment.getCreatedAt(), comment.getModifiedAt());
-      commentResponseDtoList.add(commentResponseDto);
-    }
-    return commentResponseDtoList;
+    return commentResponseDto;
   }
 
   // 3. 댓글 선택 조회

@@ -10,6 +10,10 @@ import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
+import java.io.UnsupportedEncodingException;
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +22,12 @@ public interface AdminService {
 
   ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto);
 
-  ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response);
+  ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
+      throws UnsupportedEncodingException;
 
   ResponseEntity permitTrainer(Long requestId);
 
-  ResponseEntity getRegistrations(PageDto pageDto);
+  ResponseEntity getRegistrations(int pageNum);
 
   ResponseEntity refuseTrainer(Long userId);
 
@@ -36,11 +41,11 @@ public interface AdminService {
 
   ResponseEntity deleteComment(Long commentId);
 
-  ResponseEntity getUserList(PageDto pageDto);
+  ResponseEntity getUserList(int pageNum);
 
   ResponseEntity getUser(Long userId);
 
-  ResponseEntity getTrainerList(PageDto pageDto);
+  ResponseEntity getTrainerList(int pageNum);
 
   ResponseEntity getTrainer(Long trainerId);
 
@@ -48,7 +53,11 @@ public interface AdminService {
 
   ResponseEntity deleteUser(Long userId);
 
-  FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto);
+  FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
+      throws MessagingException;
 
-  FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto);
+  FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto)
+      throws MessagingException;
+
+  ResponseEntity logout(HttpServletRequest request);
 }

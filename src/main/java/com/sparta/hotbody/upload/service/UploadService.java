@@ -10,7 +10,6 @@ import com.sparta.hotbody.upload.repository.ImageRepository;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +31,7 @@ public class UploadService {
   // 임시 파일
   @Value("${file.dir}")
   private String fileDir;
+
   // S3 이미지 주소
   @Value("${Resource.Url}")
   private String Resource;
@@ -103,7 +103,8 @@ public class UploadService {
   // S3에 업로드를 위한 변환
   public File convertMultipartFileToFile(MultipartFile multipartFile, String storeFileName)
       throws IOException {
-    File file = new File(getFullPath(storeFileName));
+
+    File file = new File(getFullPath(storeFileName));  
     multipartFile.transferTo(file);
     return file;
   }

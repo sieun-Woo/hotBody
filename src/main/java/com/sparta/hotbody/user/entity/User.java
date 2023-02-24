@@ -3,6 +3,7 @@ package com.sparta.hotbody.user.entity;
 import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
+import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -42,7 +43,7 @@ public class User extends TimeStamp {
   private String username;
   @Column(nullable = false)
   private String password;
-  @Column(nullable = false)
+  @Column(nullable = true)
   private Integer gender;
   @Column(nullable = false)
   private int age;
@@ -75,13 +76,17 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
-  public User(String username, String password, UserRole role, String nickname, Integer gender, int age) {
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<RefreshToken> refreshTokenList = new ArrayList<>();
+
+  public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;
     this.password = password;
     this.nickname = nickname;
     this.gender = gender;
     this.role = role;
     this.age = age;
+    this.email = email;
   }
 
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
@@ -95,16 +100,13 @@ public class User extends TimeStamp {
   }
 
   public void update(UserProfileRequestDto requestDto) {
+    this.nickname = requestDto.getNickname();
     this.height = requestDto.getHeight();
     this.weight = requestDto.getWeight();
     this.region = requestDto.getRegion();
-    this.image = requestDto.getImage();
   }
 
-  public void update(UserProfileRequestDto requestDto, String resourcePath) {
-    this.height = requestDto.getHeight();
-    this.weight = requestDto.getWeight();
-    this.region = requestDto.getRegion();
+  public void updateImage(String resourcePath) {
     this.image = resourcePath;
   }
 

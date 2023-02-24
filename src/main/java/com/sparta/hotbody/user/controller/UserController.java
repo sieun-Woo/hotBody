@@ -1,17 +1,14 @@
 package com.sparta.hotbody.user.controller;
 
 import com.sparta.hotbody.common.dto.MessageResponseDto;
-import com.sparta.hotbody.common.jwt.dto.TokenDto;
-import com.sparta.hotbody.common.jwt.JwtUtil;
-import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
 import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
+import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
-import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
@@ -20,13 +17,18 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserService;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,16 +43,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@PropertySource("classpath:application.yml")
 public class UserController {
 
   private final UserService userService;
   private final UserRepository userRepository;
 
-  //@Controller 아래 메서드를 사용하기위해 필요함
-  @GetMapping("/auth/profile")
-  public String newFile(){ return "address"; }
-
-  //1.회웝가입
+  //1.회원가입
   @PostMapping("/sign-up")
   public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
     return userService.signUp(signupRequestDto);
@@ -58,13 +57,17 @@ public class UserController {
 
   //2.로그인
   @PostMapping("/log-in")
-  public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto,
-      HttpServletResponse response) {
-    TokenDto tokenDto = userService.login(loginRequestDto);
-    response.addHeader(JwtUtil.AUTHORIZATION_HEADER, tokenDto.getAccessToken());
-    response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
-    return new MessageResponseDto("로그인 되었습니다.");
+  public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto,
+      HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
+    return userService.login(loginRequestDto, response, request);
   }
+
+  // 로그아웃
+  @DeleteMapping("/log-out")
+  public ResponseEntity<String> logout(HttpServletRequest request) {
+    return userService.logout(request);
+  }
+
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")
@@ -92,14 +95,28 @@ public class UserController {
   //5. 유저 프로필 작성
   @PutMapping("/auth/profile")
   public String createProfile(
-      @RequestPart UserProfileRequestDto requestDto,
-      @RequestPart(required = false) MultipartFile file,
+      @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    return userService.createProfile(requestDto, userDetails, file);
+    return userService.createProfile(requestDto, userDetails);
+  }
+
+  // 유저 프로필 사진 첨부
+  @PostMapping("/auth/profile/image")
+  public ResponseEntity<String> saveProfileImage(
+      @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+
+    userService.uploadImage(file, userDetails);
+
+    return new ResponseEntity<>("업로드 되었습니다.", HttpStatus.OK);
+  }
+
+  // 프로필 이미지 조회
+  @GetMapping("/auth/profile/image")
+  public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
+    return userService.viewImage(userDetails);
   }
 
   //7. 유저 프로필 조회
-  @Transactional
   @GetMapping("/auth/profile")
   public UserProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
@@ -109,14 +126,16 @@ public class UserController {
   }
 
   // 유저 아이디 찾기
-  @GetMapping("/find-id")
-  public FindUserIdResponseDto findUserId(@RequestBody FindUserIdRequestDto findUserIdRequestDto) {
+  @PutMapping("/find-id")
+  public FindUserIdResponseDto findUserId(@RequestBody FindUserIdRequestDto findUserIdRequestDto)
+      throws MessagingException {
     return userService.findUserId(findUserIdRequestDto);
   }
 
   // 유저 비밀번호 찾기
-  @GetMapping("/find-pw")
-  public FindUserPwResponseDto findUserPw(@RequestBody FindUserPwRequestDto findUserPwRequestDto) {
+  @PutMapping("/find-pw")
+  public FindUserPwResponseDto findUserPw(@RequestBody FindUserPwRequestDto findUserPwRequestDto)
+      throws MessagingException {
     return userService.findUserPw(findUserPwRequestDto);
   }
 }

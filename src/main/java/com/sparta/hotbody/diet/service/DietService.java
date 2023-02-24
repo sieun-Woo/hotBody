@@ -1,18 +1,14 @@
 package com.sparta.hotbody.diet.service;
 
-import com.sparta.hotbody.diet.dto.DietResponseDto;
-import com.sparta.hotbody.diet.dto.FoodResponseDto;
-import java.io.IOException;
+import com.sparta.hotbody.diet.entity.Diet;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 
 public interface DietService {
 
-  public ResponseEntity<String> createDiet(UserDetails userDetails);
+  public Page searchFood(String FoodTyp0e, String searchWord, int page);
 
-  DietResponseDto addFood(Long dietId, Long foodId);
+  ResponseEntity<String> saveDiet(Diet diet);
 
-  DietResponseDto readFood(Long dietId, UserDetails userDetails);
-
-  DietResponseDto removeFood(Long dietId, Long foodId);
+  String readDiet(String time);
 }

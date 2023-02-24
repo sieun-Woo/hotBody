@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.entity;
 
+import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,39 +42,30 @@ public class Post extends TimeStamp {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "post_id")
   private Long id;
-
   @Column(nullable = false)
   private String nickname;
-
   @Column(nullable = false)
   private String title;
-
   @Column(nullable = false)
   private String content;
-
   @Column
   private String image;
-
   @Column(nullable = false)
   private int likes = 0;
+
+  @OrderBy(value = "modifiedAt desc")
+  @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+  private List<Comment> comments = new ArrayList<>();
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
    */
   public Post(PostRequestDto postRequestDto, User user) {
     this.user = user;
+    this.image = postRequestDto.getResourcePath();
     this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
-  }
-
-  // 이미지 추가
-  public Post(PostRequestDto postRequestDto, User user, String resourcePath) {
-    this.user = user;
-    this.nickname = user.getNickname();
-    this.title = postRequestDto.getTitle();
-    this.content = postRequestDto.getContent();
-    this.image = resourcePath;
   }
 
   public Post(String title, String content, User user) {
@@ -125,4 +118,13 @@ public class Post extends TimeStamp {
   public void minusLikes() {
     this.likes -= 1;
   }
+
+  public void updateImage(String resourcePath) {
+    this.image = resourcePath;
+  }
+
+  public void addCommentList(Comment comment){
+    this.comments.add(comment);
+  }
 }
+

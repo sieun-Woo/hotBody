@@ -15,8 +15,6 @@
     <li><a href="index.html">로그아웃</a></li>
   </ul>
 </header>
-
-<!-- vue 헤더 -->
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -128,25 +126,48 @@
 
     <section id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
+        <!-- 게시글 -->
         <div class="textForm">
           <div id="title"></div>
           <br/><br/>
         </div>
         <div class="textForm">
-          <div type="nickname" id="nickname" name="nickname" disabled> 
+          <div type="nickname" id="post_nickname" name="nickname" disabled> 
           </div>
           <br/>
         </div>
         <div class="textForm">
-          <div id="content"></div>
+          <div id="post_content"></div>
           <br/><br/>
         </div>
-
-
-        <div id="comments"></div>
-        <!-- 댓글 들어오는 공간 -->
+        
+        <!--좋아요 -->
+        <div class="write" style="position:center;">
+          <ul class="flex-write">
+            <li>
+              <a onclick="like()" class="heart">
+                <i id="iconHeart" class="fa-regular fa-heart my_pointer"></i>
+                <span id="CountLove">10</span>
+              </a>
+              </li>
         </div>
+      </div>
     </section>
+
+    
+    <div id="article-list-wrap" class="section-1 con-min-width">
+      <div class="con">
+        <div class="textForm">
+          <div class="comment-list" style="position: relative; z-index: 1;">
+            <!-- 댓글 들어오는 공간 -->
+          </div>
+          
+          <div class="paging">
+            <!-- 페이징 -->
+          </div>
+        </div>
+      </div>
+    </div> 
 
     
     
@@ -435,6 +456,10 @@
   padding: 10px 10px;
 }
 
+.write{
+    margin-left: 50%;
+  }
+
 .commentForm {
   position: relative;
   margin-left: 290px;
@@ -459,6 +484,64 @@
   display:inline;
 }
 
+/* 댓글 */:root {
+    --comment-list__cell-id__width:100px;
+    --comment-list__cell-reg-date__width:220px;
+    --comment-list__cell-writer__width:150px;
+    --comment-list__cell-like__width:100px;
+    --comment-list__cell-content__width:calc(100% - var(--comment-list__cell-id__width) - var(--comment-list__cell-reg-date__width) - var(--comment-list__cell-writer__width) - var(--comment-list__cell-like__width));
+  }
+
+  .comment-list > * > div {
+    display:flex;
+  }
+
+  .comment-list > header > div > div {
+    position:relative;
+  }
+
+  .comment-list > header > div > div:not(:last-child)::after {
+    content:"";
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    right:0;
+    width:1px;
+    height:10px;
+    background-color:black;
+  }
+
+  .comment-list > * > div > div {
+    box-sizing:border-box;
+    text-align:center;
+    padding-top:10px;
+    padding-bottom:10px;
+  }
+
+  .comment-list__cell-reg-date {
+    width:var(--comment-list__cell-reg-date__width);
+    padding-bottom: 3px;
+  }
+
+  .comment-list__cell-writer {
+    width:var(--comment-list__cell-writer__width);
+    padding-bottom: 3px;
+  }
+
+  .comment-list__cell-content {
+    width:var(--comment-list__cell-content__width);
+    padding-bottom: 3px;
+  }
+
+  .comment-list__cell-like {
+    width:var(--comment-list__cell-like__width);    
+    padding-bottom: 7px;
+  }
+
+  .comment-list > .main .comment-list__cell-title {
+    text-align:left;
+    padding-left:10px;
+  }
 
 .btn {
   position:relative;
@@ -482,13 +565,49 @@
   background-position: right;
 }
 
+/* 페이징 */
+.paging {
+  margin: 0 auto;
+  width: 1000px;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 0
+}
+
+.paging .current {
+  color: #00f;
+  font-weight: bold
+}
+
+.paging a {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #000;
+  font-size: 12px
+}
+
+.paging a+a {
+  margin-left: 5px
+}
+
+.paging a.on {
+  color: #f00
+}
+
+.my_pointer{
+	cursor: pointer;
+}
+
 </style>
 
 <script>
+var page = 0;
 jQuery(document).ready(function($) {
 
   var param = document.location.href.split("?");
   console.log("해당 게시글번호 : "+ param[1])
+
+  page = param[1];
 
   var settings = { 
       "url": "http://localhost:8080/api/posts/" + param[1],
@@ -501,9 +620,9 @@ jQuery(document).ready(function($) {
     };
 
   $.ajax(settings).done(function (response) {
-    $('#nickname').text(response.nickname);
+    $('#post_nickname').text(response.nickname);
     $('#title').text(response.title);
-    $('#content').text(response.content);
+    $('#post_content').text(response.content);
   })
 
     if (localStorage.getItem('accessToken')) {
@@ -516,7 +635,7 @@ jQuery(document).ready(function($) {
       $("#signin").show();
     }
     getUser();
-    commentUp(param[1]);
+    getComments(1);
 })
 
 function getUser() {
@@ -555,11 +674,9 @@ function getUser() {
     });
 }
 
-  function commentUp(param){
-    console.log(param)
-
+  function commentUp(){
     var settings = {
-    "url": "http://localhost:8080/api/comments/" + param,
+    "url": `http://localhost:8080/api/comments/${post.id}`,
     "method": "POST",
     "timeout": 0,
     "headers": {
@@ -573,26 +690,124 @@ function getUser() {
     };
 
     $.ajax(settings).done(function (response) {
-    console.log(response);
-    $('#comments').append(response);
+      console.log(response);
+      window.location.reload();
+    });
+
+  }
+
+  /* 좋아요 */
+  function like(){
+      var settings = {
+        "url": `http://localhost:8080/api/posts/${post.id}/likes`,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+          
+        },
+      };
+
+    $.ajax(settings).done(function (response) {
+      console.log("좋아요 눌렀습니다.");
+      $("#iconHeart").css("color","red", "fill", "red");
     });
   }
 
 
+  // 페이징
+  $(document).on('click', '#p', function (e) {
+      page = parseInt($(this).data('page'));
+      getComments(page)
+      return false;
+    });
 
+  function getComments(page){
+        var settings = {
+          "url": `http://localhost:8080/api/comments?page=${page}&size=10&sortBy=id&isAsc=true`,
+          "method": "GET",
+          "timeout": 0,
+          "headers": {
+            "Authorization": localStorage.getItem('accessToken')
+          },
+        };
 
-let temp_html = `<div class="textForm" id="comments">
-                    <div id="commentnickname"  disabled>닉넴</div>
-                    <div id="comment">댓글</div>  
-                  </div>`
+    $.ajax(settings).done(function (response) {
+      const TOTAL_DATA = response.totalElements; // 데이터 총개수
+      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+      const TOTAL_PAGE = response.totalPages // 총페이지
 
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
-$('#comments').append(temp_html)
+      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+      
+      var start = VIEW_DATA - VIEW_DATA;
+      var end = VIEW_DATA;
+      var j = 1;
+
+      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+      comments_list(response.content);
+      paging_list();
+
+      function comments_list(data) {
+
+        var str = '';
+        data.forEach((comment) => {
+          str += `<div class="main">   
+                      <div class="comment-list__cell-writer">${comment.nickname}</div>          
+                      <div class="comment-list__cell-content">${comment.content}</div>
+                      <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
+                      <div class="comment-list__cell-like"><i class="fa-regular fa-face-kiss-wink-heart"> ${comment.likes} </i></div>
+                    </div>
+                  </div><br/>`
+        });
+
+        $('.comment-list').empty();
+        $('.comment-list').append(str);
+      }
+
+      function paging_list() {
+      //page  = page < 0 ? 0 : page;
+      var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+      var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+      var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+      var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+      var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+      var first = 1; // 처음 페이지
+      var last = TOTAL_PAGE; // 마지막 페이지
+      var pageNum = [];
+
+      console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
+
+      $('.paging').empty();
+
+      if (page != 1) {
+        pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+      }
+
+      if (section_page != 1) {
+        pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+      }
+      // 페이징 번호 출력
+      for (var i = start; i < end; i++) {
+        if (page == i) {
+          pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+          continue;
+        }
+        pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+      }
+
+      if (section_page != TOTAL_SECTION) {
+        pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+      }
+
+      if (page != last) {
+        pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+      }
+
+      $('.paging').append(pageNum);
+      }
+    });
+  }
 
 
 </script>

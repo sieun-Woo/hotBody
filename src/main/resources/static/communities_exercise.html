@@ -172,7 +172,7 @@
       <div class="write" style="position:center;">
         <ul class="flex-write">
           <li>
-            <a href="write_post.html" class="block">
+            <a href="write_post_etc.html" class="block">
               <span>글쓰기</span>
             </a>
             </li>
@@ -734,7 +734,7 @@ function getPosts(page){
                 <div v-for="article in filtered">
                   <div class="article-list__cell-id">`+k+`</div>              
                   <div class="article-list__cell-title">
-                    <a href="view_post.html?`+k+`" target="_blank" class="hover-pointer">${post.title}</a>
+                    <a href="view_post.html?${post.id}" target="_blank" class="hover-pointer">${post.title}</a>
                   </div>
                   <div class="article-list__cell-writer">${post.nickname}</div>
                   <div class="article-list__cell-reg-date">${post.createdAt}</div>

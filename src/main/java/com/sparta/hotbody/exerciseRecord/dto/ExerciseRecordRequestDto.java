@@ -11,5 +11,5 @@ public class ExerciseRecordRequestDto {
 
   private int time; // 운동 시간(분)
 
-  private int reps; // 반복 횟수
+  private int reps = 1; // 반복 횟수
 }

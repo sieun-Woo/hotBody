@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>프로필</title>
+  <title>포스팅</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
-<body>
-<!-- 회원가입/로그인 -->
+<!-- 로그아웃/ -->
 <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
   <ul>
@@ -17,13 +17,15 @@
     <li id="logout"><a onclick="logout()">로그아웃</a></li>
   </ul>
 </header>
+
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-<div class="body-content min-height-100vh flex flex-column">
+
+<ㅇ class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
@@ -36,12 +38,11 @@
     </div>
   </header>
   <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i
-      class="fas fa-home"></i> 마이페이지
+  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
   </div>
   <!-- 메뉴바 시작 -->
   <header class="menu-bar con-min-width">
-    <div class="con height-100p" style="position: relative; z-index: 3;">
+    <div class="con height-100p" style="position: relative; z-index: 2;">
       <nav class="menu-bar__menu-1">
 
         <ul class="flex">
@@ -118,149 +119,95 @@
         </ul>
       </nav>
     </div>
-    <div class="con height-100p" style="position: relative; z-index: 2;">
-      <nav class="menu-bar__menu-1">
-
-        <ul class="flex">
-          <li>
-            <a href="my-page.html" class="block">
-              <i class="fa-regular fa-address-card"></i>
-              <span>회원 정보</span>
-            </a>
-          </li>
-          <li>
-            <a class="block">
-              <i class="fa-regular fa-comment-dots"></i>
-              <span>나의 글 / 댓글</span>
-            </a>
-            <ul>
-              <li>
-                <a href="https://jhs512.github.io/blog/" target="_blank" class="block">
-                  <i class="fa-regular fa-message"></i>
-                  <span>나의 글</span>
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/" target="_blank" class="block">
-                  <i class="fa-regular fa-comment"></i>
-                  <span>나의 댓글</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="apply.html" class="block">
-              <i class="fa-solid fa-wrench"></i>
-              <span>트레이너 신청</span>
-            </a>
-          </li>
-          <li>
-            <a href="stat.html" class="block">
-              <i class="fa-solid fa-heart-circle-check"></i>
-              <span>좋아요 누른 트레이너</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
   </header>
   <!-- 메뉴바 끝 -->
-
-  <div class="main flex-grow-1">
-
-    </section>
-
-    <section id="article-list-wrap" class="section-1 con-min-width">
-      <div class="con">
-        <div class="article-search">
-          <form>
-            <div style="width: 650px; margin: auto;">
-              <div style="display:flex; position: relative; margin-top: 5px;">
-                <h1>
-
-                </h1>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="article-list" style="position: relative; z-index: 1;">
-          <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-            <img style="width: 300px; height: 300px; border: 1px solid black" id="image">
-            <div class="profile">
-              <ul>
-                <li style="margin-top: 10px;">닉네임: <input type="nickname" id="nickname"
-                                                          name="nickname"></li>
-                <!--<li><input type="button" onclick="execDaumPostcode()" value="지역 검색"></li>-->
-                <li>지역: <input placeholder="클릭" onclick="execDaumPostcode()" readonly="true" type="region" id="region" name="region"></li>
-                <li>신장: <input type="height" id="height" name="height"></li>
-                <li>체중: <input type="weight" id="weight" name="weight"></input></li>
-                <li>
-                  <form id="uploadForm" enctype="multipart/form-data">
-                    <input type="file" id="upload-image"
-                           style="width: 160px; height: 30px; margin-right: 10px;">
-                  </form>
-                </li>
-                <li>
-                  <button style="width: 100px; height: 30px; margin-right: 10px;"
-                          onclick="updateProfile()">프로필 수정
-                  </button>
-                </li>
-                <li>비밀번호: <input type="password" id="password" name="password"></input></li>
-                <li>
-                  <button style="width: 100px; height: 30px; margin-right: 10px;"
-                          onclick="signout()">탈퇴
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <footer class="bottom-bar con-min-width">
-    <div class="con flex flex-ai-c">
-      <a href="index.html" class="logo logo--mini flex flex-ai-c">
-        <i class="fa-solid fa-dumbbell"></i>
-        <span>
-          Hot<span></span>Body
-        </span>
-      </a>
-
-      <div class="bottom-bar__site-info">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eos ipsum necessitatibus
-        doloremque quos voluptate debitis earum aut a consequuntur explicabo deleniti qui eius
-        facere, harum error eveniet vel laudantium.
-      </div>
+<!-- 메뉴바 끝 -->
+<div class="WriteForm_post">
+  <div class="article-list">
+    <h2>글 쓰기</h2>
+    <div class="textForm">
+      <span>제목</span><br/><br/>
+      <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
+      </input>
+      <br/><br/>
     </div>
-  </footer>
+    <div class="textForm">
+      <div type="nickname" id="nickname" name="nickname" disabled>
+      </div>
+      <br/>
+    </div>
+    <div class="textForm">
+      <span>글 내용</span><br/><br/>
+      <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" >
+      </textarea>
+      <br/><br/>
+    </div>
+    <div class="textForm">
+      <label for="avatar">이미지 업로드 :</label><br/><br/>
+      <input type="file" id="image">
+      <br/><br/>
+    </div>
+  
+    <input type="submit" class="btn" value="글 올리기" id="upload" onclick="createImage()"/>
+  </div>
+</div>
 </div>
 
+<!-- <div lass="WriteForm_post">
+  <h2>글 쓰기</h2>
+  <div class="textForm">
+    <span>제목</span><br /><br />
+    <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
+    </input>
+    <br /><br />
+  </div>
+  <div class="textForm">
+    <div type="nickname" id="nickname" name="nickname" disabled>
+    </div>
+    <br />
+  </div>
+  <div class="textForm">
+    <span>글 내용</span><br /><br />
+    <textarea name="content" id="content" type="textarea" class="text"
+      style="resize: none; width: 500px; height: 100px;">
+        </textarea>
+    <br /><br />
+  </div>
+  <div class="textForm">
+    <label for="avatar">이미지 업로드 :</label><br /><br />
+    <br /><br />
+  </div>
+  <div class="textForm1">
+    <input type="file" id="image">
+    <button onclick="createImage()">버튼</button>
+  </div>
+</div>
+</div> -->
 </body>
 <style>
   /* 회원가입 메뉴 */
   /* reset */
   body {
     padding: 10px;
-    margin: 10px
+    margin: 10px;
   }
 
-  h1, ul {
+  h1,
+  ul {
     margin: 0;
-    padding: 0
+    padding: 0;
   }
 
   ul {
     list-style: none;
   }
 
-  header + header {
+  header+header {
     margin-top: 50px;
   }
 
   nav {
-    display: block
+    display: block;
   }
 
   a {
@@ -299,10 +246,21 @@
   }
 
   /* 노말라이즈 */
-  body, ul, li, h1, h2, h3 {
+  body,
+  ul,
+  li,
+  h1,
+  h3 {
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  h2 {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
   }
 
   a {
@@ -360,11 +318,6 @@
     margin: auto;
   }
 
-  .main {
-    width: 1000px;
-    margin: auto;
-  }
-
   .min-height-100vh {
     min-height: 100vh;
   }
@@ -394,6 +347,9 @@
   }
 
   /* 커스텀 */
+  .con-min-width {
+    min-width: 1200px;
+  }
 
   .con {
     width: 1000px;
@@ -411,12 +367,12 @@
     color: white;
   }
 
-  .logo > span {
+  .logo>span {
     margin-left: 10px;
     color: white;
   }
 
-  .logo > span > span {
+  .logo>span>span {
     color: red;
   }
 
@@ -441,26 +397,26 @@
     color: white;
   }
 
-  .menu-bar__menu-1 > ul > li {
+  .menu-bar__menu-1>ul>li {
     width: 25%;
     position: relative;
   }
 
-  .menu-bar__menu-1 ul > li > a {
+  .menu-bar__menu-1 ul>li>a {
     text-align: center;
     padding: 20px 0;
   }
 
-  .menu-bar__menu-1 ul > li:hover > a {
+  .menu-bar__menu-1 ul>li:hover>a {
     background-color: white;
     color: black;
   }
 
-  .menu-bar__menu-1 > ul > li > a {
+  .menu-bar__menu-1>ul>li>a {
     border-radius: 10px 10px 0 0;
   }
 
-  .menu-bar__menu-1 > ul ul {
+  .menu-bar__menu-1>ul ul {
     display: none;
     position: absolute;
     top: 100%;
@@ -472,11 +428,11 @@
     border-radius: 0 0 20px 20px;
   }
 
-  .menu-bar__menu-1 > ul > li:hover > ul {
+  .menu-bar__menu-1>ul>li:hover>ul {
     display: block;
   }
 
-  .menu-bar__menu-1 > ul ul > li:last-child > a {
+  .menu-bar__menu-1>ul ul>li:last-child>a {
     border-radius: 0 0 10px 10px;
   }
 
@@ -507,7 +463,7 @@
 
   /* 게시물 검색 시작 */
 
-  .article-search > form {
+  .article-search>form {
     display: flex;
     width: 1000px;
     margin: auto;
@@ -527,15 +483,15 @@
     --article-list__cell-title__width: calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
   }
 
-  .article-list > * > div {
+  .article-list>*>div {
     display: flex;
   }
 
-  .article-list > header > div > div {
+  .article-list>header>div>div {
     position: relative;
   }
 
-  .article-list > header > div > div:not(:last-child)::after {
+  .article-list>header>div>div:not(:last-child)::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -546,7 +502,7 @@
     background-color: black;
   }
 
-  .article-list > * > div > div {
+  .article-list>*>div>div {
     box-sizing: border-box;
     text-align: center;
     padding-top: 10px;
@@ -573,12 +529,12 @@
     width: var(--article-list__cell-like__width);
   }
 
-  .article-list > .main .article-list__cell-title {
+  .article-list>.main .article-list__cell-title {
     text-align: left;
     padding-left: 10px;
   }
 
-  .article-list > .main > div {
+  .article-list>.main>div {
     border-top: 1px solid black;
   }
 
@@ -589,11 +545,11 @@
     margin-top: 20px;
   }
 
-  .article-page-menu > ul > li > a {
+  .article-page-menu>ul>li>a {
     padding: 7px;
   }
 
-  .article-page-menu > ul > li:not(:first-child):not(:last-child) > a {
+  .article-page-menu>ul>li:not(:first-child):not(:last-child)>a {
     border: 1px solid transparent;
     padding-left: 0;
     padding-right: 0;
@@ -601,7 +557,7 @@
     justify-content: center;
   }
 
-  .article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
+  .article-page-menu>ul>li:not(:first-child):not(:last-child):hover>a {
     border-color: #afafaf;
   }
 
@@ -611,23 +567,12 @@
 
   /* 게시물 리스트 페이지 메뉴 끝 */
 
-  /* 프로필 리스트 메뉴 */
-  .profile ul > li {
-    /* border: 1px solid black; */
-    height: 43px;
-    text-align: right;
-    margin-left: 10px;
-  }
-
-  /* 프로필 리스트 메뉴 끝 */
-
-
   /* Wordpress Site header-bar */
   .wp-header {
     font-family: Arial;
     height: 46px;
     left: 0;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
     z-index: 9999;
@@ -657,7 +602,7 @@
     line-height: 46px;
   }
 
-  .wp-header li > a {
+  .wp-header li>a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -666,35 +611,57 @@
     transition: color 0.15s ease-in-out;
   }
 
-  .wp-header li:hover > a {
+  .wp-header li:hover>a {
     color: #78c8e6;
   }
 
-</style>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-  function execDaumPostcode() {
-    new daum.Postcode({
-      oncomplete: function(data) {
-        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-        var addr = ''; // 주소 변수
-
-        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-          addr = data.roadAddress;
-        } else { // 사용자가 지번 주소를 선택했을 경우(J)
-          addr = data.jibunAddress;
-        }
-
-        addr = data.sido + ' ' +data.sigungu;
-        document.getElementById("region").value = addr;
-      }
-    }).open();
+  .WriteForm_post {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    padding: 30px, 20px;
+    background-color: #FFFFFF;
+    text-align: left;
+    top: 550px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
   }
-</script>
+
+  .textForm {
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+  }
+
+  .btn {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
+  .btn:hover {
+    background-position: right;
+  }
+
+  input:disabled {
+    background-color: transparent;
+    border: transparent;
+  }
+</style>
+
 <script>
   jQuery(document).ready(function ($) {
 
@@ -708,26 +675,9 @@
       $("#signin").show();
     }
 
-    getImage();
     getUser();
 
   })
-
-  function getImage() {
-    var settings = {
-      "url": "http://localhost:8080/api/user/auth/profile/image",
-      "method": "GET",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
-      },
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response)
-      $("#image").attr("src", response)
-    });
-  }
 
   function getUser() {
     var settings = {
@@ -736,15 +686,11 @@
       "timeout": 0,
       "headers": {
         "Authorization": localStorage.getItem('accessToken')
-      },
+      }
     };
 
     $.ajax(settings).done(function (response) {
-      // console.log(response);
-      $('input[name=nickname]').attr('value', response.nickname);
-      $('input[name=height]').attr('value', response.height);
-      $('input[name=weight]').attr('value', response.weight);
-      $('input[name=region]').attr('value', response.region);
+      $('#nickname').text(response.nickname);
     });
   }
 
@@ -765,48 +711,20 @@
       var now = new Date();
       now.setDate(now.getDate() - 1);
       document.cookie = "RefreshToken=; expires=" + now.toUTCString();
-    });
-    location.href = "index.html";
-  }
-
-
-
-  function updateProfile() {
-
-    if ($("#upload-image").val()) {
-      updateImage();
-    }
-
-    var settings = {
-      "url": "http://localhost:8080/api/user/auth/profile",
-      "method": "PUT",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "nickname": $('#nickname').val(),
-        "region": $('#region').val(),
-        "height": $('#height').val(),
-        "weight": $('#weight').val()
-      }),
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      alert("수정이 완료되었습니다.")
       location.reload();
     });
   }
 
-  function updateImage() {
-
+  function createImage() {
     var form = new FormData();
-    form.append("file", $("#upload-image")[0].files[0]);
+    if( $('#image')[0].files[0] == null) {
+      createPost();
+      return;
+    }
+    form.append("file", $('#image')[0].files[0]);
 
     var settings = {
-      "url": "http://localhost:8080/api/user/auth/profile/image",
+      "url": "http://localhost:8080/api/posts/image",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -820,44 +738,36 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response);
+      createPost(response)
     });
   }
 
-  function signout() {
 
-    var password = $('#password').val()
-
-    if (password === '') {
-      alert("비밀번호를 입력해주세요.")
-      return;
-    }
-
+  function createPost(response) {
     var settings = {
-      "url": "http://localhost:8080/api/user/auth/delete",
-      "method": "DELETE",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "password": password
-      }),
-    };
+    "url": "http://localhost:8080/api/posts",
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+      "Authorization":  localStorage.getItem('accessToken'),
+      "Content-Type": "application/json"
+    },
+    "data": JSON.stringify({
+      "title": $('#title').val(),
+      "content": $('#content').val(),
+      "resourcePath": response
+    }),
+  };
 
-    $.ajax(settings).done(function (response) {
-      console.log(response);
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    alert("글 등록이 완료되었습니다!");
+    window.location.href = "http://localhost:8080/communities_diet.html";
+  });
 
-      localStorage.removeItem('accessToken');
-      var now = new Date();
-      now.setDate(now.getDate() - 1);
-      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
-
-      alert("회원 탈퇴가 완료되었습니다.")
-      window.location = "index.html"
-    }).fail(function (response) {
-      alert("비밀번호를 다시 확인하세요.")
-    });
   }
+
+
 </script>
+
 </html>

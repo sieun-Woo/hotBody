@@ -39,7 +39,7 @@ public class CommentService {
 
   // 2. 댓글 전체 조회
   @Transactional
-  public List<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
+  public Page<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
 
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
@@ -47,14 +47,9 @@ public class CommentService {
     Pageable pageable = PageRequest.of(page, size, sort);
 
     Page<Comment> comments = commentRepository.findAll(pageable);
-    List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+    Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));
 
-    for (Comment comment : comments) {
-      CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getNickname(),
-          comment.getContent(), comment.getLikes(), comment.getCreatedAt(), comment.getModifiedAt());
-      commentResponseDtoList.add(commentResponseDto);
-    }
-    return commentResponseDtoList;
+    return commentResponseDto;
   }
 
   // 3. 댓글 선택 조회

@@ -1,3 +1,13 @@
 jasypt:
   encryptor:
     password: ${DECODE_PASSWORD}
+
+spring:
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: ENC(qQSquugASlqpQjQ3YiFDyJRRvl+TA7073OIsreNtsGk=)
+    password: ENC(F4qzi+/8tLwBYQHNZxXrPPBiaXWTBJu/)
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true

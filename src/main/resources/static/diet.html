@@ -192,7 +192,7 @@
           </tbody>
         </table>
         <div>
-          <input type="submit" value="식단 등록하기"/>
+          <input type="submit" value="식단 등록하기" onclick="data()" />
         </div>
       </div>
     </div>
@@ -748,6 +748,7 @@
   }
 </style>
 
+
 <script>
   // 페이징 버튼
   $(document).on('click', '#p', function (e) {
@@ -757,6 +758,8 @@
   });
 
   function searchFood(page) {
+
+
     let foodType = $('#foodType').val();
     console.log(foodType);
     let foodName = $('#foodName').val();

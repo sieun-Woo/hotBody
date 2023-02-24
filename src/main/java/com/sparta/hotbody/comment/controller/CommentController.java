@@ -8,6 +8,7 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,16 +28,17 @@ public class CommentController {
   private final CommentService commentService;
 
   // 1. 댓글 등록
-  @PostMapping("/comments")
+  @PostMapping("/comments/{postId}")
   public void createComment(
       @RequestBody CommentRequestDto commentRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.createComment(commentRequestDto, userDetails.getUser());
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @PathVariable Long postId) {
+    commentService.createComment(commentRequestDto, userDetails.getUser(), postId);
   }
 
   // 2. 댓글 전체 조회
   @GetMapping("/comments")
-  public List<CommentResponseDto> getAllComments(
+  public Page<CommentResponseDto> getAllComments(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,

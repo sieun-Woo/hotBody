@@ -8,9 +8,12 @@ import com.sparta.hotbody.post.service.PostService;
 import com.sparta.hotbody.user.entity.User;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,16 +36,22 @@ public class PostController {
 
   // 1. 게시글 등록
   @PostMapping("/posts")
-  public void createPost(
-      @RequestPart PostRequestDto postRequestDto,
-      @RequestPart(required = false) MultipartFile file,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    postService.createPost(postRequestDto, userDetails.getUser(), file);
+  public ResponseEntity<String> createPost(
+      @RequestBody PostRequestDto postRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return postService.createPost(postRequestDto, userDetails);
+  }
+
+  // 2. 이미지 등록
+  @PostMapping("/posts/image")
+  public String createImage(
+      @RequestPart MultipartFile file) throws IOException {
+    return postService.createImage(file);
   }
 
   // 2. 게시글 전체 조회
   @GetMapping("/posts")
-  public List<PostResponseDto> getAllPosts(
+  public Page<PostResponseDto> getAllPosts(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,

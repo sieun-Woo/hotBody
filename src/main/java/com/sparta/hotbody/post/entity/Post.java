@@ -40,19 +40,14 @@ public class Post extends TimeStamp {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "post_id")
   private Long id;
-
   @Column(nullable = false)
   private String nickname;
-
   @Column(nullable = false)
   private String title;
-
   @Column(nullable = false)
   private String content;
-
   @Column
   private String image;
-
   @Column(nullable = false)
   private int likes = 0;
 
@@ -61,18 +56,10 @@ public class Post extends TimeStamp {
    */
   public Post(PostRequestDto postRequestDto, User user) {
     this.user = user;
+    this.image = postRequestDto.getResourcePath();
     this.nickname = user.getNickname();
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
-  }
-
-  // 이미지 추가
-  public Post(PostRequestDto postRequestDto, User user, String resourcePath) {
-    this.user = user;
-    this.nickname = user.getNickname();
-    this.title = postRequestDto.getTitle();
-    this.content = postRequestDto.getContent();
-    this.image = resourcePath;
   }
 
   public Post(String title, String content, User user) {
@@ -124,5 +111,9 @@ public class Post extends TimeStamp {
 
   public void minusLikes() {
     this.likes -= 1;
+  }
+
+  public void updateImage(String resourcePath) {
+    this.image = resourcePath;
   }
 }

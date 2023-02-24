@@ -62,7 +62,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .antMatchers("/api/admin/log-in").permitAll()
         .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER", "ROLE_TRAINER", "ROLE_ADMIN", "ROLE_REPORTED")
         .antMatchers("/h2-console").permitAll()
-        .antMatchers("/api/posts/**").hasAnyAuthority("ROLE_USER", "ROLE_TRAINER", "ROLE_ADMIN")
+        .antMatchers("/api/posts/**").permitAll()
         .antMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
         .antMatchers("/api/").hasAnyAuthority("ROLE_TRAINER")
         .anyRequest().authenticated()

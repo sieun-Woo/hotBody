@@ -4,11 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>번째 글</title>
-  <!-- 부트스트랩 css 사용 -->
-  <link rel="stylesheet" href="./bootstrap-3.3.2-dist/css/bootstrap.css">
-  <!--  부트스트랩 js 사용 -->
-  <script type="text/javascript" src="./bootstrap-3.3.2-dist/js/bootstrap.js"></script>
+  <title>글</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -26,9 +22,6 @@
 
 <!-- lodash 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-<!-- vue 불러오기 -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 
 <div class="body-content min-height-100vh flex flex-column">
@@ -127,69 +120,50 @@
     </header>
     <!-- 메뉴바 끝 -->
 
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <nav >
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">커뮤니티</li>
+        <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티</li>
       </ol>
     </nav>
 
-    <form form action="view_post.html" method="GET" class="WriteForm_post" onsubmit="postUp(this);">
+    <section id="article-list-wrap" class="section-1 con-min-width">
+      <div class="con">
+        <div class="textForm">
+          <div id="title"></div>
+          <br/><br/>
+        </div>
+        <div class="textForm">
+          <div type="nickname" id="nickname" name="nickname" disabled> 
+          </div>
+          <br/>
+        </div>
+        <div class="textForm">
+          <div id="content"></div>
+          <br/><br/>
+        </div>
 
-      <h2>글 쓰기</h2>
-      <div class="textForm">
-        <span>제목</span><br/><br/>
-        <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;"">
-        </input>
-        <br/><br/>
-      </div>
-      <div class="textForm">
-        <span>닉네임</span> : 연결하기
-        <br/><br/>
-      </div>
-      <div class="textForm">
-       <span>글 내용</span><br/><br/>
-        <!-- <input type="file"
-              id="avatar" name="avatar"
-              accept="image/png, image/jpeg" />
-        <br/><br/> --> -->
-        <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" >
-        </textarea>
-        <br/><br/>
-      </div>
-      <!-- <div class="textForm">
-        <label for="avatar"></label><br/><br/>
-        <input type="file"
-              id="avatar" name="avatar"
-              accept="image/png, image/jpeg" />
-        <br/><br/>
-      </div> -->
-    
-      <!-- <input type="submit" class="btn" value="글 올리기" /> -->
-    </form>
 
+        <div id="comments"></div>
+        <!-- 댓글 들어오는 공간 -->
+        </div>
+    </section>
 
     
+    
 
+    <div id="comment-box" class="commentForm">
+      <textarea id="comment" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" 
+      >
+      </textarea><br/><br/>
+      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
+    </div>
+</form>
+</div>
   </div>
 
 </body>
 <style>
-  /* 회원가입 메뉴 */
-  /* reset */
-  body {padding: 10px; margin: 10px;}
-  h1, ul {margin:0; padding: 0;}
-  ul {list-style: none;}
-  header + header {margin-top: 50px;}
-  nav {display:block;}
-  a {text-decoration: none;}
-
-  h1:hover {
-    cursor: pointer;
-  }
-
-  /* vue 헤더 */
-  /* 폰트 */
+    /* 폰트 */
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
@@ -411,110 +385,7 @@
   }
   /* 하단바 끝 */
 
-  /* 게시물 검색 시작 */
-
-  .article-search > form {
-    display:flex;
-    width: 1000px;
-    margin: auto;
-    padding:10px;
-  }
-
-  /* 게시물 검색 끝 */
-
-  /* 게시물 리스트 시작 */
-
-  /* 게시물 리스트 */
-  :root {
-    --article-list__cell-id__width:100px;
-    --article-list__cell-reg-date__width:220px;
-    --article-list__cell-writer__width:150px;
-    --article-list__cell-like__width:100px;
-    --article-list__cell-title__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
-  }
-
-  .article-list > * > div {
-    display:flex;
-  }
-
-  .article-list > header > div > div {
-    position:relative;
-  }
-
-  .article-list > header > div > div:not(:last-child)::after {
-    content:"";
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    right:0;
-    width:1px;
-    height:10px;
-    background-color:black;
-  }
-
-  .article-list > * > div > div {
-    box-sizing:border-box;
-    text-align:center;
-    padding-top:10px;
-    padding-bottom:10px;
-  }
-
-  .article-list__cell-id {
-    width:var(--article-list__cell-id__width);
-  }
-
-  .article-list__cell-reg-date {
-    width:var(--article-list__cell-reg-date__width);
-  }
-
-  .article-list__cell-writer {
-    width:var(--article-list__cell-writer__width);
-  }
-
-  .article-list__cell-title {
-    width:var(--article-list__cell-title__width);
-  }
-
-  .article-list__cell-like {
-    width:var(--article-list__cell-like__width);
-  }
-
-  .article-list > .main .article-list__cell-title {
-    text-align:left;
-    padding-left:10px;
-  }
-
-  .article-list > .main > div {
-    border-top:1px solid black;
-  }
-  /* 게시물 리스트 끝 */
-
-  /* 게시물 리스트 페이지 메뉴 시작 */
-  .article-page-menu {
-    margin-top:20px;
-  }
-
-  .article-page-menu > ul > li > a {
-    padding:7px;
-  }
-
-  .article-page-menu > ul > li:not(:first-child):not(:last-child) > a {
-    border:1px solid transparent;
-    padding-left:0;
-    padding-right:0;
-    min-width:30px;
-    justify-content:center;
-  }
-
-  .article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
-    border-color:#afafaf;
-  }
-
-  .article-page-menu__link--selected {
-    color:red;
-  }
-  /* 게시물 리스트 페이지 메뉴 끝 */
-
+ 
   /* Wordpress Site header-bar */
   .wp-header {
     font-family: Arial;
@@ -558,24 +429,37 @@
     color: #78c8e6;
   }
 
-  .WriteForm_post {
-  position:absolute;
-  width: 400px;
-  height:400px;
-  padding: 30px, 20px;
-  background-color:#FFFFFF;
-  text-align:center;
-  top: 400px;
-  left:50%;
-  transform: translate(-50%,-50%);
-  border-radius: 15px;
-}
-
 .textForm {
   border-bottom: 2px solid #adadad;
   margin: 30px;
   padding: 10px 10px;
 }
+
+.commentForm {
+  position: relative;
+  margin-left: 290px;
+  width: 800px;
+}
+
+.commentbtn {
+  position:relative;
+  left:250px;
+  transform: translateX(-50%);
+  margin-bottom: 40px;
+  width:500px;
+  height:40px;
+  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
+  background-position: left;
+  background-size: 200%;
+  color:white;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;
+  transition: 0.4s;
+  display:inline;
+}
+
+
 .btn {
   position:relative;
   left:40%;
@@ -601,29 +485,115 @@
 </style>
 
 <script>
-  jQuery(document).ready(function($){
-    getOnePost();
+jQuery(document).ready(function($) {
+
+  var param = document.location.href.split("?");
+  console.log("해당 게시글번호 : "+ param[1])
+
+  var settings = { 
+      "url": "http://localhost:8080/api/posts/" + param[1],
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+      }
+    };
+
+  $.ajax(settings).done(function (response) {
+    $('#nickname').text(response.nickname);
+    $('#title').text(response.title);
+    $('#content').text(response.content);
   })
 
-  function getOnePost(){
-    var settings = { 
-  "url": "http://localhost:8080/api/posts/",
-  "method": "GET",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken'),
-    "Content-Type": "application/json",
-  },  
-  "data": JSON.stringify({
-    "username": $('#userId').val(),
-    "password": $('#password').val()
-  }),
-};
+    if (localStorage.getItem('accessToken')) {
+      $("#logout").show();
+      $("#signup").hide();
+      $("#signin").hide();
+    } else {
+      $("#logout").hide();
+      $("#signup").show();
+      $("#signin").show();
+    }
+    getUser();
+    commentUp(param[1]);
+})
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-});
+function getUser() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/auth/profile",
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      }
+    };
+
+    $.ajax(settings).done(function (response) {
+      $('#nickname').text(response.nickname);
+    });
   }
+
+  function logout() {
+
+    var settings = {
+    "url": "http://localhost:8080/api/user/log-out",
+    "method": "DELETE",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.removeItem('accessToken')
+    },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      localStorage.removeItem('accessToken');
+      var now = new Date();
+      now.setDate(now.getDate()-1);
+      document.cookie = "RefreshToken=; expires="+now.toUTCString();
+      location.reload();
+    });
+}
+
+  function commentUp(param){
+    console.log(param)
+
+    var settings = {
+    "url": "http://localhost:8080/api/comments/" + param,
+    "method": "POST",
+    "timeout": 0,
+    "headers": {
+      "Authorization": localStorage.getItem('accessToken'),
+      "Content-Type": "application/json",
+      
+    },
+    "data": JSON.stringify({
+      "content": $('#comment').val()
+    }),
+    };
+
+    $.ajax(settings).done(function (response) {
+    console.log(response);
+    $('#comments').append(response);
+    });
+  }
+
+
+
+
+let temp_html = `<div class="textForm" id="comments">
+                    <div id="commentnickname"  disabled>닉넴</div>
+                    <div id="comment">댓글</div>  
+                  </div>`
+
+$('#comments').append(temp_html)
+$('#comments').append(temp_html)
+$('#comments').append(temp_html)
+$('#comments').append(temp_html)
+$('#comments').append(temp_html)
+$('#comments').append(temp_html)
+$('#comments').append(temp_html)
+
 
 </script>
 </html>

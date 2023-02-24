@@ -25,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 
-<div class="body-content min-height-100vh flex flex-column">
+<ㅇ class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
@@ -121,9 +121,39 @@
     </div>
   </header>
   <!-- 메뉴바 끝 -->
+<!-- 메뉴바 끝 -->
+<div class="WriteForm_post">
+  <div class="article-list">
+    <h2>글 쓰기</h2>
+    <div class="textForm">
+      <span>제목</span><br/><br/>
+      <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
+      </input>
+      <br/><br/>
+    </div>
+    <div class="textForm">
+      <div type="nickname" id="nickname" name="nickname" disabled>
+      </div>
+      <br/>
+    </div>
+    <div class="textForm">
+      <span>글 내용</span><br/><br/>
+      <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" >
+      </textarea>
+      <br/><br/>
+    </div>
+    <div class="textForm">
+      <label for="avatar">이미지 업로드 :</label><br/><br/>
+      <input type="file" id="image">
+      <br/><br/>
+    </div>
+  
+    <input type="submit" class="btn" value="글 올리기" id="upload" onclick="createImage()"/>
+  </div>
+</div>
+</div>
 
-
-
+<!-- <div lass="WriteForm_post">
   <h2>글 쓰기</h2>
   <div class="textForm">
     <span>제목</span><br /><br />
@@ -147,12 +177,12 @@
     <label for="avatar">이미지 업로드 :</label><br /><br />
     <br /><br />
   </div>
-  <div>
+  <div class="textForm1">
     <input type="file" id="image">
     <button onclick="createImage()">버튼</button>
   </div>
 </div>
-
+</div> -->
 </body>
 <style>
   /* 회원가입 메뉴 */
@@ -723,14 +753,16 @@
       "Content-Type": "application/json"
     },
     "data": JSON.stringify({
-      "title": "수정된 제목",
-      "content": "수정된 내용",
+      "title": $('#title').val(),
+      "content": $('#content').val(),
       "resourcePath": response
     }),
   };
 
   $.ajax(settings).done(function (response) {
     console.log(response);
+    alert("글 등록이 완료되었습니다!");
+    window.location.href = "http://localhost:8080/communities_exercise.html";
   });
 
   }

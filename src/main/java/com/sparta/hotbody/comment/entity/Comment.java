@@ -58,16 +58,7 @@ public class Comment extends TimeStamp {
     this.content = commentRequestDto.getContent();
   }
 
-  public Comment(User user, CommentRequestDto requestDto, Post post){
-    this.content = requestDto.getContent();;
-    this.nickname = user.getNickname();
-    this.user = user;
-    this.post = post;
-
-  }
-
-  /**
-   * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
+   /* 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
 
   // 댓글과 유저의 연관 관계(N : 1)
@@ -77,7 +68,7 @@ public class Comment extends TimeStamp {
 
   // 댓글과 게시글의 연관 관계(N : 1)
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false)
+  @JoinColumn(name = "post_id")
   private Post post;
 
   // 댓글과 댓글 좋아요의 연관 관계(1 : N)

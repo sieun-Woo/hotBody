@@ -120,67 +120,108 @@
       </div>
     </header>
     <!-- 메뉴바 끝 -->
-  </div>
-  <div class="board_list">
-    <div>
-      <h2>음식 검색</h2>
+    <div class="board_list">
       <div>
-        식품 종류 :
-        <select name="식품종류" id="foodType">
-          <option value="농축산물">농축산물</option>
-          <option value="수산물">수산물</option>
-          <option value="음식">음식</option>
-          <option value="가공식품">가공식품</option>
-        </select>
-        식품명 :
-        <input id="foodName" type="textarea" placeholder="한글로 적어주세요.">
-        <button type="button" onclick="searchFood(1)">검색하기</button>
+        <h2>음식 검색</h2>
+        <div>
+          식품 종류 :
+          <select name="식품종류" id="foodType">
+            <option value="농축산물">농축산물</option>
+            <option value="수산물">수산물</option>
+            <option value="음식">음식</option>
+            <option value="가공식품">가공식품</option>
+          </select>
+          식품명 :
+          <input id="foodName" type="textarea" placeholder="한글로 적어주세요.">
+          <button type="button" onclick="searchFood(1)">검색하기</button>
+        </div>
       </div>
-    </div>
-    <table class="table">
-      <colgroup>
-        <col width="10%">
-      </colgroup>
-      <thead>
-        <tr>
-          <th>NO</th>
-          <th>식품명</th>
-          <th>제조사/유통사</th>
-          <th>1회제공량(g)</th>
-          <th>에너지(㎉)</th>
-          <th>단백질(g)</th>
-          <th>지방(g)</th>
-          <th>탄수화물(g)</th>
-          <th>총당류(g)</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    <div class="paging">
+      <table class="table" id="eventTable">
+        <thead>
+          <tr>
+            <th>NO</th>
+            <th>식품명</th>
+            <th>제조사/유통사</th>
+            <th>1회제공량(g)</th>
+            <th>에너지(㎉)</th>
+            <th>단백질(g)</th>
+            <th>지방(g)</th>
+            <th>탄수화물(g)</th>
+            <th>총당류(g)</th>
+            <th>선택</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
 
-    </div>
-    <div>
-      <h2>식단 기록</h2>
-      <div class="textForm">
-        날짜 : <input name="date" type="date" class="title" placeholder="제목">
-        </input>
+      <div class="paging">
+
       </div>
-      <div class="textForm">
-        닉네임 : 연결하기
+
+      <div>
+        <h2>식단 기록</h2>
+        <div>
+          날짜 : <input name="date" type="date" class="title" id="date">
+        </div>
+        <table class="table" id="dietTable">
+          <thead>
+            <tr>
+              <th>NO</th>
+              <th>식품명</th>
+              <th>제조사/유통사</th>
+              <th>1회제공량(g)</th>
+              <th>에너지(㎉)</th>
+              <th>단백질(g)</th>
+              <th>지방(g)</th>
+              <th>탄수화물(g)</th>
+              <th>총당류(g)</th>
+              <th>선택</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <div>
+          <input type="submit" value="식단 등록하기" onclick="saveDiet()" />
+        </div>
+        <div class="dietPaging">
+
+        </div>
       </div>
-      <div class="textForm">
-        음식 명 : <input name="fooName" type="textarea" class="text" placeholder="한글로 적어주세요.">
+      <div>
+        <h2>식단 조회</h2>
+        <div>
+          날짜 : <input name="date" type="date" class="title" id="findDate">
+        </div>
+        <table class="table" id="readTable">
+          <thead>
+            <tr>
+              <th>NO</th>
+              <th>식품명</th>
+              <th>제조사/유통사</th>
+              <th>1회제공량(g)</th>
+              <th>에너지(㎉)</th>
+              <th>단백질(g)</th>
+              <th>지방(g)</th>
+              <th>탄수화물(g)</th>
+              <th>총당류(g)</th>
+              <th>선택</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <div>
+          <input type="submit" value="식단 조회하기" onclick="readDiet()"/>
+        </div>
       </div>
-      <div class="textForm">
-        음식 양 : <input name="amountOfFood" type="number" class="text" placeholder="그램(g)으로 적어주세요.">
-      </div>
-      <input type="submit" class="btn" value="글 올리기" />
     </div>
   </div>
-
-
 </body>
+
 <style>
   /* 회원가입 메뉴 */
   /* reset */
@@ -700,6 +741,14 @@
     background: #efefef
   }
 
+  .dietPaging {
+    margin: 0 auto;
+    width: 1000px;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0
+  }
+
   /* 페이징 */
   .paging {
     margin: 0 auto;
@@ -730,6 +779,7 @@
   }
 </style>
 
+
 <script>
   // 페이징 버튼
   $(document).on('click', '#p', function (e) {
@@ -739,6 +789,8 @@
   });
 
   function searchFood(page) {
+
+
     let foodType = $('#foodType').val();
     console.log(foodType);
     let foodName = $('#foodName').val();
@@ -783,16 +835,16 @@
           str += '<td>' + (response.content[i].fat) + '</td>';
           str += '<td>' + (response.content[i].carbohydrate) + '</td>';
           str += '<td>' + (response.content[i].sugar) + '</td>';
+          str += '<td>' + '<input type="button" name="xxx" value="선택" onclick="rowClicked()">' + '</td>';
           str += '</tr>';
-          j += 1 
+          j += 1
         }
 
         $('.table tbody').empty();
-        $('.table tbody').append(str);
+        $(' #eventTable tbody').append(str);
 
         pageing_list();
       }
-
 
       // 페이징 목록
       function pageing_list() {
@@ -811,27 +863,27 @@
         $('.paging').empty();
 
         if (page != 1) {
-          pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+          pageNums.push("<a href='#;' id='p' class='first' data-page=" + first + ">처음</a>");
         }
 
         if (setion_page != 1) {
-          pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+          pageNums.push("<a href='#;' id='p' class='prev' data-page=" + prev + ">이전</a>");
         }
         // 페이징 번호 출력
         for (var i = start; i < end; i++) {
           if (page == i) {
-            pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+            pageNums.push('<a href="#;" id="p" class="on" data-page=' + i + '>' + i + '</a>');
             continue;
           }
-          pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+          pageNums.push('<a href="#;" id="p" data-page=' + i + '>' + i + '</a>');
         }
 
         if (setion_page != TOTAL_SECTION) {
-          pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+          pageNums.push("<a href='#;' id='p' class='next' data-page=" + next + ">다음</a>");
         }
 
         if (page != last) {
-          pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+          pageNums.push("<a href='#;' id='p' class='last' data-page=" + last + ">마지막</a>");
         }
 
         $('.paging').append(pageNums);
@@ -840,6 +892,95 @@
     )
   }
 
+  function rowClicked() {
+    var table = document.getElementById('eventTable');
+    var rowList = table.rows;
+
+    for (i = 1; i < rowList.length; i++) {
+      var row = rowList[i];     //thead 부분을 제외하기 위해 i가 1부터 시작됩니다.
+      var tdsNum = row.childElementCount;     //아래 for문에서 사용하기 위해 row 하위에 존재하는 td의 갯수를 구합니다.
+
+      row.onclick = function () {
+        return function () {
+          var str = '';
+          str += '<tr>';
+          //row 안에 있는 값들을 순차적으로 가져오기
+          for (var j = 0; j < tdsNum; j++) {
+            var row_value = this.cells[j].innerHTML;
+            // str += row_value + ' ';     //값을 하나의 문자열으로 만듭니다.
+            str += '<td>' + (row_value) + '</td>';
+          };
+          str += '</tr>';
+
+          $('#dietTable tbody').append(str);
+
+        };
+      }(row);
+    }
+  }
+
+  function saveDiet() {
+    var table = document.getElementById('dietTable')
+    var date = document.getElementById('date').value;
+
+    var rowList = table.rows;
+    console.log(rowList.length)
+    var str = '';
+
+    for (i = 1; i < rowList.length; i++) {
+      var row = rowList[i];     //thead 부분을 제외하기 위해 i가 1부터 시작됩니다.
+      var tdsNum = row.childElementCount;     //아래 for문에서 사용하기 위해 row 하위에 존재하는 td의 갯수를 구합니다.
+      
+      str += '<tr>';
+      for (var j = 0; j < tdsNum; j++) {
+        var row_value = row.cells[j].innerHTML;
+        str += '<td>' + (row_value) + '</td>';
+      };
+      str += '</tr>';
+    }
+
+    console.log(str)
+
+    var settings = {
+      "url": "http://localhost:8080/api/diet",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "dietFood": str,
+        "time": date
+      }),
+    };
+
+    console.log(str)
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+
+  }
+
+function readDiet() {
+
+  var date = document.getElementById('findDate').value;
+
+  console.log(date)
+  var settings = {
+  "url": "http://localhost:8080/api/diet?time=" + date,
+  "method": "GET",
+  "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+
+  $('#readTable tbody').empty();
+  $('#readTable tbody').append(response);
+
+});
+}
 </script>
 
 </html>

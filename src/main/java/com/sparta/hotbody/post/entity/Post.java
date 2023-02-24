@@ -53,9 +53,7 @@ public class Post extends TimeStamp {
   @Column(nullable = false)
   private int likes = 0;
 
-  @OrderBy(value = "modifiedAt desc")
-  @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
-  private List<Comment> comments = new ArrayList<>();
+
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
@@ -85,6 +83,7 @@ public class Post extends TimeStamp {
   private User user;
 
   // 게시글과 댓글의 연관 관계(1 : N)
+  @OrderBy(value = "modifiedAt desc")
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
@@ -123,8 +122,5 @@ public class Post extends TimeStamp {
     this.image = resourcePath;
   }
 
-  public void addCommentList(Comment comment){
-    this.comments.add(comment);
-  }
 }
 

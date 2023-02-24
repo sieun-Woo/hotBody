@@ -30,10 +30,9 @@ public class CommentService {
 
   // 1. 댓글 등록
   @Transactional
-  public CommentResponseDto createComment(User user, Post post, CommentRequestDto requestDto) {
-    Comment comment = new Comment(user, requestDto, post);
+  public CommentResponseDto createComment(User user, CommentRequestDto requestDto) {
+    Comment comment = new Comment(requestDto, user);
     commentRepository.save(comment);
-    post.addCommentList(comment);
     return new CommentResponseDto(comment);
   }
 
@@ -91,5 +90,20 @@ public class CommentService {
     } else {
       throw new IllegalArgumentException("댓글을 삭제하려면 로그인이 필요합니다.");
     }
+  }
+
+  // 6. 해당 게시글 관련 댓글 전체 조회
+  @Transactional
+  public Page<CommentResponseDto> getPostComments(Long postId, int page, int size, String sortBy, boolean isAsc) {
+
+    // 페이징 처리
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    Page<Comment> comments = commentRepository.findAllByPostId(postId, pageable);
+    Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));
+
+    return commentResponseDto;
   }
 }

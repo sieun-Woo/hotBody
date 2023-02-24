@@ -43,7 +43,7 @@ public class CommentController {
 
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
-    return commentService.createComment(userDetails.getUser(), post, commentRequestDto);
+    return commentService.createComment(userDetails.getUser(), commentRequestDto);
   }
 
   // 2. 댓글 전체 조회
@@ -78,5 +78,17 @@ public class CommentController {
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     commentService.deleteComment(commentId, userDetails.getUser());
+  }
+
+  // 6. 해당 게시글 댓글 전체 조회
+  @GetMapping("/comments/{postId}")
+  public Page<CommentResponseDto> getPostComments(
+      @PathVariable Long postId,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc
+  ) {
+    return commentService.getPostComments(postId, page - 1, size, sortBy, isAsc);
   }
 }

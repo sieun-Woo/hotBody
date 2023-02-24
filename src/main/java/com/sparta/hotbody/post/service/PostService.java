@@ -74,7 +74,7 @@ public class PostService {
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
 
-    PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+    PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
         post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
         post.getModifiedAt());
 
@@ -97,7 +97,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+        PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
             post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
             post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
@@ -109,7 +109,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+        PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
             post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
             post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);
@@ -121,7 +121,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
+        PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
             post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
             post.getModifiedAt());
         postResponseDtoList.add(postResponseDto);

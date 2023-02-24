@@ -52,6 +52,8 @@ public class Post extends TimeStamp {
   private String image;
   @Column(nullable = false)
   private int likes = 0;
+  @Column(nullable = false)
+  private String category;
 
   @OrderBy(value = "modifiedAt desc")
   @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)

@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.entity;
 
+import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +52,10 @@ public class Post extends TimeStamp {
   private String image;
   @Column(nullable = false)
   private int likes = 0;
+
+  @OrderBy(value = "modifiedAt desc")
+  @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+  private List<Comment> comments = new ArrayList<>();
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
@@ -116,4 +122,9 @@ public class Post extends TimeStamp {
   public void updateImage(String resourcePath) {
     this.image = resourcePath;
   }
+
+  public void addCommentList(Comment comment){
+    this.comments.add(comment);
+  }
 }
+

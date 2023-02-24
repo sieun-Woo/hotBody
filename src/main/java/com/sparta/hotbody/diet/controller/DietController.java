@@ -1,12 +1,14 @@
 package com.sparta.hotbody.diet.controller;
 
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
+import com.sparta.hotbody.diet.entity.Diet;
 import com.sparta.hotbody.diet.service.DietService;
-import com.sparta.hotbody.diet.service.DietServiceImpl;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +28,14 @@ public class DietController {
     return dietService.searchFood(foodType, searchWord, page);
   }
 
-//  @GetMapping("/diet")
-//  public Page<FoodResponseDto> createDiet() {
-//    return dietService.searchFood();
-//  }
+  @PostMapping("/diet")
+  public ResponseEntity<String> createDiet(@RequestBody Diet diet) {
+    return dietService.saveDiet(diet);
+  }
+
+  @GetMapping("/diet")
+  public String readDiet(@RequestParam("time") String time) {
+    return dietService.readDiet(time);
+  }
 
 }

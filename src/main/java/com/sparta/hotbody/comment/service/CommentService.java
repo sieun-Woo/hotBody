@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,13 +30,11 @@ public class CommentService {
 
   // 1. 댓글 등록
   @Transactional
-  public void createComment(CommentRequestDto commentRequestDto, User user, Long postId) {
-    Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
-    );
-
-    Comment comment = new Comment(commentRequestDto, user);
+  public CommentResponseDto createComment(User user, Post post, CommentRequestDto requestDto) {
+    Comment comment = new Comment(user, requestDto, post);
     commentRepository.save(comment);
+    post.addCommentList(comment);
+    return new CommentResponseDto(comment);
   }
 
   // 2. 댓글 전체 조회

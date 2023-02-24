@@ -33,7 +33,6 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final UploadService uploadService;
-  private final ImageRepository imageRepository;
 
   // 1. 게시글 등록
   @Transactional

@@ -155,7 +155,7 @@
               <div id="CountLove"></div>
             </li>
             <li>
-              <i onclick="dislikePost()" id="plus" class="fa-solid fa-thumbs-down"></i>
+              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
             </li>
         </div>
       </div>
@@ -722,26 +722,13 @@
       alert("짠");
       console.log("댓글달기 ajax 포스트 아이디 : " +  $('#postId').val());
       console.log("댓글달기 ajax 댓글 아이디 : " +  $('#commentId').val());
-      // window.location.reload();
+      window.location.reload();
     });
 
   }
 
-  /* 좋아요 */
-  // function like() {
-  //   var settings = {
-  //     "url": `http://localhost:8080/api/posts/${post.id}/likes`,
-  //     "method": "POST",
-  //     "timeout": 0,
-  //     "headers": {
-  //       "Authorization": localStorage.getItem('accessToken')
-
-  //     },
-  //   };
-
-  // $("#plus").css("color", "#EEEEEE");
-  // $("#minus").css("color", "#EEEEEE");
   function likePost(){
+    console.log($('#postId').val())
       var settings = {
         "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
         "method": "POST",
@@ -936,7 +923,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response);
-      // window.location.reload();
+      window.location.reload();
     });
 
 }

@@ -26,7 +26,7 @@ public class PostLikeController {
   }
 
   // 7. 게시글 좋아요 취소
-  @DeleteMapping("/posts/{postId}/likes/{likesId}")
+  @DeleteMapping("/posts/{postId}/likes")
   public void cancelLikes(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

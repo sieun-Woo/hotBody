@@ -733,7 +733,7 @@ function getPosts(page){
                   <div class="article-list__cell-id">`+k+`</div> 
                   <input type="hidden" id="postId" class="form-control" value="${post.id}" name="postId" />             
                   <div class="article-list__cell-title">
-                    <a href="view_post.html?`+k+`" target="_blank" class="hover-pointer">${post.title}</a>
+                    <a href="localhost:8080/api/posts/${post.id}" target="_blank" class="hover-pointer">${post.title}</a>
                   </div>
                   <div class="article-list__cell-writer">${post.nickname}</div>
                   <div class="article-list__cell-reg-date">${post.createdAt}</div>

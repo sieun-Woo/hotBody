@@ -133,10 +133,12 @@
         <div class="textForm">
           <div id="title"></div>
           <input type="hidden" id="postId" value="">
+          <img src="" id="image">
           <br/><br/>
         </div>
         <div class="textForm">
           <div type="nickname" id="post_nickname" name="nickname" disabled>
+
           </div>
           <br />
         </div>
@@ -630,13 +632,13 @@
 
 <script>
   var page = 0;
-  var param = document.location.href.split("?");
+  var postId = document.location.href.split("?")[1];
 
-  jQuery(document).ready(function ($) {
-    page = param[1];
+  jQuery(document).ready(function () {
+    page = postId;
 
     var settings = {
-      "url": "http://localhost:8080/api/posts/" + param[1],
+      "url": "http://localhost:8080/api/posts/" + postId,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -650,7 +652,12 @@
     $('#title').text(response.title);
     $('#post_content').text(response.content);
     $('#CountLove').text(response.likes);
-    $('#postId').val(page);
+    $('#postId').val(postId);
+    if(response.image != null) {
+      $('#image').attr("src", response.image)
+      $('#image').attr("style", "max-width: 100%; height: auto;")
+
+    }
   })
 
     if (localStorage.getItem('accessToken')) {
@@ -705,7 +712,7 @@
   function commentUp() {
 
     var settings = {
-      "url": `http://localhost:8080/api/comments/${param[1]}`,
+      "url": `http://localhost:8080/api/comments/${postId}`,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -772,7 +779,7 @@
 
   function getComments(page) {
     var settings = {
-      "url": `http://localhost:8080/api/comments/posts/${param[1]}?page=${page}&size=10&sortBy=id&isAsc=true`,
+      "url": `http://localhost:8080/api/comments/posts/${postId}?page=${page}&size=10&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -785,17 +792,21 @@
       const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
       const TOTAL_PAGE = response.totalPages // 총페이지
 
+      console.log(TOTAL_DATA)
+      console.log(VIEW_DATA)
+      console.log(TOTAL_PAGE)
+
       const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
       const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
 
-      var start = VIEW_DATA - VIEW_DATA;
-      var end = VIEW_DATA;
-      var j = 1;
-
       console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
-      comments_list(response.content);
       console.log(response.content)
-      paging_list();
+
+      if(TOTAL_DATA != 0) {
+        paging_list();
+        comments_list(response.content);
+      }
+
 
       function comments_list(data) {
 
@@ -821,7 +832,7 @@
       }
 
       function paging_list() {
-        //page  = page < 0 ? 0 : page;
+        // page  = page < 0 ? 0 : page;
         var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
         var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
         var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17

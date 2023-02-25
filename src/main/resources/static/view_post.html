@@ -132,7 +132,8 @@
         <!-- 게시글 -->
         <div class="textForm">
           <div id="title"></div>
-          <br /><br />
+          <input type="hidden" id="postId" value="">
+          <br/><br/>
         </div>
         <div class="textForm">
           <div type="nickname" id="post_nickname" name="nickname" disabled>
@@ -148,15 +149,17 @@
         <div class="write" style="position:center;">
           <ul class="flex-write">
             <li>
-              <a onclick="like()" class="heart">
-                <i id="iconHeart" class="fa-regular fa-heart my_pointer"></i>
-                <span id="CountLove">10</span>
-              </a>
+              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
+            </li>
+            <li>
+              <div id="CountLove"></div>
+            </li>
+            <li>
+              <i onclick="dislikePost()" id="plus" class="fa-solid fa-thumbs-down"></i>
             </li>
         </div>
       </div>
     </section>
-
 
     <div id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
@@ -171,9 +174,6 @@
         </div>
       </div>
     </div>
-
-
-
 
     <div id="comment-box" class="commentForm">
       <textarea id="comment" class="text" style="width: 500px; height: 100px;"></textarea>
@@ -480,6 +480,14 @@
     margin-left: 50%;
   }
 
+  .write>ul>li {
+    margin-bottom: 10px;
+  }
+
+  .write>ul>li>div {
+    margin-left: 5px;
+  }
+
   .commentForm {
     position: relative;
     margin-left: 290px;
@@ -625,8 +633,6 @@
   var param = document.location.href.split("?");
 
   jQuery(document).ready(function ($) {
-    console.log("해당 게시글번호 : " + param[1])
-
     page = param[1];
 
     var settings = {
@@ -639,11 +645,13 @@
       }
     };
 
-    $.ajax(settings).done(function (response) {
-      $('#post_nickname').text(response.nickname);
-      $('#title').text(response.title);
-      $('#post_content').text(response.content);
-    })
+  $.ajax(settings).done(function (response) {
+    $('#post_nickname').text(response.nickname);
+    $('#title').text(response.title);
+    $('#post_content').text(response.content);
+    $('#CountLove').text(response.likes);
+    $('#postId').val(page);
+  })
 
     if (localStorage.getItem('accessToken')) {
       $("#logout").show();
@@ -706,36 +714,69 @@
       },
       "data": JSON.stringify({
         "content": ($('#comment').val())
-      }),
+      })
     };
 
     $.ajax(settings).done(function (response) {
       console.log(response);
-      window.location.reload();
+      alert("짠");
+      console.log("댓글달기 ajax 포스트 아이디 : " +  $('#postId').val());
+      console.log("댓글달기 ajax 댓글 아이디 : " +  $('#commentId').val());
+      // window.location.reload();
     });
 
   }
 
   /* 좋아요 */
-  function like() {
-    var settings = {
-      "url": `http://localhost:8080/api/posts/${post.id}/likes`,
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
+  // function like() {
+  //   var settings = {
+  //     "url": `http://localhost:8080/api/posts/${post.id}/likes`,
+  //     "method": "POST",
+  //     "timeout": 0,
+  //     "headers": {
+  //       "Authorization": localStorage.getItem('accessToken')
 
-      },
-    };
+  //     },
+  //   };
+
+  // $("#plus").css("color", "#EEEEEE");
+  // $("#minus").css("color", "#EEEEEE");
+  function likePost(){
+      var settings = {
+        "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+
+        },
+      };
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      $("#iconHeart").css("color", "red", "fill", "red");
+      window.location.reload();
+    });
+  }
+
+  function dislikePost(){
+      var settings = {
+        "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
+        "method": "DELETE",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+
+        },
+      };
+
+    $.ajax(settings).done(function (response) {
+      console.log("좋아요를 취소했습니다.");
+      window.location.reload();
     });
   }
 
 
-  // 페이징
+  // 댓글 페이징
   $(document).on('click', '#p', function (e) {
     page = parseInt($(this).data('page'));
     getComments(page)
@@ -893,14 +934,12 @@
   },
 };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  window.location.reload();
-});
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      // window.location.reload();
+    });
 
-
-  }
-
+}
 
 </script>
 

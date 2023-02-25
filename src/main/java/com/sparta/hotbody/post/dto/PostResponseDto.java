@@ -1,13 +1,16 @@
 package com.sparta.hotbody.post.dto;
 
+import com.sparta.hotbody.comment.dto.CommentResponseDto;
+import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.post.entity.Post;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class PostResponseDto {
 
   private Long id;

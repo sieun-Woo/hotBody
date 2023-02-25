@@ -718,8 +718,6 @@ function getPosts(page){
     var end = VIEW_DATA;
     var j = 1;
 
-    
-
     console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
     console.log(response);
     board_list(response.content);
@@ -732,9 +730,10 @@ function getPosts(page){
     data.forEach((post) => {
       str += `<div class="main">
                 <div v-for="article in filtered">
-                  <div class="article-list__cell-id">`+k+`</div>              
+                  <div class="article-list__cell-id">`+k+`</div> 
+                  <input type="hidden" id="postId" class="form-control" value="${post.id}" name="postId" />             
                   <div class="article-list__cell-title">
-                    <a href="view_post.html?${post.id}" target="_blank" class="hover-pointer">${post.title}</a>
+                    <a href="localhost:8080/api/posts/${post.id}" target="_blank" class="hover-pointer">${post.title}</a>
                   </div>
                   <div class="article-list__cell-writer">${post.nickname}</div>
                   <div class="article-list__cell-reg-date">${post.createdAt}</div>
@@ -746,6 +745,7 @@ function getPosts(page){
 
     $('.article-list').empty();
     $('.article-list').append(str);
+    console.log("포스트 아이디 : " + $('#postId').val());
 
   }
 

@@ -52,7 +52,26 @@ public class Post extends TimeStamp {
   private String image;
   @Column(nullable = false)
   private int likes = 0;
+  @Column
+  private String category;
 
+  /**
+   * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
+   */
+
+  // 게시글과 유저의 연관 관계(N : 1)
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  // 게시글과 댓글의 연관 관계(1 : N)
+  @OrderBy(value = "modifiedAt desc")
+  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Comment> commentList = new ArrayList<>();
+
+  // 게시글과 게시글 좋아요의 연관 관계(1 : N)
+  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PostLike> postLikeList = new ArrayList<>();
 
 
   /**
@@ -72,24 +91,6 @@ public class Post extends TimeStamp {
     this.title = title;
     this.content = content;
   }
-
-  /**
-   * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
-   */
-
-  // 게시글과 유저의 연관 관계(N : 1)
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
-
-  // 게시글과 댓글의 연관 관계(1 : N)
-  @OrderBy(value = "modifiedAt desc")
-  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Comment> commentList = new ArrayList<>();
-
-  // 게시글과 게시글 좋아요의 연관 관계(1 : N)
-  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<PostLike> postLikeList = new ArrayList<>();
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

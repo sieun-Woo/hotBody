@@ -35,7 +35,6 @@ public class DietServiceImpl implements DietService {
   public Page<FoodResponseDto> searchFood(String FoodType, String searchWord, int page) {
     Sort sort = Sort.by(Direction.DESC, "id");
     Pageable pageable = PageRequest.of(page-1, 10, sort);
-    Page<FoodResponseDto> foodResponseDto;
 
     switch (FoodType) {
       case ("농축산물"):

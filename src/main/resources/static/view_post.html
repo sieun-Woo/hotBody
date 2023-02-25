@@ -774,18 +774,17 @@
         var str = '';
         data.forEach((comment) => {
           str += `<div class="main">
-                      <input id="commentId" value="${comment.id}">
                       <div class="comment-list__cell-writer">${comment.nickname}</div>
                       <div class="comment-list__cell-content">${comment.content}</div>
                       <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
                       <div class="comment-list__cell-like"><i class="fa-regular fa-face-kiss-wink-heart"> ${comment.likes}</i></div>
                       <div id="modifyBox" >
-                        <input id="modifyContent" style="display:none">
-                        <button id="saveModifyContent" style="display:none" onclick=modifyComment()>저장</button>
-                        <button id="cancelModifyContent" style="display:none" onclick=modifyButton()>취소</button>
-                        <button id="modifyButton" onclick=modifyButton()>수정</button>
+                        <input id="modifyContent${comment.id}"  style="display:none">
+                        <button id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
+                        <button id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
+                        <button id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
                       </div>
-                      <button>삭제</button>
+                      <button onclick=deleteComment(${comment.id});>삭제</button>
                   </div><br/>`
         });
 
@@ -838,20 +837,19 @@
   }
 
 
-  function modifyButton() {
+  function modifyButton(id) {
 
-    console.log($('#commentId'))
-
-    if ($('#modifyButton').css('display') == 'none') {
-      $('#modifyContent').hide();
-      $('#saveModifyContent').hide();
-      $('#cancelModifyContent').hide();
-      $('#modifyButton').show();
+    console.log(id)
+    if ($('#modifyButton' + id).css('display') == 'none') {
+      $('#modifyContent' + id).hide();
+      $('#saveModifyContent' + id).hide();
+      $('#cancelModifyContent' + id).hide();
+      $('#modifyButton' + id).show();
     } else {
-      $('#modifyContent').show();
-      $('#saveModifyContent').show();
-      $('#cancelModifyContent').show();
-      $('#modifyButton').hide();
+      $('#modifyContent' + id).show();
+      $('#saveModifyContent' + id).show();
+      $('#cancelModifyContent' + id).show();
+      $('#modifyButton' + id).hide();
 
     }
 
@@ -859,10 +857,13 @@
 
   // 댓글 수정
 
-  function modifyComment() {
+  function modifyComment(id) {
+
+
+    var inputValue = document.getElementById('modifyContent' + id).value;
 
     var settings = {
-      "url": "http://localhost:8080/api/comments/1",
+      "url": "http://localhost:8080/api/comments/" + id,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -870,14 +871,32 @@
         "Content-Type": "application/json",
       },
       "data": JSON.stringify({
-        "content": "우시은"
+        "content": inputValue
       }),
     };
 
     $.ajax(settings).done(function (response) {
-      console.log(response);
-      // window.location.reload();
+      window.location.reload();
     });
+
+
+  }
+
+  function deleteComment(id) {
+
+    var settings = {
+  "url": "http://localhost:8080/api/comments/" + id,
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken')
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  window.location.reload();
+});
 
 
   }

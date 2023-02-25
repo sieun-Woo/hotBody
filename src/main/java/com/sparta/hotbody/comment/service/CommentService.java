@@ -9,9 +9,9 @@ import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Console;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -30,10 +31,12 @@ public class CommentService {
 
   // 1. 댓글 등록
   @Transactional
-  public CommentResponseDto createComment(User user, CommentRequestDto requestDto) {
-    Comment comment = new Comment(requestDto, user);
-    commentRepository.save(comment);
-    return new CommentResponseDto(comment);
+  public ResponseEntity<String> createComment(User user, CommentRequestDto requestDto, Long postId) {
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+    Comment comment = new Comment(requestDto, user, post);
+    commentRepository.saveAndFlush(comment);
+    return new ResponseEntity<>("댓글이 작성되었습니다.", HttpStatus.OK);
   }
 
   // 2. 댓글 전체 조회
@@ -58,8 +61,7 @@ public class CommentService {
         () -> new IllegalArgumentException("해당 댓글은 존재하지 않습니다.")
     );
 
-    CommentResponseDto commentResponseDto = new CommentResponseDto(comment.getNickname(),
-        comment.getContent(), comment.getLikes(), comment.getCreatedAt(), comment.getModifiedAt());
+    CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
 
     return commentResponseDto;
   }
@@ -85,6 +87,7 @@ public class CommentService {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new IllegalArgumentException("해당 댓글은 존재하지 않습니다.")
     );
+    log.info(String.valueOf(comment));
     if (comment.getUser().getId().equals(user.getId())) {
       commentRepository.delete(comment);
     } else {

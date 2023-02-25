@@ -5,10 +5,8 @@ import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.service.PostService;
-import com.sparta.hotbody.user.entity.User;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

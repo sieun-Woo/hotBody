@@ -32,18 +32,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
 
   private final CommentService commentService;
-  private final PostRepository postRepository;
 
   // 1. 댓글 등록
   @PostMapping("/comments/{postId}")
-  public CommentResponseDto createComment(
+  public ResponseEntity<String> createComment(
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @PathVariable Long postId) {
 
-    Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
-    return commentService.createComment(userDetails.getUser(), commentRequestDto);
+    return commentService.createComment(userDetails.getUser(), commentRequestDto, postId);
   }
 
   // 2. 댓글 전체 조회
@@ -81,7 +78,7 @@ public class CommentController {
   }
 
   // 6. 해당 게시글 댓글 전체 조회
-  @GetMapping("/comments/{postId}")
+  @GetMapping("/comments/posts/{postId}")
   public Page<CommentResponseDto> getPostComments(
       @PathVariable Long postId,
       @RequestParam("page") int page,

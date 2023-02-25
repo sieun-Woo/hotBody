@@ -75,10 +75,7 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-
-    PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
-        post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-        post.getModifiedAt());
+    PostResponseDto postResponseDto = new PostResponseDto(post);
 
     return postResponseDto;
   }
@@ -99,9 +96,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
-            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-            post.getModifiedAt());
+        PostResponseDto postResponseDto = new PostResponseDto(post);
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -111,9 +106,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
-            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-            post.getModifiedAt());
+        PostResponseDto postResponseDto = new PostResponseDto(post);
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -123,9 +116,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getId(), post.getNickname(), post.getTitle(),
-            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-            post.getModifiedAt());
+        PostResponseDto postResponseDto = new PostResponseDto(post);
         postResponseDtoList.add(postResponseDto);
       }
     }

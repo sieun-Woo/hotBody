@@ -6,9 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class CommentResponseDto {
-
+  private Long id;
   private String nickname;
 
   private String content;
@@ -20,6 +19,7 @@ public class CommentResponseDto {
   private LocalDateTime modifiedAt;
 
   public CommentResponseDto(Comment comment) {
+    this.id = comment.getId();
     this.nickname = comment.getNickname();
     this.content = comment.getContent();
     this.likes = comment.getLikes();

@@ -5,9 +5,9 @@ import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.upload.entity.Image;
-import com.sparta.hotbody.upload.repository.ImageRepository;
 import com.sparta.hotbody.upload.service.UploadService;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
@@ -15,16 +15,13 @@ import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.apache.xmlbeans.impl.xb.ltgfmt.FileDesc.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,13 +54,13 @@ public class PostService {
 
 
   // 2. 게시글 전체 조회
-  public Page<PostResponseDto> getAllPosts(int page, int size, String sortBy, boolean isAsc) {
+  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    Page<Post> posts = postRepository.findAll(pageable);
+    Page<Post> posts = postRepository.findAllByCategory(postCategory, pageable);
     Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
 
     return postResponseDto;

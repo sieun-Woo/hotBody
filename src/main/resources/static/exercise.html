@@ -144,13 +144,13 @@
       </select>
       </div>
       <div class="textForm">
-        시간 : <input name="content" type="number" class="text" placeholder="시간을 입력 해주세요.">
+        시간 : <input name="content" id="time" type="number" class="text" placeholder="시간을 입력 해주세요.">
       </div>
       <div class="textForm">
-        횟수 : <input name="content" type="number" class="text" placeholder="횟수를 입력 해주세요.">
+        횟수 : <input name="content" id="reps" type="number" class="text" placeholder="횟수를 입력 해주세요.">
       </div>
     
-      <input type="submit" class="btn" value="올리기"/>
+      <input type="submit" class="btn" onclick="recordExercise()" value="올리기"/>
     </form>
   </div>
 
@@ -703,7 +703,7 @@
     return false;
   })
 
-  function exerciseRecord() {
+  function recordExercise() {
     var settings = {
       "url": "http://localhost:8080/api/user/auth/mypage/records",
       "method": "POST",
@@ -714,8 +714,8 @@
       },
       "data": JSON.stringify({
         "exercise": $('#exercise').val(),
-        "time" : 20,
-        "reps" : 3
+        "time" : $('#time').val(),
+        "reps" : $('#reps').val()
       }),
     };
 

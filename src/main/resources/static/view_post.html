@@ -127,7 +127,6 @@
       </ol>
     </nav>
 
-    <section id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
         <!-- 게시글 -->
         <div class="textForm">
@@ -147,6 +146,12 @@
           <br /><br />
         </div>
 
+        <!-- 게시글 수정 & 삭제 -->
+        <div class="textForm3">
+          <button type="button" class="btn btn-outline-dark" onclick="updatePost()">수정</button>
+          <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
+      </div>
+
         <!--좋아요 -->
         <div class="write" style="position:center;">
           <ul class="flex-write">
@@ -161,7 +166,6 @@
             </li>
         </div>
       </div>
-    </section>
 
     <div id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
@@ -178,8 +182,8 @@
     </div>
 
     <div id="comment-box" class="commentForm">
-      <textarea id="comment" class="text" style="width: 500px; height: 100px;"></textarea>
-      <button onclick="commentUp()">등록</button>
+      <textarea id="comment" class="text" style="resize: none; width: 500px; height: 100px;"></textarea>
+      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
     </div>
     </form>
   </div>
@@ -237,6 +241,17 @@
 
   .hover-pointer:hover {
     cursor: pointer;
+  }
+
+  .row{
+    padding : 20px;
+  }
+
+  .row > button {
+    display: row;
+    width: 50px;
+    align-items: center;
+    justify-content: right;
   }
 
   .flex {
@@ -478,6 +493,20 @@
     padding: 10px 10px;
   }
 
+  .textForm3 {
+    margin: 30px;
+    padding: 10px 10px;
+  }
+
+  .textForm3 > button {
+    display: row;
+    width: 50px;
+    align-items: center;
+    justify-content: center;
+    margin: 30px;
+    padding: 10px 10px;
+  }
+
   .write {
     margin-left: 50%;
   }
@@ -596,6 +625,12 @@
     background-position: right;
   }
 
+  .main>button{
+    display: row;
+    width: 50px;
+    justify-content: left;
+  }
+
   /* 페이징 */
   .paging {
     margin: 0 auto;
@@ -653,6 +688,7 @@
     $('#post_content').text(response.content);
     $('#CountLove').text(response.likes);
     $('#postId').val(postId);
+
     if(response.image != null) {
       $('#image').attr("src", response.image)
       $('#image').attr("style", "max-width: 100%; height: auto;")
@@ -709,33 +745,19 @@
     });
   }
 
-  function commentUp() {
+  // 글 수정 & 삭제
 
-    var settings = {
-      "url": `http://localhost:8080/api/comments/${postId}`,
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json",
-      },
-      "data": JSON.stringify({
-        "content": ($('#comment').val())
-      })
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      alert("짠");
-      console.log("댓글달기 ajax 포스트 아이디 : " +  $('#postId').val());
-      console.log("댓글달기 ajax 댓글 아이디 : " +  $('#commentId').val());
-      window.location.reload();
-    });
-
+  function updatePost(){
+    // 이미지 때문에 보류
   }
 
+  function deletePost(){
+    
+  }
+
+  // 글 좋아요
+
   function likePost(){
-    console.log($('#postId').val())
       var settings = {
         "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
         "method": "POST",
@@ -769,8 +791,30 @@
     });
   }
 
+  // 댓글
+  
+  function commentUp() {
 
-  // 댓글 페이징
+    var settings = {
+      "url": `http://localhost:8080/api/comments/${postId}`,
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+      },
+      "data": JSON.stringify({
+        "content": ($('#comment').val())
+      })
+    };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    window.location.reload();
+  });
+
+}
+
   $(document).on('click', '#p', function (e) {
     page = parseInt($(this).data('page'));
     getComments(page)
@@ -814,17 +858,15 @@
         data.forEach((comment) => {
           str += `<div class="main">
                       <div class="comment-list__cell-writer">${comment.nickname}</div>
-                      <div class="comment-list__cell-content">${comment.content}</div>
                       <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
-                      <div class="comment-list__cell-like"><i class="fa-regular fa-face-kiss-wink-heart"> ${comment.likes}</i></div>
-                      <div id="modifyBox" >
-                        <input id="modifyContent${comment.id}"  style="display:none">
-                        <button id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
-                        <button id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
-                        <button id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
-                      </div>
-                      <button onclick=deleteComment(${comment.id});>삭제</button>
-                  </div><br/>`
+                      <div class="comment-list__cell-content">${comment.content}</div>
+                      <input id="modifyContent${comment.id}"  style="display:none">
+                      <button type="button" class="btn btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
+                      <button type="button" class="btn btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
+                      <button type="button" class="btn btn-outline-dark" id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
+                      <button type="button" class="btn btn-outline-dark" id="deleteButton${comment.id}" onclick=deleteComment(${comment.id});>삭제</button>
+                  </div>
+                  <br/>`
         });
 
         $('.comment-list').empty();
@@ -884,17 +926,16 @@
       $('#saveModifyContent' + id).hide();
       $('#cancelModifyContent' + id).hide();
       $('#modifyButton' + id).show();
+      $('#deleteButton' + id).show();
     } else {
       $('#modifyContent' + id).show();
       $('#saveModifyContent' + id).show();
       $('#cancelModifyContent' + id).show();
       $('#modifyButton' + id).hide();
-
+      $('#deleteButton' + id).hide();
     }
 
   }
-
-  // 댓글 수정
 
   function modifyComment(id) {
 

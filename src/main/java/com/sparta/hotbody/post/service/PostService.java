@@ -123,26 +123,26 @@ public class PostService {
   // 4. 게시글 수정
   @Transactional
   public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
-      User user, MultipartFile file) throws IOException {
-
+      User user) throws IOException {
 
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
 
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals( UserRole.ADMIN)) {
-      if (file != null) {
-        Image image = uploadService.storeFile(file);
-        uploadService.remove(post.getImage());
-        post.modifyPost(postModifyRequestDto, image.getResourcePath());
-        postRepository.save(post);
-        return;
-      }
       post.modifyPost(postModifyRequestDto);
       postRepository.save(post);
     } else {
-      throw new IllegalArgumentException("게시글을 수정하려면 로그인이 필요합니다.");
+      throw new IllegalArgumentException("글쓴이 정보와 일치하지 않습니다.");
     }
+  }
+
+  @Transactional
+  public String updateImage(MultipartFile file)
+      throws IOException {
+    Image image = uploadService.storeFile(file);
+    String resourcePath = image.getResourcePath();
+    return resourcePath;
   }
 
   // 5. 게시글 삭제
@@ -152,7 +152,6 @@ public class PostService {
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals( UserRole.ADMIN)) {
-      uploadService.remove(post.getImage());
       postRepository.delete(post);
     } else {
       throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");

@@ -79,7 +79,6 @@ public class PostService {
   }
 
   // 키워드로 게시글 검색
-  @Transactional
   public Page<PostResponseDto> searchPost(
       PostCategory postCategory, String searchType, String searchKeyword,
       int page, int size, String sortBy, boolean isAsc) {
@@ -129,29 +128,7 @@ public class PostService {
     return null;
   }
 
-  // 4. 게시글 수정
-  @Transactional
-  public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
-      User user, MultipartFile file) throws IOException {
 
-    Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
-    );
-
-    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
-      if (file != null) {
-        Image image = uploadService.storeFile(file);
-        uploadService.remove(post.getImage());
-        post.modifyPost(postModifyRequestDto, image.getResourcePath());
-        postRepository.save(post);
-        return;
-      }
-      post.modifyPost(postModifyRequestDto);
-      postRepository.save(post);
-    } else {
-      throw new IllegalArgumentException("게시글을 수정하려면 로그인이 필요합니다.");
-    }
-  }
 
   // 5. 게시글 삭제
   @Transactional
@@ -167,5 +144,38 @@ public class PostService {
     } else {
       throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");
     }
+  }
+
+  // 4. 게시글 수정
+  @Transactional
+  public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
+      User user) {
+
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+    );
+
+    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
+      post.modifyPost(postModifyRequestDto);
+      postRepository.save(post);
+    } else {
+      throw new IllegalArgumentException("게시글을 수정하려면 로그인이 필요합니다.");
+    }
+  }
+
+  // 6. 게시글 이미지 수정
+  @Transactional
+  public ResponseEntity<String> modifyImage(Long postId, MultipartFile file)
+      throws IOException {
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+    );
+    if(post.getImage() != null) {
+      uploadService.remove(post.getImage());
+    }
+    Image image = uploadService.storeFile(file);
+    String resourcePath = image.getResourcePath();
+    post.updateImage(resourcePath);
+    return new ResponseEntity<>("수정되었습니다.", HttpStatus.OK);
   }
 }

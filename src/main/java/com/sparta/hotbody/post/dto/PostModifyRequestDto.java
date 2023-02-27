@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 public class PostModifyRequestDto {
 
   private String title;
-
   private String content;
 }

@@ -31,7 +31,7 @@ public class CommentReportController {
   }
 
   @GetMapping
-  public Page<CommentReportResponseDto> getAllRepotedComments(
+  public Page<CommentReportResponseDto> getAllReportedComments(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,

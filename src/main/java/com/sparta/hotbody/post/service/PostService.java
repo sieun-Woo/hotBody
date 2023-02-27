@@ -6,6 +6,7 @@ import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.entity.PostCategory;
+import com.sparta.hotbody.post.repository.PostLikeRepository;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.upload.entity.Image;
 import com.sparta.hotbody.upload.service.UploadService;
@@ -32,6 +33,7 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final UploadService uploadService;
+  private final PostLikeRepository postLikeRepository;
 
   // 1. 게시글 등록
   @Transactional
@@ -158,6 +160,7 @@ public class PostService {
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
       post.modifyPost(postModifyRequestDto);
       postRepository.save(post);
+
     } else {
       throw new IllegalArgumentException("게시글을 수정하려면 로그인이 필요합니다.");
     }

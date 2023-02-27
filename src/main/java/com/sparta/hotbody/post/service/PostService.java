@@ -160,7 +160,9 @@ public class PostService {
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
-      uploadService.remove(post.getImage());
+      if (post.getImage() != null) {
+        uploadService.remove(post.getImage());
+      }
       postRepository.delete(post);
     } else {
       throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");

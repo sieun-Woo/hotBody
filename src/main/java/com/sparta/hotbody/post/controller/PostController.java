@@ -68,14 +68,15 @@ public class PostController {
 
   // 키워드로 게시글 검색
   @GetMapping("/posts/search")
-  public List<PostResponseDto> searchPost(
-      @RequestBody PostSearchRequestDto postSearchRequestDto,
+  public Page<PostResponseDto> searchPost(
+      @RequestParam(value = "category", required = false) PostCategory category,
+      @RequestParam("searchType") String searchType,
+      @RequestParam("searchKeyword") String searchKeyword,
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ) {
-    return postService.searchPost(postSearchRequestDto, page - 1, size, sortBy, isAsc);
+      @RequestParam("isAsc") boolean isAsc) {
+    return postService.searchPost(category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
   }
 
   // 4. 게시글 수정

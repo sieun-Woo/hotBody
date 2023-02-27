@@ -35,7 +35,8 @@ public class PostService {
 
   // 1. 게시글 등록
   @Transactional
-  public ResponseEntity<String> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+  public ResponseEntity<String> createPost(PostRequestDto postRequestDto,
+      UserDetailsImpl userDetails) {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
     postRepository.saveAndFlush(post);
@@ -52,9 +53,9 @@ public class PostService {
   }
 
 
-
   // 2. 게시글 전체 조회
-  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, int page, int size, String sortBy, boolean isAsc) {
+  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, int page, int size,
+      String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
@@ -79,45 +80,53 @@ public class PostService {
 
   // 키워드로 게시글 검색
   @Transactional
-  public List<PostResponseDto> searchPost(PostSearchRequestDto postSearchRequestDto,
+  public Page<PostResponseDto> searchPost(
+      PostCategory postCategory, String searchType, String searchKeyword,
       int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-
-    if (postSearchRequestDto.getSearchType().equals("title")) {
-      Page<Post> posts = postRepository.findByTitleContaining(
-          postSearchRequestDto.getSearchKeyword(), pageable);
-
-      for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post);
-        postResponseDtoList.add(postResponseDto);
+    if(postCategory == null) {
+      if (searchType.equals("title")) {
+        Page<Post> posts = postRepository.findByTitleContaining(
+            searchKeyword, pageable);
+        return posts.map(post -> new PostResponseDto(post));
       }
+
+      if (searchType.equals("content")) {
+        Page<Post> posts = postRepository.findByContentContaining(
+            searchKeyword, pageable);
+        return posts.map(post -> new PostResponseDto(post));
+      }
+
+      if (searchType.equals("nickname")) {
+        Page<Post> posts = postRepository.findByNicknameContaining(
+            searchKeyword, pageable);
+        return posts.map(post -> new PostResponseDto(post));
+      }
+      return null;
     }
 
-    if (postSearchRequestDto.getSearchType().equals("content")) {
-      Page<Post> posts = postRepository.findByContentContaining(
-          postSearchRequestDto.getSearchKeyword(), pageable);
-
-      for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post);
-        postResponseDtoList.add(postResponseDto);
-      }
+    if (searchType.equals("title")) {
+      Page<Post> posts = postRepository.findByCategoryAndTitleContaining(
+          postCategory, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
     }
 
-    if (postSearchRequestDto.getSearchType().equals("nickname")) {
-      Page<Post> posts = postRepository.findByNicknameContaining(
-          postSearchRequestDto.getSearchKeyword(), pageable);
-
-      for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post);
-        postResponseDtoList.add(postResponseDto);
-      }
+    if (searchType.equals("content")) {
+      Page<Post> posts = postRepository.findByCategoryAndContentContaining(
+          postCategory, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
     }
-    return postResponseDtoList;
+
+    if (searchType.equals("nickname")) {
+      Page<Post> posts = postRepository.findByCategoryAndNicknameContaining(
+          postCategory, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
+    }
+    return null;
   }
 
   // 4. 게시글 수정
@@ -125,12 +134,11 @@ public class PostService {
   public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
       User user, MultipartFile file) throws IOException {
 
-
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
 
-    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals( UserRole.ADMIN)) {
+    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
       if (file != null) {
         Image image = uploadService.storeFile(file);
         uploadService.remove(post.getImage());
@@ -151,7 +159,7 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals( UserRole.ADMIN)) {
+    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
       uploadService.remove(post.getImage());
       postRepository.delete(post);
     } else {

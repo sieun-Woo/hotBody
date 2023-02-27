@@ -40,7 +40,7 @@ public class UserReportController {
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc
   ){
-    return userReportService.getAllReportedUsers (page,size,sortBy, isAsc);
+    return userReportService.getAllReportedUsers (page-1,size,sortBy, isAsc);
   }
 
 }

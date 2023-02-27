@@ -32,14 +32,16 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   private final UserRepository userRepository;
 
 
+  @Override
   @Transactional
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails) {
     // 페이징 처리
+    Long id = userDetails.getUser().getId();
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    Page<ExerciseRecord> exerciseRecords = exerciseRecordRepository.findAll(pageable);
+    Page<ExerciseRecord> exerciseRecords = exerciseRecordRepository.findAllByUserId(pageable,id);
 
     log.info(exerciseRecords.toString());
 

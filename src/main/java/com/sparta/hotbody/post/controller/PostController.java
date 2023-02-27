@@ -3,13 +3,12 @@ package com.sparta.hotbody.post.controller;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
-import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.service.PostService;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.IOException;
-import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -68,34 +67,28 @@ public class PostController {
 
   // 키워드로 게시글 검색
   @GetMapping("/posts/search")
-  public List<PostResponseDto> searchPost(
-      @RequestBody PostSearchRequestDto postSearchRequestDto,
+  public Page<PostResponseDto> searchPost(
+      @RequestParam(value = "category", required = false) PostCategory category,
+      @RequestParam("searchType") String searchType,
+      @RequestParam("searchKeyword") String searchKeyword,
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ) {
-    return postService.searchPost(postSearchRequestDto, page - 1, size, sortBy, isAsc);
+      @RequestParam("isAsc") boolean isAsc) {
+    return postService.searchPost(category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
   }
 
   // 4. 게시글 수정
   @PatchMapping("/posts/{postId}")
   public void updatePost(
       @PathVariable Long postId,
-      @RequestBody PostModifyRequestDto postModifyRequestDto,
+      @RequestPart PostModifyRequestDto postModifyRequestDto,
+      @RequestPart(required = false) MultipartFile file,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser());
+    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser(), file);
   }
 
-
-  // 5. 게시글 이미지 수정
-  @PatchMapping("/posts/image")
-  public String updateImage(
-      @RequestPart MultipartFile file) throws IOException {
-    return postService.updateImage(file);
-  }
-
-  // 6. 게시글 삭제
+  // 5. 게시글 삭제
   @DeleteMapping("/posts/{postId}")
   public void deletePost(
       @PathVariable Long postId,

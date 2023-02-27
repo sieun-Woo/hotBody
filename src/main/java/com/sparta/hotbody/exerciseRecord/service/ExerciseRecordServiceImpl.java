@@ -4,17 +4,25 @@ import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.exerciseRecord.entity.ExerciseRecord;
 import com.sparta.hotbody.exerciseRecord.repository.ExerciseRecordRepository;
+import com.sparta.hotbody.report.dto.PostReportResponseDto;
+import com.sparta.hotbody.report.entity.PostReportHistory;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 
@@ -23,17 +31,23 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   private final ExerciseRecordRepository exerciseRecordRepository;
   private final UserRepository userRepository;
 
-  //사용자별 모든 운동 기록
-  @Override
-  @Transactional
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetailsImpl userDetails) {
-    User user = userRepository.findByUsername(userDetails.getUsername()).get();
 
-    List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
-    return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
+  @Transactional
+  public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails) {
+    // 페이징 처리
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    Page<ExerciseRecord> exerciseRecords = exerciseRecordRepository.findAll(pageable);
+
+    log.info(exerciseRecords.toString());
+
+    Page<ExerciseRecordResponseDto> exerciseRecordResponseDtos = exerciseRecords.map(e -> new ExerciseRecordResponseDto(e));
+
+    return exerciseRecordResponseDtos;
   }
 
-  // 특정 기록 조회
   @Override
   @Transactional
   public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) {
@@ -48,7 +62,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   }
 
-  // 기록 작성
   @Override
   @Transactional
   public ExerciseRecordResponseDto createExerciseRecord(
@@ -59,7 +72,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
     return new ExerciseRecordResponseDto(exerciseRecord);
   }
 
-  //기록 수정
   @Override
   @Transactional
   public ExerciseRecordResponseDto updateExerciseRecord(Long id,
@@ -78,7 +90,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   }
 
-  // 기록삭제
   @Override
   @Transactional
   public ResponseEntity deleteExerciseRecord(Long id, UserDetailsImpl userDetails) {

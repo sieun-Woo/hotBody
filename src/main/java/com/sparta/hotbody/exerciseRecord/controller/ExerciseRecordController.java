@@ -41,7 +41,7 @@ public class ExerciseRecordController {
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return exerciseRecordService.getAllExerciseRecords(page, size, sortBy, isAsc, userDetails);
+    return exerciseRecordService.getAllExerciseRecords(page-1, size, sortBy, isAsc, userDetails);
   }
 
   // 운동 기록 조회

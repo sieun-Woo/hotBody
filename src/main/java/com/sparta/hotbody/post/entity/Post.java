@@ -108,6 +108,7 @@ public class Post extends TimeStamp {
     this.content = postModifyRequestDto.getContent();
   }
 
+
   public void plusLikes() {
     this.likes += 1;
   }

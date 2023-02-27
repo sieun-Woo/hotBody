@@ -23,6 +23,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -79,6 +80,9 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<RefreshToken> refreshTokenList = new ArrayList<>();
 
+  @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  private Trainer trainer;
+
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;
     this.password = password;
@@ -127,4 +131,10 @@ public class User extends TimeStamp {
   // 신고가 누적된 유저 역할 변경
   public void reportedUserChangeRole() { this.role = UserRole.REPORTED; }
 
+  // 정상 유저로 역할 변경
+  public void changeUserRoleNormal() {this.role = UserRole.USER;}
+
+  public void changeUserRoleReportedTrainer() {this.role = UserRole.REPORTED_TRAINER;}
+
+  public void changeUserRoleTrainer() {this.role = UserRole.TRAINER;}
 }

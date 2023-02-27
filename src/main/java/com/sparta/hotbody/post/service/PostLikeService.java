@@ -28,6 +28,7 @@ public class PostLikeService {
     }
     PostLike postLike = new PostLike(post, user);
     post.plusLikes();
+    postLikeRepository.countAllByPostId(postId);
     postLikeRepository.save(postLike);
   }
 

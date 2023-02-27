@@ -4,6 +4,7 @@ import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.dto.PostSearchRequestDto;
+import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.service.PostService;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
@@ -50,12 +51,13 @@ public class PostController {
   // 2. 게시글 전체 조회
   @GetMapping("/posts")
   public Page<PostResponseDto> getAllPosts(
+      @RequestParam("category") PostCategory postCategory,
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc
   ) {
-    return postService.getAllPosts(page - 1, size, sortBy, isAsc);
+    return postService.getAllPosts(postCategory, page - 1, size, sortBy, isAsc);
   }
 
   // 3. 게시글 선택 조회

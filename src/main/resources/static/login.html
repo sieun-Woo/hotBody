@@ -50,7 +50,9 @@
         <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
       </div>
       <button type="submit" onclick="login()" class="btn">로그인</button>
-      <button type="button" onclick="location.href='find-id-pw.html'" class="btn" >아이디 / 비밀번호 찾기</button>
+      <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
+      <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기</button>
+      
       
     </div>
 </body>
@@ -406,5 +408,20 @@ body {
       alert(response.responseJSON.message);
     })
   }
+
+  // 구글 로그인 버튼 클릭
+function loginWithGoogle() {
+  var settings = {
+    "url": "http://localhost:8080/google/login",
+    "method": "GET",
+    "timeout": 0,
+    "headers": {
+    }
+  };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+  });
+}
 </script>
 </html>

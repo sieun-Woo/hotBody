@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,40 +8,42 @@
   <title>글</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-<!-- 로그아웃/ -->
-<!-- Wordpress Site header-bar -->
-<header class="wp-header" role="banner">
-  <ul>
-    <li><a href="index.html">로그아웃</a></li>
-  </ul>
-</header>
-<!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-<!-- lodash 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-
-<div class="body-content min-height-100vh flex flex-column">
-  <!-- 로고바 시작 -->
-  <header class="logo-bar con-min-width">
-    <div class="con height-100p flex flex-jc-c">
-      <a href="index.html" class="logo flex flex-ai-c">
-        <i class="fa-solid fa-dumbbell"></i>
-        <span>
-          Hot<span></span>body
-        </span>
-      </a>
-    </div>
+  <!-- 로그아웃/ -->
+  <!-- Wordpress Site header-bar -->
+  <header class="wp-header" role="banner">
+    <ul>
+      <li><a href="index.html">로그아웃</a></li>
+    </ul>
   </header>
-  <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티</div>
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- lodash 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+
+  <div class="body-content min-height-100vh flex flex-column">
+    <!-- 로고바 시작 -->
+    <header class="logo-bar con-min-width">
+      <div class="con height-100p flex flex-jc-c">
+        <a href="index.html" class="logo flex flex-ai-c">
+          <i class="fa-solid fa-dumbbell"></i>
+          <span>
+            Hot<span></span>body
+          </span>
+        </a>
+      </div>
+    </header>
+    <!-- 로고바 끝 -->
+    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
+    </div>
     <!-- 메뉴바 시작 -->
     <header class="menu-bar con-min-width">
       <div class="con height-100p" style="position: relative; z-index: 2;">
         <nav class="menu-bar__menu-1">
-  
+
           <ul class="flex">
             <li>
               <a href="index.html" class="block">
@@ -118,7 +121,7 @@
     </header>
     <!-- 메뉴바 끝 -->
 
-    <nav >
+    <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티</li>
       </ol>
@@ -129,98 +132,107 @@
         <!-- 게시글 -->
         <div class="textForm">
           <div id="title"></div>
+          <input type="hidden" id="postId" value="">
+          <img src="" id="image">
           <br/><br/>
         </div>
         <div class="textForm">
-          <div type="nickname" id="post_nickname" name="nickname" disabled> 
+          <div type="nickname" id="post_nickname" name="nickname" disabled>
+
           </div>
-          <br/>
+          <br />
         </div>
         <div class="textForm">
           <div id="post_content"></div>
-          <br/><br/>
+          <br /><br />
         </div>
-        
+
         <!--좋아요 -->
         <div class="write" style="position:center;">
           <ul class="flex-write">
             <li>
-              <a onclick="like()" class="heart">
-                <i id="iconHeart" class="fa-regular fa-heart my_pointer"></i>
-                <span id="CountLove">10</span>
-              </a>
-              </li>
+              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
+            </li>
+            <li>
+              <div id="CountLove"></div>
+            </li>
+            <li>
+              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
+            </li>
         </div>
       </div>
     </section>
 
-    
     <div id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
         <div class="textForm">
           <div class="comment-list" style="position: relative; z-index: 1;">
             <!-- 댓글 들어오는 공간 -->
           </div>
-          
+
           <div class="paging">
             <!-- 페이징 -->
           </div>
         </div>
       </div>
-    </div> 
-
-    
-    
+    </div>
 
     <div id="comment-box" class="commentForm">
-      <textarea id="comment" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" 
-      >
-      </textarea><br/><br/>
-      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
+      <textarea id="comment" class="text" style="width: 500px; height: 100px;"></textarea>
+      <button onclick="commentUp()">등록</button>
     </div>
-</form>
-</div>
+    </form>
+  </div>
   </div>
 
 </body>
 <style>
-    /* 폰트 */
+  /* 폰트 */
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 400;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
   }
+
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 700;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
   }
+
   @font-face {
     font-family: 'LotteMartDream';
     font-style: normal;
     font-weight: 300;
     src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
   }
+
   html {
     font-family: 'LotteMartDream', sans-serif;
   }
 
   /* 노말라이즈 */
-  body, ul, li, h1, h2, h3 {
-    margin:0;
-    padding:0;
-    list-style:none;
+  body,
+  ul,
+  li,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
+
   a {
-    color:inherit;
-    text-decoration:none;
+    color: inherit;
+    text-decoration: none;
   }
 
   /* 라이브러리 */
   .hover-underline:hover {
-    text-decoration:underline;
+    text-decoration: underline;
   }
 
   .hover-pointer:hover {
@@ -228,27 +240,27 @@
   }
 
   .flex {
-    display:flex;
+    display: flex;
   }
 
   .flex-jc-c {
-    justify-content:center;
+    justify-content: center;
   }
 
   .flex-ai-c {
-    align-items:center;
+    align-items: center;
   }
 
   .flex-wrap {
-    flex-wrap:wrap;
+    flex-wrap: wrap;
   }
 
   .flex-column {
-    flex-direction:column;
+    flex-direction: column;
   }
 
   .flex-grow-1 {
-    flex-grow:1;
+    flex-grow: 1;
   }
 
   .flex-none {
@@ -269,40 +281,40 @@
   }
 
   .min-height-100vh {
-    min-height:100vh;
+    min-height: 100vh;
   }
 
   .bg-pink {
-    background-color:pink;
+    background-color: pink;
   }
 
   .bd-green {
-    border:10px solid green;
+    border: 10px solid green;
   }
 
   .bg-red {
-    background-color:red;
+    background-color: red;
   }
 
   .bg-blue {
-    background-color:blue;
+    background-color: blue;
   }
 
   .height-100p {
-    height:100%;
+    height: 100%;
   }
 
   .block {
-    display:block;
+    display: block;
   }
 
   /* 커스텀 */
   .con-min-width {
-    min-width:1200px;
+    min-width: 1200px;
   }
 
   .con {
-    width:1000px;
+    width: 1000px;
   }
 
   .info-article {
@@ -313,100 +325,105 @@
 
   /* 로고 시작 */
   .logo {
-    font-size:4rem;
+    font-size: 4rem;
     color: white;
   }
 
-  .logo > span {
-    margin-left:10px;
+  .logo>span {
+    margin-left: 10px;
     color: white;
   }
 
-  .logo > span > span {
-    color:red;
+  .logo>span>span {
+    color: red;
   }
 
   .logo--mini {
-    font-size:2rem;
+    font-size: 2rem;
   }
+
   /* 로고 끝 */
 
   /* 로고바 시작 */
   .logo-bar {
-    background-color:black;
-    color:white;
-    height:200px;
+    background-color: black;
+    color: white;
+    height: 200px;
   }
+
   /* 로고바 끝 */
 
   /* 메뉴바 시작 */
   .menu-bar {
-    background-color:black;
-    color:white;
+    background-color: black;
+    color: white;
   }
 
-  .menu-bar__menu-1 > ul > li {
-    width:25%;
-    position:relative;
+  .menu-bar__menu-1>ul>li {
+    width: 25%;
+    position: relative;
   }
 
-  .menu-bar__menu-1 ul > li > a {
-    text-align:center;
-    padding:20px 0;
+  .menu-bar__menu-1 ul>li>a {
+    text-align: center;
+    padding: 20px 0;
   }
 
-  .menu-bar__menu-1 ul > li:hover > a {
-    background-color:white;
-    color:black;
+  .menu-bar__menu-1 ul>li:hover>a {
+    background-color: white;
+    color: black;
   }
 
-  .menu-bar__menu-1 > ul > li > a {
-    border-radius:10px 10px 0 0;
+  .menu-bar__menu-1>ul>li>a {
+    border-radius: 10px 10px 0 0;
   }
 
-  .menu-bar__menu-1 > ul ul {
-    display:none;
-    position:absolute;
-    top:100%;
-    left:-10px;
-    width:100%;
-    background-color:black;
-    border:10px solid black;
-    border-top-width:0;
-    border-radius:0 0 20px 20px;
+  .menu-bar__menu-1>ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    width: 100%;
+    background-color: black;
+    border: 10px solid black;
+    border-top-width: 0;
+    border-radius: 0 0 20px 20px;
   }
 
-  .menu-bar__menu-1 > ul > li:hover > ul {
-    display:block;
+  .menu-bar__menu-1>ul>li:hover>ul {
+    display: block;
   }
 
-  .menu-bar__menu-1 > ul ul > li:last-child > a {
-    border-radius:0 0 10px 10px;
+  .menu-bar__menu-1>ul ul>li:last-child>a {
+    border-radius: 0 0 10px 10px;
   }
+
   /* 메뉴바 끝 */
 
   /* 타이틀바 시작 */
   .title-bar {
-    margin-top:30px;
-    margin-bottom:30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
+
   /* 타이틀바 끝 */
 
   /* 하단바 시작 */
   .bottom-bar {
-    margin-top:30px;
-    background-color:black;
-    color:white;
-    padding-top:30px;
-    padding-bottom:30px;
+    margin-top: 30px;
+    background-color: black;
+    color: white;
+    padding-top: 30px;
+    padding-bottom: 30px;
   }
 
   .bottom-bar__site-info {
-    margin-left:20px;
+    margin-left: 20px;
   }
+
   /* 하단바 끝 */
 
- 
+
   /* Wordpress Site header-bar */
   .wp-header {
     font-family: Arial;
@@ -417,8 +434,9 @@
     width: 100%;
     z-index: 9999;
   }
+
   .wp-header h1 {
-    float:left;
+    float: left;
     padding-left: 40px;
     color: #78c8e6;
     font-size: 20px;
@@ -428,17 +446,20 @@
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
   }
+
   .wp-header h1:hover {
     color: #fff;
     cursor: pointer;
   }
+
   .wp-header li {
-    float:right;
+    float: right;
     height: 46px;
     padding-right: 20px;
     line-height: 46px;
   }
-  .wp-header li > a {
+
+  .wp-header li>a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -446,171 +467,178 @@
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
   }
-  .wp-header li:hover > a {
+
+  .wp-header li:hover>a {
     color: #78c8e6;
   }
 
-.textForm {
-  border-bottom: 2px solid #adadad;
-  margin: 30px;
-  padding: 10px 10px;
-}
+  .textForm {
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+  }
 
-.write{
+  .write {
     margin-left: 50%;
   }
 
-.commentForm {
-  position: relative;
-  margin-left: 290px;
-  width: 800px;
-}
-
-.commentbtn {
-  position:relative;
-  left:250px;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:500px;
-  height:40px;
-  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
-  background-position: left;
-  background-size: 200%;
-  color:white;
-  font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
-}
-
-/* 댓글 */:root {
-    --comment-list__cell-id__width:100px;
-    --comment-list__cell-reg-date__width:220px;
-    --comment-list__cell-writer__width:150px;
-    --comment-list__cell-like__width:100px;
-    --comment-list__cell-content__width:calc(100% - var(--comment-list__cell-id__width) - var(--comment-list__cell-reg-date__width) - var(--comment-list__cell-writer__width) - var(--comment-list__cell-like__width));
+  .write>ul>li {
+    margin-bottom: 10px;
   }
 
-  .comment-list > * > div {
-    display:flex;
+  .write>ul>li>div {
+    margin-left: 5px;
   }
 
-  .comment-list > header > div > div {
-    position:relative;
+  .commentForm {
+    position: relative;
+    margin-left: 290px;
+    width: 800px;
   }
 
-  .comment-list > header > div > div:not(:last-child)::after {
-    content:"";
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    right:0;
-    width:1px;
-    height:10px;
-    background-color:black;
+  .commentbtn {
+    position: relative;
+    left: 250px;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 500px;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
   }
 
-  .comment-list > * > div > div {
-    box-sizing:border-box;
-    text-align:center;
-    padding-top:10px;
-    padding-bottom:10px;
+  /* 댓글 */
+  :root {
+    --comment-list__cell-id__width: 100px;
+    --comment-list__cell-reg-date__width: 220px;
+    --comment-list__cell-writer__width: 150px;
+    --comment-list__cell-like__width: 100px;
+    --comment-list__cell-content__width: calc(100% - var(--comment-list__cell-id__width) - var(--comment-list__cell-reg-date__width) - var(--comment-list__cell-writer__width) - var(--comment-list__cell-like__width));
+  }
+
+  .comment-list>*>div {
+    display: flex;
+  }
+
+  .comment-list>header>div>div {
+    position: relative;
+  }
+
+  .comment-list>header>div>div:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    height: 10px;
+    background-color: black;
+  }
+
+  .comment-list>*>div>div {
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .comment-list__cell-reg-date {
-    width:var(--comment-list__cell-reg-date__width);
+    width: var(--comment-list__cell-reg-date__width);
     padding-bottom: 3px;
   }
 
   .comment-list__cell-writer {
-    width:var(--comment-list__cell-writer__width);
+    width: var(--comment-list__cell-writer__width);
     padding-bottom: 3px;
   }
 
   .comment-list__cell-content {
-    width:var(--comment-list__cell-content__width);
+    width: var(--comment-list__cell-content__width);
     padding-bottom: 3px;
   }
 
   .comment-list__cell-like {
-    width:var(--comment-list__cell-like__width);    
+    width: var(--comment-list__cell-like__width);
     padding-bottom: 7px;
   }
 
-  .comment-list > .main .comment-list__cell-title {
-    text-align:left;
-    padding-left:10px;
+  .comment-list>.main .comment-list__cell-title {
+    text-align: left;
+    padding-left: 10px;
   }
 
-.btn {
-  position:relative;
-  left:40%;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:80%;
-  height:40px;
-  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
-  background-position: left;
-  background-size: 200%;
-  color:white;
-  font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
-}
+  .btn {
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
 
-.btn:hover {
-  background-position: right;
-}
+  .btn:hover {
+    background-position: right;
+  }
 
-/* 페이징 */
-.paging {
-  margin: 0 auto;
-  width: 1000px;
-  padding: 40px 0;
-  text-align: center;
-  font-size: 0
-}
+  /* 페이징 */
+  .paging {
+    margin: 0 auto;
+    width: 1000px;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0
+  }
 
-.paging .current {
-  color: #00f;
-  font-weight: bold
-}
+  .paging .current {
+    color: #00f;
+    font-weight: bold
+  }
 
-.paging a {
-  display: inline-block;
-  padding: 5px;
-  border: 1px solid #000;
-  font-size: 12px
-}
+  .paging a {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #000;
+    font-size: 12px
+  }
 
-.paging a+a {
-  margin-left: 5px
-}
+  .paging a+a {
+    margin-left: 5px
+  }
 
-.paging a.on {
-  color: #f00
-}
+  .paging a.on {
+    color: #f00
+  }
 
-.my_pointer{
-	cursor: pointer;
-}
-
+  .my_pointer {
+    cursor: pointer;
+  }
 </style>
 
 <script>
-var page = 0;
-jQuery(document).ready(function($) {
+  var page = 0;
+  var postId = document.location.href.split("?")[1];
 
-  var param = document.location.href.split("?");
-  console.log("해당 게시글번호 : "+ param[1])
+  jQuery(document).ready(function () {
+    page = postId;
 
-  page = param[1];
-
-  var settings = { 
-      "url": "http://localhost:8080/api/posts/" + param[1],
+    var settings = {
+      "url": "http://localhost:8080/api/posts/" + postId,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -623,6 +651,13 @@ jQuery(document).ready(function($) {
     $('#post_nickname').text(response.nickname);
     $('#title').text(response.title);
     $('#post_content').text(response.content);
+    $('#CountLove').text(response.likes);
+    $('#postId').val(postId);
+    if(response.image != null) {
+      $('#image').attr("src", response.image)
+      $('#image').attr("style", "max-width: 100%; height: auto;")
+
+    }
   })
 
     if (localStorage.getItem('accessToken')) {
@@ -636,9 +671,9 @@ jQuery(document).ready(function($) {
     }
     getUser();
     getComments(1);
-})
+  })
 
-function getUser() {
+  function getUser() {
     var settings = {
       "url": "http://localhost:8080/api/user/auth/profile",
       "method": "GET",
@@ -656,108 +691,139 @@ function getUser() {
   function logout() {
 
     var settings = {
-    "url": "http://localhost:8080/api/user/log-out",
-    "method": "DELETE",
-    "timeout": 0,
-    "headers": {
-      "Authorization": localStorage.removeItem('accessToken')
-    },
+      "url": "http://localhost:8080/api/user/log-out",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.removeItem('accessToken')
+      },
     };
 
     $.ajax(settings).done(function (response) {
       console.log(response);
       localStorage.removeItem('accessToken');
       var now = new Date();
-      now.setDate(now.getDate()-1);
-      document.cookie = "RefreshToken=; expires="+now.toUTCString();
+      now.setDate(now.getDate() - 1);
+      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
       location.reload();
     });
-}
+  }
 
-  function commentUp(){
+  function commentUp() {
+
     var settings = {
-    "url": `http://localhost:8080/api/comments/${post.id}`,
-    "method": "POST",
-    "timeout": 0,
-    "headers": {
-      "Authorization": localStorage.getItem('accessToken'),
-      "Content-Type": "application/json",
-      
-    },
-    "data": JSON.stringify({
-      "content": $('#comment').val()
-    }),
+      "url": `http://localhost:8080/api/comments/${postId}`,
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+      },
+      "data": JSON.stringify({
+        "content": ($('#comment').val())
+      })
     };
 
     $.ajax(settings).done(function (response) {
       console.log(response);
+      alert("짠");
+      console.log("댓글달기 ajax 포스트 아이디 : " +  $('#postId').val());
+      console.log("댓글달기 ajax 댓글 아이디 : " +  $('#commentId').val());
       window.location.reload();
     });
 
   }
 
-  /* 좋아요 */
-  function like(){
+  function likePost(){
+    console.log($('#postId').val())
       var settings = {
-        "url": `http://localhost:8080/api/posts/${post.id}/likes`,
+        "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
         "method": "POST",
         "timeout": 0,
         "headers": {
           "Authorization": localStorage.getItem('accessToken')
-          
+
         },
       };
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      $("#iconHeart").css("color","red", "fill", "red");
+      window.location.reload();
+    });
+  }
+
+  function dislikePost(){
+      var settings = {
+        "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
+        "method": "DELETE",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+
+        },
+      };
+
+    $.ajax(settings).done(function (response) {
+      console.log("좋아요를 취소했습니다.");
+      window.location.reload();
     });
   }
 
 
-  // 페이징
+  // 댓글 페이징
   $(document).on('click', '#p', function (e) {
-      page = parseInt($(this).data('page'));
-      getComments(page)
-      return false;
-    });
+    page = parseInt($(this).data('page'));
+    getComments(page)
+    return false;
+  });
 
-  function getComments(page){
-        var settings = {
-          "url": `http://localhost:8080/api/comments?page=${page}&size=10&sortBy=id&isAsc=true`,
-          "method": "GET",
-          "timeout": 0,
-          "headers": {
-            "Authorization": localStorage.getItem('accessToken')
-          },
-        };
+  function getComments(page) {
+    var settings = {
+      "url": `http://localhost:8080/api/comments/posts/${postId}?page=${page}&size=10&sortBy=id&isAsc=true`,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      },
+    };
 
     $.ajax(settings).done(function (response) {
       const TOTAL_DATA = response.totalElements; // 데이터 총개수
       const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
       const TOTAL_PAGE = response.totalPages // 총페이지
 
+      console.log(TOTAL_DATA)
+      console.log(VIEW_DATA)
+      console.log(TOTAL_PAGE)
+
       const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
       const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
-      
-      var start = VIEW_DATA - VIEW_DATA;
-      var end = VIEW_DATA;
-      var j = 1;
 
       console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
-      comments_list(response.content);
-      paging_list();
+      console.log(response.content)
+
+      if(TOTAL_DATA != 0) {
+        paging_list();
+        comments_list(response.content);
+      }
+
 
       function comments_list(data) {
 
         var str = '';
         data.forEach((comment) => {
-          str += `<div class="main">   
-                      <div class="comment-list__cell-writer">${comment.nickname}</div>          
+          str += `<div class="main">
+                      <div class="comment-list__cell-writer">${comment.nickname}</div>
                       <div class="comment-list__cell-content">${comment.content}</div>
                       <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
-                      <div class="comment-list__cell-like"><i class="fa-regular fa-face-kiss-wink-heart"> ${comment.likes} </i></div>
-                    </div>
+                      <div class="comment-list__cell-like"><i class="fa-regular fa-face-kiss-wink-heart"> ${comment.likes}</i></div>
+                      <div id="modifyBox" >
+                        <input id="modifyContent${comment.id}"  style="display:none">
+                        <button id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
+                        <button id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
+                        <button id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
+                      </div>
+                      <button onclick=deleteComment(${comment.id});>삭제</button>
                   </div><br/>`
         });
 
@@ -766,49 +832,113 @@ function getUser() {
       }
 
       function paging_list() {
-      //page  = page < 0 ? 0 : page;
-      var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
-      var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
-      var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
-      var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
-      var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
-      var first = 1; // 처음 페이지
-      var last = TOTAL_PAGE; // 마지막 페이지
-      var pageNum = [];
+        // page  = page < 0 ? 0 : page;
+        var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+        var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+        var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+        var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+        var first = 1; // 처음 페이지
+        var last = TOTAL_PAGE; // 마지막 페이지
+        var pageNum = [];
 
-      console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
+        console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
 
-      $('.paging').empty();
+        $('.paging').empty();
 
-      if (page != 1) {
-        pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
-      }
-
-      if (section_page != 1) {
-        pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
-      }
-      // 페이징 번호 출력
-      for (var i = start; i < end; i++) {
-        if (page == i) {
-          pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
-          continue;
+        if (page != 1) {
+          pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
         }
-        pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
-      }
 
-      if (section_page != TOTAL_SECTION) {
-        pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
-      }
+        if (section_page != 1) {
+          pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+        }
+        // 페이징 번호 출력
+        for (var i = start; i < end; i++) {
+          if (page == i) {
+            pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+            continue;
+          }
+          pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+        }
 
-      if (page != last) {
-        pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
-      }
+        if (section_page != TOTAL_SECTION) {
+          pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+        }
 
-      $('.paging').append(pageNum);
+        if (page != last) {
+          pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+        }
+
+        $('.paging').append(pageNum);
       }
     });
   }
 
 
+  function modifyButton(id) {
+
+    console.log(id)
+    if ($('#modifyButton' + id).css('display') == 'none') {
+      $('#modifyContent' + id).hide();
+      $('#saveModifyContent' + id).hide();
+      $('#cancelModifyContent' + id).hide();
+      $('#modifyButton' + id).show();
+    } else {
+      $('#modifyContent' + id).show();
+      $('#saveModifyContent' + id).show();
+      $('#cancelModifyContent' + id).show();
+      $('#modifyButton' + id).hide();
+
+    }
+
+  }
+
+  // 댓글 수정
+
+  function modifyComment(id) {
+
+
+    var inputValue = document.getElementById('modifyContent' + id).value;
+
+    var settings = {
+      "url": "http://localhost:8080/api/comments/" + id,
+      "method": "PATCH",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+      },
+      "data": JSON.stringify({
+        "content": inputValue
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      window.location.reload();
+    });
+
+
+  }
+
+  function deleteComment(id) {
+
+    var settings = {
+  "url": "http://localhost:8080/api/comments/" + id,
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken')
+  },
+};
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      window.location.reload();
+    });
+
+}
+
 </script>
+
 </html>

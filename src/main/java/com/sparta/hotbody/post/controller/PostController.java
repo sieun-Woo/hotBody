@@ -82,13 +82,20 @@ public class PostController {
   @PatchMapping("/posts/{postId}")
   public void updatePost(
       @PathVariable Long postId,
-      @RequestPart PostModifyRequestDto postModifyRequestDto,
-      @RequestPart(required = false) MultipartFile file,
+      @RequestBody PostModifyRequestDto postModifyRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser(), file);
+    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser());
   }
 
-  // 5. 게시글 삭제
+
+  // 5. 게시글 이미지 수정
+  @PatchMapping("/posts/image")
+  public String updateImage(
+      @RequestPart MultipartFile file) throws IOException {
+    return postService.updateImage(file);
+  }
+
+  // 6. 게시글 삭제
   @DeleteMapping("/posts/{postId}")
   public void deletePost(
       @PathVariable Long postId,

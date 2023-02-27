@@ -3,6 +3,7 @@ package com.sparta.hotbody.exerciseRecord.dto;
 
 import com.sparta.hotbody.exerciseRecord.entity.ExerciseRecord;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +19,8 @@ public class ExerciseRecordResponseDto {
 
   private double calories; // 소모 열량
 
-  private LocalDateTime createAt;
-  private LocalDateTime modifiedAt;
+  private String createAt;
+  private String modifiedAt;
 
 
   public ExerciseRecordResponseDto(ExerciseRecord exerciseRecord) {
@@ -28,8 +29,8 @@ public class ExerciseRecordResponseDto {
     this.time = exerciseRecord.getTime();
     this.reps = exerciseRecord.getReps();
     this.calories = exerciseRecord.calculateCalories();
-    this.createAt = exerciseRecord.getCreatedAt();
-    this.modifiedAt = exerciseRecord.getModifiedAt();
+    this.createAt = exerciseRecord.getCreatedAt().format(DateTimeFormatter.ISO_DATE);
+    this.modifiedAt = exerciseRecord.getModifiedAt().format(DateTimeFormatter.ISO_DATE);
   }
 
 

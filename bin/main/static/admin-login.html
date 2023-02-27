@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 회원가입/로그인 -->
+    <!-- Wordpress Site header-bar -->
+<header class="wp-header" role="banner">
+    <ul>
+        <li><a href="admin.html">홈으로</a></li>
+        <li id="signup"><a href="admin-signup.html">회원가입</a></li>
+    </ul>
+</header>
+
+<!-- vue 헤더 -->
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- lodash 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+
+<div class="body-content min-height-100vh flex flex-column">
+  <!-- 로고바 시작 -->
+  <header class="logo-bar con-min-width">
+    <div class="con height-100p flex flex-jc-c">
+      <a href="index.html" class="logo flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
+          Hot<span></span>body
+        </span>
+      </a>
+    </div>
+  </header>
+  <!-- 로고바 끝 -->
+
+    <div class="joinForm">
+                                                                                               
+      <h2>관리자 로그인</h2>
+      <div class="textForm">
+        <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
+        </input>
+      </div>
+      <div class="textForm">
+        <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
+      </div>
+      <button type="submit" onclick="login()" class="btn">로그인</button>
+      <button type="button" onclick="location.href='admin/find-id-pw.html'" class="btn" >아이디 / 비밀번호 찾기</button>
+      
+    </div>
+</body>
+<style>
+/* vue 헤더 */
+/* 폰트 */
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+}
+html {
+  font-family: 'LotteMartDream', sans-serif;
+}
+
+/* 노말라이즈 */
+body, ul, li, h1, h2, h3 {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+/* 라이브러리 */
+.hover-underline:hover {
+  text-decoration:underline;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
+
+.flex {
+  display:flex;
+}
+
+.flex-jc-c {
+  justify-content:center;
+}
+
+.flex-ai-c {
+  align-items:center;
+}
+
+.flex-wrap {
+  flex-wrap:wrap;
+}
+
+.flex-column {
+  flex-direction:column;
+}
+
+.flex-grow-1 {
+  flex-grow:1;
+}
+
+.flex-none {
+    flex: none;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-200 {
+    flex: 0 0 300px;
+}
+
+.con {
+  position: relative;
+  margin: auto;
+}
+
+.min-height-100vh {
+  min-height:100vh;
+}
+
+.bg-pink {
+  background-color:pink;
+}
+
+.bd-green {
+  border:10px solid green;
+}
+
+.bg-red {
+  background-color:red;
+}
+
+.bg-blue {
+  background-color:blue;
+}
+
+.height-100p {
+  height:100%;
+}
+
+.block {
+  display:block;
+}
+
+/* 커스텀 */
+.con {
+  width:100%;
+}
+
+.info-article {
+    border: 1px solid black;
+    width: 300px;
+    height: 200px;
+}
+
+/* 로고 시작 */
+.logo {
+  font-size:4rem;
+  color: white;
+}
+
+.logo > span {
+  margin-left:10px;
+  color: white;
+}
+
+.logo > span > span {
+  color:red;
+}
+
+.logo--mini {
+  font-size:2rem;
+}
+/* 로고 끝 */
+
+/* 로고바 시작 */
+.logo-bar {
+  background-color:black;
+  color:white;
+  height:200px;
+}
+/* 로고바 끝 */
+
+/* Wordpress Site header-bar */
+.wp-header {
+    font-family: Arial;
+    height: 46px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+.wp-header h1 {
+    float:left;
+    padding-left: 40px;
+    color: #78c8e6;
+    font-size: 20px;
+    height: 46px;
+    line-height: 46px;
+    font-weight: 400;
+    -webkit-transition: color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out;
+}
+.wp-header h1:hover {
+    color: #fff;
+    cursor: pointer;
+}
+.wp-header li {
+    float:right;
+    height: 46px;
+    padding-right: 20px;
+    line-height: 46px;   
+}
+.wp-header li > a {
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 15px;
+    text-decoration: none;
+     -webkit-transition: color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out;
+}
+.wp-header li:hover > a {
+    color: #78c8e6;
+}
+
+    * {
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  font-family:sans-serif;
+
+}
+
+body {
+  background-image:#34495e;
+}
+
+.joinForm {
+  position:absolute;
+  width:400px;
+  height:400px;
+  padding: 30px, 20px;
+  background-color:#FFFFFF;
+  text-align:center;
+  top:400px;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border-radius: 15px;
+}
+
+.joinForm h2 {
+  text-align: center;
+  margin: 30px;
+}
+
+.textForm {
+  border-bottom: 2px solid #adadad;
+  margin: 30px;
+  padding: 10px 10px;
+}
+
+
+.id {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.pw {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.name {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.email {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.nickname {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.cellphoneNo {
+  width: 100%;
+  border:none;
+  outline:none;
+  color: #636e72;
+  font-size:16px;
+  height:25px;
+  background: none;
+}
+
+.btn {
+  position:relative;
+  left:40%;
+  transform: translateX(-50%);
+  margin-bottom: 40px;
+  width:80%;
+  height:40px;
+  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
+  background-position: left;
+  background-size: 200%;
+  color:white;
+  font-weight: bold;
+  border:none;
+  cursor:pointer;
+  transition: 0.4s;
+  display:inline;
+}
+
+.btn:hover {
+  background-position: right;
+}
+</style>
+<script>
+  function login() {
+
+    let username = $('#id').val();
+    let password = $('#pw').val();
+
+    if (username == '') {
+      alert('ID를 입력해주세요.');
+      return;
+    } else if(password == '') {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+
+    var settings = {
+      "url": "http://localhost:8080/api/admin/log-in",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "username": username,
+        "password": password
+      }),
+    };
+
+    $.ajax(settings).done(function (response, status, xhr) {
+      console.log(response);
+      localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
+      console.log(xhr.getResponseHeader('Authorization'));
+      alert("로그인 완료")
+      location.href = "admin.html"
+    }).fail(function(response) {
+      alert(response.responseJSON.message);
+    })
+  }
+</script>
+</html>

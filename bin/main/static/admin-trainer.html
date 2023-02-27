@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>트레이너(관리자)</title>
+    <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- 회원가입/로그인 -->
+    <!-- Wordpress Site header-bar -->
+<header class="wp-header" role="banner">
+    <ul>
+      <li id="signup"><a href="admin-signup.html">회원가입</a></li>
+      <li id="signin"><a href="admin-login.html">로그인</a></li>
+      <li id="logout"><a onclick="logout()">로그아웃</a></li>
+    </ul>
+</header>
+
+<!-- vue 헤더 -->
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- lodash 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+
+<div class="body-content min-height-100vh flex flex-column">
+  <!-- 로고바 시작 -->
+  <header class="logo-bar con-min-width">
+    <div class="con height-100p flex flex-jc-c">
+      <a href="admin.html" class="logo flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
+          Hot<span></span>body
+        </span>
+      </a>
+    </div>
+  </header>
+  <!-- 로고바 끝 -->
+<div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 트레이너</div>
+  <!-- 메뉴바 시작 -->
+  <header class="menu-bar con-min-width">
+    <div class="con height-100p" style="position: relative; z-index: 2;">
+      <nav class="menu-bar__menu-1">
+
+        <ul class="flex" style="justify-content: center;">
+          <li>
+            <a href="admin-user.html" class="block">
+              <i class="fa-regular fa-address-card"></i>
+              <span>유저</span>
+            </a>
+          </li>
+          <li>
+            <a class="block">
+              <i class="fas fa-list"></i>
+              <span>트레이너</span>
+            </a>
+            <ul>
+              <li>
+                <a href="admin-trainer.html" class="block">
+                  <i class="fa-solid fa-person-walking"></i>
+                  <span>트레이너 조회</span>
+                </a>
+              </li>
+              <li>
+                <a href="admin-apply.html" class="block">
+                  <i class="fa-regular fa-clipboard"></i>
+                  <span>트레이너 신청</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="block">
+              <i class="fa-solid fa-gear"></i>
+              <span>신고</span>
+            </a>
+            <ul>
+              <li>
+                <a href="exercise.html" class="block">
+                  <i class="fa-solid fa-person-walking"></i>
+                  <span>유저 신고</span>
+                </a>
+              </li>
+              <li>
+                <a href="diet.html" class="block">
+                  <i class="fa-regular fa-clipboard"></i>
+                  <span>트레이너 신고</span>
+                </a>
+              </li>
+              <li>
+                <a href="my-page.html" class="block">
+                  <i class="fa-regular fa-address-card"></i>
+                  <span>게시글 신고</span>
+                </a>
+              </li>
+              <li>
+                <a href="my-page.html" class="block">
+                  <i class="fa-regular fa-address-card"></i>
+                  <span>댓글 신고</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- 메뉴바 끝 -->
+  <div class="main flex-grow-1">
+    
+    </section>
+
+    <section id="article-list-wrap" class="section-1 con-min-width">
+      <div class="con">
+        <div class="article-search">
+          <form">
+            <div style="width: 650px; margin: auto;">
+                <div style="display:flex; position: relative; margin-top: 20px;">
+                  <h1 style="margin-top: 7px; margin-right: 10px; cursor: default;">
+                    <span>Search</span>
+                  </h1>
+                  <input type="text" @input="search" :value="searchKeyword"
+                      placeholder=" 유저 입력" style="width: 100%; height: 30px; font-size: 20px;">
+                  <h1 style="position: absolute; right: 10px; top: 5px">
+                      <i class="fas fa-search"></i>
+                  </h1>
+                </div>
+            </div>
+          </form>
+        </div>
+        <div class="article-header" style="position: relative; z-index: 1;">
+          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 30px; margin-bottom: 20px;">트레이너 리스트</div>
+          <header>
+            <div>
+              <div class="article-list__cell-id">번호</div>
+              <div class="article-list__cell-nickname">닉네임</div>
+              <div class="article-list__cell-gender">성별</div>
+              <div class="article-list__cell-age">나이</div>
+              <div class="article-list__cell-region">지역</div>
+              <div class="article-list__cell-email">이메일</div>
+              <div class="article-list__cell-func">기능</div>
+            </div>
+          </header>
+          </div>
+        </div>
+        <div class="article-list" style="position: relative; z-index: 1;">
+
+        </div>
+        <div class="paging">
+
+        </div>
+      </div>
+    </section>
+
+
+
+
+  </div>
+
+  <footer class="bottom-bar con-min-width">
+    <div class="con flex flex-ai-c">
+      <a href="admin.html" class="logo logo--mini flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
+          Hot<span></span>Body
+        </span>
+      </a>
+
+      <div class="bottom-bar__site-info">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eos ipsum necessitatibus doloremque quos voluptate debitis earum aut a consequuntur explicabo deleniti qui eius facere, harum error eveniet vel laudantium.
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+
+<style>
+/* 회원가입 메뉴 */
+/* reset */
+
+body {padding: 10px; margin: 10px}
+h1, ul {margin:0; padding: 0}
+ul {list-style: none;}
+header + header {margin-top: 50px;}
+nav {display:block}
+a {text-decoration: none;}
+
+h1:hover {
+    cursor: pointer;
+}
+
+/* vue 헤더 */
+/* 폰트 */
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+}
+@font-face {
+  font-family: 'LotteMartDream';
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+}
+html {
+  font-family: 'LotteMartDream', sans-serif;
+}
+
+/* 노말라이즈 */
+body, ul, li, h1, h2, h3 {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+/* 라이브러리 */
+.hover-underline:hover {
+  text-decoration:underline;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
+
+.flex {
+  display:flex;
+}
+
+.flex-jc-c {
+  justify-content:center;
+}
+
+.flex-ai-c {
+  align-items:center;
+}
+
+.flex-wrap {
+  flex-wrap:wrap;
+}
+
+.flex-column {
+  flex-direction:column;
+}
+
+.flex-grow-1 {
+  flex-grow:1;
+}
+
+.flex-none {
+    flex: none;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-200 {
+    flex: 0 0 300px;
+}
+
+.con {
+  position: relative;
+  margin: auto;
+}
+
+.main {
+  width: 1000px;
+  margin: auto;
+}
+
+.min-height-100vh {
+  min-height:100vh;
+}
+
+.bg-pink {
+  background-color:pink;
+}
+
+.bd-green {
+  border:10px solid green;
+}
+
+.bg-red {
+  background-color:red;
+}
+
+.bg-blue {
+  background-color:blue;
+}
+
+.height-100p {
+  height:100%;
+}
+
+.block {
+  display:block;
+}
+
+/* 커스텀 */
+.con {
+  width: 1000px;
+}
+
+.info-article {
+    border: 1px solid black;
+    width: 300px;
+    height: 200px;
+}
+
+/* 로고 시작 */
+.logo {
+  font-size:4rem;
+  color: white;
+}
+
+.logo > span {
+  margin-left:10px;
+  color: white;
+}
+
+.logo > span > span {
+  color:red;
+}
+
+.logo--mini {
+  font-size:2rem;
+}
+/* 로고 끝 */
+
+/* 로고바 시작 */
+.logo-bar {
+  background-color:black;
+  color:white;
+  height:200px;
+}
+/* 로고바 끝 */
+
+/* 메뉴바 시작 */
+.menu-bar {
+  background-color:black;
+  color:white;
+}
+
+.menu-bar__menu-1 > ul > li {
+  width:25%;
+  position:relative;
+}
+
+.menu-bar__menu-1 ul > li > a {
+  text-align:center;
+  padding:20px 0;
+}
+
+.menu-bar__menu-1 ul > li:hover > a {
+  background-color:white;
+  color:black;
+}
+
+.menu-bar__menu-1 > ul > li > a {
+  border-radius:10px 10px 0 0;
+}
+
+.menu-bar__menu-1 > ul ul {
+  display:none;
+  position:absolute;
+  top:100%;
+  left:-10px;
+  width:100%;
+  background-color:black;
+  border:10px solid black;
+  border-top-width:0;
+  border-radius:0 0 20px 20px;
+}
+
+.menu-bar__menu-1 > ul > li:hover > ul {
+  display:block;
+}
+
+.menu-bar__menu-1 > ul ul > li:last-child > a {
+  border-radius:0 0 10px 10px;
+}
+/* 메뉴바 끝 */
+
+/* 타이틀바 시작 */
+.title-bar {
+  margin-top:30px;
+  margin-bottom:30px;
+}
+/* 타이틀바 끝 */
+
+/* 하단바 시작 */
+.bottom-bar {
+  margin-top:30px;
+  background-color:black;
+  color:white;
+  padding-top:30px;
+  padding-bottom:30px;
+}
+
+.bottom-bar__site-info {
+  margin-left:20px;
+}
+/* 하단바 끝 */
+
+/* 게시물 검색 시작 */
+
+.article-search > form {
+  display:flex;
+  width: 1000px;
+  margin: auto;
+  padding:10px;
+}
+
+/* 게시물 검색 끝 */
+
+/* 게시물 리스트 시작 */
+
+/* 게시물 리스트 */
+:root {
+  --article-list__cell-id__width:100px;
+  --article-list__cell-nickname__width:200px;
+  --article-list__cell-gender__width:100px;
+  --article-list__cell-age__width:100px;
+  --article-list__cell-region__width:150px;
+  --article-list__cell-func__width:100px;
+  --article-list__cell-email__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-nickname__width) - var(--article-list__cell-gender__width) - var(--article-list__cell-age__width) - var(--article-list__cell-region__width));
+}
+
+.article-list > * > div {
+  display:flex;
+}
+
+.article-list > header > div > div {
+  position:relative;
+}
+
+.article-list > header > div > div:not(:last-child)::after {
+  content:"";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  right:0;
+  width:1px;
+  height:10px;
+  background-color:black;
+}
+
+.article-list > * > div > div {
+  box-sizing:border-box;
+  text-align:center;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.article-header > * > div {
+  display:flex;
+}
+
+.article-header > header > div > div {
+  position:relative;
+}
+
+.article-header > header > div > div:not(:last-child)::after {
+  content:"";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  right:0;
+  width:1px;
+  height:10px;
+  background-color:black;
+}
+
+.article-header > * > div > div {
+  box-sizing:border-box;
+  text-align:center;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
+.article-list__cell-id {
+  width:var(--article-list__cell-id__width);
+}
+
+.article-list__cell-nickname {
+  width:var(--article-list__cell-nickname__width);
+}
+
+.article-list__cell-gender {
+  width:var(--article-list__cell-gender__width);
+}
+
+.article-list__cell-age {
+  width:var(--article-list__cell-age__width);
+}
+
+.article-list__cell-region {
+  width:var(--article-list__cell-region__width);
+}
+
+.article-list__cell-email {
+  width:var(--article-list__cell-email__width);
+}
+
+.article-list__cell-func {
+  width:var(--article-list__cell-func__width);
+}
+
+.article-list > .main .article-list__cell-title {
+  text-align:left;
+  padding-left:10px;
+}
+
+.article-list > .main > div {
+  border-top:1px solid black;
+}
+
+.article-header > .main .article-list__cell-title {
+  text-align:left;
+  padding-left:10px;
+}
+
+.article-header > .main > div {
+  border-top:1px solid black;
+}
+/* 게시물 리스트 끝 */
+
+/* 게시물 리스트 페이지 메뉴 시작 */
+.article-page-menu {
+  margin-top:20px;
+}
+
+.article-page-menu > ul > li > a {
+  padding:7px;
+}
+
+.article-page-menu > ul > li:not(:first-child):not(:last-child) > a {
+  border:1px solid transparent;
+  padding-left:0;
+  padding-right:0;
+  min-width:30px;
+  justify-content:center;
+}
+
+.article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
+  border-color:#afafaf;
+}
+
+.article-page-menu__link--selected {
+  color:red;
+}
+/* 게시물 리스트 페이지 메뉴 끝 */
+
+/* Wordpress Site header-bar */
+.wp-header {
+    font-family: Arial;
+    height: 46px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+.wp-header h1 {
+    float:left;
+    padding-left: 40px;
+    color: #78c8e6;
+    font-size: 20px;
+    height: 46px;
+    line-height: 46px;
+    font-weight: 400;
+    -webkit-transition: color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out;
+}
+.wp-header h1:hover {
+    color: #fff;
+    cursor: pointer;
+}
+.wp-header li {
+    float:right;
+    height: 46px;
+    padding-right: 20px;
+    line-height: 46px;   
+}
+.wp-header li > a {
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 15px;
+    text-decoration: none;
+     -webkit-transition: color 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out;
+}
+.wp-header li:hover > a {
+    color: #78c8e6;
+}
+/* 페이징 */
+.paging {
+  margin: 0 auto;
+  width: 1000px;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 0
+}
+
+.paging .current {
+  color: #00f;
+  font-weight: bold
+}
+
+.paging a {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #000;
+  font-size: 12px
+}
+
+.paging a+a {
+  margin-left: 5px
+}
+
+.paging a.on {
+  color: #f00
+}
+</style>
+<script>
+function logout() {
+
+  var settings = {
+  "url": "http://localhost:8080/api/user/log-out",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.removeItem('accessToken')
+  },
+  };
+
+  $.ajax(settings).done(function (response) {
+    console.log(response);
+    localStorage.removeItem('accessToken');
+    var now = new Date();
+    now.setDate(now.getDate()-1);
+    document.cookie = "RefreshToken=; expires="+now.toUTCString();
+  });
+
+  location.href = "admin.html";
+}
+
+jQuery(document).ready(function($) {
+
+  $("#logout").hide();
+  $("#signup").show();
+  $("#signin").show();
+
+  if (localStorage.getItem('accessToken')) {
+    $("#logout").show();
+    $("#signup").hide();
+    $("#signin").hide();
+  } 
+
+  getApplications(1);
+
+})
+
+// 페이징 버튼
+$(document).on('click', '#p', function (e) {
+    page = parseInt($(this).data('page'));
+    getUsers(page)
+    return false;
+  });
+
+function getApplications(page) {
+  var settings = {
+  "url": `http://localhost:8080/api/admin/trainers?currentPage=${page}`,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem("accessToken")
+  },
+};
+
+  $.ajax(settings).done(function (response) {
+    const TOTAL_DATA = response.totalElements; // 데이터 총개수
+    const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+    const TOTAL_PAGE = response.totalPages // 총페이지
+
+    const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+    const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+    
+    var start = VIEW_DATA - VIEW_DATA;
+    // page * VIEW_DATA - (VIEW_DATA - 1);
+    var end = VIEW_DATA;
+    // page * VIEW_DATA + VIEW_DATA - (VIEW_DATA - 1);
+
+    console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+    console.log(response);
+    board_list(response.content);
+    pageing_list();
+
+
+    function board_list(data) {
+      var str = '';
+      var j = 1;
+      data.forEach((trainer) => {
+        str += `<div class="main">
+                  <div v-for="article in filtered">
+                    <div class="article-list__cell-id">` + ((page-1) * 10 + j) + `</div>
+                    <div class="article-list__cell-nickname">
+                      <a :href="'article_' + article.id + '.html'" class="hover-pointer">${trainer.nickname}</a>
+                    </div>
+                    <div class="article-list__cell-gender">${trainer.gender}</div>
+                    <div class="article-list__cell-age">${trainer.age}</div>
+                    <div class="article-list__cell-region">${trainer.regioin}</div>
+                    <div class="article-list__cell-email">${trainer.email}</div>
+                    <div class="article-list__cell-func">`
+        if(trainer.role==="TRAINER") {
+          str += `<button onclick="suspend(${trainer.id})" class="hover-pointer">정지</button>`
+        } else if(trainer.role==="REPORTED_TRAINER") {
+          str += `<button onclick="activate(${trainer.id})" class="hover-pointer">복구</button>`         
+        }
+        str +=    `<button onclick="cancel(${trainer.id})" class="hover-pointer" style="margin-left:5px">취소</button>
+                   </div>
+                 </div>
+               </div>`
+        j++;
+      });
+
+      $('.article-list').empty();
+      $('.article-list').append(str);
+    }
+
+    function pageing_list() {
+      //page  = page < 0 ? 0 : page;
+      var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+      var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+      var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+      var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+      var next = end = (setion_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+      var first = 1; // 처음 페이지
+      var last = TOTAL_PAGE; // 마지막 페이지
+      var pageNums = [];
+
+
+      console.log('page:', page, ' setion_page:', setion_page, ' :start:', start, ' end:', end);
+
+      $('.paging').empty();
+
+      if (page != 1) {
+        pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+      }
+
+      if (setion_page != 1) {
+        pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+      }
+      // 페이징 번호 출력
+      for (var i = start; i < end; i++) {
+        if (page == i) {
+          pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+          continue;
+        }
+        pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+      }
+
+      if (setion_page != TOTAL_SECTION) {
+        pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+      }
+
+      if (page != last) {
+        pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+      }
+
+      $('.paging').append(pageNums);
+      }
+  });
+}
+
+function suspend(index) {
+  var settings = {
+  "url": `http://localhost:8080/api/admin/trainers/${index}/suspend`,
+  "method": "PUT",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken')
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  alert("전환이 완료되었습니다.")
+  location.reload();
+}).fail(function(response) {
+  alert("이미 처리되었거나 트레이너가 존재하지 않습니다.")
+})
+}
+
+function activate(index) {
+  var settings = {
+  "url": `http://localhost:8080/api/admin/trainers/${index}/normalize`,
+  "method": "PUT",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken')
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  alert("전환이 완료되었습니다.")
+  location.reload();
+}).fail(function(response) {
+  alert("이미 처리되었거나 트레이너가 존재하지 않습니다.")
+})
+}
+
+function cancel(index) {
+  var settings = {
+  "url": "http://localhost:8080/api/admin/users/3/cancel",
+  "method": "PUT",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessTonken')
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  alert("유저로 전환되었습니다.")
+  location.reload();
+}).fail(function(response) {
+  alert("전환에 실패하였습니다.")
+});
+}
+
+</script>
+</html>

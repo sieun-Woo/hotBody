@@ -86,7 +86,7 @@ public class User extends TimeStamp {
   private Trainer trainer;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<PostLike> postLikeList;
+  private List<PostLike> postLikeList = new ArrayList<>();
 
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;

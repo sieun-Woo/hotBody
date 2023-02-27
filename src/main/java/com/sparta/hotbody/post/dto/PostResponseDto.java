@@ -35,9 +35,9 @@ public class PostResponseDto {
     this.title = post.getTitle();
     this.content = post.getContent();
     this.image = post.getImage();
-    this.likes = post.getLikes();
     this.createdAt = post.getCreatedAt();
     this.modifiedAt = post.getModifiedAt();
+    this.likes = post.getPostLikeList().size();
   }
 }
 

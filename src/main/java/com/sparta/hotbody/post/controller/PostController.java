@@ -3,13 +3,12 @@ package com.sparta.hotbody.post.controller;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
-import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.service.PostService;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.IOException;
-import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -83,20 +82,13 @@ public class PostController {
   @PatchMapping("/posts/{postId}")
   public void updatePost(
       @PathVariable Long postId,
-      @RequestBody PostModifyRequestDto postModifyRequestDto,
+      @RequestPart PostModifyRequestDto postModifyRequestDto,
+      @RequestPart(required = false) MultipartFile file,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser());
+    postService.updatePost(postId, postModifyRequestDto, userDetails.getUser(), file);
   }
 
-
-  // 5. 게시글 이미지 수정
-  @PatchMapping("/posts/image")
-  public String updateImage(
-      @RequestPart MultipartFile file) throws IOException {
-    return postService.updateImage(file);
-  }
-
-  // 6. 게시글 삭제
+  // 5. 게시글 삭제
   @DeleteMapping("/posts/{postId}")
   public void deletePost(
       @PathVariable Long postId,

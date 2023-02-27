@@ -138,9 +138,7 @@
     </div>
     <div class="textForm">
       <span>글 내용</span><br/><br/>
-      <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" >
-      </textarea>
-      <br/><br/>
+      <textarea name="content" id="content" type="textarea" class="text" style="resize: none; width: 500px; height: 100px;" ></textarea>
     </div>
     <div class="textForm">
       <label for="avatar">이미지 업로드 :</label><br/><br/>
@@ -151,38 +149,6 @@
     <input type="submit" class="btn" value="글 올리기" id="upload" onclick="createImage()"/>
   </div>
 </div>
-</div>
-
-<!-- <div lass="WriteForm_post">
-  <h2>글 쓰기</h2>
-  <div class="textForm">
-    <span>제목</span><br /><br />
-    <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
-    </input>
-    <br /><br />
-  </div>
-  <div class="textForm">
-    <div type="nickname" id="nickname" name="nickname" disabled>
-    </div>
-    <br />
-  </div>
-  <div class="textForm">
-    <span>글 내용</span><br /><br />
-    <textarea name="content" id="content" type="textarea" class="text"
-      style="resize: none; width: 500px; height: 100px;">
-        </textarea>
-    <br /><br />
-  </div>
-  <div class="textForm">
-    <label for="avatar">이미지 업로드 :</label><br /><br />
-    <br /><br />
-  </div>
-  <div class="textForm1">
-    <input type="file" id="image">
-    <button onclick="createImage()">버튼</button>
-  </div>
-</div>
-</div> -->
 </body>
 <style>
   /* 회원가입 메뉴 */
@@ -742,30 +708,34 @@
     });
   }
 
-
   function createPost(response) {
-    var settings = {
-    "url": "http://localhost:8080/api/posts",
-    "method": "POST",
-    "timeout": 0,
-    "headers": {
-      "Authorization":  localStorage.getItem('accessToken'),
-      "Content-Type": "application/json"
-    },
-    "data": JSON.stringify({
-      "title": $('#title').val(),
-      "content": $('#content').val(),
-      "resourcePath": response
-    }),
-  };
 
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-    alert("글 등록이 완료되었습니다!");
-    window.location.href = "http://localhost:8080/communities_trainer.html";
-  });
+$.ajax(settings).done(function (response) {
+});
 
-  }
+var settings = {
+  "url": "http://localhost:8080/api/posts",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken'),
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    "category": "trainer",
+    "title": $('#title').val(),
+    "content": $('#content').val(),
+    "resourcePath": response
+  }),
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  alert("글 등록이 완료되었습니다!");
+  window.location.href = "communities_trainer.html";
+});
+
+}
 
 
 </script>

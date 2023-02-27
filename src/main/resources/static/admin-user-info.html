@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>유저(관리자)</title>
+    <title>홈</title>
     <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -141,7 +141,6 @@
               <div class="article-list__cell-age">나이</div>
               <div class="article-list__cell-region">지역</div>
               <div class="article-list__cell-email">이메일</div>
-              <div class="article-list__cell-func">기능</div>
             </div>
           </header>
           </div>
@@ -154,6 +153,9 @@
         </div>
       </div>
     </section>
+
+
+
 
   </div>
 
@@ -433,7 +435,6 @@ a {
   --article-list__cell-gender__width:100px;
   --article-list__cell-age__width:100px;
   --article-list__cell-region__width:150px;
-  --article-list__cell-func__width:100px;
   --article-list__cell-email__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-nickname__width) - var(--article-list__cell-gender__width) - var(--article-list__cell-age__width) - var(--article-list__cell-region__width));
 }
 
@@ -511,10 +512,6 @@ a {
 
 .article-list__cell-email {
   width:var(--article-list__cell-email__width);
-}
-
-.article-list__cell-func {
-  width:var(--article-list__cell-func__width);
 }
 
 .article-list > .main .article-list__cell-title {
@@ -653,20 +650,10 @@ function logout() {
     document.cookie = "RefreshToken=; expires="+now.toUTCString();
   });
 
-  location.href = "admin.html";
+  location.href = "index.html";
 }
 
 jQuery(document).ready(function($) {
-
-  $("#logout").hide();
-  $("#signup").show();
-  $("#signin").show();
-
-  if (localStorage.getItem('accessToken')) {
-    $("#logout").show();
-    $("#signup").hide();
-    $("#signin").hide();
-  } 
 
   getUsers(1);
 
@@ -681,7 +668,7 @@ $(document).on('click', '#p', function (e) {
 
 function getUsers(page) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users?currentPage=${page}`,
+  "url": `http://localhost:8080/api/admin-users?currentPage=${page}`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -721,16 +708,8 @@ function getUsers(page) {
                     <div class="article-list__cell-age">${user.age}</div>
                     <div class="article-list__cell-region">${user.region}</div>
                     <div class="article-list__cell-email">${user.email}</div>
-                    <div class="article-list__cell-func">`
-        if(user.role==="USER") {
-          str += `<button onclick="suspend(${user.id})" class="hover-pointer">정지</button>`
-        } else if(user.role==="REPORTED") {
-          str += `<button onclick="activate(${user.id})" class="hover-pointer">복구</button>`
-        }
-        str +=    `<button onclick="remove(${user.id})" class="hover-pointer" style="margin-left:5px">탈퇴</button>
                   </div>
-                 </div>
-               </div>`
+                </div>`
         j++;
       });
 
@@ -780,63 +759,6 @@ function getUsers(page) {
       $('.paging').append(pageNums);
       }
   });
-}
-
-function suspend(index) {
-  var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}/suspend`,
-  "method": "PUT",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken')
-  },
-};
-
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  alert("전환이 완료되었습니다.")
-  location.reload();
-}).fail(function(response) {
-  alert("이미 처리되었거나 트레이너가 존재하지 않습니다.")
-})
-}
-
-function activate(index) {
-  var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}/normalize`,
-  "method": "PUT",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken')
-  },
-};
-
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  alert("전환이 완료되었습니다.")
-  location.reload();
-}).fail(function(response) {
-  alert("이미 처리되었거나 트레이너가 존재하지 않습니다.")
-})
-}
-
-function remove(index) {
-  var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}`,
-  "method": "DELETE",
-  "timeout": 0,
-  "headers": {
-    "Authorization": localStorage.getItem('accessToken'),
-  },
-};
-
-$.ajax(settings).done(function (response) {
-  console.log(response);
-  alert("탈퇴가 완료되었습니다.")
-  location.reload();
-}).fail(function(response) {
-  alert("이미 삭제되었거나 트레이너가 존재하지 않습니다.")
-});
 }
 
 </script>

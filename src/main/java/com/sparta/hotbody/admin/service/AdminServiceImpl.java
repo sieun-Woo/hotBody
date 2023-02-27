@@ -40,6 +40,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute.Use;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -132,8 +133,8 @@ public class AdminServiceImpl implements AdminService {
     if (trainerList.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
-    List<TrainerResponseDto> result = trainerList.stream()
-        .map(m -> new TrainerResponseDto(m)).collect(Collectors.toList());
+    Page<TrainerResponseDto> result = trainerList
+        .map(m -> new TrainerResponseDto(m));
     return new ResponseEntity(result, HttpStatus.OK);
   }
 
@@ -143,16 +144,14 @@ public class AdminServiceImpl implements AdminService {
     Trainer trainer = promoteRepository.findById(requestId)
         .orElseThrow(() -> new IllegalArgumentException("요청이 존재하지 않습니다."));
     trainer.getUser().TrainerPermission(trainer.getIntroduce());
-    trainer.promote();
+    promoteRepository.deleteById(requestId);
     return new ResponseEntity("트레이너 권한을 부여하였습니다.", HttpStatus.OK);
   }
 
   @Override
   @Transactional
   public ResponseEntity refuseTrainer(Long requestId) {
-    Trainer trainer = promoteRepository.findById(requestId)
-        .orElseThrow(() -> new IllegalArgumentException("요청이 존재하지 않습니다."));
-    promoteRepository.delete(trainer);
+    promoteRepository.deleteById(requestId);
     return new ResponseEntity("트레이너 요청이 삭제되었습니다.", HttpStatus.OK);
   }
 
@@ -208,7 +207,7 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity getUserList(int pageNum) {
-    Page<User> userPage = userRepository.findAllByRole(UserRole.USER, new PageDto(pageNum).toPageable());
+    Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
@@ -229,7 +228,7 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity getTrainerList(int pageNum) {
-    Page<User> userPage = userRepository.findAllByRole(UserRole.TRAINER, new PageDto(pageNum).toPageable());
+    Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.TRAINER, UserRole.REPORTED_TRAINER, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
       throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
     }
@@ -255,6 +254,55 @@ public class AdminServiceImpl implements AdminService {
     return new ResponseEntity("사용자 정보 수정하였습니다.", HttpStatus.OK);
   }
 
+  @Override
+  @Transactional
+  public ResponseEntity makeUserSuspended(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    if (user.getRole().equals(UserRole.USER)) {
+      user.reportedUserChangeRole();
+    } else {
+      throw new IllegalArgumentException("전환에 실패하였습니다.");
+    }
+    return new ResponseEntity("신고 계정으로 전환하였습니다.",  HttpStatus.OK);
+  }
+
+  @Override
+  @Transactional
+  public ResponseEntity makeTrainerSuspended(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    if (user.getRole().equals(UserRole.TRAINER)) {
+      user.changeUserRoleReportedTrainer();
+    } else {
+      throw new IllegalArgumentException("전환에 실패하였습니다.");
+    }
+    return new ResponseEntity("신고 계정으로 전환하였습니다.",  HttpStatus.OK);
+  }
+
+  @Override
+  @Transactional
+  public ResponseEntity makeUserNormal(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    if (user.getRole().equals(UserRole.REPORTED)) {
+      user.changeUserRoleNormal();
+    } else {
+      throw new IllegalArgumentException("전환에 실패하였습니다.");
+    }
+    return new ResponseEntity("정상 계정으로 전환하였습니다.",  HttpStatus.OK);
+  }
+
+  @Override
+  @Transactional
+  public ResponseEntity makeTrainerNormal(Long trainerId) {
+    User trainer = userRepository.findById(trainerId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    if (trainer.getRole().equals(UserRole.REPORTED_TRAINER)) {
+      trainer.changeUserRoleTrainer();
+    } else {
+      throw new IllegalArgumentException("전환에 실패하였습니다.");
+    }
+    return new ResponseEntity("정상 트레이너 계정으로 전환하였습니다.",  HttpStatus.OK);
+  }
+
+  // 유저 회원 탈퇴
   @Override
   @Transactional
   public ResponseEntity deleteUser(Long userId) {

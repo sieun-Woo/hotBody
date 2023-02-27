@@ -1,6 +1,7 @@
 package com.sparta.hotbody.user.dto;
 
 import com.sparta.hotbody.user.entity.User;
+import com.sparta.hotbody.user.entity.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ public class UsersResponseDto {
   private int age;
   private String region;
   private String email;
+  private UserRole role;
 
   public UsersResponseDto(){}
 
@@ -24,16 +26,18 @@ public class UsersResponseDto {
     this.age = user.getAge();
     this.region = user.getRegion();
     this.email = user.getEmail();
+    this.role = user.getRole();
   }
 
   @Builder
-  public UsersResponseDto(Long id, String nickname, int gender, int age, String region, String email){
+  public UsersResponseDto(Long id, String nickname, int gender, int age, String region, String email, UserRole role){
     this.id = id;
     this.nickname = nickname;
     this.gender = gender;
     this.age = age;
     this.region = region;
     this.email = email;
+    this.role = role;
   }
 
   public Page<UsersResponseDto> toDtoPage(Page<User> userPage) {
@@ -44,6 +48,7 @@ public class UsersResponseDto {
             .gender(m.getGender())
             .age(m.getAge())
             .region(m.getRegion())
+            .role(m.getRole())
             .build());
     return usersResponseDtoPage;
   };

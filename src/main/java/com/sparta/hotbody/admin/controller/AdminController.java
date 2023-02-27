@@ -60,7 +60,7 @@ public class AdminController {
   }
 
   // 트레이너 등록 요청 허용
-  @PatchMapping("/requests/{requestId}")
+  @PutMapping("/requests/{requestId}")
   public ResponseEntity permitTrainer(@PathVariable Long requestId) {
     return adminService.permitTrainer(requestId);
   }
@@ -110,7 +110,7 @@ public class AdminController {
   }
 
   // 전체 트레이너 정보 조회
-  @GetMapping("/trainers")  // trainers가 더 나을 것 같습니다.지
+  @GetMapping("/trainers")
   public ResponseEntity getTrainerList(@RequestParam(value="currentPage") int pageNum) {
     return adminService.getTrainerList(pageNum);
   }
@@ -128,8 +128,31 @@ public class AdminController {
     return adminService.updateUserInfo(userId, userProfileRequestDto);
   }
 
+  // 유저 불량 유저로 전환
+  @PutMapping("/users/{userId}/suspend")
+  public ResponseEntity makeUserSuspended(@PathVariable Long userId) {
+    return adminService.makeUserSuspended(userId);
+  }
+
+  // 불량 트레이너로 전환
+  @PutMapping("/trainers/{trainerId}/suspend")
+  public ResponseEntity makeTrainerSuspended(@PathVariable Long trainerId) {
+    return adminService.makeTrainerSuspended(trainerId);
+  };
+
+  // 유저 정상 유저로 전환
+  @PutMapping("/users/{userId}/normalize")
+  public ResponseEntity makeUserNormal(@PathVariable Long userId) {
+    return adminService.makeUserNormal(userId);
+  }
+
+  @PutMapping("/trainers/{trainerId}/normalize")
+  ResponseEntity makeTrainerNormal(@PathVariable Long trainerId) {
+      return adminService.makeTrainerNormal(trainerId);
+  }
+
   // 유저 회원 탈퇴
-  @DeleteMapping("/users/{userId}") // ToDo: 유저 기능이랑 중복
+  @DeleteMapping("/users/{userId}")
   public ResponseEntity deleteUser(@PathVariable Long userId) {
     return adminService.deleteUser(userId);
   }

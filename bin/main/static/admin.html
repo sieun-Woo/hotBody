@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>홈</title>
+    <title>관리자</title>
     <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -12,7 +12,9 @@
     <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
     <ul>
-        <li id="logout"><a onclick="logout()">로그아웃</a></li>
+      <li id="signup"><a href="admin-signup.html">회원가입</a></li>
+      <li id="signin"><a href="admin-login.html">로그인</a></li>
+      <li id="logout"><a onclick="logout()">로그아웃</a></li>
     </ul>
 </header>
 
@@ -37,7 +39,7 @@
     </div>
   </header>
   <!-- 로고바 끝 -->
-<div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 홈</div>
+<div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 관리자</div>
   <!-- 메뉴바 시작 -->
   <header class="menu-bar con-min-width">
     <div class="con height-100p" style="position: relative; z-index: 2;">
@@ -56,14 +58,14 @@
               <span>트레이너</span>
             </a>
             <ul>
-              <li>
+              <li>xw
                 <a href="admin-trainer.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
                   <span>트레이너 조회</span>
                 </a>
               </li>
               <li>
-                <a href="admin-trainer-apply.html" class="block">
+                <a href="admin-apply.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
                   <span>트레이너 신청</span>
                 </a>
@@ -224,7 +226,7 @@
 
   <footer class="bottom-bar con-min-width">
     <div class="con flex flex-ai-c">
-      <a href="admin.html" class="logo logo--mini flex flex-ai-c">
+      <a href="index.html" class="logo logo--mini flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>Body
@@ -628,7 +630,15 @@ a {
 <script>
 jQuery(document).ready(function($) {
 
-  getUsers();
+  $("#logout").hide();
+  $("#signup").show();
+  $("#signin").show();
+
+  if (localStorage.getItem('accessToken')) {
+    $("#logout").show();
+    $("#signup").hide();
+    $("#signin").hide();
+  } 
 
 })
 
@@ -651,7 +661,7 @@ function logout() {
     document.cookie = "RefreshToken=; expires="+now.toUTCString();
   });
 
-  location.href = "index.html";
+  location.href = "admin.html";
 }
 
 </script>

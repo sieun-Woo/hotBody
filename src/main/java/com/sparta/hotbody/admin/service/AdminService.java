@@ -60,4 +60,12 @@ public interface AdminService {
       throws MessagingException;
 
   ResponseEntity logout(HttpServletRequest request);
+
+  ResponseEntity makeUserSuspended(Long userId);
+
+  ResponseEntity makeTrainerSuspended(Long userId);
+
+  ResponseEntity makeUserNormal(Long userId);
+
+  ResponseEntity makeTrainerNormal(Long userId);
 }

@@ -20,6 +20,6 @@ public class PageDto {
   }
 
   public Pageable toPageable() {
-    return PageRequest.of(currentPage-1, 10, Sort.by("id").descending());
+    return PageRequest.of(currentPage-1, 10, Sort.by("id").ascending());
   }
 }

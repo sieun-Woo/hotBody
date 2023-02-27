@@ -14,6 +14,7 @@ import lombok.Getter;
 public class PostResponseDto {
 
   private Long id;
+  private 
 
   private String nickname;
 

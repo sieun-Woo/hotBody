@@ -86,6 +86,7 @@ public class Post extends TimeStamp {
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
     this.category = PostCategory.valueOf(postRequestDto.getCategory());
+    this.likes = postLikeList.size();
   }
 
   public Post(String title, String content, User user, PostCategory category) {

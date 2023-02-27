@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 
@@ -29,7 +31,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   private final ExerciseRecordRepository exerciseRecordRepository;
   private final UserRepository userRepository;
 
-  //운동 기록
 
   @Transactional
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails) {
@@ -39,6 +40,9 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
     Pageable pageable = PageRequest.of(page, size, sort);
 
     Page<ExerciseRecord> exerciseRecords = exerciseRecordRepository.findAll(pageable);
+
+    log.info(exerciseRecords.toString());
+
     Page<ExerciseRecordResponseDto> exerciseRecordResponseDtos = exerciseRecords.map(e -> new ExerciseRecordResponseDto(e));
 
     return exerciseRecordResponseDtos;

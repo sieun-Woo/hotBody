@@ -3,11 +3,18 @@ package com.sparta.hotbody.comment.controller;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
+import com.sparta.hotbody.comment.entity.Comment;
+import com.sparta.hotbody.comment.repository.CommentRepository;
 import com.sparta.hotbody.comment.service.CommentService;
+import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
+import javax.swing.Spring;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,16 +34,18 @@ public class CommentController {
   private final CommentService commentService;
 
   // 1. 댓글 등록
-  @PostMapping("/comments")
-  public void createComment(
+  @PostMapping("/comments/{postId}")
+  public ResponseEntity<String> createComment(
       @RequestBody CommentRequestDto commentRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.createComment(commentRequestDto, userDetails.getUser());
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @PathVariable Long postId) {
+
+    return commentService.createComment(userDetails.getUser(), commentRequestDto, postId);
   }
 
   // 2. 댓글 전체 조회
   @GetMapping("/comments")
-  public List<CommentResponseDto> getAllComments(
+  public Page<CommentResponseDto> getAllComments(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
@@ -66,5 +75,17 @@ public class CommentController {
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     commentService.deleteComment(commentId, userDetails.getUser());
+  }
+
+  // 6. 해당 게시글 댓글 전체 조회
+  @GetMapping("/comments/posts/{postId}")
+  public Page<CommentResponseDto> getPostComments(
+      @PathVariable Long postId,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc
+  ) {
+    return commentService.getPostComments(postId, page - 1, size, sortBy, isAsc);
   }
 }

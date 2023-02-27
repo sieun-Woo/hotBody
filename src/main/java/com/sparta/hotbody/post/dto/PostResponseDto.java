@@ -1,13 +1,19 @@
 package com.sparta.hotbody.post.dto;
 
+import com.sparta.hotbody.comment.dto.CommentResponseDto;
+import com.sparta.hotbody.comment.entity.Comment;
+import com.sparta.hotbody.post.entity.Post;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class PostResponseDto {
+
+  private Long id;
 
   private String nickname;
 
@@ -23,7 +29,16 @@ public class PostResponseDto {
 
   private LocalDateTime modifiedAt;
 
-
+  public PostResponseDto(Post post) {
+    this.id = post.getId();
+    this.nickname = post.getNickname();
+    this.title = post.getTitle();
+    this.content = post.getContent();
+    this.image = post.getImage();
+    this.likes = post.getLikes();
+    this.createdAt = post.getCreatedAt();
+    this.modifiedAt = post.getModifiedAt();
+  }
 }
 
 

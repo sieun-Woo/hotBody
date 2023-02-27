@@ -137,9 +137,6 @@
         </div>
       </div>
       <table class="table" id="eventTable">
-        <colgroup>
-          <col width="10%">
-        </colgroup>
         <thead>
           <tr>
             <th>NO</th>
@@ -164,15 +161,10 @@
 
       <div>
         <h2>식단 기록</h2>
-        <div class="textForm">
-          날짜 : <input name="date" type="date" class="title" placeholder="제목">
-          </input>
+        <div>
+          날짜 : <input name="date" type="date" class="title" id="date">
         </div>
-
         <table class="table" id="dietTable">
-          <colgroup>
-            <col width="10%">
-          </colgroup>
           <thead>
             <tr>
               <th>NO</th>
@@ -192,7 +184,38 @@
           </tbody>
         </table>
         <div>
-          <input type="submit" value="식단 등록하기"/>
+          <input type="submit" value="식단 등록하기" onclick="saveDiet()" />
+        </div>
+        <div class="dietPaging">
+
+        </div>
+      </div>
+      <div>
+        <h2>식단 조회</h2>
+        <div>
+          날짜 : <input name="date" type="date" class="title" id="findDate">
+        </div>
+        <table class="table" id="readTable">
+          <thead>
+            <tr>
+              <th>NO</th>
+              <th>식품명</th>
+              <th>제조사/유통사</th>
+              <th>1회제공량(g)</th>
+              <th>에너지(㎉)</th>
+              <th>단백질(g)</th>
+              <th>지방(g)</th>
+              <th>탄수화물(g)</th>
+              <th>총당류(g)</th>
+              <th>선택</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+        <div>
+          <input type="submit" value="식단 조회하기" onclick="readDiet()"/>
         </div>
       </div>
     </div>
@@ -718,6 +741,14 @@
     background: #efefef
   }
 
+  .dietPaging {
+    margin: 0 auto;
+    width: 1000px;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0
+  }
+
   /* 페이징 */
   .paging {
     margin: 0 auto;
@@ -748,6 +779,7 @@
   }
 </style>
 
+
 <script>
   // 페이징 버튼
   $(document).on('click', '#p', function (e) {
@@ -757,6 +789,8 @@
   });
 
   function searchFood(page) {
+
+
     let foodType = $('#foodType').val();
     console.log(foodType);
     let foodName = $('#foodName').val();
@@ -878,15 +912,75 @@
           };
           str += '</tr>';
 
-          $(' #dietTable tbody').append(str);
+          $('#dietTable tbody').append(str);
 
         };
       }(row);
     }
   }
 
-  window.onload = rowClicked();
+  function saveDiet() {
+    var table = document.getElementById('dietTable')
+    var date = document.getElementById('date').value;
 
+    var rowList = table.rows;
+    console.log(rowList.length)
+    var str = '';
+
+    for (i = 1; i < rowList.length; i++) {
+      var row = rowList[i];     //thead 부분을 제외하기 위해 i가 1부터 시작됩니다.
+      var tdsNum = row.childElementCount;     //아래 for문에서 사용하기 위해 row 하위에 존재하는 td의 갯수를 구합니다.
+      
+      str += '<tr>';
+      for (var j = 0; j < tdsNum; j++) {
+        var row_value = row.cells[j].innerHTML;
+        str += '<td>' + (row_value) + '</td>';
+      };
+      str += '</tr>';
+    }
+
+    console.log(str)
+
+    var settings = {
+      "url": "http://localhost:8080/api/diet",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "dietFood": str,
+        "time": date
+      }),
+    };
+
+    console.log(str)
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+
+  }
+
+function readDiet() {
+
+  var date = document.getElementById('findDate').value;
+
+  console.log(date)
+  var settings = {
+  "url": "http://localhost:8080/api/diet?time=" + date,
+  "method": "GET",
+  "timeout": 0,
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+
+  $('#readTable tbody').empty();
+  $('#readTable tbody').append(response);
+
+});
+}
 </script>
 
 </html>

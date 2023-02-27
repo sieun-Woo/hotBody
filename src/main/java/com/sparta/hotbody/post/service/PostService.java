@@ -5,10 +5,13 @@ import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.upload.entity.Image;
 import com.sparta.hotbody.upload.service.UploadService;
 import com.sparta.hotbody.user.entity.User;
+import com.sparta.hotbody.user.entity.UserRole;
+import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,43 +31,39 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostService {
 
   private final PostRepository postRepository;
-
   private final UploadService uploadService;
 
   // 1. 게시글 등록
   @Transactional
-  public void createPost(PostRequestDto postRequestDto, User user, MultipartFile file)
-      throws IOException {
-    if (file != null) {
-      Image image = uploadService.storeFile(file);
-      String storeFileName = image.getResourcePath();
-      Post post = new Post(postRequestDto, user, storeFileName);
-      postRepository.save(post);
+  public ResponseEntity<String> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+    User user = userDetails.getUser();
+    Post post = new Post(postRequestDto, user);
+    postRepository.saveAndFlush(post);
 
-    } else {
-      Post post = new Post(postRequestDto, user);
-      postRepository.save(post);
-    }
+    return new ResponseEntity<>("작성 완료", HttpStatus.OK);
   }
 
-  // 2. 게시글 전체 조회
   @Transactional
-  public List<PostResponseDto> getAllPosts(int page, int size, String sortBy, boolean isAsc) {
+  public String createImage(MultipartFile file)
+      throws IOException {
+    Image image = uploadService.storeFile(file);
+    String resourcePath = image.getResourcePath();
+    return resourcePath;
+  }
+
+
+
+  // 2. 게시글 전체 조회
+  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
-    Page<Post> posts = postRepository.findAll(pageable);
-    List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+    Page<Post> posts = postRepository.findAllByCategory(postCategory, pageable);
+    Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
 
-    for (Post post : posts) {
-      PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-          post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-          post.getModifiedAt());
-      postResponseDtoList.add(postResponseDto);
-    }
-    return postResponseDtoList;
+    return postResponseDto;
   }
 
   // 3. 게시글 선택 조회
@@ -71,10 +72,7 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-
-    PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-        post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-        post.getModifiedAt());
+    PostResponseDto postResponseDto = new PostResponseDto(post);
 
     return postResponseDto;
   }
@@ -95,9 +93,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-            post.getModifiedAt());
+        PostResponseDto postResponseDto = new PostResponseDto(post);
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -107,9 +103,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-            post.getModifiedAt());
+        PostResponseDto postResponseDto = new PostResponseDto(post);
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -119,9 +113,7 @@ public class PostService {
           postSearchRequestDto.getSearchKeyword(), pageable);
 
       for (Post post : posts) {
-        PostResponseDto postResponseDto = new PostResponseDto(post.getNickname(), post.getTitle(),
-            post.getContent(), post.getImage(), post.getLikes(), post.getCreatedAt(),
-            post.getModifiedAt());
+        PostResponseDto postResponseDto = new PostResponseDto(post);
         postResponseDtoList.add(postResponseDto);
       }
     }
@@ -132,11 +124,13 @@ public class PostService {
   @Transactional
   public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
       User user, MultipartFile file) throws IOException {
+
+
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
 
-    if (post.getUser().getId().equals(user.getId())) {
+    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals( UserRole.ADMIN)) {
       if (file != null) {
         Image image = uploadService.storeFile(file);
         uploadService.remove(post.getImage());
@@ -157,7 +151,7 @@ public class PostService {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
     );
-    if (post.getUser().getId().equals(user.getId())) {
+    if (post.getUser().getId().equals(user.getId()) || user.getRole().equals( UserRole.ADMIN)) {
       uploadService.remove(post.getImage());
       postRepository.delete(post);
     } else {

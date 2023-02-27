@@ -48,20 +48,8 @@ public class Comment extends TimeStamp {
 
   @Column(nullable = false)
   private Integer likes = 0;
-
-  /**
-   * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
+   /* 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
    */
-  public Comment(CommentRequestDto commentRequestDto, User user) {
-    this.user = user;
-    this.nickname = user.getNickname();
-    this.content = commentRequestDto.getContent();
-  }
-
-  /**
-   * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
-   */
-
   // 댓글과 유저의 연관 관계(N : 1)
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -75,6 +63,16 @@ public class Comment extends TimeStamp {
   // 댓글과 댓글 좋아요의 연관 관계(1 : N)
   @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CommentLike> commentLikeList = new ArrayList<>();
+
+  /**
+   * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
+   */
+  public Comment(CommentRequestDto commentRequestDto, User user, Post post) {
+    this.post = post;
+    this.user = user;
+    this.nickname = user.getNickname();
+    this.content = commentRequestDto.getContent();
+  }
 
   /**
    * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

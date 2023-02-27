@@ -202,7 +202,7 @@ public class UserService {
     return image;
   }
 
-  public String viewImage(UserDetailsImpl userDetails) throws MalformedURLException {
+  public String viewImage(UserDetailsImpl userDetails) {
     Optional<String> image = Optional.of(userDetails.getUser().getImage());
     if(image.isPresent()){
       return image.get();

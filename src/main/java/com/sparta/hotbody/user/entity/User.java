@@ -5,6 +5,7 @@ import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.entity.PostLike;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
@@ -17,6 +18,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -82,6 +84,9 @@ public class User extends TimeStamp {
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Trainer trainer;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PostLike> postLikeList = new ArrayList<>();
 
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;

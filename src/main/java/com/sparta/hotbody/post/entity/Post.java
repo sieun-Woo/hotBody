@@ -86,6 +86,7 @@ public class Post extends TimeStamp {
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
     this.category = PostCategory.valueOf(postRequestDto.getCategory());
+    this.likes = postLikeList.size();
   }
 
   public Post(String title, String content, User user, PostCategory category) {
@@ -108,12 +109,6 @@ public class Post extends TimeStamp {
     this.content = postModifyRequestDto.getContent();
   }
 
-  // 이미지도 함께 수정
-  public void modifyPost(PostModifyRequestDto postModifyRequestDto,String resourcePath) {
-    this.title = postModifyRequestDto.getTitle();
-    this.content = postModifyRequestDto.getContent();
-    this.image = resourcePath;
-  }
 
   public void plusLikes() {
     this.likes += 1;

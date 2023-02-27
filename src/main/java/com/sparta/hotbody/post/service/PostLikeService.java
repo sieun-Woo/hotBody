@@ -28,14 +28,8 @@ public class PostLikeService {
     }
     PostLike postLike = new PostLike(post, user);
     post.plusLikes();
+    postLikeRepository.countAllByPostId(postId);
     postLikeRepository.save(postLike);
-    // 게시글 좋아요의 유저 아이디와 현재 접속한 유저의 아이디를 비교하는 로직
-//    if (postLike.getUser().getId().equals(user.getId()) &&
-//        postLike.getPost().getId().equals(user.getId())) {
-//      post.setLikes(+1);
-//    } else {
-//      throw new IllegalArgumentException("");
-//    }
   }
 
   // 7. 게시글 좋아요 취소

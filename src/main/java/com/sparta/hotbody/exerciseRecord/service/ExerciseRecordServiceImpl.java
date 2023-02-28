@@ -4,6 +4,8 @@ import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.exerciseRecord.entity.ExerciseRecord;
 import com.sparta.hotbody.exerciseRecord.repository.ExerciseRecordRepository;
+import com.sparta.hotbody.report.dto.PostReportResponseDto;
+import com.sparta.hotbody.report.entity.PostReportHistory;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
@@ -11,10 +13,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 
@@ -23,14 +31,23 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   private final ExerciseRecordRepository exerciseRecordRepository;
   private final UserRepository userRepository;
 
-  //운동 기록
+
   @Override
   @Transactional
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetailsImpl userDetails) {
-    //User user = userRepository.findByUsername(userDetails.getUsername()).get();
+  public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails) {
+    // 페이징 처리
+    Long id = userDetails.getUser().getId();
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
 
-    List<ExerciseRecord> exercises = exerciseRecordRepository.findAll();
-    return exercises.stream().map(ExerciseRecordResponseDto::new).collect(Collectors.toList());
+    Page<ExerciseRecord> exerciseRecords = exerciseRecordRepository.findAllByUserId(pageable,id);
+
+    log.info(exerciseRecords.toString());
+
+    Page<ExerciseRecordResponseDto> exerciseRecordResponseDtos = exerciseRecords.map(e -> new ExerciseRecordResponseDto(e));
+
+    return exerciseRecordResponseDtos;
   }
 
   @Override

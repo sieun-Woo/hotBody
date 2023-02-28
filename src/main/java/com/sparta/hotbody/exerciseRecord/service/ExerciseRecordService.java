@@ -5,6 +5,7 @@ import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordResponseDto;
 
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 
@@ -12,7 +13,7 @@ public interface ExerciseRecordService {
 
 
   //운동 기록
-  public List<ExerciseRecordResponseDto> getAllExerciseRecords(UserDetailsImpl userDetails);
+  public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails);
 
   public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) ;
 

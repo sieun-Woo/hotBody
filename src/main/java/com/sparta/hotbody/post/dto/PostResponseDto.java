@@ -3,6 +3,7 @@ package com.sparta.hotbody.post.dto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.post.entity.PostCategory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import lombok.Getter;
 public class PostResponseDto {
 
   private Long id;
+  private PostCategory category;
 
   private String nickname;
 
@@ -31,6 +33,7 @@ public class PostResponseDto {
 
   public PostResponseDto(Post post) {
     this.id = post.getId();
+    this.category = post.getCategory();
     this.nickname = post.getNickname();
     this.title = post.getTitle();
     this.content = post.getContent();

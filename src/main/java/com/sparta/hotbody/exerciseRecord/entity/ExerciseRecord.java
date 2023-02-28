@@ -36,7 +36,6 @@ public class ExerciseRecord extends TimeStamp {
   private int time; // 운동 시간(분)
   @Column
   private int reps; // 반복 횟수
-
   @Column
   private double calories; // 소모 열량
 

@@ -40,7 +40,7 @@ public class PostReportController {
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc
   ){
-    return postReportService.getAllReportedPosts (page,size,sortBy, isAsc);
+    return postReportService.getAllReportedPosts (page-1,size,sortBy, isAsc);
   }
 
 }

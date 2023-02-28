@@ -16,19 +16,12 @@ public class PostResponseDto {
 
   private Long id;
   private PostCategory category;
-
   private String nickname;
-
   private String title;
-
   private String content;
-
   private String image;
-
   private Integer likes;
-
   private LocalDateTime createdAt;
-
   private LocalDateTime modifiedAt;
 
   public PostResponseDto(Post post) {

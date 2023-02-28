@@ -25,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 
-<ㅇ class="body-content min-height-100vh flex flex-column">
+<div<div class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
@@ -38,8 +38,7 @@
     </div>
   </header>
   <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
-  </div>
+  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티</div>
   <!-- 메뉴바 시작 -->
   <header class="menu-bar con-min-width">
     <div class="con height-100p" style="position: relative; z-index: 2;">
@@ -121,34 +120,88 @@
     </div>
   </header>
   <!-- 메뉴바 끝 -->
-  <!-- 메뉴바 끝 -->
-  <div class="WriteForm_post">
-    <div class="article-list">
-      <h2>글 쓰기</h2>
-      <div class="textForm">
-        <span>제목</span><br /><br />
-        <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;"></input>
-      </div>
-      <div class="textForm">
-        <div type="nickname" id="nickname" name="nickname" disabled>
-        </div>
-        <br />
-      </div>
-      <div class="textForm">
-        <span>글 내용</span><br /><br />
-        <textarea name="content" id="content" type="textarea" class="text"
-          style="resize: none; width: 500px; height: 100px;"></textarea>
-      </div>
-      <div class="textForm">
-        <label for="avatar">이미지 업로드 :</label><br /><br />
-        <input type="file" id="image">
-        <br /><br />
-      </div>
 
-      <input type="submit" class="btn" value="글 올리기" id="upload" onclick="createImage()" />
-    </div>
+  <div class="main flex-grow-1">
+
+    <section id="article-list-wrap" class="section-1 con-min-width">
+      <div class="con">
+        <div class="article-search">
+          <form>
+          <div style="width: 650px; margin: auto;">
+            <h1 style="margin-top: 20px; margin-left: 110px; cursor: default;">
+              <span>Search</span>
+            </h1>
+            <div style="display:flex; position: relative; margin-top: 5px;">
+              <h1>
+                <select style="width: 100px; height: 35px; font-size: 16px; margin-right: 10px; padding-left: 5px;">
+                  <option value="title">제목</option>
+                  <option value="titleAndContent">내용</option>
+                  <option value="nickname">작성자</option>
+                </select>
+              </h1>
+              <input type="text" @input="search" :value="searchKeyword"
+                     placeholder=" 검색어 입력" style="width: 100%; height: 30px; font-size: 20px;">
+              <h1 style="position: absolute; right: 10px; top: 5px">
+                <i class="fas fa-search"></i>
+              </h1>
+            </div>
+          </div>
+          </form>
+        </div>
+
+        <div class="article-header" style="position: relative; z-index: 1;">
+          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트 게시글</div>
+            <header>
+              <div>
+                <div class="article-list__cell-id">번호</div>
+                <div class="article-list__cell-title">제목</div>
+                <div class="article-list__cell-writer">작성자</div>
+                <div class="article-list__cell-reg-date">날짜</div>
+                <div class="article-list__cell-like">좋아요</div>
+              </div>
+            </header>
+          </div>
+
+          <div class="article-list" style="position: relative; z-index: 1;">
+          </div>
+          
+      </div>
+      <div class="write" style="position:center;">
+        <ul class="flex-write">
+          <li>
+            <a href="write_post_etc.html" class="block">
+              <span>글쓰기</span>
+            </a>
+            </li>
+      </div>
+      
+        <div class="paging">
+
+        </div>
+        <br><br>
+    
+
+        
+      </div>
+    </section>
   </div>
-  </body>
+
+  <footer class="bottom-bar con-min-width">
+    <div class="con flex flex-ai-c">
+      <a href="#" class="logo logo--mini flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
+          Hot<span></span>Body
+        </span>
+      </a>
+
+      <div class="bottom-bar__site-info">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eos ipsum necessitatibus doloremque quos voluptate debitis earum aut a consequuntur explicabo deleniti qui eius facere, harum error eveniet vel laudantium.
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
   <style>
     /* 회원가입 메뉴 */
     /* reset */

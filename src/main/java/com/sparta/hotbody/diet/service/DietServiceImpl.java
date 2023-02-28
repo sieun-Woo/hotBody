@@ -8,9 +8,13 @@ import com.sparta.hotbody.common.batch.food.Food;
 import com.sparta.hotbody.common.batch.food.FoodRepository;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFood;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFoodRepository;
+import com.sparta.hotbody.diet.dto.FoodOfDietRequestDto;
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
 import com.sparta.hotbody.diet.entity.Diet;
+import com.sparta.hotbody.diet.entity.FoodOfDiet;
 import com.sparta.hotbody.diet.repository.DietRepository;
+import com.sparta.hotbody.diet.repository.FoodOfDietRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +35,7 @@ public class DietServiceImpl implements DietService {
   private final FoodRepository foodRepository;
   private final ProcessedFoodRepository processedFoodRepository;
   private final DietRepository dietRepository;
-
+  private final FoodOfDietRepository foodOfDietRepository;
   public Page<FoodResponseDto> searchFood(String FoodType, String searchWord, int page) {
     Sort sort = Sort.by(Direction.DESC, "id");
     Pageable pageable = PageRequest.of(page-1, 10, sort);
@@ -75,14 +79,23 @@ public class DietServiceImpl implements DietService {
 
   @Transactional
   @Override
-  public ResponseEntity<String> saveDiet(Diet diet) {
-    dietRepository.saveAndFlush(diet);
-    return new ResponseEntity<>("기록되었습니다.",HttpStatus.OK);
+  public Long saveDiet() {
+    return dietRepository.saveAndFlush(new Diet()).getId();
+
   }
 
   @Override
-  public String readDiet(String time) {
-    return dietRepository.findByTime(time).get().getDietFood();
+  public Diet readDiet(String time) {
+    return dietRepository.findByTime(time).get();
+  }
+
+  @Override
+  public ResponseEntity<String> saveFood(FoodOfDietRequestDto foodOfDietRequestDto, Long id) {
+    Diet diet = dietRepository.findById(id).get();
+    FoodOfDiet foodOfDiet = new FoodOfDiet(foodOfDietRequestDto);
+    foodOfDiet.setDiet(diet);
+    foodOfDietRepository.saveAndFlush(foodOfDiet);
+    return new ResponseEntity<>("음식 저장 성공", HttpStatus.OK);
   }
 
 

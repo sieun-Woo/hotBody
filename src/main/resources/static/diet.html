@@ -158,25 +158,22 @@
       <div class="paging">
 
       </div>
-
       <div>
         <h2>식단 기록</h2>
         <div>
           날짜 : <input name="date" type="date" class="title" id="date">
         </div>
-        <table class="table" id="dietTable">
+        <table class="saveTable" id="dietTable">
           <thead>
             <tr>
-              <th>NO</th>
               <th>식품명</th>
               <th>제조사/유통사</th>
-              <th>1회제공량(g)</th>
+              <th>섭취량(g)</th>
               <th>에너지(㎉)</th>
               <th>단백질(g)</th>
               <th>지방(g)</th>
               <th>탄수화물(g)</th>
               <th>총당류(g)</th>
-              <th>선택</th>
             </tr>
           </thead>
           <tbody>
@@ -195,10 +192,9 @@
         <div>
           날짜 : <input name="date" type="date" class="title" id="findDate">
         </div>
-        <table class="table" id="readTable">
+        <table class="readTable" id="readTable">
           <thead>
             <tr>
-              <th>NO</th>
               <th>식품명</th>
               <th>제조사/유통사</th>
               <th>1회제공량(g)</th>
@@ -207,7 +203,6 @@
               <th>지방(g)</th>
               <th>탄수화물(g)</th>
               <th>총당류(g)</th>
-              <th>선택</th>
             </tr>
           </thead>
           <tbody>
@@ -215,7 +210,7 @@
           </tbody>
         </table>
         <div>
-          <input type="submit" value="식단 조회하기" onclick="readDiet()"/>
+          <input type="submit" value="식단 조회하기" onclick="readDiet()" />
         </div>
       </div>
     </div>
@@ -701,6 +696,17 @@
     background-position: right;
   }
 
+  saveTable {
+    width: 100%;
+    table-layout: fixed
+  }
+
+  readTable {
+    width: 100%;
+    table-layout: fixed
+  }
+
+
   table {
     width: 100%;
     table-layout: fixed
@@ -782,6 +788,7 @@
 
 <script>
   // 페이징 버튼
+
   $(document).on('click', '#p', function (e) {
     page = parseInt($(this).data('page'));
     searchFood(page)
@@ -792,26 +799,20 @@
 
 
     let foodType = $('#foodType').val();
-    console.log(foodType);
     let foodName = $('#foodName').val();
-    console.log(foodName);
 
     var settings = {
       "url": `http://localhost:8080/api/diet/food?foodType=${foodType}&searchWord=${foodName}&page=${page}`,
       "method": "GET",
-      "timeout": 0,
+      "timeout": 0
     };
 
     $.ajax(settings).done(function (response) {
       const TOTAL_DATA = response.totalElements; // 데이터 총개수
       const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
       const TOTAL_PAGE = response.totalPages // 총페이지
-
       const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
       const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지)  
-
-      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
-      console.log(response);
 
       board_list();
 
@@ -858,8 +859,6 @@
         var last = TOTAL_PAGE; // 마지막 페이지
         var pageNums = [];
 
-        console.log('page:', page, ' setion_page:', setion_page, ' :start:', start, ' end:', end);
-
         $('.paging').empty();
 
         if (page != 1) {
@@ -892,6 +891,9 @@
     )
   }
 
+
+  var num = 0;
+
   function rowClicked() {
     var table = document.getElementById('eventTable');
     var rowList = table.rows;
@@ -903,15 +905,23 @@
       row.onclick = function () {
         return function () {
           var str = '';
-          str += '<tr>';
-          //row 안에 있는 값들을 순차적으로 가져오기
-          for (var j = 0; j < tdsNum; j++) {
-            var row_value = this.cells[j].innerHTML;
-            // str += row_value + ' ';     //값을 하나의 문자열으로 만듭니다.
-            str += '<td>' + (row_value) + '</td>';
-          };
+          str += `<tr id=tr` + num + `>`;
+          str += '<td hidden>' + (this.cells[3].innerHTML) + '</td>';
+          str += '<td hidden>' + (this.cells[4].innerHTML) + '</td>';
+          str += '<td hidden>' + (this.cells[5].innerHTML) + '</td>';
+          str += '<td hidden>' + (this.cells[6].innerHTML) + '</td>';
+          str += '<td hidden>' + (this.cells[7].innerHTML) + '</td>';
+          str += '<td hidden>' + (this.cells[8].innerHTML) + '</td>';
+          str += '<td>' + (this.cells[1].innerHTML) + '</td>';
+          str += '<td>' + (this.cells[2].innerHTML) + '</td>';
+          str += '<td>' + `<input id="` + num + `" value =` + (this.cells[3].innerHTML) + ` size=10 oninput="calculate(` + num + `)"> </td>`;
+          str += '<td>' + (this.cells[4].innerHTML) + '</td>';
+          str += '<td>' + (this.cells[5].innerHTML) + '</td>';
+          str += '<td>' + (this.cells[6].innerHTML) + '</td>';
+          str += '<td>' + (this.cells[7].innerHTML) + '</td>';
+          str += '<td>' + (this.cells[8].innerHTML) + '</td>';
           str += '</tr>';
-
+          num++;
           $('#dietTable tbody').append(str);
 
         };
@@ -919,18 +929,61 @@
     }
   }
 
+  function readDiet() {
+
+    var date = document.getElementById('findDate').value;
+
+    var settings = {
+      "url": "http://localhost:8080/api/diet?time=" + date,
+      "method": "GET",
+      "timeout": 0,
+    };
+
+    $.ajax(settings).done(function (response) {
+
+      $('#readTable tbody').empty();
+      $('#readTable tbody').append(response);
+
+    });
+  }
+
+  function calculate(num) {
+    var g = $('#' + num).val()
+    var tr = $('#tr' + num)
+    var one = tr[0].cells[0].innerHTML
+
+    let energy = (g * (parseFloat(tr[0].cells[1].innerHTML) / one)).toFixed(2) // 에너지
+    let protein = (g * (parseFloat(tr[0].cells[2].innerHTML) / one)).toFixed(2) // 단백질
+    let fat = (g * (parseFloat(tr[0].cells[3].innerHTML) / one)).toFixed(2) // 지방
+    let carbohydrate = (g * (parseFloat(tr[0].cells[4].innerHTML) / one)).toFixed(2) // 탄수화물
+    let sugar = (g * (parseFloat(tr[0].cells[5].innerHTML) / one)).toFixed(2) // 총당류
+
+    tr[0].cells[9].innerHTML = energy;
+    tr[0].cells[10].innerHTML = protein;
+    tr[0].cells[11].innerHTML = fat;
+    tr[0].cells[12].innerHTML = carbohydrate;
+    tr[0].cells[13].innerHTML = sugar;
+
+
+    console.log(tr[0].cells[1].innerHTML) // 에너지
+    console.log(tr[0].cells[2].innerHTML) // 단백질
+    console.log(tr[0].cells[3].innerHTML) // 지방
+    console.log(tr[0].cells[4].innerHTML) // 탄수화물
+    console.log(tr[0].cells[5].innerHTML) // 총당류
+
+  }
+
   function saveDiet() {
     var table = document.getElementById('dietTable')
     var date = document.getElementById('date').value;
 
     var rowList = table.rows;
-    console.log(rowList.length)
     var str = '';
 
     for (i = 1; i < rowList.length; i++) {
       var row = rowList[i];     //thead 부분을 제외하기 위해 i가 1부터 시작됩니다.
       var tdsNum = row.childElementCount;     //아래 for문에서 사용하기 위해 row 하위에 존재하는 td의 갯수를 구합니다.
-      
+
       str += '<tr>';
       for (var j = 0; j < tdsNum; j++) {
         var row_value = row.cells[j].innerHTML;
@@ -938,8 +991,6 @@
       };
       str += '</tr>';
     }
-
-    console.log(str)
 
     var settings = {
       "url": "http://localhost:8080/api/diet",
@@ -954,33 +1005,11 @@
       }),
     };
 
-    console.log(str)
-
     $.ajax(settings).done(function (response) {
-      console.log(response);
+
     });
 
   }
-
-function readDiet() {
-
-  var date = document.getElementById('findDate').value;
-
-  console.log(date)
-  var settings = {
-  "url": "http://localhost:8080/api/diet?time=" + date,
-  "method": "GET",
-  "timeout": 0,
-};
-
-$.ajax(settings).done(function (response) {
-  console.log(response);
-
-  $('#readTable tbody').empty();
-  $('#readTable tbody').append(response);
-
-});
-}
 </script>
 
 </html>

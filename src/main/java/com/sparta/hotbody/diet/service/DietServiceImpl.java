@@ -8,9 +8,17 @@ import com.sparta.hotbody.common.batch.food.Food;
 import com.sparta.hotbody.common.batch.food.FoodRepository;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFood;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFoodRepository;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
+import com.sparta.hotbody.diet.dto.FoodOfDietResponseDto;
+import com.sparta.hotbody.diet.dto.FoodOfDietRequestDto;
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
 import com.sparta.hotbody.diet.entity.Diet;
+import com.sparta.hotbody.diet.entity.FoodOfDiet;
 import com.sparta.hotbody.diet.repository.DietRepository;
+import com.sparta.hotbody.diet.repository.FoodOfDietRepository;
+import com.sparta.hotbody.user.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +27,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +40,13 @@ public class DietServiceImpl implements DietService {
   private final FoodRepository foodRepository;
   private final ProcessedFoodRepository processedFoodRepository;
   private final DietRepository dietRepository;
+  private final FoodOfDietRepository foodOfDietRepository;
+  private final UserRepository userRepository;
+  private final RefreshTokenRepository refreshTokenRepository;
 
   public Page<FoodResponseDto> searchFood(String FoodType, String searchWord, int page) {
     Sort sort = Sort.by(Direction.DESC, "id");
-    Pageable pageable = PageRequest.of(page-1, 10, sort);
+    Pageable pageable = PageRequest.of(page - 1, 10, sort);
 
     switch (FoodType) {
       case ("농축산물"):
@@ -75,15 +87,37 @@ public class DietServiceImpl implements DietService {
 
   @Transactional
   @Override
-  public ResponseEntity<String> saveDiet(Diet diet) {
-    dietRepository.saveAndFlush(diet);
-    return new ResponseEntity<>("기록되었습니다.",HttpStatus.OK);
+  public Long saveDiet(UserDetails userDetails, String time) {
+    Long id = userRepository.findByUsername(userDetails.getUsername()).get().getId();
+    if (dietRepository.findByUserIdAndTime(id, time).isPresent()) {
+      return dietRepository.findByUserIdAndTime(id, time).get().getId();
+    }
+    return dietRepository.saveAndFlush(new Diet(id, time)).getId();
   }
 
   @Override
-  public String readDiet(String time) {
-    return dietRepository.findByTime(time).get().getDietFood();
+  public ResponseEntity readDiet(String time, UserDetails userDetails) {
+    List<FoodOfDietResponseDto> foodOfDietResponseDtoList = new ArrayList<>();
+    Long id = userRepository.findByUsername(userDetails.getUsername()).get().getId();
+    if (dietRepository.findByUserIdAndTime(id, time).isPresent()) {
+      Diet diet = dietRepository.findByUserIdAndTime(id, time).get();
+      for (FoodOfDiet foodOfDiet : diet.getFoodOfDiets()) {
+        foodOfDietResponseDtoList.add(new FoodOfDietResponseDto(foodOfDiet));
+      }
+      return new ResponseEntity<List>(foodOfDietResponseDtoList, HttpStatus.OK);
+    }
+    return new ResponseEntity<String>("식단이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
   }
 
-
+  @Transactional
+  @Override
+  public ResponseEntity<String> saveFood(List<FoodOfDietRequestDto> foodOfDietRequestDtoList,
+      Long id) {
+    Diet diet = dietRepository.findById(id).get();
+    for (FoodOfDietRequestDto foodOfDietRequestDto : foodOfDietRequestDtoList) {
+      FoodOfDiet foodOfDiet = new FoodOfDiet(foodOfDietRequestDto, diet);
+      foodOfDietRepository.saveAndFlush(foodOfDiet);
+    }
+    return new ResponseEntity<>("음식 저장 성공", HttpStatus.OK);
+  }
 }

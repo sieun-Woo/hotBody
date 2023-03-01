@@ -1,5 +1,8 @@
 package com.sparta.hotbody.diet.dto;
 
-public class DietRequestDto {
+import lombok.Getter;
 
+@Getter
+public class DietRequestDto {
+  private String time;
 }

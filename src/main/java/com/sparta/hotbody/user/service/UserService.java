@@ -116,6 +116,7 @@ public class UserService {
     cookieRefreshToken.setPath("/");
 
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
+    response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addCookie(cookieRefreshToken);
 
     refreshTokenRepository.save(

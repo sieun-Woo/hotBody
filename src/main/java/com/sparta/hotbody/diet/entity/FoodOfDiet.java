@@ -3,6 +3,7 @@ package com.sparta.hotbody.diet.entity;
 import com.sparta.hotbody.diet.dto.FoodOfDietRequestDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,15 +37,11 @@ public class FoodOfDiet {
   String carbohydrate;
   @Column
   String sugar;
-  @ManyToOne
-  @JoinColumn(name = "DEIT_ID")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "Diet_ID")
   private Diet diet;
 
-  public void setDiet(Diet diet) {
-    this.diet = diet;
-  }
-
-  public FoodOfDiet(FoodOfDietRequestDto foodOfDietRequestDto) {
+  public FoodOfDiet(FoodOfDietRequestDto foodOfDietRequestDto, Diet diet) {
     this.foodName = foodOfDietRequestDto.getFoodName();
     this.factory = foodOfDietRequestDto.getFactory();
     this.supply = foodOfDietRequestDto.getSupply();
@@ -53,5 +50,6 @@ public class FoodOfDiet {
     this.fat = foodOfDietRequestDto.getFat();
     this.carbohydrate = foodOfDietRequestDto.getCarbohydrate();
     this.sugar = foodOfDietRequestDto.getSugar();
+    this.diet = diet;
   }
 }

@@ -1,13 +1,15 @@
 package com.sparta.hotbody.diet.controller;
 
+import com.sparta.hotbody.diet.dto.FoodOfDietResponseDto;
 import com.sparta.hotbody.diet.dto.FoodOfDietRequestDto;
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
-import com.sparta.hotbody.diet.entity.Diet;
-import com.sparta.hotbody.diet.repository.FoodOfDietRepository;
 import com.sparta.hotbody.diet.service.DietService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DietController {
 
   private final DietService dietService;
-  private final FoodOfDietRepository foodOfDietRepository;
 
   // 음식 검색
   @GetMapping("/diet/food")
@@ -34,23 +35,25 @@ public class DietController {
 
   // 음식을 저장하기 위한 식단 생성
   @PostMapping("/diet")
-  public Long createDiet() {
-    return dietService.saveDiet();
+  public Long createDiet(
+      @RequestParam("time") String time,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    return dietService.saveDiet(userDetails, time);
   }
 
   // 식단에 음식 저장
   @PostMapping("/diet/food")
   public ResponseEntity<String> createFood(
-      @RequestBody FoodOfDietRequestDto foodOfDietRequestDto,
+      @RequestBody List<FoodOfDietRequestDto> foodOfDietRequestDtoList,
       @RequestParam("dietId") Long id) {
-    return dietService.saveFood(foodOfDietRequestDto, id);
+    return dietService.saveFood(foodOfDietRequestDtoList, id);
   }
 
-
   @GetMapping("/diet")
-  public Diet readDiet(
-      @RequestParam("time") String time) {
-    return dietService.readDiet(time);
+  public ResponseEntity readDiet(
+      @RequestParam("time") String time,
+      @AuthenticationPrincipal UserDetails userDetails) {
+    return dietService.readDiet(time, userDetails);
   }
 
 }

@@ -80,6 +80,7 @@ public class PostService {
     return postResponseDto;
   }
 
+  @Transactional
   // 키워드로 게시글 검색
   public Page<PostResponseDto> searchPost(
       PostCategory postCategory, String searchType, String searchKeyword,

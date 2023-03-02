@@ -12,8 +12,6 @@ public class UserProfileResponseDto {
   private String region;
   private String nickname;
 
-  public UserProfileResponseDto() {}
-
   public UserProfileResponseDto(User user){
     this.height= user.getHeight();
     this.weight = user.getWeight();

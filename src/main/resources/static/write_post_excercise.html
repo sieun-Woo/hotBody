@@ -132,7 +132,7 @@
         <br /><br />
       </div>
       <div class="textForm">
-        <div id="post_category"disabled></div>
+        <div id="post_category"disabled>EXERCISE</div>
         <br />
       </div>
       <div class="textForm">
@@ -646,6 +646,7 @@
       }
 
       getUser();
+      
 
     })
 
@@ -708,15 +709,11 @@
 
       $.ajax(settings).done(function (response) {
         console.log(response);
-        createPost(response)
+        createPost(response);
       });
     }
 
     function createPost(response) {
-
-      $.ajax(settings).done(function (response) {
-      });
-
       var settings = {
         "url": "http://localhost:8080/api/posts",
         "method": "POST",

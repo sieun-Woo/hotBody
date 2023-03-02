@@ -80,9 +80,6 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<RefreshToken> refreshTokenList = new ArrayList<>();
-
   @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Trainer trainer;
 

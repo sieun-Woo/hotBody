@@ -800,8 +800,8 @@
     console.log("만료시간 : " + new Date(parseJwt(token).exp * 1000));
     console.log("현재시간 : " + new Date());
     if (exp - now < 30) {
-      refreshToken = localStorage.getItem('refreshToken')
       console.log("만료되었습니다.")
+      refreshToken = localStorage.getItem('refreshToken')
     } else {
       console.log("만료되지 않았습니다.")
     }
@@ -838,7 +838,8 @@
       },
     }
     $.ajax(settings)
-      .done(function (response) {
+      .done(function (response, xhr) {
+
         const TOTAL_DATA = response.totalElements; // 데이터 총개수
         const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
         const TOTAL_PAGE = response.totalPages // 총페이지

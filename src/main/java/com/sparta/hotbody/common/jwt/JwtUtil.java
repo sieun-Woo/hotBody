@@ -4,7 +4,7 @@ import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.admin.repository.AdminRepository;
 import com.sparta.hotbody.admin.service.AdminDetailsServiceImpl;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
-import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.UserRepository;
@@ -26,7 +26,6 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +45,7 @@ public class JwtUtil {
 
   private final UserRepository userRepository;
   private final AdminRepository adminRepository;
-  private final RefreshTokenRepository refreshTokenRepository;
+  private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final UserDetailsServiceImpl userDetailsService;
   private final AdminDetailsServiceImpl adminDetailsService;
 
@@ -54,7 +53,7 @@ public class JwtUtil {
   public static final String REFRESH_TOKEN = "RefreshToken";
   public static final String AUTHORIZATION_KEY = "auth";
   private static final String BEARER_PREFIX = "Bearer ";
-  private static final long ACCESS_TOKEN_TIME = 60 * 60 * 1000L; // 1시간
+  private static final long ACCESS_TOKEN_TIME = 60 * 1000L; // 1시간
   private static final long REFRESH_TOKEN_TIME = 24 * 60 * 60 * 1000L; // 1일
 
   @Value("${jwt.secret.key}")
@@ -185,7 +184,7 @@ public class JwtUtil {
             .compact();
   }
 
-  public boolean validateToken(String token, HttpServletResponse response)
+  public boolean validateToken(String token)
       throws ExpiredJwtException {
     try {
       Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -208,7 +207,7 @@ public class JwtUtil {
   }
 
   public boolean validateRefreshToken(String token) {
-    if (refreshTokenRepository.findByRefreshToken(token).isPresent()) {
+    if (refreshTokenRedisRepository.findByRefreshToken(BEARER_PREFIX + token).isPresent()) {
       try {
         Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return true;
@@ -223,7 +222,6 @@ public class JwtUtil {
 
       } catch (IllegalArgumentException e) {
         log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
-
       }
     }
     return false;
@@ -231,10 +229,11 @@ public class JwtUtil {
 
   //로그아웃
   public boolean logout(HttpServletRequest request) {
-    String cookie = resolveRefreshTokenFromCookie(request);
-    if (cookie != null) {
-      RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(cookie).get();
-      refreshTokenRepository.delete(refreshToken);
+    String token = resolveRefreshToken(request);
+    if (token != null) {
+      RefreshToken refreshToken = refreshTokenRedisRepository.findByRefreshToken(BEARER_PREFIX + token).get();
+      log.info(refreshToken.toString());
+      refreshTokenRedisRepository.delete(refreshToken);
       return true;
     }
     return false;
@@ -242,8 +241,8 @@ public class JwtUtil {
 
   // 중복 로그인 검증
   public boolean validate(HttpServletRequest request) {
-    String token = resolveRefreshTokenFromCookie(request);
-    if (token != null && refreshTokenRepository.findByRefreshToken(token).isPresent()) {
+    String token = resolveRefreshToken(request);
+    if (token != null && refreshTokenRedisRepository.findByRefreshToken(BEARER_PREFIX + token).isPresent()) {
       return false;
     } else {
       return true;

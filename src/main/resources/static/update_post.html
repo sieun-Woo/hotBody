@@ -686,13 +686,13 @@
         $(".upload-name").val(fileName);
       });
 
-    var postId = localStorage.getItem("postId");
+    var postId = localStorage.getItem("currentPostId");
     var imageUrlList = [];
 
     jQuery(document).ready(function () {
 
       var settings = {
-        url: "http://localhost:8080/api/posts/" + localStorage.getItem('currentPostId'),
+        url: "http://localhost:8080/api/posts/" + postId,
         method: "GET",
         timeout: 0,
         headers: {
@@ -763,7 +763,7 @@
     // 글 수정
     function updatePost() {
       var settings = {
-        url: "http://localhost:8080/api/posts/" + localStorage.getItem('currentPostId'),
+        url: "http://localhost:8080/api/posts/" + postId,
         method: "PATCH",
         timeout: 0,
         headers: {
@@ -772,13 +772,13 @@
         },
         data: JSON.stringify({
           title: $("#title").val(),
-          content: $("#post_content").val(),
-          "resourcePath": response
+          content: $("#content").val()
         }),
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
+        console.log(response);        
+        history.back();
       });
     }
 
@@ -788,13 +788,14 @@
       var form = new FormData();
       if ($("#image")[0].files[0] == null) {
         updatePost();
+        history.back();
         return;
       }
 
       form.append("file", $("#image")[0].files[0]);
 
       var settings = {
-        url: "http://localhost:8080/api/posts/" + localStorage.getItem('currentPostId') + "/image",
+        url: "http://localhost:8080/api/posts/" + postId + "/image",
         method: "POST",
         timeout: 0,
         headers: {
@@ -807,8 +808,9 @@
       };
 
       $.ajax(settings).done(function (response) {
+        updatePost();
         alert("글 수정이 완료되었습니다.")
-        window.location.reload();
+        history.back();
       });
     }
   </script>

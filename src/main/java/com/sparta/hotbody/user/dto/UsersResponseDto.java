@@ -1,5 +1,6 @@
 package com.sparta.hotbody.user.dto;
 
+import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import lombok.Builder;
@@ -13,9 +14,11 @@ public class UsersResponseDto {
   private String nickname;
   private int gender;
   private int age;
+  private String introduce;
   private String region;
   private String email;
   private UserRole role;
+  private Integer likes;
 
   public UsersResponseDto(){}
 
@@ -27,10 +30,11 @@ public class UsersResponseDto {
     this.region = user.getRegion();
     this.email = user.getEmail();
     this.role = user.getRole();
+    this.introduce = user.getIntroduce();
   }
 
   @Builder
-  public UsersResponseDto(Long id, String nickname, int gender, int age, String region, String email, UserRole role){
+  public UsersResponseDto(Long id, String nickname, int gender, int age, String region, String email, UserRole role, String introduce){
     this.id = id;
     this.nickname = nickname;
     this.gender = gender;
@@ -38,6 +42,7 @@ public class UsersResponseDto {
     this.region = region;
     this.email = email;
     this.role = role;
+    this.introduce = introduce;
   }
 
   public Page<UsersResponseDto> toDtoPage(Page<User> userPage) {
@@ -49,6 +54,7 @@ public class UsersResponseDto {
             .age(m.getAge())
             .region(m.getRegion())
             .role(m.getRole())
+            .introduce(m.getIntroduce())
             .build());
     return usersResponseDtoPage;
   };

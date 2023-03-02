@@ -2,7 +2,10 @@ package com.sparta.hotbody.user.entity;
 
 import com.sparta.hotbody.common.TimeStamp;
 import com.sparta.hotbody.post.entity.PostLike;
+import com.sparta.hotbody.user.dto.TrainerProfileRequestDto;
+import com.sparta.hotbody.user.dto.TrainerProfileResponseDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
+import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,14 +34,10 @@ public class Trainer extends TimeStamp {
   @OneToOne
   @JoinColumn(name = "user_id")
   private User user;
+  @Column
   private String introduce;
   @Column
   private Integer isPromoted;
-  @Column
-  private int likes = 0;
-  // 트레이너 , 트레이너 좋아요의 연관 관계(1 : N)
-  @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<TrainerLike> trainerLikeList = new ArrayList<>();
 
   public Trainer(TrainerRequestDto requestDto, User user){
     this.user = user;
@@ -54,11 +53,5 @@ public class Trainer extends TimeStamp {
 
   public void promote() {
     this.isPromoted = 1;
-  }
-
-  public void plusLikes() { this.likes += 1; }
-
-  public void minusLikes() {
-    this.likes -= 1;
   }
 }

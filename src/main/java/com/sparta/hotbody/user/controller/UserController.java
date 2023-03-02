@@ -1,6 +1,9 @@
 package com.sparta.hotbody.user.controller;
 
+import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
+import com.sparta.hotbody.post.dto.PostResponseDto;
+import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -12,6 +15,7 @@ import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
@@ -25,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,10 +37,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,7 +107,7 @@ public class UserController {
     return userService.createProfile(requestDto, userDetails);
   }
 
-  // 유저 프로필 사진 첨부
+  //6. 유저 프로필 사진 첨부
   @PostMapping("/auth/profile/image")
   public ResponseEntity<String> saveProfileImage(
       @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
@@ -110,7 +117,7 @@ public class UserController {
     return new ResponseEntity<>("업로드 되었습니다.", HttpStatus.OK);
   }
 
-  // 프로필 이미지 조회
+  //6-1. 프로필 이미지 조회
   @GetMapping("/auth/profile/image")
   public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
     return userService.viewImage(userDetails);
@@ -125,17 +132,40 @@ public class UserController {
     return UserProfileResponseDto.from(user);
   }
 
-  // 유저 아이디 찾기
+  //8. 유저 아이디 찾기
   @PutMapping("/find-id")
   public FindUserIdResponseDto findUserId(@RequestBody FindUserIdRequestDto findUserIdRequestDto)
       throws MessagingException {
     return userService.findUserId(findUserIdRequestDto);
   }
 
-  // 유저 비밀번호 찾기
+  //9. 유저 비밀번호 찾기
   @PutMapping("/find-pw")
   public FindUserPwResponseDto findUserPw(@RequestBody FindUserPwRequestDto findUserPwRequestDto)
       throws MessagingException {
     return userService.findUserPw(findUserPwRequestDto);
   }
+
+  //10.트레이너 전체 조회
+//  @GetMapping("/auth/trainers")
+//  public ResponseEntity getTrainerList(@RequestParam(value="currentPage") int pageNum) {
+//    return userService.getTrainerList(pageNum);
+//  }
+
+  @GetMapping("/auth/trainers")
+  public Page<UsersResponseDto> getTrainerList(
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc
+  ) {
+    return userService.getTrainerList(page - 1, size, sortBy, isAsc);
+  }
+
+  //11. 트레이너 조회
+  @GetMapping("/auth/trainers/{trainerId}")
+  public UsersResponseDto getTrainer(@PathVariable Long trainerId) {
+    return userService.getTrainer(trainerId);
+  }
+
 }

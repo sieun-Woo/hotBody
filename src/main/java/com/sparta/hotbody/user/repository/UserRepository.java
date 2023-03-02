@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findByUsername(String username);
 
+
   Page<User> findAllByRole(UserRole role, Pageable pageable);
 
   Page<User> findAllByRoleOrRole(UserRole role1, UserRole role2, Pageable pageable);

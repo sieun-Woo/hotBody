@@ -28,12 +28,10 @@ public class TrainerLike {
 
   @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "Trainer_ID")
-  private Trainer trainer;
+  private User trainer;
 
-  // 연관 관계 편의 메소드
-  public TrainerLike(Trainer trainer, User user){
-    this.trainer = trainer;
+  public TrainerLike(User user, User trainer){
     this.user = user;
+    this.trainer = trainer;
   }
-
 }

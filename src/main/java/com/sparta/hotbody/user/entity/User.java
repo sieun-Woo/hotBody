@@ -64,7 +64,8 @@ public class User extends TimeStamp {
   // 아이디, 비밀번호 찾기에 사용할 이메일 주소
   @Column
   private String email;
-
+  @Column
+  private int likes = 0;
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
@@ -88,6 +89,9 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostLike> postLikeList = new ArrayList<>();
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TrainerLike> trainerLikeList = new ArrayList<>();
+
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;
     this.password = password;
@@ -96,6 +100,7 @@ public class User extends TimeStamp {
     this.role = role;
     this.age = age;
     this.email = email;
+    this.likes = trainerLikeList.size();
   }
 
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
@@ -142,4 +147,5 @@ public class User extends TimeStamp {
   public void changeUserRoleReportedTrainer() {this.role = UserRole.REPORTED_TRAINER;}
 
   public void changeUserRoleTrainer() {this.role = UserRole.TRAINER;}
+
 }

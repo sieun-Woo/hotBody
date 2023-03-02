@@ -32,12 +32,9 @@ public class ExerciseRecordResponseDto {
     this.exercise = exerciseRecord.getExercise();
     this.time = exerciseRecord.getTime();
     this.reps = exerciseRecord.getReps();
-    this.calories = exerciseRecord.calculateCalories();
+    this.calories = exerciseRecord.getCalories();
     this.date = exerciseRecord.getDate();
     this.createAt = exerciseRecord.getCreatedAt().format(DateTimeFormatter.ISO_DATE);
     this.modifiedAt = exerciseRecord.getModifiedAt().format(DateTimeFormatter.ISO_DATE);
   }
-
-
-
 }

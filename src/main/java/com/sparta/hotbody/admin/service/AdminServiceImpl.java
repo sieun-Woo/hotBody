@@ -12,6 +12,7 @@ import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
@@ -63,7 +64,7 @@ public class AdminServiceImpl implements AdminService {
   private final AdminRepository adminRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
-  private final RefreshTokenRepository refreshTokenRepository;
+  private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final JavaMailSender javaMailSender;
   @Value("${spring.mail.username}")
   private String from;
@@ -111,7 +112,7 @@ public class AdminServiceImpl implements AdminService {
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addCookie(cookieRefreshToken);
 
-    refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), admin));
+    refreshTokenRedisRepository.save(new RefreshToken(refreshToken));
 
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }

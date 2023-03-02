@@ -3,7 +3,7 @@ package com.sparta.hotbody.user.service;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
-import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
 import com.sparta.hotbody.upload.entity.Image;
 import com.sparta.hotbody.upload.repository.ImageRepository;
 import com.sparta.hotbody.upload.service.UploadService;
@@ -26,7 +26,6 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Optional;
@@ -58,7 +57,7 @@ public class UserService {
   // 회원가입 로직
   private final UserRepository userRepository;
   private final PromoteRepository promoteRepository;
-  private final RefreshTokenRepository refreshTokenRepository; // 리프레쉬 토큰을 서버에 저장하기 위한 저장소
+  private final RefreshTokenRedisRepository refreshTokenRedisRepository; // 리프레쉬 토큰을 서버에 저장하기 위한 저장소
   private final JwtUtil jwtUtil;
   private final PasswordEncoder passwordEncoder;
   private final UploadService uploadService;
@@ -121,8 +120,8 @@ public class UserService {
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
 //    response.addCookie(cookieRefreshToken);
 
-    refreshTokenRepository.save(
-        new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
+    refreshTokenRedisRepository.save(
+        new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }

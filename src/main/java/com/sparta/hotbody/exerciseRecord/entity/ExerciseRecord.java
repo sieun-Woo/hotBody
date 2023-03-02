@@ -5,6 +5,8 @@ import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.service.CalorieCalculator;
 import com.sparta.hotbody.exerciseRecord.service.CalorieCalculator.ExerciseType;
 import com.sparta.hotbody.user.entity.User;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,6 +41,9 @@ public class ExerciseRecord extends TimeStamp {
   @Column
   private double calories; // 소모 열량
 
+  @Column
+  private LocalDate date; // 운동 날짜
+
 
   public ExerciseRecord(User user, ExerciseRecordRequestDto exerciseRecordRequestDto) {
 
@@ -47,9 +52,11 @@ public class ExerciseRecord extends TimeStamp {
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
     this.calories = calculateCalories();
+    this.date = exerciseRecordRequestDto.getDate();
   }
 
   public void update(ExerciseRecordRequestDto exerciseRecordRequestDto){
+    this.date = exerciseRecordRequestDto.getDate();
     this.exercise = exerciseRecordRequestDto.getExercise();
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
@@ -60,4 +67,6 @@ public class ExerciseRecord extends TimeStamp {
     return calorieCalculator.calculateCaloriesBurned(user.getWeight(), time,
         ExerciseType.valueOf(exercise), reps);
   }
+
+
 }

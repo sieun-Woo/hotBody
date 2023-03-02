@@ -18,6 +18,7 @@ import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.Trainer;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
@@ -36,6 +37,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -300,5 +305,32 @@ public class UserService {
     return stringBuffer.toString();
   }
 
+  @Transactional
+  public Page<UsersResponseDto> getTrainerList(int page, int size,
+      String sortBy, boolean isAsc) {
+    // 페이징 처리
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    Page<User> users = userRepository.findAllByRole(UserRole.TRAINER, pageable);
+    Page<UsersResponseDto> usersResponseDto = users.map(p -> new UsersResponseDto(p));
+
+    return usersResponseDto;
+  }
+
+  @Transactional
+  public UsersResponseDto getTrainer(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new IllegalArgumentException("해당 유저는 존재하지 않습니다.")
+    );
+
+    if(user.getRole().equals(UserRole.TRAINER)){
+      UsersResponseDto usersResponseDto = new UsersResponseDto(user);
+      return usersResponseDto;
+    }
+
+    return null;
+  }
 
 }

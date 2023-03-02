@@ -675,260 +675,263 @@
 <script>
   jQuery(document).ready(function ($) {
 
-    $("#logout").hide();
-    $("#signup").show();
-    $("#signin").show();
+$("#logout").hide();
+$("#signup").show();
+$("#signin").show();
 
-    if (localStorage.getItem('accessToken')) {
-      $("#logout").show();
-      $("#signup").hide();
-      $("#signin").hide();
-    } else {
+if (localStorage.getItem('accessToken')) {
+  $("#logout").show();
+  $("#signup").hide();
+  $("#signin").hide();
+} else {
 
-    }
-    getPosts(1);
-  })
+}
+getPosts(1);
+})
 
-  function logout() {
+function logout() {
 
-    var settings = {
-      "url": "http://localhost:8080/api/user/log-out",
-      "method": "DELETE",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.removeItem('accessToken')
-      },
-    };
+var settings = {
+  "url": "http://localhost:8080/api/user/log-out",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.removeItem('accessToken')
+  },
+};
 
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-      localStorage.removeItem('accessToken');
-      var now = new Date();
-      now.setDate(now.getDate() - 1);
-      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
-    });
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  localStorage.removeItem('accessToken');
+  var now = new Date();
+  now.setDate(now.getDate() - 1);
+  document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+});
 
-    location.href = "index.html";
+location.href = "index.html";
+}
+
+// 페이징 버튼
+$(document).on('click', '#p', function (e) {
+page = parseInt($(this).data('page'));
+getPosts(page)
+return false;
+});
+
+function getPosts(page) {
+var settings = {
+  "url": `http://localhost:8080/api/posts?category=EXERCISE&page=${page}&size=10&sortBy=id&isAsc=false`,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken'),
+    "Content-Type": "application/json"
   }
+};
 
-  // 페이징 버튼
-  $(document).on('click', '#p', function (e) {
-    page = parseInt($(this).data('page'));
-    getPosts(page)
-    return false;
-  });
+$.ajax(settings).done(function (response) {
+  const TOTAL_DATA = response.totalElements; // 데이터 총개수
+  const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+  const TOTAL_PAGE = response.totalPages // 총페이지
 
-  function getPosts(page) {
-    var settings = {
-      "url": `http://localhost:8080/api/posts?category=EXERCISE&page=${page}&size=10&sortBy=id&isAsc=false`,
-      "method": "GET",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json"
-      }
-    };
+  const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+  const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
 
-    $.ajax(settings).done(function (response) {
-      const TOTAL_DATA = response.totalElements; // 데이터 총개수
-      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
-      const TOTAL_PAGE = response.totalPages // 총페이지
-
-      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
-      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
-
-      var start = VIEW_DATA - VIEW_DATA;
-      var end = VIEW_DATA;
-      var j = 0;
+  var start = VIEW_DATA - VIEW_DATA;
+  var end = VIEW_DATA;
+  var j = 0;
 
 
 
-      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
-      console.log(response);
-      board_list(response.content);
-      paging_list();
+  console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+  console.log(response);
+  board_list(response.content);
+  paging_list();
 
-      // 게시물 목록
-      function board_list(data) {
-        var str = '';
-        data.forEach((post) => {
-          var k = TOTAL_DATA - j
-          str += `<div class="main">
-                <div v-for="article in filtered">
-                  <div class="article-list__cell-id">`+ k + `</div>              
-                  <div class="article-list__cell-title">
-                    <a href="view_post.html?`+ `${post.id}` + `"class="hover-pointer">${post.title}</a>
-                  </div>
-                  <div class="article-list__cell-writer">${post.nickname}</div>
-                  <div class="article-list__cell-reg-date">${post.createdAt}</div>
-                  <div class="article-list__cell-like">${post.likes}</div>
-                </div>
-              </div>`
-              j++
-        });
-
-        $('.article-list').empty();
-        $('.article-list').append(str);
-
-      }
-
-      function paging_list() {
-        //page  = page < 0 ? 0 : page;
-        var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
-        var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
-        var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
-        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
-        var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
-        var first = 1; // 처음 페이지
-        var last = TOTAL_PAGE; // 마지막 페이지
-        var pageNum = [];
-
-        console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
-
-        $('.paging').empty();
-
-        if (page != 1) {
-          pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
-        }
-
-        if (section_page != 1) {
-          pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
-        }
-        // 페이징 번호 출력
-        for (var i = start; i < end; i++) {
-          if (page == i) {
-            pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
-            continue;
-          }
-          pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
-        }
-
-        if (section_page != TOTAL_SECTION) {
-          pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
-        }
-
-        if (page != last) {
-          pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
-        }
-
-        $('.paging').append(pageNum);
-      }
-    });
-  }
-
-
-   // 페이징 버튼
-   $(document).on('click', '#s', function (e) {
-    page = parseInt($(this).data('page'));
-    searchPost(page)
-    return false;
-  });
-
-
-  function searchPost(page) {
-
-    var searchType = ($('#searchType').val())
-    var searchKeyword = ($('#searchKeyword').val())
-
-
-
-    var settings = {
-      "url": `http://localhost:8080/api/posts/search?category=EXERCISE&page=` + page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
-      "method": "GET",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-      },
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-
-      const TOTAL_DATA = response.totalElements; // 데이터 총개수
-      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
-      const TOTAL_PAGE = response.totalPages // 총페이지
-
-      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
-      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
-
-      var start = VIEW_DATA - VIEW_DATA;
-      var end = VIEW_DATA;
-      var j = 0;
-
-      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
-      console.log(response);
-      board_list(response.content);
-      paging_list();
-
-      // 게시물 목록
-      function board_list(data) {
-        var str = '';
-        data.forEach((post) => {
-          var k = TOTAL_DATA - j
-          str += `<div class="main">
-                <div v-for="article in filtered">
-                  <div class="article-list__cell-id">`+ k + `</div>              
-                  <div class="article-list__cell-title">
-                    <a href="view_post.html?`+ `${post.id}` + `"class="hover-pointer">${post.title}</a>
-                  </div>
-                  <div class="article-list__cell-writer">${post.nickname}</div>
-                  <div class="article-list__cell-reg-date">${post.createdAt}</div>
-                  <div class="article-list__cell-like">${post.likes}</div>
-                </div>
-              </div>`
+  // 게시물 목록
+  function board_list(data) {
+    var str = '';
+    data.forEach((post) => {
+      var k = TOTAL_DATA - j
+      str += `<div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">`+ k + `</div>              
+              <div class="article-list__cell-title">
+                <a href="view_post.html?`+ `${post.id}` + `"class="hover-pointer">${post.title}</a>
+              </div>
+              <div class="article-list__cell-writer">${post.nickname}</div>
+              <div class="article-list__cell-reg-date">${post.createdAt}</div>
+              <div class="article-list__cell-like">${post.likes}</div>
+            </div>
+          </div>`
           j++
-        });
-
-        $('.article-list').empty();
-        $('.article-list').append(str);
-
-      }
-
-      function paging_list() {
-        //page  = page < 0 ? 0 : page;
-        var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
-        var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
-        var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
-        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
-        var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
-        var first = 1; // 처음 페이지
-        var last = TOTAL_PAGE; // 마지막 페이지
-        var pageNum = [];
-
-        console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
-
-        $('.paging').empty();
-
-        if (page != 1) {
-          pageNum.push("<a href='#' id='s' class='first' data-page=" + first + ">처음</a>");
-        }
-
-        if (section_page != 1) {
-          pageNum.push("<a href='#' id='s' class='prev' data-page=" + prev + ">이전</a>");
-        }
-        // 페이징 번호 출력
-        for (var i = start; i < end; i++) {
-          if (page == i) {
-            pageNum.push('<a href="#" id="s" class="on" data-page=' + i + '>' + i + '</a>');
-            continue;
-          }
-          pageNum.push('<a href="#" id="s" data-page=' + i + '>' + i + '</a>');
-        }
-
-        if (section_page != TOTAL_SECTION) {
-          pageNum.push("<a href='#' id='s' class='next' data-page=" + next + ">다음</a>");
-        }
-
-        if (page != last) {
-          pageNum.push("<a href='#' id='s' class='last' data-page=" + last + ">마지막</a>");
-        }
-
-        $('.paging').append(pageNum);
-      }
-
     });
 
+
+    $('.article-list').empty();
+    $('.article-list').append(str);
+
   }
+
+  function paging_list() {
+    //page  = page < 0 ? 0 : page;
+    var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+    var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+    var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+    var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+    var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+    var first = 1; // 처음 페이지
+    var last = TOTAL_PAGE; // 마지막 페이지
+    var pageNum = [];
+
+    console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
+
+    $('.paging').empty();
+
+    if (page != 1) {
+      pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
+    }
+
+    if (section_page != 1) {
+      pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+    }
+    // 페이징 번호 출력
+    for (var i = start; i < end; i++) {
+      if (page == i) {
+        pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+        continue;
+      }
+      pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+    }
+
+    if (section_page != TOTAL_SECTION) {
+      pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+    }
+
+    if (page != last) {
+      pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+    }
+
+    $('.paging').append(pageNum);
+  }
+});
+}
+
+
+// 페이징 버튼
+$(document).on('click', '#s', function (e) {
+page = parseInt($(this).data('page'));
+searchPost(page)
+return false;
+});
+
+
+function searchPost(page) {
+
+var searchType = ($('#searchType').val())
+var searchKeyword = ($('#searchKeyword').val())
+
+
+
+var settings = {
+  "url": `http://localhost:8080/api/posts/search?category=EXERCISE&page=` + page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken'),
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+
+  const TOTAL_DATA = response.totalElements; // 데이터 총개수
+  const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+  const TOTAL_PAGE = response.totalPages // 총페이지
+
+  const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+  const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+
+  var start = VIEW_DATA - VIEW_DATA;
+  var end = VIEW_DATA;
+  var j = 0;
+
+
+
+  console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+  console.log(response);
+  board_list(response.content);
+  paging_list();
+
+  // 게시물 목록
+  function board_list(data) {
+    var str = '';
+    data.forEach((post) => {
+      var k = TOTAL_DATA - j
+      str += `<div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">`+ k + `</div>              
+              <div class="article-list__cell-title">
+                <a href="view_post.html?`+ `${post.id}` + `"class="hover-pointer">${post.title}</a>
+              </div>
+              <div class="article-list__cell-writer">${post.nickname}</div>
+              <div class="article-list__cell-reg-date">${post.createdAt}</div>
+              <div class="article-list__cell-like">${post.likes}</div>
+            </div>
+          </div>`
+      j++
+    });
+
+    $('.article-list').empty();
+    $('.article-list').append(str);
+
+  }
+
+  function paging_list() {
+    //page  = page < 0 ? 0 : page;
+    var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+    var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+    var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+    var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+    var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+    var first = 1; // 처음 페이지
+    var last = TOTAL_PAGE; // 마지막 페이지
+    var pageNum = [];
+
+    console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
+
+    $('.paging').empty();
+
+    if (page != 1) {
+      pageNum.push("<a href='#' id='s' class='first' data-page=" + first + ">처음</a>");
+    }
+
+    if (section_page != 1) {
+      pageNum.push("<a href='#' id='s' class='prev' data-page=" + prev + ">이전</a>");
+    }
+    // 페이징 번호 출력
+    for (var i = start; i < end; i++) {
+      if (page == i) {
+        pageNum.push('<a href="#" id="s" class="on" data-page=' + i + '>' + i + '</a>');
+        continue;
+      }
+      pageNum.push('<a href="#" id="s" data-page=' + i + '>' + i + '</a>');
+    }
+
+    if (section_page != TOTAL_SECTION) {
+      pageNum.push("<a href='#' id='s' class='next' data-page=" + next + ">다음</a>");
+    }
+
+    if (page != last) {
+      pageNum.push("<a href='#' id='s' class='last' data-page=" + last + ">마지막</a>");
+    }
+
+    $('.paging').append(pageNum);
+  }
+
+});
+
+}
 
 </script>
 

@@ -25,6 +25,7 @@
 
 
   <div class="body-content min-height-100vh flex flex-column">
+
     <!-- 로고바 시작 -->
     <header class="logo-bar con-min-width">
       <div class="con height-100p flex flex-jc-c">
@@ -127,73 +128,41 @@
       </ol>
     </nav>
 
-      <div class="con">
+    <div class="con">
+        <div class="WriteForm_post">
+            <div class="article-list">
+              <h2>글 쓰기</h2>
 
-        <!-- 게시글 -->
+              <div class="textForm">
+                <span>제목</span><br /><br />
+                <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
+                </input>
+                <br /><br />
+              </div>
 
-        <div class="textForm">
-          <div type="category" id="category" name="category" disabled></div>
-          <br />
+              <div class="textForm">
+                <div type="nickname" id="nickname" name="nickname" disabled>
+                </div>
+                <br />
+              </div>
+
+              <div class="textForm">
+                <span>글 내용</span><br /><br />
+                <textarea name="content" id="content" type="textarea" class="text"
+                  style="resize: none; width: 500px; height: 100px;"></textarea>
+              </div>
+
+              <div class="textForm">
+                <label for="avatar">이미지 업로드 :</label><br /><br />
+                <input type="file" id="image">
+                <br /><br />
+              </div>
+        
+              <input type="submit" class="btn" value="수정" id="upload" onclick="createImage()" />
+            </div>
         </div>
-
-        <div class="textForm">
-          <div id="title"></div>
-          <input type="hidden" id="postId" value="">
-          <img src="" id="image">
-          <br/>
-        </div> 
-
-        <div class="textForm">
-          <div type="nickname" id="post_nickname" name="nickname" disabled></div>
-          <br />
-        </div>
-
-        <div class="textForm">
-          <div id="post_content"></div>
-          <br />
-        </div>
-
-        <!-- 게시글 수정 & 삭제 -->
-        <div class="textForm3">
-          <button type="button" class="btn btn-outline-dark" onclick="updatePost()">수정</button>
-          <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
-      </div>
-
-        <!--좋아요 -->
-        <div class="write" style="position:center;">
-          <ul class="flex-write">
-            <li>
-              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
-            </li>
-            <li>
-              <div id="CountLove"></div>
-            </li>
-            <li>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
-            </li>
-        </div>
-      </div>
-
-    <div id="article-list-wrap" class="section-1 con-min-width">
-      <div class="con">
-        <div class="textForm">
-          <div class="comment-list" style="position: relative; z-index: 1;">
-            <!-- 댓글 들어오는 공간 -->
-          </div>
-
-          <div class="paging">
-            <!-- 페이징 -->
-          </div>
-        </div>
-      </div>
     </div>
-
-    <div id="comment-box" class="commentForm">
-      <textarea id="comment" class="text" style="resize: none; width: 500px; height: 100px;"></textarea>
-      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
-    </div>
-    </form>
-  </div>
+    
   </div>
 
 </body>
@@ -695,7 +664,6 @@
     $('#post_content').text(response.content);
     $('#CountLove').text(response.likes);
     $('#postId').val(postId);
-    $('#category').text(response.category);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)
@@ -744,6 +712,7 @@
     };
 
     $.ajax(settings).done(function (response) {
+      console.log(response);
       localStorage.removeItem('accessToken');
       var now = new Date();
       now.setDate(now.getDate() - 1);
@@ -752,247 +721,11 @@
     });
   }
 
-  // 글 수정
-  
-  console.log("수정 : "+ postId)
+  // 글 수정 
 
-  function updatePost(postId){
-    location.href=`update_post.html?` + postId;
-
+  function updatePost(){
+    // 이미지 때문에 보류
   }
-  // 글 삭제
-
-  function deletePost(){
-    var settings = {
-      "url": "http://localhost:8080/api/posts/"+postId,
-      "method": "DELETE",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
-      },
-    };
-
-    $.ajax(settings).done(function (response) {
-      alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
-      history.back();
-    });
-  }
-
-  // 글 좋아요
-
-  function likePost(){
-      var settings = {
-        "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
-
-        },
-      };
-
-    $.ajax(settings).done(function (response) {
-      console.log("좋아요 눌렀습니다.");
-      window.location.reload();
-    });
-  }
-
-  function dislikePost(){
-      var settings = {
-        "url": "http://localhost:8080/api/posts/"+$('#postId').val()+"/likes",
-        "method": "DELETE",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
-
-        },
-      };
-
-    $.ajax(settings).done(function (response) {
-      console.log("좋아요를 취소했습니다.");
-      window.location.reload();
-    });
-  }
-
-  // 댓글
-  
-  function commentUp() {
-
-    var settings = {
-      "url": `http://localhost:8080/api/comments/${postId}`,
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json",
-      },
-      "data": JSON.stringify({
-        "content": ($('#comment').val())
-      })
-    };
-
-  $.ajax(settings).done(function (response) {
-    window.location.reload();
-  });
-
-}
-
-  $(document).on('click', '#p', function (e) {
-    page = parseInt($(this).data('page'));
-    getComments(page)
-    return false;
-  });
-
-  function getComments(page) {
-    var settings = {
-      "url": `http://localhost:8080/api/comments/posts/${postId}?page=${page}&size=10&sortBy=id&isAsc=true`,
-      "method": "GET",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
-      },
-    };
-
-    $.ajax(settings).done(function (response) {
-      const TOTAL_DATA = response.totalElements; // 데이터 총개수
-      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
-      const TOTAL_PAGE = response.totalPages // 총페이지
-
-      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
-      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
-
-      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
-
-      if(TOTAL_DATA != 0) {
-        paging_list();
-        comments_list(response.content);
-      }
-
-
-      function comments_list(data) {
-
-        var str = '';
-        data.forEach((comment) => {
-          str += `<div class="main">
-                      <div class="comment-list__cell-writer">${comment.nickname}</div>
-                      <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
-                      <div class="comment-list__cell-content">${comment.content}</div>
-                      <input id="modifyContent${comment.id}"  style="display:none">
-                      <button type="button" class="btn btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
-                      <button type="button" class="btn btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
-                      <button type="button" class="btn btn-outline-dark" id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
-                      <button type="button" class="btn btn-outline-dark" id="deleteButton${comment.id}" onclick=deleteComment(${comment.id});>삭제</button>
-                  </div>
-                  <br/>`
-        });
-
-        $('.comment-list').empty();
-        $('.comment-list').append(str);
-      }
-
-      function paging_list() {
-        // page  = page < 0 ? 0 : page;
-        var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
-        var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
-        var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
-        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
-        var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
-        var first = 1; // 처음 페이지
-        var last = TOTAL_PAGE; // 마지막 페이지
-        var pageNum = [];
-
-        console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
-
-        $('.paging').empty();
-
-        if (page != 1) {
-          pageNum.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
-        }
-
-        if (section_page != 1) {
-          pageNum.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
-        }
-        // 페이징 번호 출력
-        for (var i = start; i < end; i++) {
-          if (page == i) {
-            pageNum.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
-            continue;
-          }
-          pageNum.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
-        }
-
-        if (section_page != TOTAL_SECTION) {
-          pageNum.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
-        }
-
-        if (page != last) {
-          pageNum.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
-        }
-
-        $('.paging').append(pageNum);
-      }
-    });
-  }
-
-
-  function modifyButton(id) {
-
-    console.log(id)
-    if ($('#modifyButton' + id).css('display') == 'none') {
-      $('#modifyContent' + id).hide();
-      $('#saveModifyContent' + id).hide();
-      $('#cancelModifyContent' + id).hide();
-      $('#modifyButton' + id).show();
-      $('#deleteButton' + id).show();
-    } else {
-      $('#modifyContent' + id).show();
-      $('#saveModifyContent' + id).show();
-      $('#cancelModifyContent' + id).show();
-      $('#modifyButton' + id).hide();
-      $('#deleteButton' + id).hide();
-    }
-
-  }
-
-  function modifyComment(id) {
-
-    var inputValue = document.getElementById('modifyContent' + id).value;
-
-    var settings = {
-      "url": "http://localhost:8080/api/comments/" + id,
-      "method": "PATCH",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json",
-      },
-      "data": JSON.stringify({
-        "content": inputValue
-      }),
-    };
-
-    $.ajax(settings).done(function (response) {
-      window.location.reload();
-    });
-
-  }
-
-  function deleteComment(id) {
-
-    var settings = {
-      "url": "http://localhost:8080/api/comments/" + id,
-      "method": "DELETE",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
-      },
-    };
-
-    $.ajax(settings).done(function (response) {
-      window.location.reload();
-    });
-
-}
 
 </script>
 

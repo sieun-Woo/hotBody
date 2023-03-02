@@ -4,6 +4,7 @@ import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.admin.repository.AdminRepository;
 import com.sparta.hotbody.admin.service.AdminDetailsServiceImpl;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
@@ -46,7 +47,7 @@ public class JwtUtil {
 
   private final UserRepository userRepository;
   private final AdminRepository adminRepository;
-  private final RefreshTokenRepository refreshTokenRepository;
+  private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final UserDetailsServiceImpl userDetailsService;
   private final AdminDetailsServiceImpl adminDetailsService;
 
@@ -214,7 +215,7 @@ public class JwtUtil {
   }
 
   public boolean validateRefreshToken(String token) {
-    if (refreshTokenRepository.findByRefreshToken(token).isPresent()) {
+    if (refreshTokenRedisRepository.findByRefreshToken(token).isPresent()) {
       try {
         Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return true;
@@ -239,8 +240,8 @@ public class JwtUtil {
   public boolean logout(HttpServletRequest request) {
     String cookie = resolveRefreshTokenFromCookie(request);
     if (cookie != null) {
-      RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(cookie).get();
-      refreshTokenRepository.delete(refreshToken);
+      RefreshToken refreshToken = refreshTokenRedisRepository.findByRefreshToken(cookie).get();
+      refreshTokenRedisRepository.delete(refreshToken);
       return true;
     }
     return false;
@@ -250,7 +251,7 @@ public class JwtUtil {
   // 중복 로그인 검증
   public boolean validate(HttpServletRequest request) {
     String token = resolveRefreshTokenFromCookie(request);
-    if (token != null && refreshTokenRepository.findByRefreshToken(token).isPresent()) {
+    if (token != null && refreshTokenRedisRepository.findByRefreshToken(token).isPresent()) {
       return false;
     } else {
       return true;

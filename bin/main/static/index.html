@@ -712,7 +712,8 @@
       "method": "DELETE",
       "timeout": 0,
       "headers": {
-        "Authorization": localStorage.removeItem('accessToken')
+        "Authorization": localStorage.removeItem('accessToken'),
+        "RefreshToken": localStorage.removeItem('refreshToken')
       },
     };
 

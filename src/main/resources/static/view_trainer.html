@@ -135,7 +135,7 @@
           <div type="category" id="category" name="category" disabled></div>
           <br />
         </div>
-
+        <input type="hidden" id = "trainerId">
         <div class="textForm">
           <div id="title"></div>
           <img src="" id="image">
@@ -668,12 +668,13 @@
 <script>
   var page = 0;
   var trainerId = document.location.href.split("?")[1];
+  console.log("트레이너 아이디 : "+$('#trainerId').val());
 
   jQuery(document).ready(function () {
     page = trainerId;
 
     var settings = {
-      "url": "http://localhost:8080/api/user/auth/trainers" + trainerId,
+      "url": "http://localhost:8080/api/user/auth/trainers/" + localStorage.getItem('currentTrainerId'),
       "method": "GET",
       "timeout": 0,
       "headers": {

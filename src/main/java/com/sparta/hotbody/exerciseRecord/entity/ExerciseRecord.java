@@ -60,6 +60,7 @@ public class ExerciseRecord extends TimeStamp {
     this.exercise = exerciseRecordRequestDto.getExercise();
     this.time = exerciseRecordRequestDto.getTime();
     this.reps = exerciseRecordRequestDto.getReps();
+    this.calories = calculateCalories();
   }
 
   public double calculateCalories(){

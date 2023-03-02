@@ -246,7 +246,6 @@ public class JwtUtil {
     return false;
   }
 
-
   // 중복 로그인 검증
   public boolean validate(HttpServletRequest request) {
     String token = resolveRefreshTokenFromCookie(request);

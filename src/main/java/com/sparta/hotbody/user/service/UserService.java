@@ -36,6 +36,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -110,14 +112,14 @@ public class UserService {
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-
-    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
-    cookieRefreshToken.setPath("/");
+//    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
+//
+//    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+//    cookieRefreshToken.setPath("/");
 
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
-    response.addCookie(cookieRefreshToken);
+//    response.addCookie(cookieRefreshToken);
 
     refreshTokenRepository.save(
         new RefreshToken(refreshToken.substring(7), user)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장

@@ -719,6 +719,8 @@
     $.ajax(settings).done(function (response) {
       console.log(response);
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
       var now = new Date();
       now.setDate(now.getDate() - 1);
       document.cookie = "RefreshToken=; expires=" + now.toUTCString();

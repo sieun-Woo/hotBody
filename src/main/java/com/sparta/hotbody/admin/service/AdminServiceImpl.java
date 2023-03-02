@@ -99,17 +99,16 @@ public class AdminServiceImpl implements AdminService {
     }
     String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
     String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
-
-    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-
-
-    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
-    cookieRefreshToken.setPath("/");
+//    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
+//
+//
+//    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+//    cookieRefreshToken.setPath("/");
 
 
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
-    response.addCookie(cookieRefreshToken);
+//    response.addCookie(cookieRefreshToken);
 
     refreshTokenRepository.save(new RefreshToken(refreshToken.substring(7), admin));
 

@@ -48,7 +48,9 @@ dependencies {
 
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4' // 민감정보 암호화
 
-    implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일
+    implementation 'org.springframework.boot:spring-boot-starter-mail' // 이메일 아이디, 비밀번호 찾기
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis' // 레디스
 
 }
 

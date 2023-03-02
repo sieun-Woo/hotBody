@@ -10,10 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 
 @Entity
 @NoArgsConstructor
+@RedisHash(value = "refreshToken", timeToLive = 60 * 60 * 24 * 14)
 public class RefreshToken {
 
   @Id
@@ -30,6 +33,10 @@ public class RefreshToken {
   @ManyToOne
   @JoinColumn(name = "admin_id")
   private Admin admin;
+
+  public RefreshToken(String refreshToken) {
+    this.refreshToken = refreshToken;
+  }
 
   public RefreshToken(String refreshToken, User user) {
     this.refreshToken = refreshToken;

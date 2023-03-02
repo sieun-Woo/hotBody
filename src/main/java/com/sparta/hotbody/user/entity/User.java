@@ -58,7 +58,7 @@ public class User extends TimeStamp {
   private String image;
   @Column
   private String introduce;
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String nickname;
 
   // 아이디, 비밀번호 찾기에 사용할 이메일 주소
@@ -89,8 +89,9 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostLike> postLikeList = new ArrayList<>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TrainerLike> trainerLikeList = new ArrayList<>();
+
 
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;

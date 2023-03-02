@@ -33,12 +33,12 @@ public class TrainerLikeService {
 
     if(trainer.getRole().equals(UserRole.TRAINER)){
       TrainerLike trainerLike = new TrainerLike(user, trainer);
-      trainerLikeRepository.save(trainerLike);
+      trainerLikeRepository.saveAndFlush(trainerLike);
     }
 
   }
 
-  // 7. 트레이너 좋아요 취소
+  // 트레이너 좋아요 취소
   @Transactional
   public void cancelLike(Long trainerId, User user) {
     User trainer = userRepository.findById(trainerId).orElseThrow(

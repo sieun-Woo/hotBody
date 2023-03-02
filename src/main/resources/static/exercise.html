@@ -37,7 +37,8 @@
     </div>
   </header>
   <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 마이페이지
+  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i
+      class="fas fa-home"></i> 마이페이지
   </div>
   <!-- 메뉴바 시작 -->
   <header class="menu-bar con-min-width">
@@ -121,17 +122,19 @@
   </header>
   <!-- 메뉴바 끝 -->
 
-<div></div>
+  <div></div>
   <!--운동 기록-->
   <form class="WriteForm_exercise">
-    
+
     <h2>운동 기록</h2>
     <div class="textForm">
-      날짜 : <input name="date" type="date" class="title" id="currnetMonth" placeholder="제목을 적어주세요.">
+      날짜 : <input name="date" style="width:170px;" type="date" class="title" id="currentDate"
+                  placeholder="제목을 적어주세요.">
     </input>
-    </div>   
+    </div>
     <div class="textForm">
-      종목 : <select id="exercise" onchange="selectBoxChange(this.value);">
+      종목 : <select id="exercise" name="exercise" style="width:170px;"
+                   onchange="selectBoxChange(this.value);">
       <option value="WALKING">걷기</option>
       <option value="RUNNING">달리기</option>
       <option value="SWIMMING">수영</option>
@@ -144,14 +147,19 @@
       시간 : <input name="time" id="time" type="number" class="text" placeholder="시간을 입력 해주세요.">
     </div>
     <div class="textForm">
-      횟수 : <input name="reps" value="1" id="reps" type="number" class="text" placeholder="횟수를 입력 해주세요.">
+      횟수 : <input name="reps" value="1" id="reps" type="number" class="text"
+                  placeholder="횟수를 입력 해주세요.">
     </div>
+    <input type="submit" id="postRecord" class="btn" onclick="recordExercise()" value="올리기"/>
+    <input type="submit" id="modifyRecord" class="btn" onclick="updateExerciseRecord()"
+           value="수정완료"/>
 
-    <input type="submit" class="btn" onclick="recordExercise()" value="올리기" />
   </form>
 
   <!--운동 기록 조회-->
-  <div>    
+  <div>
+    <!-- 페이징 -->
+    <div class="paging"></div>
     <table id="exercise-records">
       <thead>
       <tr>
@@ -160,14 +168,13 @@
         <th>운동 횟수</th>
         <th>소모 칼로리</th>
         <th>날짜</th>
+        <th>수정 / 삭제</th>
       </tr>
       </thead>
       <tbody>
       </tbody>
     </table>
-    <div class="paging">
 
-    </div>
   </div>
 </div>
 </body>
@@ -189,7 +196,7 @@
     list-style: none;
   }
 
-  header+header {
+  header + header {
     margin-top: 50px;
   }
 
@@ -209,7 +216,7 @@
   table {
     border-collapse: collapse;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 5px;
     margin-bottom: 30px;
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -380,12 +387,12 @@
     color: white;
   }
 
-  .logo>span {
+  .logo > span {
     margin-left: 10px;
     color: white;
   }
 
-  .logo>span>span {
+  .logo > span > span {
     color: red;
   }
 
@@ -410,26 +417,26 @@
     color: white;
   }
 
-  .menu-bar__menu-1>ul>li {
+  .menu-bar__menu-1 > ul > li {
     width: 25%;
     position: relative;
   }
 
-  .menu-bar__menu-1 ul>li>a {
+  .menu-bar__menu-1 ul > li > a {
     text-align: center;
     padding: 20px 0;
   }
 
-  .menu-bar__menu-1 ul>li:hover>a {
+  .menu-bar__menu-1 ul > li:hover > a {
     background-color: white;
     color: black;
   }
 
-  .menu-bar__menu-1>ul>li>a {
+  .menu-bar__menu-1 > ul > li > a {
     border-radius: 10px 10px 0 0;
   }
 
-  .menu-bar__menu-1>ul ul {
+  .menu-bar__menu-1 > ul ul {
     display: none;
     position: absolute;
     top: 100%;
@@ -441,11 +448,11 @@
     border-radius: 0 0 20px 20px;
   }
 
-  .menu-bar__menu-1>ul>li:hover>ul {
+  .menu-bar__menu-1 > ul > li:hover > ul {
     display: block;
   }
 
-  .menu-bar__menu-1>ul ul>li:last-child>a {
+  .menu-bar__menu-1 > ul ul > li:last-child > a {
     border-radius: 0 0 10px 10px;
   }
 
@@ -476,7 +483,7 @@
 
   /* 게시물 검색 시작 */
 
-  .article-search>form {
+  .article-search > form {
     display: flex;
     width: 1000px;
     margin: auto;
@@ -496,15 +503,15 @@
     --article-list__cell-title__width: calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
   }
 
-  .article-list>*>div {
+  .article-list > * > div {
     display: flex;
   }
 
-  .article-list>header>div>div {
+  .article-list > header > div > div {
     position: relative;
   }
 
-  .article-list>header>div>div:not(:last-child)::after {
+  .article-list > header > div > div:not(:last-child)::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -515,7 +522,7 @@
     background-color: black;
   }
 
-  .article-list>*>div>div {
+  .article-list > * > div > div {
     box-sizing: border-box;
     text-align: center;
     padding-top: 10px;
@@ -542,12 +549,12 @@
     width: var(--article-list__cell-like__width);
   }
 
-  .article-list>.main .article-list__cell-title {
+  .article-list > .main .article-list__cell-title {
     text-align: left;
     padding-left: 10px;
   }
 
-  .article-list>.main>div {
+  .article-list > .main > div {
     border-top: 1px solid black;
   }
 
@@ -558,11 +565,11 @@
     margin-top: 20px;
   }
 
-  .article-page-menu>ul>li>a {
+  .article-page-menu > ul > li > a {
     padding: 7px;
   }
 
-  .article-page-menu>ul>li:not(:first-child):not(:last-child)>a {
+  .article-page-menu > ul > li:not(:first-child):not(:last-child) > a {
     border: 1px solid transparent;
     padding-left: 0;
     padding-right: 0;
@@ -570,7 +577,7 @@
     justify-content: center;
   }
 
-  .article-page-menu>ul>li:not(:first-child):not(:last-child):hover>a {
+  .article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
     border-color: #afafaf;
   }
 
@@ -615,7 +622,7 @@
     line-height: 46px;
   }
 
-  .wp-header li>a {
+  .wp-header li > a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -624,49 +631,89 @@
     transition: color 0.15s ease-in-out;
   }
 
-  .wp-header li:hover>a {
+  .wp-header li:hover > a {
     color: #78c8e6;
   }
 
   .WriteForm_exercise {
-    /* position: absolute; */
-    width: 400px;
-    height: 400px;
-    padding: 30px 20px;
-    background-color: #FFFFFF;
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 100%;
     text-align: center;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
+    max-width: 800px;
   }
+
 
   .textForm {
     border-bottom: 2px solid #adadad;
-    margin: 30px;
-    padding: 10px 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding: 0px 0px 30px;
   }
+
 
   .btn {
     position: relative;
-    left: 40%;
+    left: 50%;
     transform: translateX(-50%);
     margin-bottom: 40px;
-    width: 80%;
-    height: 40px;
-    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
-    background-position: left;
-    background-size: 200%;
-    color: white;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
     font-weight: bold;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: 0.4s;
-    display: inline;
+    transition: 0.2s;
   }
 
   .btn:hover {
-    background-position: right;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  .btn_mod {
+    position: relative;
+    /* left: 50%;
+    transform: translateX(-50%); */
+
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn_mod:hover {
+    background-color: #fff;
+    color: #000;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+  }
+
+
+  .btn_del {
+    position: relative;
+    /* left: 45%;
+    transform: translateX(-50%); */
+
+    padding: 10px 20px;
+    background-color: red;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn_del:hover {
+    background-color: #ff3535;
+    color: #fff;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
   }
 
   .pagination a {
@@ -687,41 +734,58 @@
   /* 페이징 */
   .paging {
     margin: 0 auto;
-    width: 1000px;
-
+    width: 100%;
     text-align: center;
-    font-size: 0
   }
 
   .paging .current {
-    color: #00f;
-    font-weight: bold
+    color: #fff;
+    background-color: #00f;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 5px;
   }
 
   .paging a {
     display: inline-block;
-    padding: 5px;
-    border: 1px solid #000;
-    font-size: 12px
+    padding: 8px 16px;
+    border: 1px solid #999;
+    color: #666;
+    font-size: 12px;
+    border-radius: 5px;
+    margin: 0 5px;
+    text-decoration: none;
   }
 
-  .paging a+a {
-    margin-left: 5px
+  .paging a:hover {
+    background-color: #ddd;
   }
 
   .paging a.on {
-    color: #f00
+    color: #fff;
+    background-color: grey;
   }
 </style>
 
 <script>
+
+  function localTime() {
+    var timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+
+    // 현지 시간대의 현재 날짜를 계산함
+    var localDate = new Date(Date.now() - timezoneOffset);
+
+    // 현지 시간대의 날짜를 ISO 8601 형식으로 변환함
+    var localDateString = localDate.toISOString().substring(0, 10);
+    return localDateString;
+  }
+
+  document.getElementById('currentDate').value = localTime();
   $(document).on('click', '#p', function (e) {
     page = parseInt($(this).data('page'));
     getExerciseRecords(page);
     return false;
   });
-
-
 
   // 게시판
   $('.check.all').on('change', function () {
@@ -735,7 +799,7 @@
   })
 
   function recordExercise() {
-    
+
     var settings = {
       "url": "http://localhost:8080/api/user/auth/mypage/records",
       "method": "POST",
@@ -747,22 +811,86 @@
       "data": JSON.stringify({
         "exercise": $('#exercise').val(),
         "time": parseInt($('#time').val()),
-        "reps": parseInt($('#reps').val())
+        "reps": parseInt($('#reps').val()),
+        "date": $('#currentDate').val()
       }),
     };
 
     $.ajax(settings).done(function (response) {
-      $('input[name=nickname]').attr('value', response.nickname);
-      //alert("운동이 기록되었습니다.")
-      //location.reload();
+
     });
   }
 
-
   $(document).ready(function () {
     getExerciseRecords(1);
+    $("#modifyRecord").hide();
   });
 
+  function getExerciseRecord(recordId) {
+    var settings = {
+      "url": `http://localhost:8080/api/user/auth/mypage/records/${recordId}`,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      $("#modifyRecord").show();
+      $('input[name=date]').val(response.date);
+      $('select[name=exercise]').val(response.exercise);
+      $('input[name=time]').attr('value', response.time);
+      $('input[name=reps]').attr('value', response.reps);
+      $("#postRecord").hide();
+
+    });
+  }
+
+  function deleteExerciseRecord(recordId) {
+    var settings = {
+      "url": `http://localhost:8080/api/user/auth/mypage/records/${recordId}`,
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      location.reload();
+    });
+  }
+
+  var selectedId;
+
+  function setSelectedId(id) {
+    selectedId = id;
+  }
+
+  function updateExerciseRecord() {
+    recordId = selectedId;
+    var settings = {
+      "url": `http://localhost:8080/api/user/auth/mypage/records/${recordId}`,
+      "method": "PATCH",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+      },
+      "data": JSON.stringify({
+        "exercise": $('#exercise').val(),
+        "time": parseInt($('#time').val()),
+        "reps": parseInt($('#reps').val()),
+        "date": $('#currentDate').val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
 
   function getExerciseRecords(page) {
     var settings = {
@@ -782,29 +910,32 @@
       const VIEW_SECTION = 5; // 화면 출력 개수(페이지 버튼 출력개수)
       const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지)
 
-
       console.log(response);
+      console.log(TOTAL_DATA);
       var tableBody = $('#exercise-records tbody');
       tableBody.empty();
 
       $.each(response.content, function (index, record) {
+
         var row =
             `<tr>
             <td>${record.exercise}</td>
             <td>${record.time}</td>
             <td>${record.reps}</td>
             <td>${record.calories}</td>
-            <td>${record.createAt}</td>
+            <td>${record.date}</td>
+            <td><input type="submit" id="modifyRecord" class="btn_mod" onclick="getExerciseRecord(${record.id}); setSelectedId(${record.id});" value="수정" />
+      <input type="submit" id="deleteRecord" class="btn_del" onclick="deleteExerciseRecord(${record.id})" value="삭제" /></td>
           </tr>`
         ;
         tableBody.append(row);
-      });
 
+      });
 
       pageing_list(page);
 
       function pageing_list(page) {
-        //page  = page < 0 ? 0 : page;
+        //page  = page < 0 ? 0 : page;       
         var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
         var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
         var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
@@ -818,44 +949,37 @@
 
         $('.paging').empty();
 
-        if (page != 1) {
-          pageNums.push("<a href='#;' id='p' class='first' data-page=" + first + ">처음</a>");
-        }
-
-        if (setion_page != 1) {
-          pageNums.push("<a href='#;' id='p' class='prev' data-page=" + prev + ">이전</a>");
-        }
-        // 페이징 번호 출력
-        for (var i = start; i < end; i++) {
-          if (page == i) {
-            pageNums.push('<a href="#;" id="p" class="on" data-page=' + i + '>' + i + '</a>');
-            continue;
+        if (TOTAL_DATA > 0) {
+          if (page != 1) {
+            pageNums.push("<a href='#;' id='p' class='first' data-page=" + first + ">처음</a>");
           }
-          pageNums.push('<a href="#;" id="p" data-page=' + i + '>' + i + '</a>');
-        }
 
-        if (setion_page != TOTAL_SECTION) {
-          pageNums.push("<a href='#;' id='p' class='next' data-page=" + next + ">다음</a>");
-        }
+          if (setion_page != 1) {
+            pageNums.push("<a href='#;' id='p' class='prev' data-page=" + prev + ">이전</a>");
+          }
+          // 페이징 번호 출력
+          for (var i = start; i < end; i++) {
+            if (page == i) {
+              pageNums.push('<a href="#;" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+              continue;
+            }
+            pageNums.push('<a href="#;" id="p" data-page=' + i + '>' + i + '</a>');
+          }
 
-        if (page != last) {
-          pageNums.push("<a href='#;' id='p' class='last' data-page=" + last + ">마지막</a>");
-        }
+          if (setion_page != TOTAL_SECTION) {
+            pageNums.push("<a href='#;' id='p' class='next' data-page=" + next + ">다음</a>");
+          }
 
-        $('.paging').append(pageNums);
+          if (page != last) {
+            pageNums.push("<a href='#;' id='p' class='last' data-page=" + last + ">마지막</a>");
+          }
+
+          $('.paging').append(pageNums);
+        }
       }
-
-      
-
     });
 
-
-
   }
-
-  // 페이징 목록
-
-
 </script>
 
 </html>

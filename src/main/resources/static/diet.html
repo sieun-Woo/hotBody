@@ -791,6 +791,8 @@
 
 <script>
 
+  var refreshToken = null;
+
   $(function () {
 
     $(document).ajaxStart(function () {
@@ -800,7 +802,6 @@
       var now = Math.floor(new Date().getTime() / 1000)
 
       console.log("만료시간 : " + new Date(parseJwt(token).exp * 1000));
-      // console.log(parseJwt(token).exp)
       console.log("현재시간 : " + new Date());
 
       alert("ajax 요청");
@@ -808,6 +809,7 @@
       if (exp - now < 30) {
         console.log("만료되었습니다.")
       } else {
+        refreshToken = localStorage.getItem('refreshToken')
         console.log("만료되지 않았습니다.")
       }
 
@@ -836,98 +838,104 @@
 
   function searchFood(page) {
 
-
     let foodType = $('#foodType').val();
     let foodName = $('#foodName').val();
 
-    var settings = {
+    $.ajax({
       "url": `http://localhost:8080/api/diet/food?foodType=${foodType}&searchWord=${foodName}&page=${page}`,
       "method": "GET",
-      "timeout": 0
-    };
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "RefreshToken": refreshToken
+      },
 
-    $.ajax(settings).done(function (response) {
-      const TOTAL_DATA = response.totalElements; // 데이터 총개수
-      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
-      const TOTAL_PAGE = response.totalPages // 총페이지
-      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
-      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지)  
+    })
+      .done(function (response) {
 
-      board_list();
+        console.log(refreshToken)
 
-      function board_list() {
-        var start = VIEW_DATA - VIEW_DATA;
-        // page * VIEW_DATA - (VIEW_DATA - 1);
-        var end = VIEW_DATA;
-        // page * VIEW_DATA + VIEW_DATA - (VIEW_DATA - 1);
-        var str = '';
+        const TOTAL_DATA = response.totalElements; // 데이터 총개수
+        const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+        const TOTAL_PAGE = response.totalPages // 총페이지
+        const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+        const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지)  
 
-        var j = (page - 1) * 10;
+        board_list();
 
-        for (var i = start; i < end; i++) {
-          str += '<tr>';
-          str += '<td>' + (TOTAL_DATA - j) + '</td>';
-          str += '<td>' + (response.content[i].foodName) + '</td>';
-          str += '<td>' + (response.content[i].factory) + '</td>';
-          str += '<td>' + (response.content[i].oneTimeSupply) + '</td>';
-          str += '<td>' + (response.content[i].energy) + '</td>';
-          str += '<td>' + (response.content[i].protein) + '</td>';
-          str += '<td>' + (response.content[i].fat) + '</td>';
-          str += '<td>' + (response.content[i].carbohydrate) + '</td>';
-          str += '<td>' + (response.content[i].sugar) + '</td>';
-          str += '<td>' + '<input type="button" name="xxx" value="선택" onclick="rowClicked()">' + '</td>';
-          str += '</tr>';
-          j += 1
-        }
+        function board_list() {
+          var start = VIEW_DATA - VIEW_DATA;
+          // page * VIEW_DATA - (VIEW_DATA - 1);
+          var end = VIEW_DATA;
+          // page * VIEW_DATA + VIEW_DATA - (VIEW_DATA - 1);
+          var str = '';
 
-        $('.table tbody').empty();
-        $(' #eventTable tbody').append(str);
+          var j = (page - 1) * 10;
 
-        pageing_list();
-      }
-
-      // 페이징 목록
-      function pageing_list() {
-        //page  = page < 0 ? 0 : page;
-        var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
-        var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
-        var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
-        var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
-        var next = end = (setion_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
-        var first = 1; // 처음 페이지
-        var last = TOTAL_PAGE; // 마지막 페이지
-        var pageNums = [];
-
-        $('.paging').empty();
-
-        if (page != 1) {
-          pageNums.push("<a href='#;' id='p' class='first' data-page=" + first + ">처음</a>");
-        }
-
-        if (setion_page != 1) {
-          pageNums.push("<a href='#;' id='p' class='prev' data-page=" + prev + ">이전</a>");
-        }
-        // 페이징 번호 출력
-        for (var i = start; i < end; i++) {
-          if (page == i) {
-            pageNums.push('<a href="#;" id="p" class="on" data-page=' + i + '>' + i + '</a>');
-            continue;
+          for (var i = start; i < end; i++) {
+            str += '<tr>';
+            str += '<td>' + (TOTAL_DATA - j) + '</td>';
+            str += '<td>' + (response.content[i].foodName) + '</td>';
+            str += '<td>' + (response.content[i].factory) + '</td>';
+            str += '<td>' + (response.content[i].oneTimeSupply) + '</td>';
+            str += '<td>' + (response.content[i].energy) + '</td>';
+            str += '<td>' + (response.content[i].protein) + '</td>';
+            str += '<td>' + (response.content[i].fat) + '</td>';
+            str += '<td>' + (response.content[i].carbohydrate) + '</td>';
+            str += '<td>' + (response.content[i].sugar) + '</td>';
+            str += '<td>' + '<input type="button" name="xxx" value="선택" onclick="rowClicked()">' + '</td>';
+            str += '</tr>';
+            j += 1
           }
-          pageNums.push('<a href="#;" id="p" data-page=' + i + '>' + i + '</a>');
+
+          $('.table tbody').empty();
+          $(' #eventTable tbody').append(str);
+
+          pageing_list();
         }
 
-        if (setion_page != TOTAL_SECTION) {
-          pageNums.push("<a href='#;' id='p' class='next' data-page=" + next + ">다음</a>");
-        }
+        // 페이징 목록
+        function pageing_list() {
+          //page  = page < 0 ? 0 : page;
+          var setion_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+          var start = setion_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+          var end = setion_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+          var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+          var next = end = (setion_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+          var first = 1; // 처음 페이지
+          var last = TOTAL_PAGE; // 마지막 페이지
+          var pageNums = [];
 
-        if (page != last) {
-          pageNums.push("<a href='#;' id='p' class='last' data-page=" + last + ">마지막</a>");
-        }
+          $('.paging').empty();
 
-        $('.paging').append(pageNums);
+          if (page != 1) {
+            pageNums.push("<a href='#;' id='p' class='first' data-page=" + first + ">처음</a>");
+          }
+
+          if (setion_page != 1) {
+            pageNums.push("<a href='#;' id='p' class='prev' data-page=" + prev + ">이전</a>");
+          }
+          // 페이징 번호 출력
+          for (var i = start; i < end; i++) {
+            if (page == i) {
+              pageNums.push('<a href="#;" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+              continue;
+            }
+            pageNums.push('<a href="#;" id="p" data-page=' + i + '>' + i + '</a>');
+          }
+
+          if (setion_page != TOTAL_SECTION) {
+            pageNums.push("<a href='#;' id='p' class='next' data-page=" + next + ">다음</a>");
+          }
+
+          if (page != last) {
+            pageNums.push("<a href='#;' id='p' class='last' data-page=" + last + ">마지막</a>");
+          }
+
+          $('.paging').append(pageNums);
+        }
       }
-    }
-    )
+      )
   }
 
 
@@ -981,7 +989,8 @@
       "method": "GET",
       "timeout": 0,
       "headers": {
-        "Authorization": localStorage.getItem('accessToken')
+        "Authorization": localStorage.getItem('accessToken'),
+
       },
       "error": function (jqXHR) {
         alert(jqXHR.responseText)

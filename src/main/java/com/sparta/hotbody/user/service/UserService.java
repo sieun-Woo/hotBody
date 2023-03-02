@@ -112,12 +112,12 @@ public class UserService {
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
 //    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-//
 //    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
 //    cookieRefreshToken.setPath("/");
 
-    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
+    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
+
 //    response.addCookie(cookieRefreshToken);
 
     refreshTokenRedisRepository.save(

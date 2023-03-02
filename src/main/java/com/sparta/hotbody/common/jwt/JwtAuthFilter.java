@@ -28,10 +28,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
       FilterChain filterChain) throws ServletException, IOException {
     String token = jwtUtil.resolveToken(request);
+    String refreshToken1 = jwtUtil.resolveRefreshToken(request);
+    log.info(refreshToken1);
     try {
       if (token != null) {
         if (!jwtUtil.validateToken(token, response)) {
-
           jwtExceptionHandler(response, "Invalid JWT signature", HttpStatus.BAD_REQUEST.value());
           return;
         }
@@ -39,12 +40,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         setAuthentication(info.getSubject(), info.get(jwtUtil.AUTHORIZATION_KEY).toString());
       }
     } catch (ExpiredJwtException e) {
-      String refreshToken = jwtUtil.resolveRefreshTokenFromCookie(request);
+      String refreshToken = jwtUtil.resolveRefreshToken(request);
       if (refreshToken == null) {
         jwtExceptionHandler(response, "Expired JWT token, 만료된 JWT token 입니다.",
             HttpStatus.BAD_REQUEST.value());
         return;
-
       }
       if (jwtUtil.validateRefreshToken(refreshToken)) {
         String reCreateAccessToken = jwtUtil.reCreateAccessToken(refreshToken);

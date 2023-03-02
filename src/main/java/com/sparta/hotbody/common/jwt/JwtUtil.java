@@ -76,7 +76,6 @@ public class JwtUtil {
     }
     return null;
   }
-
   // Header 리프레쉬 토큰을 가져오기
   public String resolveRefreshToken(HttpServletRequest request) {
     String bearerToken = request.getHeader(REFRESH_TOKEN);
@@ -84,11 +83,6 @@ public class JwtUtil {
       return bearerToken.substring(7);
     }
     return null;
-  }
-
-  // Cookie 액세스 토큰을 가져오기 (사용 안함)
-  public String resolveTokenFromCookie(HttpServletRequest request) {
-    return getToken(request, AUTHORIZATION_HEADER);
   }
 
   // Cookie 리프레쉬 토큰을 가져오기

@@ -395,19 +395,14 @@ body {
       "data": JSON.stringify({
         "username": username,
         "password": password
-      }),
+      }), 
     };
 
     $.ajax(settings).done(function (response, status, xhr) {
-      console.log(response);
       localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
       localStorage.setItem('refreshToken', xhr.getResponseHeader('RefreshToken'));
-      console.log(xhr)
-      console.log(xhr.getResponseHeader('Authorization'));
-      console.log(xhr.getResponseHeader('RefreshToken'));
-
       alert("로그인 완료")
-      // location.href = "index.html"
+      location.href = "index.html"
     }).fail(function(response) {
       alert(response.responseJSON.message);
     })

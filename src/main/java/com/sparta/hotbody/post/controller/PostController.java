@@ -33,7 +33,7 @@ public class PostController {
   private final PostService postService;
 
   // 1. 게시글 등록
-  @PostMapping("/posts")
+  @PostMapping("/post")
   public ResponseEntity<String> createPost(
       @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -97,14 +97,14 @@ public class PostController {
 
   // 5. 게시글 삭제
   @DeleteMapping("/posts/{postId}")
-  public void deletePost(
+  public ResponseEntity<String> deletePost(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postService.deletePost(postId, userDetails.getUser());
+    return postService.deletePost(postId, userDetails.getUser());
   }
 
   // 나의 게시글 전체 조회
-  @GetMapping("/myPosts")
+  @GetMapping("/my-posts")
   public Page<PostResponseDto> getMyAllPosts(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam("page") int page,
@@ -116,7 +116,7 @@ public class PostController {
   }
 
   // 나의 게시글 키워드 조회
-  @GetMapping("/myPosts/search")
+  @GetMapping("/my-posts/search")
   public Page<PostResponseDto> searchMyPosts(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam("searchType") String searchType,

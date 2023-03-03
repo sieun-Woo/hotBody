@@ -757,7 +757,7 @@ $.ajax(settings).done(function (response) {
             <div v-for="article in filtered">
               <div class="article-list__cell-id">`+ k + `</div>              
               <div class="article-list__cell-title">
-                <a href="view_post.html?`+ `${post.id}` + `"class="hover-pointer">${post.title}</a>
+                <a href="view_post.html?${post.id}" class="hover-pointer">${post.title}</a>
               </div>
               <div class="article-list__cell-writer">${post.nickname}</div>
               <div class="article-list__cell-reg-date">${post.createdAt}</div>

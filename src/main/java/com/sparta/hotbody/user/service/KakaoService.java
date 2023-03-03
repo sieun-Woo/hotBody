@@ -51,16 +51,16 @@ public class KakaoService {
 
 
 
-    Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+   /* Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, "Bearer " + accessToken);
     cookie.setPath("/");
     response.addCookie(cookie);
 
     //String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
     Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN,"Bearer " + refreshToken);
     cookieRefreshToken.setPath("/");
-    response.addCookie(cookieRefreshToken);
-   /* response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
-    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);*/
+    response.addCookie(cookieRefreshToken);*/
+    response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
+    response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     refreshTokenRedisRepository.save(new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
     return "로그인 완료";
@@ -76,7 +76,7 @@ public class KakaoService {
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", "authorization_code");
     body.add("client_id", "84bb3d050c5f1743aba916fceffca717");
-    body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+    body.add("redirect_uri", "http://localhost:8080/index.html");
     body.add("code", code);
 
     // HTTP 요청 보내기

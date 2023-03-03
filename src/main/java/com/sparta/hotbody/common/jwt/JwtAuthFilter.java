@@ -70,6 +70,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
         break;
 
+      case "TRAINER":
+        Authentication trainerAuthentication = jwtUtil.createAuthentication(username);
+        context.setAuthentication(trainerAuthentication);
+        SecurityContextHolder.setContext(context);
+        break;
+
       case "ADMIN":
         Authentication adminAuthentication = jwtUtil.createAdminAuthentication(username);
         context.setAuthentication(adminAuthentication);

@@ -2,6 +2,7 @@ package com.sparta.hotbody.common;
 
 import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.admin.repository.AdminRepository;
+import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.repository.PostRepository;
@@ -11,6 +12,7 @@ import com.sparta.hotbody.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,7 @@ public class InitData implements ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args){
+
 
     Admin admin = new Admin("admin", passwordEncoder.encode("admin"), UserRole.ADMIN, "admin", "www.naver.com", "admin@gmail.com");
     adminRepository.save(admin);

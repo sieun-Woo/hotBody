@@ -51,21 +51,17 @@ public class KakaoService {
 
 
 
-    Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken.substring(7));
+    Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, "Bearer " + accessToken);
     cookie.setPath("/");
     response.addCookie(cookie);
 
-    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
+    //String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
+    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN,"Bearer " + refreshToken);
     cookieRefreshToken.setPath("/");
-
+    response.addCookie(cookieRefreshToken);
    /* response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);*/
-
-    response.addCookie(cookieRefreshToken);
-
-    refreshTokenRedisRepository.save(
-        new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
+    refreshTokenRedisRepository.save(new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
     return "로그인 완료";
   }

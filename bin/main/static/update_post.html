@@ -147,16 +147,9 @@
             </div>
 
             <div class="textForm">
-              <div id="title"></div>
-              <input type="hidden" id="postId" value="" />
-              <img src="" id="image" />
-              <br />
-            </div>
-
-            <div class="textForm">
               <div
                 type="nickname"
-                id="post_nickname"
+                id="nickname"
                 name="nickname"
                 disabled
               ></div>
@@ -164,7 +157,16 @@
             </div>
 
             <div class="textForm">
-              <div id="post_content"></div>
+              <textarea id="title" type="textarea" class="text"
+              style="resize: none; width: 500px; height: 20px;"></textarea>
+              <br />
+              <img src="" id="post_image" />
+              <br />
+            </div>
+
+            <div class="textForm">
+              <textarea id="content" type="textarea" class="text"
+              style="resize: none; width: 500px; height: 100px;"></textarea>
               <br />
             </div>
 
@@ -179,7 +181,7 @@
               <button
                 type="button"
                 class="btn btn-outline-dark"
-                onclick="updatePost()"
+                onclick="updateImage()"
               >
                 수정
               </button>
@@ -678,17 +680,19 @@
   </style>
 
   <script>
-    // var page = 0;
-    // var postId = document.location.href.split("?")[1];
+    // 파일 업로드 스크립트 설정
+    $("#file").on("change", function () {
+        var fileName = $("#file").val();
+        $(".upload-name").val(fileName);
+      });
+
     var postId = localStorage.getItem("postId");
-    console.log(postId);
-    
+    var imageUrlList = [];
 
     jQuery(document).ready(function () {
-      // page = postId;
 
       var settings = {
-        url: "http://localhost:8080/api/posts/" + postId,
+        url: "http://localhost:8080/api/posts/" + localStorage.getItem('currentPostId'),
         method: "GET",
         timeout: 0,
         headers: {
@@ -698,14 +702,15 @@
       };
 
       $.ajax(settings).done(function (response) {
-        $("#post_nickname").text(response.nickname);
+        // $("#nickname").text(response.nickname);
         $("#title").text(response.title);
-        $("#post_content").text(response.content);
+        $("#content").text(response.content);
         $("#postId").val(postId);
+        $("#category").text(response.category);
 
         if (response.image != null) {
-          $("#image").attr("src", response.image);
-          $("#image").attr("style", "max-width: 100%; height: auto;");
+          $("#post_image").attr("src", response.image);
+          $("#post_image").attr("style", "max-width: 100%; height: auto;");
         }
       });
 
@@ -756,9 +761,9 @@
     }
 
     // 글 수정
-    function updatePost(postId) {
+    function updatePost() {
       var settings = {
-        url: "http://localhost:8080/api/posts/" + postId,
+        url: "http://localhost:8080/api/posts/" + localStorage.getItem('currentPostId'),
         method: "PATCH",
         timeout: 0,
         headers: {
@@ -767,8 +772,8 @@
         },
         data: JSON.stringify({
           title: $("#title").val(),
-          content: $("#content").val(),
-          resourcePath: response,
+          content: $("#post_content").val(),
+          "resourcePath": response
         }),
       };
 
@@ -777,16 +782,19 @@
       });
     }
 
-    function updateImage(postId) {
+
+    function updateImage() {
+
       var form = new FormData();
       if ($("#image")[0].files[0] == null) {
         updatePost();
         return;
       }
+
       form.append("file", $("#image")[0].files[0]);
 
       var settings = {
-        url: "http://localhost:8080/api/posts/" + postId + "image",
+        url: "http://localhost:8080/api/posts/" + localStorage.getItem('currentPostId') + "/image",
         method: "POST",
         timeout: 0,
         headers: {
@@ -799,7 +807,8 @@
       };
 
       $.ajax(settings).done(function (response) {
-        updatePost(response);
+        alert("글 수정이 완료되었습니다.")
+        window.location.reload();
       });
     }
   </script>

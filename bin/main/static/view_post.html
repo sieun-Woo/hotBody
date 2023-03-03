@@ -138,7 +138,6 @@
 
         <div class="textForm">
           <div id="title"></div>
-          <input type="hidden" id="postId" value="">
           <img src="" id="image">
           <br/>
         </div> 
@@ -155,7 +154,7 @@
 
         <!-- 게시글 수정 & 삭제 -->
         <div class="textForm3">
-          <button type="button" class="btn btn-outline-dark" onclick="updatePost()">수정</button>
+          <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
           <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
       </div>
 
@@ -753,12 +752,13 @@
   }
 
   // 글 수정
-  
+  // 
   console.log("수정 : "+ postId)
 
   function updatePost(postId){
-    location.href=`update_post.html?` + postId;
-
+    localStorage.setItem("currentPostId", postId)
+    location.href='update_post.html';
+    console.log("수정 : "+ postId)
   }
   // 글 삭제
 
@@ -867,7 +867,6 @@
         paging_list();
         comments_list(response.content);
       }
-
 
       function comments_list(data) {
 

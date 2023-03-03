@@ -8,7 +8,6 @@ import com.sparta.hotbody.common.batch.food.Food;
 import com.sparta.hotbody.common.batch.food.FoodRepository;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFood;
 import com.sparta.hotbody.common.batch.processedfood.ProcessedFoodRepository;
-import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
 import com.sparta.hotbody.diet.dto.FoodOfDietResponseDto;
 import com.sparta.hotbody.diet.dto.FoodOfDietRequestDto;
 import com.sparta.hotbody.diet.dto.FoodResponseDto;
@@ -42,7 +41,6 @@ public class DietServiceImpl implements DietService {
   private final DietRepository dietRepository;
   private final FoodOfDietRepository foodOfDietRepository;
   private final UserRepository userRepository;
-  private final RefreshTokenRepository refreshTokenRepository;
 
   public Page<FoodResponseDto> searchFood(String FoodType, String searchWord, int page) {
     Sort sort = Sort.by(Direction.DESC, "id");

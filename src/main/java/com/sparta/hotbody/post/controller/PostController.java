@@ -102,4 +102,29 @@ public class PostController {
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     postService.deletePost(postId, userDetails.getUser());
   }
+
+  // 나의 게시글 전체 조회
+  @GetMapping("/myPosts")
+  public Page<PostResponseDto> getMyAllPosts(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return postService.getMyAllPosts(userDetails.getUser().getNickname(),
+        page - 1, size, sortBy, isAsc);
+  }
+
+  // 나의 게시글 키워드 조회
+  @GetMapping("/myPosts/search")
+  public Page<PostResponseDto> searchMyPosts(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam("searchType") String searchType,
+      @RequestParam("searchKeyword") String searchKeyword,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return postService.searchMyPosts(userDetails.getUser().getNickname(), searchType, searchKeyword, page - 1, size, sortBy, isAsc);
+  }
 }

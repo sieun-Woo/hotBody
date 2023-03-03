@@ -131,8 +131,6 @@ public class PostService {
     return null;
   }
 
-
-
   // 5. 게시글 삭제
   @Transactional
   public void deletePost(Long postId, User user) {
@@ -181,5 +179,39 @@ public class PostService {
     String resourcePath = image.getResourcePath();
     post.updateImage(resourcePath);
     return new ResponseEntity<>("수정되었습니다.", HttpStatus.OK);
+  }
+
+  // 7. 나의 게시글 조회
+  public Page<PostResponseDto> getMyAllPosts(
+      String nickname, int i, int size, String sortBy,
+      boolean isAsc) {
+    // 페이징 처리
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(i, size, sort);
+    Page<Post> posts = postRepository.findByNicknameContaining(nickname, pageable);
+    Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
+    return postResponseDto;
+  }
+
+  @Transactional
+  // 8. 키워드로 나의 게시글 검색
+  public Page<PostResponseDto> searchMyPosts(
+      String nickname, String searchType, String searchKeyword,
+      int page, int size, String sortBy, boolean isAsc) {
+    // 페이징 처리
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    if (searchType.equals("title")) {
+      Page<Post> posts = postRepository.findAllByNicknameContainingAndTitleContaining
+          (nickname, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
+    } else {
+      Page<Post> posts = postRepository.findAllByNicknameContainingAndContentContaining
+          (nickname, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
+    }
   }
 }

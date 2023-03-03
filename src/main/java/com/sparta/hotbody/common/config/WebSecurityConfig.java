@@ -76,7 +76,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
 //        .allowedMethods("GET", "SET", "PUT", "DELETE", "OPTIONS", "HEAD")
-        .exposedHeaders("Authorization")
+        .exposedHeaders("Authorization", "RefreshToken")
         .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500") // 허용할 출처
         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD") // 허용할 HTTP method
         .allowCredentials(true) // 쿠키 인증 요청 허용

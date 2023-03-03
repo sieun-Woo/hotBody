@@ -1,9 +1,6 @@
 package com.sparta.hotbody.user.controller;
 
-import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
-import com.sparta.hotbody.post.dto.PostResponseDto;
-import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -34,7 +31,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,9 +1,11 @@
 package com.sparta.hotbody.user.controller;
 
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.entity.PostCategory;
+import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -18,12 +20,14 @@ import com.sparta.hotbody.user.dto.UserProfileResponseDto;
 import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
+import com.sparta.hotbody.user.service.KakaoService;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserService;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -55,6 +59,7 @@ public class UserController {
 
   private final UserService userService;
   private final UserRepository userRepository;
+  private final KakaoService kakaoService;
 
   //1.회원가입
   @PostMapping("/sign-up")
@@ -67,6 +72,17 @@ public class UserController {
   public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto,
       HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
     return userService.login(loginRequestDto, response, request);
+  }
+
+  //2.1 카카오 로그인
+  @GetMapping("/kakao/callback")
+  public String kakaoLogin(@RequestParam String code, HttpServletResponse response)
+      throws IOException {
+
+    kakaoService.kakaoLogin(code,response);
+
+    response.sendRedirect("/index.html");
+    return "로그인 완료";
   }
 
   // 로그아웃
@@ -162,5 +178,7 @@ public class UserController {
   public UsersResponseDto getTrainer(@PathVariable Long trainerId) {
     return userService.getTrainer(trainerId);
   }
+
+
 
 }

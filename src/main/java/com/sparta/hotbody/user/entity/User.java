@@ -64,8 +64,6 @@ public class User extends TimeStamp {
   // 아이디, 비밀번호 찾기에 사용할 이메일 주소
   @Column
   private String email;
-  @Column
-  private int likes = 0;
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private UserRole role;
@@ -100,7 +98,6 @@ public class User extends TimeStamp {
     this.role = role;
     this.age = age;
     this.email = email;
-    this.likes = trainerLikeList.size();
   }
 
   //카카오 아이디

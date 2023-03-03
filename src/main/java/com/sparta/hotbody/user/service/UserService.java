@@ -307,6 +307,7 @@ public class UserService {
     return stringBuffer.toString();
   }
 
+  // 트레이너 전체 조회
   @Transactional
   public Page<UsersResponseDto> getTrainerList(int page, int size,
       String sortBy, boolean isAsc) {
@@ -320,7 +321,7 @@ public class UserService {
 
     return usersResponseDto;
   }
-
+  // 트레이너 개인 조회
   @Transactional
   public UsersResponseDto getTrainer(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(

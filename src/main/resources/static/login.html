@@ -417,23 +417,25 @@
 <script>
   function kakaoLogin() {
 
-    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=84bb3d050c5f1743aba916fceffca717&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code';
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=84bb3d050c5f1743aba916fceffca717&redirect_uri=http://localhost:8080/index.html&response_type=code';
 
     
     
-    $.ajax().done(function (response) {
+    $.ajax().done(function (response,xhr) {
 
-          var cookienames = getAllCookieNames();
-          var cookieTokenName = cookienames[0];
-          var cookieRefreshName = cookienames[1];
-          var cookieToken = getCookie(cookieTokenName);
-          var cookieRefresh = getCookie(cookieRefreshName);
-          console.log(cookieToken);
-          //
-          localStorage.setItem('accessToken', cookieToken);
-          localStorage.setItem('refreshToken', cookieRefresh);
+
+          // var cookienames = getAllCookieNames();
+          // var cookieTokenName = cookienames[0];
+          // var cookieRefreshName = cookienames[1];
+          // var cookieToken = getCookie(cookieTokenName);
+          // var cookieRefresh = getCookie(cookieRefreshName);
+          // console.log(cookieToken);
+          // //
+          // localStorage.setItem('accessToken', cookieToken);
+          // localStorage.setItem('refreshToken', cookieRefresh);
           alert("로그인 완료");
-          location.href = "index.html"
+          //location.href = "index.html"
+
         }
     ).fail(function (response) {
       alert(response.responseJSON.message);

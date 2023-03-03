@@ -2,6 +2,7 @@ package com.sparta.hotbody.report.controller;
 
 import com.sparta.hotbody.report.dto.CommentReportRequestDto;
 import com.sparta.hotbody.report.dto.CommentReportResponseDto;
+import com.sparta.hotbody.report.dto.UserReportResponseDto;
 import com.sparta.hotbody.report.service.CommentReportService;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/reports/comments")
+@RequestMapping("/api/reports")
 public class CommentReportController {
   private final CommentReportService commentReportService;
 
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping
-  public ResponseEntity reportUser(@RequestBody CommentReportRequestDto commentReportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return new ResponseEntity(commentReportService.reportComment(userDetails.getUser(),
-        commentReportRequestDto),HttpStatus.OK);
+  @PostMapping("/post")
+  public CommentReportResponseDto reportComment(
+      @RequestBody CommentReportRequestDto commentReportRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return commentReportService.reportComment(userDetails.getUser(), commentReportRequestDto);
   }
 
-  @GetMapping
+  @GetMapping("/posts")
   public Page<CommentReportResponseDto> getAllReportedComments(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -39,6 +41,5 @@ public class CommentReportController {
   ){
     return commentReportService.getAllReportedComments (page-1,size,sortBy, isAsc);
   }
-
 
 }

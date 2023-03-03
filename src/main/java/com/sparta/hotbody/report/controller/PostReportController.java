@@ -21,19 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/reports/posts")
+@RequestMapping("/api/reports")
 public class PostReportController {
 
   private final PostReportService postReportService;
 
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping
-  public ResponseEntity reportUser(@RequestBody PostReportRequestDto postReportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return new ResponseEntity(postReportService.reportPost(userDetails.getUser(),
-        postReportRequestDto),HttpStatus.OK);
+  @PostMapping("/post")
+  public PostReportResponseDto reportPost(@RequestBody PostReportRequestDto postReportRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return postReportService.reportPost(userDetails.getUser(), postReportRequestDto);
   }
 
-  @GetMapping
+  @GetMapping("/posts")
   public Page<PostReportResponseDto> getAllReportedPosts(
       @RequestParam("page") int page,
       @RequestParam("size") int size,

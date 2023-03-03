@@ -31,7 +31,7 @@ public class UsersResponseDto {
     this.email = user.getEmail();
     this.role = user.getRole();
     this.introduce = user.getIntroduce();
-    this.likes = user.getTrainerLikeList().size();
+    this.likes=user.getTrainerLikeList().size();
   }
 
   @Builder

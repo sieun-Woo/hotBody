@@ -143,11 +143,6 @@ public class UserController {
   }
 
   //10.트레이너 전체 조회
-//  @GetMapping("/auth/trainers")
-//  public ResponseEntity getTrainerList(@RequestParam(value="currentPage") int pageNum) {
-//    return userService.getTrainerList(pageNum);
-//  }
-
   @GetMapping("/auth/trainers")
   public Page<UsersResponseDto> getTrainerList(
       @RequestParam("page") int page,

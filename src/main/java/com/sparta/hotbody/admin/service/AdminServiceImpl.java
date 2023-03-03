@@ -66,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
   private String from;
 
   @Override
-  public ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto) {
+  public ResponseEntity<String> signup(AdminSignUpRequestDto adminSignUpRequestDto) {
     String username = adminSignUpRequestDto.getUsername();
     String password = passwordEncoder.encode(adminSignUpRequestDto.getPassword());
 
@@ -84,7 +84,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
+  public ResponseEntity<String> login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException {
     if(!jwtUtil.validate(request)) {
       throw new CustomException(ExceptionStatus.ALREADY_LOGIN_EXCEPTION);
@@ -130,7 +130,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity permitTrainer(Long requestId) {
+  public ResponseEntity<String> permitTrainer(Long requestId) {
     Trainer trainer = promoteRepository.findById(requestId)
         .orElseThrow(() -> new CustomException(ExceptionStatus.APPLY_IS_NOT_EXIST));
     trainer.getUser().TrainerPermission(trainer.getIntroduce());
@@ -140,14 +140,14 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity refuseTrainer(Long requestId) {
+  public ResponseEntity<String> refuseTrainer(Long requestId) {
     promoteRepository.deleteById(requestId);
     return ResponseEntity.ok("트레이너 요청이 삭제되었습니다.");
   }
 
   @Override
   @Transactional
-  public ResponseEntity cancelTrainer(Long userId) {
+  public ResponseEntity<String> cancelTrainer(Long userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.TRAINER)) {
@@ -164,7 +164,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity updatePost(Long postId, PostModifyRequestDto postModifyRequestDto) {
+  public ResponseEntity<String> updatePost(Long postId, PostModifyRequestDto postModifyRequestDto) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
     post.modifyPost(postModifyRequestDto);
@@ -173,7 +173,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity deletePost(Long postId) {
+  public ResponseEntity<String> deletePost(Long postId) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
     postRepository.delete(post);
@@ -182,7 +182,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto) {
+  public ResponseEntity<String> updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST));
     comment.modifyComment(commentModifyRequestDto);
@@ -191,7 +191,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity deleteComment(Long commentId) {
+  public ResponseEntity<String> deleteComment(Long commentId) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST));
     commentRepository.delete(comment);
@@ -247,7 +247,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity updateUserInfo(Long userId, UserProfileRequestDto userRequestDto) {
+  public ResponseEntity<String> updateUserInfo(Long userId, UserProfileRequestDto userRequestDto) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     user.update(userRequestDto);
@@ -256,7 +256,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity makeUserSuspended(Long userId) {
+  public ResponseEntity<String> makeUserSuspended(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.USER)) {
@@ -269,7 +269,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity makeTrainerSuspended(Long userId) {
+  public ResponseEntity<String> makeTrainerSuspended(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.TRAINER)) {
@@ -282,7 +282,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity makeUserNormal(Long userId) {
+  public ResponseEntity<String> makeUserNormal(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.REPORTED)) {
@@ -295,7 +295,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity makeTrainerNormal(Long trainerId) {
+  public ResponseEntity<String> makeTrainerNormal(Long trainerId) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (trainer.getRole().equals(UserRole.REPORTED_TRAINER)) {
@@ -309,7 +309,7 @@ public class AdminServiceImpl implements AdminService {
   // 유저 회원 탈퇴
   @Override
   @Transactional
-  public ResponseEntity deleteUser(Long userId) {
+  public ResponseEntity<String> deleteUser(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     userRepository.delete(user);

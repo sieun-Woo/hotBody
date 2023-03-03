@@ -21,26 +21,26 @@ import org.springframework.http.ResponseEntity;
 
 public interface AdminService {
 
-  ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto);
+  ResponseEntity<String> signup(AdminSignUpRequestDto adminSignUpRequestDto);
 
-  ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
+  ResponseEntity<String> login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException;
 
-  ResponseEntity permitTrainer(Long requestId);
+  ResponseEntity<String> permitTrainer(Long requestId);
 
   Page<TrainerResponseDto> getRegistrations(int pageNum);
 
-  ResponseEntity refuseTrainer(Long userId);
+  ResponseEntity<String> refuseTrainer(Long userId);
 
-  ResponseEntity cancelTrainer(Long userId);
+  ResponseEntity<String> cancelTrainer(Long userId);
 
-  ResponseEntity updatePost(Long postId, PostModifyRequestDto postModifyRequestDto);
+  ResponseEntity<String> updatePost(Long postId, PostModifyRequestDto postModifyRequestDto);
 
-  ResponseEntity deletePost(Long postId);
+  ResponseEntity<String> deletePost(Long postId);
 
-  ResponseEntity updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto);
+  ResponseEntity<String> updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto);
 
-  ResponseEntity deleteComment(Long commentId);
+  ResponseEntity<String> deleteComment(Long commentId);
 
   Page<UsersResponseDto> getUserList(int pageNum);
 
@@ -50,9 +50,9 @@ public interface AdminService {
 
   TrainerResponseDto getTrainer(Long trainerId);
 
-  ResponseEntity updateUserInfo(Long userId, UserProfileRequestDto userProfileRequestDto);
+  ResponseEntity<String> updateUserInfo(Long userId, UserProfileRequestDto userProfileRequestDto);
 
-  ResponseEntity deleteUser(Long userId);
+  ResponseEntity<String> deleteUser(Long userId);
 
   FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
       throws MessagingException;
@@ -60,13 +60,13 @@ public interface AdminService {
   FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto)
       throws MessagingException;
 
-  ResponseEntity logout(HttpServletRequest request);
+  ResponseEntity<String> logout(HttpServletRequest request);
 
-  ResponseEntity makeUserSuspended(Long userId);
+  ResponseEntity<String> makeUserSuspended(Long userId);
 
-  ResponseEntity makeTrainerSuspended(Long userId);
+  ResponseEntity<String> makeTrainerSuspended(Long userId);
 
-  ResponseEntity makeUserNormal(Long userId);
+  ResponseEntity<String> makeUserNormal(Long userId);
 
-  ResponseEntity makeTrainerNormal(Long userId);
+  ResponseEntity<String> makeTrainerNormal(Long userId);
 }

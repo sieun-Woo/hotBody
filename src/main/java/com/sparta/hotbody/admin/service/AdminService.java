@@ -6,16 +6,17 @@ import com.sparta.hotbody.admin.dto.FindAdminIdResponseDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
-import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
+import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
+import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 public interface AdminService {
@@ -27,7 +28,7 @@ public interface AdminService {
 
   ResponseEntity permitTrainer(Long requestId);
 
-  ResponseEntity getRegistrations(int pageNum);
+  Page<TrainerResponseDto> getRegistrations(int pageNum);
 
   ResponseEntity refuseTrainer(Long userId);
 
@@ -41,13 +42,13 @@ public interface AdminService {
 
   ResponseEntity deleteComment(Long commentId);
 
-  ResponseEntity getUserList(int pageNum);
+  Page<UsersResponseDto> getUserList(int pageNum);
 
-  ResponseEntity getUser(Long userId);
+  UserProfileResponseDto getUser(Long userId);
 
-  ResponseEntity getTrainerList(int pageNum);
+  Page<UsersResponseDto> getTrainerList(int pageNum);
 
-  ResponseEntity getTrainer(Long trainerId);
+  TrainerResponseDto getTrainer(Long trainerId);
 
   ResponseEntity updateUserInfo(Long userId, UserProfileRequestDto userProfileRequestDto);
 

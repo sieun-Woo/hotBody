@@ -9,12 +9,16 @@ import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
+import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
+import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +44,8 @@ public class AdminController {
   }
 
   @PostMapping("/log-in")
-  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
+  public ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto,
+      HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException {
     return adminService.login(loginRequestDto, response, request);
   };
@@ -52,7 +57,7 @@ public class AdminController {
 
   // 트레이너 등록 요청 조회
   @GetMapping("/apply")
-  public ResponseEntity getRegistrations(@RequestParam int pageNum) {
+  public Page<TrainerResponseDto> getRegistrations(@RequestParam int pageNum) {
     return adminService.getRegistrations(pageNum);
   }
 
@@ -75,7 +80,8 @@ public class AdminController {
   }
 
   @PatchMapping("/posts/{postId}")
-  public ResponseEntity updatePost(@PathVariable Long postId, @RequestBody PostModifyRequestDto postModifyRequestDto) {
+  public ResponseEntity updatePost(@PathVariable Long postId,
+      @RequestBody PostModifyRequestDto postModifyRequestDto) {
     return adminService.updatePost(postId, postModifyRequestDto);
   }
 
@@ -84,37 +90,38 @@ public class AdminController {
     return adminService.deletePost(postId);
   }
 
-  @PatchMapping("/comments/{commentId}") // ToDo: 코멘트 수정 이후 다시 체크
-  public ResponseEntity updateComment(@PathVariable Long commentId, @RequestBody CommentModifyRequestDto commentModifyRequestDto) {
+  @PatchMapping("/comments/{commentId}")
+  public ResponseEntity updateComment(@PathVariable Long commentId,
+      @RequestBody CommentModifyRequestDto commentModifyRequestDto) {
     return adminService.updateComment(commentId, commentModifyRequestDto);
   }
 
-  @DeleteMapping("/comments/{commentId}") // ToDo: 코멘트 수정 이후 다시 체크
+  @DeleteMapping("/comments/{commentId}")
   public ResponseEntity deleteComment(@PathVariable Long commentId) {
     return adminService.deleteComment(commentId);
   }
 
   // 전체 유저 정보 조회
   @GetMapping("/users")  // users가 더 나을 것 같습니다.
-  public ResponseEntity getUserList(@RequestParam(value="currentPage") int pageNum) {
+  public Page<UsersResponseDto> getUserList(@RequestParam(value="currentPage") int pageNum) {
     return adminService.getUserList(pageNum);
   }
 
   // 단건 유저 정보 조회
   @GetMapping("/users/{userId}")
-  public ResponseEntity getUser(@PathVariable Long userId) {
+  public UserProfileResponseDto getUser(@PathVariable Long userId) {
     return adminService.getUser(userId);
   }
 
   // 전체 트레이너 정보 조회
   @GetMapping("/trainers")
-  public ResponseEntity getTrainerList(@RequestParam(value="currentPage") int pageNum) {
+  public Page<UsersResponseDto> getTrainerList(@RequestParam(value="currentPage") int pageNum) {
     return adminService.getTrainerList(pageNum);
   }
 
   // 단건 트레이너 정보 조회
   @GetMapping("/trainers/{trainerId}")
-  public ResponseEntity getTrainer(@PathVariable Long trainerId) {
+  public TrainerResponseDto getTrainer(@PathVariable Long trainerId) {
     return adminService.getTrainer(trainerId);
   }
 

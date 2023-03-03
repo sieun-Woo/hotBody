@@ -14,6 +14,8 @@ import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
 import com.sparta.hotbody.common.page.PageDto;
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
@@ -70,27 +72,27 @@ public class AdminServiceImpl implements AdminService {
 
     Optional<Admin> found = adminRepository.findByUsername(username);
     if (found.isPresent()) {
-      throw new IllegalArgumentException("중복된 아이디가 존재합니다.");
+      throw new CustomException(ExceptionStatus.USERNAME_IS_EXIST);
     }
     if (!adminSignUpRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-      throw new IllegalArgumentException("관리자 암호가 틀렸습니다.");
+      throw new CustomException(ExceptionStatus.ADMIN_CODE_IS_NOT_CORRECT);
     }
     UserRole role = UserRole.ADMIN;
     Admin admin = new Admin(adminSignUpRequestDto, password, role);
     adminRepository.save(admin);
-    return new ResponseEntity("회원가입 완료", HttpStatus.OK);
+    return ResponseEntity.ok("회원가입 완료");
   }
 
   @Override
   public ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException {
     if(!jwtUtil.validate(request)) {
-      return new ResponseEntity<>("중복 로그인 입니다.", HttpStatus.OK);
+      throw new CustomException(ExceptionStatus.ALREADY_LOGIN_EXCEPTION);
     }
     Admin admin = adminRepository.findByUsername(loginRequestDto.getUsername())
-        .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.ADMIN_IS_NOT_EXIST));
     if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
-      throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
+      throw new CustomException(ExceptionStatus.PASSWORDS_DO_NOT_MATCH);
     }
     String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
     String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
@@ -100,7 +102,7 @@ public class AdminServiceImpl implements AdminService {
 
     refreshTokenRedisRepository.save(new RefreshToken(refreshToken));
 
-    return new ResponseEntity("로그인 완료", HttpStatus.OK);
+    return ResponseEntity.ok("로그인 완료");
   }
 
   @Transactional
@@ -116,38 +118,38 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public ResponseEntity getRegistrations(int pageNum) {
+  public Page<TrainerResponseDto> getRegistrations(int pageNum) {
     Page<Trainer> trainerList = promoteRepository.findAll(new PageDto(pageNum).toPageable());
     if (trainerList.isEmpty()) {
-      throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
+      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }
     Page<TrainerResponseDto> result = trainerList
-        .map(m -> new TrainerResponseDto(m));
-    return new ResponseEntity(result, HttpStatus.OK);
+        .map(m -> new TrainerResponseDto(m.getUser()));
+    return result;
   }
 
   @Override
   @Transactional
   public ResponseEntity permitTrainer(Long requestId) {
     Trainer trainer = promoteRepository.findById(requestId)
-        .orElseThrow(() -> new IllegalArgumentException("요청이 존재하지 않습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.APPLY_IS_NOT_EXIST));
     trainer.getUser().TrainerPermission(trainer.getIntroduce());
     promoteRepository.deleteById(requestId);
-    return new ResponseEntity("트레이너 권한을 부여하였습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("트레이너 권한을 부여하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity refuseTrainer(Long requestId) {
     promoteRepository.deleteById(requestId);
-    return new ResponseEntity("트레이너 요청이 삭제되었습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("트레이너 요청이 삭제되었습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity cancelTrainer(Long userId) {
     User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.TRAINER)) {
       user.cancelPermission();
       if (promoteRepository.existsByUser(user)) {
@@ -155,89 +157,99 @@ public class AdminServiceImpl implements AdminService {
         promoteRepository.delete(trainer);
       }
     } else {
-      throw new IllegalArgumentException("해당 유저는 트레이너가 아닙니다.");
+      throw new CustomException(ExceptionStatus.NOT_TRAINER);
     }
-    return new ResponseEntity("트레이너 권한을 삭제하였습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("트레이너 권한을 삭제하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity updatePost(Long postId, PostModifyRequestDto postModifyRequestDto) {
-    Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
     post.modifyPost(postModifyRequestDto);
-    return new ResponseEntity("게시글 수정을 완료하였습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("게시글 수정을 완료하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity deletePost(Long postId) {
-    Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+    Post post = postRepository.findById(postId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
     postRepository.delete(post);
-    return new ResponseEntity("게시글 삭제가 완료되었습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("게시글 삭제가 완료되었습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto) {
-    Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+    Comment comment = commentRepository.findById(commentId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST));
     comment.modifyComment(commentModifyRequestDto);
-    return new ResponseEntity("댓글 수정을 완료하였습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("댓글 수정을 완료하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity deleteComment(Long commentId) {
-    Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+    Comment comment = commentRepository.findById(commentId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST));
     commentRepository.delete(comment);
-    return new ResponseEntity("댓글 삭제가 완료되었습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("댓글 삭제가 완료되었습니다.");
   }
 
   @Override
   @Transactional
-  public ResponseEntity getUserList(int pageNum) {
+  public Page<UsersResponseDto> getUserList(int pageNum) {
     Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
-      throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
+      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }
     Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
-    return new ResponseEntity(userResponseDtoPage, HttpStatus.OK);
+    return userResponseDtoPage;
   }
 
   @Override
   @Transactional
-  public ResponseEntity getUser(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+  public UserProfileResponseDto getUser(Long userId) {
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (!user.getRole().equals(UserRole.USER)) {
-      throw new IllegalArgumentException("유저가 아닙니다.");
+      throw new CustomException(ExceptionStatus.NOT_USER);
     }
-    return new ResponseEntity(new UserProfileResponseDto(user), HttpStatus.OK);
+    UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(user);
+    return userProfileResponseDto;
   }
 
   @Override
   @Transactional
-  public ResponseEntity getTrainerList(int pageNum) {
-    Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.TRAINER, UserRole.REPORTED_TRAINER, new PageDto(pageNum).toPageable());
+  public Page<UsersResponseDto> getTrainerList(int pageNum) {
+    Page<User> userPage = userRepository.findAllByRoleOrRole(
+        UserRole.TRAINER, UserRole.REPORTED_TRAINER, new PageDto(pageNum).toPageable());
     if (userPage.isEmpty()) {
-      throw new IllegalArgumentException("페이지가 존재하지 않습니다.");
+      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }
       Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
-    return new ResponseEntity(userResponseDtoPage, HttpStatus.OK);
+    return userResponseDtoPage;
   }
 
   @Override
   @Transactional
-  public ResponseEntity getTrainer(Long trainerId) {
-    User user = userRepository.findById(trainerId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+  public TrainerResponseDto getTrainer(Long trainerId) {
+    User user = userRepository.findById(trainerId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (!user.getRole().equals(UserRole.TRAINER)) {
-      throw new IllegalArgumentException("트레이너가 아닙니다.");
+      throw new CustomException(ExceptionStatus.NOT_TRAINER);
     }
-    return new ResponseEntity(user, HttpStatus.OK);
+    TrainerResponseDto trainerResponseDto = new TrainerResponseDto(user);
+    return trainerResponseDto;
   }
 
   @Override
   @Transactional
   public ResponseEntity updateUserInfo(Long userId, UserProfileRequestDto userRequestDto) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     user.update(userRequestDto);
     return new ResponseEntity("사용자 정보 수정하였습니다.", HttpStatus.OK);
   }
@@ -245,58 +257,63 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public ResponseEntity makeUserSuspended(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.USER)) {
       user.reportedUserChangeRole();
     } else {
-      throw new IllegalArgumentException("전환에 실패하였습니다.");
+      throw new CustomException(ExceptionStatus.NOT_USER);
     }
-    return new ResponseEntity("신고 계정으로 전환하였습니다.",  HttpStatus.OK);
+    return ResponseEntity.ok("신고 계정으로 전환하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity makeTrainerSuspended(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.TRAINER)) {
       user.changeUserRoleReportedTrainer();
     } else {
-      throw new IllegalArgumentException("전환에 실패하였습니다.");
+      throw new CustomException(ExceptionStatus.NOT_TRAINER);
     }
-    return new ResponseEntity("신고 계정으로 전환하였습니다.",  HttpStatus.OK);
+    return ResponseEntity.ok("신고 계정으로 전환하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity makeUserNormal(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (user.getRole().equals(UserRole.REPORTED)) {
       user.changeUserRoleNormal();
     } else {
-      throw new IllegalArgumentException("전환에 실패하였습니다.");
+      throw new CustomException(ExceptionStatus.NOT_REPORTED);
     }
-    return new ResponseEntity("정상 계정으로 전환하였습니다.",  HttpStatus.OK);
+    return ResponseEntity.ok("정상 계정으로 전환하였습니다.");
   }
 
   @Override
   @Transactional
   public ResponseEntity makeTrainerNormal(Long trainerId) {
-    User trainer = userRepository.findById(trainerId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    User trainer = userRepository.findById(trainerId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     if (trainer.getRole().equals(UserRole.REPORTED_TRAINER)) {
       trainer.changeUserRoleTrainer();
     } else {
-      throw new IllegalArgumentException("전환에 실패하였습니다.");
+      throw new CustomException(ExceptionStatus.NOT_REPORTED_TRAINER);
     }
-    return new ResponseEntity("정상 트레이너 계정으로 전환하였습니다.",  HttpStatus.OK);
+    return ResponseEntity.ok("정상 트레이너 계정으로 전환하였습니다.");
   }
 
   // 유저 회원 탈퇴
   @Override
   @Transactional
   public ResponseEntity deleteUser(Long userId) {
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
+    User user = userRepository.findById(userId).orElseThrow(
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     userRepository.delete(user);
-    return new ResponseEntity("사용자 계정를 삭제하였습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("사용자 계정를 삭제하였습니다.");
   }
 
   // 관리자 아이디 찾기
@@ -304,7 +321,7 @@ public class AdminServiceImpl implements AdminService {
   public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
       throws MessagingException {
     Admin admin = adminRepository.findByEmail(findAdminIdRequestDto.getEmail()).orElseThrow(
-        () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
+        () -> new CustomException(ExceptionStatus.EMAIL_IS_NOT_CORRECT)
     );
     FindAdminIdResponseDto findAdminIdResponseDto = new FindAdminIdResponseDto(admin.getUsername());
 
@@ -326,7 +343,7 @@ public class AdminServiceImpl implements AdminService {
       throws MessagingException {
     Admin admin = adminRepository.findByUsernameAndEmail(findAdminPwRequestDto.getUsername(),
         findAdminPwRequestDto.getEmail()).orElseThrow(
-        () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
+        () -> new CustomException(ExceptionStatus.ID_OR_EMAIL_IS_NOT_EXIST)
     );
     // 임시 비밀번호 생성
     String password = generateTempPassword();

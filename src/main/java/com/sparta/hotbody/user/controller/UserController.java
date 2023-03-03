@@ -82,9 +82,9 @@ public class UserController {
   //4. 트레이너 요청
   @PostMapping("/auth/promote")
   @PreAuthorize("hasRole('USER')")
-  public TrainerResponseDto promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
+  public void promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return userService.promoteTrainer(requestDto, userDetails.getUser());
+    userService.promoteTrainer(requestDto, userDetails.getUser());
   }
 
   //4-1. 트레이너 승인 전 취소

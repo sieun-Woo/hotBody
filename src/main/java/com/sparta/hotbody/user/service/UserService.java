@@ -156,13 +156,12 @@ public class UserService {
 
   //5. 트레이너 폼 요청
   @Transactional
-  public TrainerResponseDto promoteTrainer(TrainerRequestDto requestDto, User user) {
+  public void promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new SecurityException("이미 트레이너 전환 요청을 하였습니다.");
     }
     Trainer trainer = new Trainer(requestDto, user);
     promoteRepository.save(trainer);
-    return new TrainerResponseDto(trainer);
   }
 
   //6. 트레이너 폼 취소

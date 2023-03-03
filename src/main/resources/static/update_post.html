@@ -662,7 +662,6 @@
     .paging a {
       display: inline-block;
       padding: 5px;
-      border: 1px solid #000;
       font-size: 12px;
     }
 
@@ -780,6 +779,11 @@
         console.log(response);        
         history.back();
       });
+
+      $.ajax(settings).fail(function (response) {
+        alert("수정 권한이 없습니다.");
+        history.back();
+    });
     }
 
 
@@ -810,6 +814,11 @@
       $.ajax(settings).done(function (response) {
         updatePost();
         alert("글 수정이 완료되었습니다.")
+        history.back();
+      });
+
+      $.ajax(settings).fail(function (response) {
+        alert("수정 권한이 없습니다.");
         history.back();
       });
     }

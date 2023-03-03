@@ -712,19 +712,19 @@
       "method": "DELETE",
       "timeout": 0,
       "headers": {
-        "Authorization": localStorage.removeItem('accessToken')
+        "Authorization": localStorage.getItem('accessToken'),
+        "RefreshToken": localStorage.getItem('refreshToken')
+
       },
     };
 
     $.ajax(settings).done(function (response) {
       console.log(response);
-      localStorage.removeItem('accessToken');
-      var now = new Date();
-      now.setDate(now.getDate() - 1);
-      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+
+      window.localStorage.clear();
+      location.reload();
     });
 
-    location.reload();
   }
 
 

@@ -3,6 +3,7 @@ package com.sparta.hotbody.post.controller;
 import com.sparta.hotbody.post.service.PostLikeService;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +19,15 @@ public class PostLikeController {
   private final PostLikeService postLikeService;
 
   // 6. 게시글 좋아요
-  @PostMapping("/posts/{postId}/likes")
-  public void okLikes(
+  @PostMapping("/posts/{postId}/like")
+  public ResponseEntity<String> pushLikes(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postLikeService.okLikes(postId, userDetails.getUser());
+    return postLikeService.pushLike(postId, userDetails.getUser());
   }
 
   // 7. 게시글 좋아요 취소
-  @DeleteMapping("/posts/{postId}/likes")
+  @DeleteMapping("/posts/{postId}/like")
   public void cancelLikes(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

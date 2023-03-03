@@ -1,5 +1,7 @@
 package com.sparta.hotbody.exerciseRecord.service;
 
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.exerciseRecord.entity.ExerciseRecord;
@@ -55,11 +57,11 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("운동 기록이 없습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.EXERCISE_RECORD_IS_NOT_EXIST));
     if (exerciseRecord.getUser().equals(user)) {
       return new ExerciseRecordResponseDto(exerciseRecord);
     } else {
-      throw new IllegalArgumentException("유저가 없습니다.");
+      throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
     }
 
   }
@@ -80,29 +82,29 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
       ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("운동 기록이 없습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.EXERCISE_RECORD_IS_NOT_EXIST));
     if (exerciseRecord.getUser().getUsername().equals(user.getUsername())) {
       exerciseRecord.update(exerciseRecordRequestDto);
       exerciseRecordRepository.flush();
       return new ExerciseRecordResponseDto(
           exerciseRecordRepository.findById(exerciseRecord.getId()).get());
     } else {
-      throw new IllegalArgumentException("유저가 없습니다.");
+      throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
     }
 
   }
 
   @Override
   @Transactional
-  public ResponseEntity deleteExerciseRecord(Long id, UserDetailsImpl userDetails) {
+  public ResponseEntity<String> deleteExerciseRecord(Long id, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("운동 기록이 없습니다."));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.EXERCISE_RECORD_IS_NOT_EXIST));
     if (exerciseRecord.getUser().equals(user)) {
       exerciseRecordRepository.deleteById(id);
-      return new ResponseEntity("기록이 삭제되었습니다.", HttpStatus.OK);
+      return ResponseEntity.ok("기록이 삭제되었습니다.");
     } else {
-      throw new IllegalArgumentException("유저가 없습니다.");
+      throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
     }
   }
 }

@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user/auth/mypage")
+@RequestMapping("/api")
 public class ExerciseRecordController {
 
   private final ExerciseRecordServiceImpl exerciseRecordService;
 
   // 운동 기록
-  @PostMapping("/records")
+  @PostMapping("/record")
   public ExerciseRecordResponseDto createExerciseRecord(
       @RequestBody ExerciseRecordRequestDto exerciseRecordRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return exerciseRecordService.createExerciseRecord(exerciseRecordRequestDto, userDetails);
   }
 
-  @GetMapping("/records")
+  @GetMapping("/record")
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -62,7 +62,7 @@ public class ExerciseRecordController {
 
   // 운동 기록 삭제
   @DeleteMapping("/records/{recordId}")
-  public ResponseEntity deleteExerciseRecord(@PathVariable Long recordId,
+  public ResponseEntity<String> deleteExerciseRecord(@PathVariable Long recordId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return exerciseRecordService.deleteExerciseRecord(recordId, userDetails);
   }

@@ -8,7 +8,6 @@ import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
-import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
@@ -54,7 +53,7 @@ public class UserController {
 
   //1.회원가입
   @PostMapping("/sign-up")
-  public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
+  public ResponseEntity<String> signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
     return userService.signUp(signupRequestDto);
   }
 
@@ -74,7 +73,7 @@ public class UserController {
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")
-  public MessageResponseDto delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
+  public ResponseEntity<String> delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.deleteUser(deleteRequestDto, userDetails.getUser());
   }
@@ -82,22 +81,21 @@ public class UserController {
   //4. 트레이너 요청
   @PostMapping("/auth/promote")
   @PreAuthorize("hasRole('USER')")
-  public void promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
+  public ResponseEntity<String> promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    userService.promoteTrainer(requestDto, userDetails.getUser());
+    return userService.promoteTrainer(requestDto, userDetails.getUser());
   }
 
   //4-1. 트레이너 승인 전 취소
   @DeleteMapping("/auth/permission")
   @PreAuthorize("hasRole('USER')")
-  public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    userService.deletePermission(userDetails.getUser());
-    return "삭제 완료되었습니다.";
+  public ResponseEntity<String> deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return userService.deletePermission(userDetails.getUser());
   }
 
   //5. 유저 프로필 작성
   @PutMapping("/auth/profile")
-  public String createProfile(
+  public ResponseEntity<String> createProfile(
       @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
     return userService.createProfile(requestDto, userDetails);
@@ -105,12 +103,12 @@ public class UserController {
 
   //6. 유저 프로필 사진 첨부
   @PostMapping("/auth/profile/image")
-  public ResponseEntity<String> saveProfileImage(
+  public ResponseEntity<String> uploadImage(
       @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
     userService.uploadImage(file, userDetails);
 
-    return new ResponseEntity<>("업로드 되었습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("이미지가 업로드 되었습니다.");
   }
 
   //6-1. 프로필 이미지 조회

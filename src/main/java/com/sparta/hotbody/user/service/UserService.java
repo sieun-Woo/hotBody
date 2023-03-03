@@ -4,6 +4,8 @@ import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.upload.entity.Image;
 import com.sparta.hotbody.upload.repository.ImageRepository;
 import com.sparta.hotbody.upload.service.UploadService;
@@ -14,7 +16,6 @@ import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
-import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
@@ -32,7 +33,6 @@ import java.util.Date;
 import java.util.Optional;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -72,24 +72,24 @@ public class UserService {
   private String from;
 
   @Transactional
-  public MessageResponseDto signUp(SignUpRequestDto requestDto) {
+  public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = passwordEncoder.encode(requestDto.getPassword());
 
     Optional<User> found = userRepository.findByUsername(username);
     if (found.isPresent()) {
-      throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+      throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
     }
     UserRole role = UserRole.USER;
     if (requestDto.isAdmin()) {
       if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-        throw new SecurityException("관리자 암호가 틀렸습니다.");
+        throw new CustomException(ExceptionStatus.ADMIN_CODE_IS_NOT_CORRECT);
       }
       role = UserRole.ADMIN;
     }
     User user = new User(requestDto, password, role);
     userRepository.save(user);
-    return new MessageResponseDto("회원가입 성공");
+    return ResponseEntity.ok("회원가입을 완료하였습니다.");
   }
 
 
@@ -100,17 +100,17 @@ public class UserService {
       throws UnsupportedEncodingException {
 
     if (!jwtUtil.validate(request)) {
-      return new ResponseEntity<>("중복 로그인 입니다.", HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionStatus.ALREADY_LOGIN_EXCEPTION);
     }
 
     String username = requestDto.getUsername();
     String password = requestDto.getPassword();
 
     User user = userRepository.findByUsername(username).orElseThrow(
-        () -> new SecurityException("존재하지 않는 아이디입니다.")
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
     if (!passwordEncoder.matches(password, user.getPassword())) {
-      throw new SecurityException("틀린 비밀번호입니다.");
+      throw new CustomException(ExceptionStatus.USERNAME_PASSWORD_DO_NOT_MATCH);
     }
 
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
@@ -128,74 +128,75 @@ public class UserService {
     refreshTokenRedisRepository.save(
         new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
 
-    return new ResponseEntity("로그인 완료", HttpStatus.OK);
+    return ResponseEntity.ok("로그인 완료");
   }
 
   // 로그아웃
   @Transactional
   public ResponseEntity<String> logout(HttpServletRequest request) {
     if (jwtUtil.logout(request)) {
-      return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+      return ResponseEntity.ok("로그아웃 성공");
     } else {
-      return new ResponseEntity<>("로그인 되어 있지 않습니다.", HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionStatus.ALREADY_LOGOUT);
     }
   }
 
   //3.회원탈퇴
   @Transactional
-  public MessageResponseDto deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
+  public ResponseEntity<String> deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 
     if (user.getRole().equals(UserRole.ADMIN) ||
       passwordEncoder.matches(deleteRequestDto.getPassword(), user.getPassword())) {
 
       userRepository.deleteByUsername(user.getUsername());
-      return new MessageResponseDto("삭제 성공");
+      return ResponseEntity.ok("회원탈퇴를 완료하였습니다.");
     }
-    throw new SecurityException("가입한 회원만이 탈퇴할 수 있습니다.");
+    throw new CustomException(ExceptionStatus.PASSWORD_DO_NOT_MATCH);
   }
 
   //5. 트레이너 폼 요청
   @Transactional
-  public void promoteTrainer(TrainerRequestDto requestDto, User user) {
+  public ResponseEntity<String> promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
-      throw new SecurityException("이미 트레이너 전환 요청을 하였습니다.");
+      throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
     }
     Trainer trainer = new Trainer(requestDto, user);
     promoteRepository.save(trainer);
+    return ResponseEntity.ok("트레이너 신청을 완료하였습니다.");
   }
 
   //6. 트레이너 폼 취소
   @Transactional
-  public void deletePermission(User user) {
+  public ResponseEntity<String> deletePermission(User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
-        () -> new IllegalArgumentException("유저가 없습니다.")
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
 
     Trainer trainer = promoteRepository.findByUserUsername(user1.getUsername()).orElseThrow(
-        () -> new IllegalArgumentException("트레이너 전환 요청을 하지 않았습니다.")
+        () -> new CustomException(ExceptionStatus.APPLY_IS_NOT_EXIST)
     );
     promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
+    return ResponseEntity.ok("트레이너 신청을 취소하였습니다.");
   }
 
   //7. 유저 프로필 생성
   @Transactional
-  public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails)
-      throws IOException {
+  public ResponseEntity<String> createProfile(UserProfileRequestDto requestDto,
+      UserDetails userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
-        () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
-
     user.update(requestDto);
     userRepository.save(user);
 
-    return "수정이 완료되었습니다.";
+    return ResponseEntity.ok("프로필을 수정하였습니다.");
   }
 
   @Transactional
   public Image uploadImage(MultipartFile file, UserDetails userDetails) throws IOException {
 
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
-        () -> new IllegalArgumentException("고객님의 개인 정보가 일치하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
     if (user.getImage() != null) {
       Image image = imageRepository.findByResourcePath(user.getImage()).get();
@@ -221,7 +222,7 @@ public class UserService {
   @Transactional
   public UserProfileResponseDto getUserProfile(String username) {
     User user = userRepository.findByUsername(username).orElseThrow(
-        () -> new IllegalArgumentException("연결상태 불량입니다 다시 유저 조회해주시기 바랍니다.")
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
     return UserProfileResponseDto.from(user);
   }
@@ -231,7 +232,7 @@ public class UserService {
   public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto)
       throws MessagingException {
     User user = userRepository.findByEmail(findUserIdRequestDto.getEmail()).orElseThrow(
-        () -> new IllegalArgumentException("입력하신 이메일을 확인해 주세요.")
+        () -> new CustomException(ExceptionStatus.EMAIL_IS_NOT_EXIST)
     );
     FindUserIdResponseDto findUserIdResponseDto = new FindUserIdResponseDto(user.getUsername());
 
@@ -253,7 +254,7 @@ public class UserService {
       throws MessagingException {
     User user = userRepository.findByUsernameAndEmail(findUserPwRequestDto.getUsername(),
         findUserPwRequestDto.getEmail()).orElseThrow(
-        () -> new IllegalArgumentException("입력하신 아이디와 이메일을 확인해 주세요.")
+        () -> new CustomException(ExceptionStatus.ID_OR_EMAIL_IS_NOT_EXIST)
     );
     if (user.getUsername().equals(findUserPwRequestDto.getUsername())) {
       // 임시 비밀번호 생성
@@ -324,7 +325,7 @@ public class UserService {
   @Transactional
   public UsersResponseDto getTrainer(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
-        () -> new IllegalArgumentException("해당 유저는 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
 
     if(user.getRole().equals(UserRole.TRAINER)){

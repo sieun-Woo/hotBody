@@ -92,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
     Admin admin = adminRepository.findByUsername(loginRequestDto.getUsername())
         .orElseThrow(() -> new CustomException(ExceptionStatus.ADMIN_IS_NOT_EXIST));
     if (!passwordEncoder.matches(loginRequestDto.getPassword(), admin.getPassword())) {
-      throw new CustomException(ExceptionStatus.PASSWORDS_DO_NOT_MATCH);
+      throw new CustomException(ExceptionStatus.USERNAME_PASSWORD_DO_NOT_MATCH);
     }
     String accessToken = jwtUtil.createAccessToken(admin.getUsername(), admin.getRole());
     String refreshToken = jwtUtil.createRefreshToken(admin.getUsername(), admin.getRole());
@@ -321,7 +321,7 @@ public class AdminServiceImpl implements AdminService {
   public FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
       throws MessagingException {
     Admin admin = adminRepository.findByEmail(findAdminIdRequestDto.getEmail()).orElseThrow(
-        () -> new CustomException(ExceptionStatus.EMAIL_IS_NOT_CORRECT)
+        () -> new CustomException(ExceptionStatus.EMAIL_IS_NOT_EXIST)
     );
     FindAdminIdResponseDto findAdminIdResponseDto = new FindAdminIdResponseDto(admin.getUsername());
 

@@ -78,9 +78,6 @@ public class User extends TimeStamp {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList = new ArrayList<>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<RefreshToken> refreshTokenList = new ArrayList<>();
-
   @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
   private Trainer trainer;
 
@@ -89,6 +86,7 @@ public class User extends TimeStamp {
 
   @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TrainerLike> trainerLikeList = new ArrayList<>();
+
 
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {
     this.username = username;

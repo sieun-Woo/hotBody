@@ -27,11 +27,11 @@ public class TrainerLike {
   private Long userId;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "Trainer_ID")
+  @JoinColumn(name = "trainer_id")
   private User trainer;
 
-  public TrainerLike(Long userId, User trainer){
-    this.userId = userId;
+  public TrainerLike(User user, User trainer){
+    this.userId = user.getId();
     this.trainer = trainer;
   }
 }

@@ -7,8 +7,6 @@ import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
-import com.sparta.hotbody.common.jwt.repository.RefreshTokenRepository;
-import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -35,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
   private final AdminService adminService;
-  private final RefreshTokenRepository refreshTokenRepository;
 
   @PostMapping("/sign-up")
   public ResponseEntity signup(@RequestBody AdminSignUpRequestDto adminSignUpRequestDto) {

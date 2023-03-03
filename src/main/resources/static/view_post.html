@@ -558,6 +558,17 @@
     --comment-list__cell-content__width: calc(100% - var(--comment-list__cell-id__width) - var(--comment-list__cell-reg-date__width) - var(--comment-list__cell-writer__width) - var(--comment-list__cell-like__width));
   }
 
+  .commentModify{
+    display: flex;
+  }
+
+  .inputComment{
+    width: 300px;
+  }
+  .commentModify >div{
+    display: row;
+  }
+
   .comment-list>*>div {
     display: flex;
   }
@@ -590,17 +601,14 @@
   }
 
   .comment-list__cell-writer {
-    width: var(--comment-list__cell-writer__width);
     padding-bottom: 3px;
   }
 
   .comment-list__cell-content {
-    width: var(--comment-list__cell-content__width);
     padding-bottom: 3px;
   }
 
   .comment-list__cell-like {
-    width: var(--comment-list__cell-like__width);
     padding-bottom: 7px;
   }
 
@@ -626,6 +634,27 @@
     transition: 0.4s;
     display: inline;
   }
+
+  .btn2 {
+    position: relative;
+    /* left: 40%;
+    transform: translateX(-50%); */
+    margin-top: 5px;
+    margin-bottom: 40px;
+    margin-right: 5px;
+    width: 80px;
+    height: 30px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
 
   .btn:hover {
     background-position: right;
@@ -753,14 +782,13 @@
   }
 
   // 글 수정
-  // 
-  console.log("수정 : "+ postId)
 
   function updatePost(postId){
     localStorage.setItem("currentPostId", postId)
     location.href='update_post.html';
     console.log("수정 : "+ postId)
   }
+  
   // 글 삭제
 
   function deletePost(){
@@ -877,11 +905,15 @@
                       <div class="comment-list__cell-writer">${comment.nickname}</div>
                       <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
                       <div class="comment-list__cell-content">${comment.content}</div>
-                      <input id="modifyContent${comment.id}"  style="display:none">
-                      <button type="button" class="btn btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
-                      <button type="button" class="btn btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
-                      <button type="button" class="btn btn-outline-dark" id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
-                      <button type="button" class="btn btn-outline-dark" id="deleteButton${comment.id}" onclick=deleteComment(${comment.id});>삭제</button>
+                      <div class = "commentModify">
+                        <div>
+                          <input class="inputComment" id="modifyContent${comment.id}"  style="display:none"><br/>
+                        </div>
+                        <button type="button" class="btn2 btn-outline-dark" id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
+                        <button type="button" class="btn2 btn-outline-dark" id="deleteButton${comment.id}" onclick=deleteComment(${comment.id});>삭제</button>
+                      </div>
+                      <button type="button" class="btn2 btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
+                      <button type="button" class="btn2 btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
                   </div>
                   <br/>`
         });

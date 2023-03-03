@@ -243,6 +243,10 @@
           </div>
         </div>
       </section>
+
+      <div class="paging">
+<!-- 페이지 들어오는 곳 -->
+      </div>
     </div>
 
     <footer class="bottom-bar con-min-width">
@@ -689,6 +693,35 @@
 
   .wp-header li:hover>a {
     color: #78c8e6;
+  }
+
+  /* 페이징 */
+  .paging {
+    margin: 0 auto;
+    width: 1000px;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0
+  }
+
+  .paging .current {
+    color: #00f;
+    font-weight: bold
+  }
+
+  .paging a {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #000;
+    font-size: 12px
+  }
+
+  .paging a+a {
+    margin-left: 5px
+  }
+
+  .paging a.on {
+    color: #f00
   }
 </style>
 <script>

@@ -5,6 +5,7 @@ import static javax.persistence.FetchType.LAZY;
 import com.sparta.hotbody.user.entity.Trainer;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,16 +23,15 @@ public class TrainerLike {
   @Column(name = "Trainer_Like_Id")
   private Long id;
 
-  @ManyToOne(fetch = LAZY)
-  @JoinColumn(name = "User_ID")
-  private User user;
+  @Column
+  private Long userId;
 
-  @ManyToOne(fetch = LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "Trainer_ID")
   private User trainer;
 
-  public TrainerLike(User user, User trainer){
-    this.user = user;
+  public TrainerLike(Long userId, User trainer){
+    this.userId = userId;
     this.trainer = trainer;
   }
 }

@@ -132,42 +132,43 @@
         <!-- 게시글 -->
 
         <div class="textForm">
-          <div type="category" id="category" name="category" disabled></div>
+          <div type="category" id="category" name="category" disabled>TRAINER</div>
           <br />
         </div>
         <input type="hidden" id = "trainerId">
         <div class="textForm">
-          <div id="title"></div>
+          <div type="nickname" id="nickname" name="nickname" disabled></div>
           <img src="" id="image">
           <br/>
         </div> 
 
+        <!-- <div class="textForm">
+          <div type="nickname" id="nickname" name="nickname" disabled></div>
+          <br />
+        </div> -->
+
         <div class="textForm">
-          <div type="nickname" id="post_nickname" name="nickname" disabled></div>
+          <div id="intoduce"></div>
           <br />
         </div>
 
-        <div class="textForm">
-          <div id="post_content"></div>
-          <br />
-        </div>
+        <!-- 좋아요 -->
 
-        <!--좋아요 -->
         <div class="write" style="position:center;">
           <ul class="flex-write">
             <li>
-              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
+              <i onclick="likeTrainer()" id="plus" class="fa-solid fa-thumbs-up"></i>
             </li>
             <li>
               <div id="CountLove"></div>
             </li>
             <li>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
+              <i onclick="dislikeTrainer()" id="minus" class="fa-solid fa-thumbs-down"></i>
             </li>
         </div>
       </div>
 
-    <div id="article-list-wrap" class="section-1 con-min-width">
+    <!-- <div id="article-list-wrap" class="section-1 con-min-width">
       <div class="con">
         <div class="textForm">
           <div class="comment-list" style="position: relative; z-index: 1;">
@@ -179,13 +180,13 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div id="comment-box" class="commentForm">
+    <!-- <div id="comment-box" class="commentForm">
       <textarea id="comment" class="text" style="resize: none; width: 500px; height: 100px;"></textarea>
       <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
-    </div>
-    </form>
+    </div> -->
+
   </div>
   </div>
 
@@ -667,7 +668,7 @@
 
 <script>
   var page = 0;
-  var trainerId = document.location.href.split("?")[1];
+  var trainerId = localStorage.getItem('currentTrainerId');
   console.log("트레이너 아이디 : "+$('#trainerId').val());
 
   jQuery(document).ready(function () {
@@ -729,11 +730,10 @@
     });
   }
 
-  // 글 좋아요
-
-  function likePost(){
+    // 좋아요
+    function likeTrainer(){
       var settings = {
-        "url": "http://localhost:8080/api/auth/trainers/"+$('#trainerId').val()+"/likes",
+        "url": "http://localhost:8080/api/auth/trainers/"+ localStorage.getItem('currentTrainerId'),
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -748,9 +748,9 @@
     });
   }
 
-  function dislikePost(){
+  function dislikeTrainer(){
       var settings = {
-        "url": "http://localhost:8080/api/auth/trainers/"+$('#trainerId').val()+"/likes",
+        "url": "http://localhost:8080/api/auth/trainers/"+localStorage.getItem('currentTrainerId'),
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -764,6 +764,7 @@
       window.location.reload();
     });
   }
+
 
   // 댓글
   

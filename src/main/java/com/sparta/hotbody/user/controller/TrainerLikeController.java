@@ -26,7 +26,7 @@ public class TrainerLikeController {
   public void addLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    trainerLikeService.addLike(trainerId, userDetailsImpl.getUser());
+    trainerLikeService.addLike(trainerId, userDetailsImpl.getUser().getId());
   }
 
   //2. 트레이너 좋아요 취소

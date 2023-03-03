@@ -22,17 +22,17 @@ public class TrainerLikeService {
   private final UserRepository userRepository;
 
   @Transactional
-  public void addLike(Long trainerId, User user) {
+  public void addLike(Long trainerId, Long userId) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new IllegalArgumentException("트레이너 존재 유무 확인")
     );
 
-    if (trainerLikeRepository.existsByUserIdAndTrainerId(user.getId(), trainerId)) {
+    if (trainerLikeRepository.existsByUserIdAndTrainerId(userId, trainerId)) {
       throw new IllegalArgumentException("이미 좋아요 버튼을 눌렀습니다.");
     }
 
     if(trainer.getRole().equals(UserRole.TRAINER)){
-      TrainerLike trainerLike = new TrainerLike(user, trainer);
+      TrainerLike trainerLike = new TrainerLike(userId, trainer);
       trainerLikeRepository.save(trainerLike);
     }
 

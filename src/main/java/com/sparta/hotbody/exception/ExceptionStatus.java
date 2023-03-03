@@ -36,6 +36,7 @@ public enum ExceptionStatus {
   APPLY_IS_NOT_EXIST(404, "요청이 존재하지 않습니다."),
   PAGINATION_IS_NOT_EXIST(404, "요청하신 페이지가 존재하지 않습니다."),
   ID_OR_EMAIL_IS_NOT_EXIST(404, "요청하신 페이지가 존재하지 않습니다."),
+  DIET_IS_NOT_EXIST(404, "식단이 존재하지 않습니다."),
 
   USERNAME_IS_EXIST(409, "이미 등록된 아이디입니다.");
 

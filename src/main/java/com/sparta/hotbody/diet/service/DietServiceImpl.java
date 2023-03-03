@@ -15,6 +15,8 @@ import com.sparta.hotbody.diet.entity.Diet;
 import com.sparta.hotbody.diet.entity.FoodOfDiet;
 import com.sparta.hotbody.diet.repository.DietRepository;
 import com.sparta.hotbody.diet.repository.FoodOfDietRepository;
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +96,7 @@ public class DietServiceImpl implements DietService {
   }
 
   @Override
-  public ResponseEntity readDiet(String time, UserDetails userDetails) {
+  public ResponseEntity<List> readDiet(String time, UserDetails userDetails) {
     List<FoodOfDietResponseDto> foodOfDietResponseDtoList = new ArrayList<>();
     Long id = userRepository.findByUsername(userDetails.getUsername()).get().getId();
     if (dietRepository.findByUserIdAndTime(id, time).isPresent()) {
@@ -102,9 +104,9 @@ public class DietServiceImpl implements DietService {
       for (FoodOfDiet foodOfDiet : diet.getFoodOfDiets()) {
         foodOfDietResponseDtoList.add(new FoodOfDietResponseDto(foodOfDiet));
       }
-      return new ResponseEntity<List>(foodOfDietResponseDtoList, HttpStatus.OK);
+      return ResponseEntity.ok(foodOfDietResponseDtoList);
     }
-    return new ResponseEntity<String>("식단이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    throw new CustomException(ExceptionStatus.DIET_IS_NOT_EXIST);
   }
 
   @Transactional
@@ -116,6 +118,6 @@ public class DietServiceImpl implements DietService {
       FoodOfDiet foodOfDiet = new FoodOfDiet(foodOfDietRequestDto, diet);
       foodOfDietRepository.saveAndFlush(foodOfDiet);
     }
-    return new ResponseEntity<>("음식 저장 성공", HttpStatus.OK);
+    return ResponseEntity.ok("음식 저장 성공");
   }
 }

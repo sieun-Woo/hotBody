@@ -138,8 +138,8 @@
 
         <div class="textForm">
           <div id="title"></div>
-          <img src="" id="image">
           <br/>
+          <img src="" id="image">
         </div> 
 
         <div class="textForm">
@@ -154,12 +154,20 @@
 
         <!-- 게시글 수정 & 삭제 -->
         <div class="textForm3">
+          <div class="write-center" style="position:center;">
+            <div class="postLike-box" >
+              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+              <div id="CountLove"></div>
+              <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
+            </div>
+          </div>
+
           <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
           <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
       </div>
 
         <!--좋아요 -->
-        <div class="write" style="position:center;">
+        <!-- <div class="write" style="position:center;">
           <ul class="flex-write">
             <li>
               <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
@@ -171,27 +179,32 @@
               <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
             </li>
         </div>
-      </div>
-
-    <div id="article-list-wrap" class="section-1 con-min-width">
-      <div class="con">
-        <div class="textForm">
-          <div class="comment-list" style="position: relative; z-index: 1;">
-            <!-- 댓글 들어오는 공간 -->
-          </div>
-
-          <div class="paging">
-            <!-- 페이징 -->
-          </div>
+      </div> -->
+      <!-- <div class="write" style="position:center;">
+        <div class="postLike-box">
+          <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+          <div id="CountLove"></div>
+          <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
         </div>
+      </div> -->
+
+    <div id="article-list-wrap" class="con-min-width">
+        <div class="comment-list" >
+          <!-- 댓글 들어오는 공간 -->
+        </div>
+
+        <div class="paging">
+          <!-- 페이징 -->
+        </div>
+    </div>
+
+    <div class="textForm2">
+      <div class="commentForm">
+        <textarea id="comment" class="text" style="resize: none; width: 700px; height: 100px;"></textarea>
+        <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
       </div>
     </div>
 
-    <div id="comment-box" class="commentForm">
-      <textarea id="comment" class="text" style="resize: none; width: 500px; height: 100px;"></textarea>
-      <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
-    </div>
-    </form>
   </div>
   </div>
 
@@ -300,6 +313,10 @@
     position: relative;
     margin: auto;
   }
+  .con-comment {
+    position: relative;
+    margin: auto;
+  }
 
   .min-height-100vh {
     min-height: 100vh;
@@ -331,10 +348,14 @@
 
   /* 커스텀 */
   .con-min-width {
-    min-width: 1200px;
+    min-width: 1150px;
   }
 
   .con {
+    width: 1000px;
+  }
+
+  .con-comment {
     width: 1000px;
   }
 
@@ -499,6 +520,23 @@
     padding: 10px 10px;
   }
 
+  .textForm1 {
+    margin: 30px;
+    padding: 10px 10px;
+  }
+
+  .textForm2 {
+    margin: 30px;
+    margin-bottom: 10px;
+  }
+  .textForm2 > * {
+    display: flex;
+    width: 50px;
+    align-items: center;
+    /* justify-content: center; */
+    margin: 30px;
+  }
+
   .textForm3 {
     margin: 30px;
     padding: 10px 10px;
@@ -517,6 +555,10 @@
     margin-left: 50%;
   }
 
+  .write-center {
+    margin-left: 46%;
+  }
+
   .write>ul>li {
     margin-bottom: 10px;
   }
@@ -525,28 +567,53 @@
     margin-left: 5px;
   }
 
+  .postLike-box{
+    display: flex;
+    left: 20%;
+    align-items: center;
+  }
+  
+  .postLike-box>*{
+    margin: 3px;
+  }
+
   .commentForm {
+    display: row;
     position: relative;
-    margin-left: 290px;
-    width: 800px;
+    width: 1000px;
+    margin-bottom: 90px;
+  }
+
+  .commentForm>* {
+    display: flex;
   }
 
   .commentbtn {
-    position: relative;
-    left: 250px;
-    transform: translateX(-50%);
-    margin-bottom: 40px;
-    width: 500px;
-    height: 40px;
+    /* position: relative; */
+    /* left: 250px; */
+    /* transform: translateX(-50%); */
+    /* margin-bottom: 90px; */
+    margin-left: 50px;
+    width: 100px;
+    height: 100px;
     background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
     background-position: left;
-    background-size: 200%;
+    /* background-size: 200%; */
     color: white;
     font-weight: bold;
     border: none;
     cursor: pointer;
     transition: 0.4s;
     display: inline;
+  }
+
+  .commentLike-box{
+    display: flex;
+    align-items: center;
+  }
+  
+  .commentLike-box>*{
+    margin: 3px;
   }
 
   /* 댓글 */
@@ -671,7 +738,7 @@
     margin: 0 auto;
     width: 1000px;
     padding: 40px 0;
-    text-align: center;
+    text-align: left;
     font-size: 0
   }
 
@@ -683,7 +750,7 @@
   .paging a {
     display: inline-block;
     padding: 5px;
-    border: 1px solid #000;
+    border: 1px solid #120000;
     font-size: 12px
   }
 
@@ -805,6 +872,11 @@
       alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
       history.back();
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
+      history.back();
+    });
   }
 
   // 글 좋아요
@@ -864,6 +936,11 @@
     window.location.reload();
   });
 
+  $.ajax(settings).fail(function (response) {
+    alert("로그인을 해주세요.")
+    window.location.reload();
+  });
+
 }
 
   $(document).on('click', '#p', function (e) {
@@ -874,7 +951,7 @@
 
   function getComments(page) {
     var settings = {
-      "url": `http://localhost:8080/api/comments/posts/${postId}?page=${page}&size=10&sortBy=id&isAsc=true`,
+      "url": `http://localhost:8080/api/comments/posts/${postId}?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -901,10 +978,15 @@
 
         var str = '';
         data.forEach((comment) => {
-          str += `<div class="main">
-                      <div class="comment-list__cell-writer">${comment.nickname}</div>
+          str += `<div class="con-comment">
+                    <div class="comment-list__cell-writer">${comment.nickname}</div>
                       <div class="comment-list__cell-reg-date">${comment.createdAt}</div>
                       <div class="comment-list__cell-content">${comment.content}</div>
+                      <div class="commentLike-box">
+                        <i onclick="likeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-up"></i>
+                        <div class="comment-list__cell-content" >${comment.likes}</div>
+                        <i onclick="dislikeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-down"></i>
+                      </div>
                       <div class = "commentModify">
                         <div>
                           <input class="inputComment" id="modifyContent${comment.id}"  style="display:none"><br/>
@@ -914,6 +996,7 @@
                       </div>
                       <button type="button" class="btn2 btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
                       <button type="button" class="btn2 btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
+                    </div>
                   </div>
                   <br/>`
         });
@@ -966,6 +1049,41 @@
     });
   }
 
+  // 댓글 좋아요 & 취소
+  function likeComment(id){
+      var settings = {
+        "url": "http://localhost:8080/api/comments/"+id+"/likes",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+
+        },
+      };
+
+    $.ajax(settings).done(function (response) {
+      console.log("좋아요 눌렀습니다.");
+      window.location.reload();
+    });
+  }
+
+  function dislikeComment(id){
+      var settings = {
+        "url": "http://localhost:8080/api/comments/"+id+"/likes",
+        "method": "DELETE",
+        "timeout": 0,
+        "headers": {
+          "Authorization": localStorage.getItem('accessToken')
+
+        },
+      };
+
+    $.ajax(settings).done(function (response) {
+      console.log("좋아요를 취소했습니다.");
+      window.location.reload();
+    });
+  }
+
 
   function modifyButton(id) {
 
@@ -1007,6 +1125,11 @@
       window.location.reload();
     });
 
+    $.ajax(settings).fail(function (response) {
+      alert("수정 권한이 없습니다.")
+      window.location.reload();
+  });
+
   }
 
   function deleteComment(id) {
@@ -1023,6 +1146,11 @@
     $.ajax(settings).done(function (response) {
       window.location.reload();
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("삭제 권한이 없습니다.")
+      window.location.reload();
+  });
 
 }
 

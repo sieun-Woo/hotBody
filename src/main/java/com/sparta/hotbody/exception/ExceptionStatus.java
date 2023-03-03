@@ -24,6 +24,9 @@ public enum ExceptionStatus {
       "비밀번호는 8자 이상, 15자 이하의 숫자, 소문자 알파벳이 포함되어야 합니다."),
   EMAIL_IS_NOT_CORRECT(403, "이메일 형식이 아닙니다."),
   ADMIN_CODE_IS_NOT_CORRECT(403, "관리자 코드가 일치하지 않습니다."),
+  WRITER_IS_NOT_CORRECT(403, "글쓴이만 수정할 수 있습니다."),
+  PUSHED_LIKE(403, "이미 좋아요를 눌렀습니다."),
+  CANCELED_LIKE(403, "이미 좋아요가 취소되었습니다."),
 
   USER_IS_NOT_EXIST(404, "사용자가 존재하지 않습니다."),
   TRAINER_IS_NOT_EXIST(404, "트레이너가 존재하지 않습니다."),

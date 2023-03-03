@@ -3,6 +3,7 @@ package com.sparta.hotbody.comment.controller;
 import com.sparta.hotbody.comment.service.CommentLikeService;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,18 +19,18 @@ public class CommentLikeController {
   private final CommentLikeService commentLikeService;
 
   // 6. 댓글 좋아요
-  @PostMapping("/comments/{commentId}/likes")
-  public void okLikes(
+  @PostMapping("/comments/{commentId}/like")
+  public ResponseEntity<String> pushLike(
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentLikeService.okLikes(commentId, userDetails.getUser());
+    return commentLikeService.pushLike(commentId, userDetails.getUser());
   }
 
   // 7. 댓글 좋아요 취소
-  @DeleteMapping("/comments/{commentId}/likes")
-  public void cancelLikes(
+  @DeleteMapping("/comments/{commentId}/like")
+  public ResponseEntity<String> cancelLike(
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentLikeService.cancelLikes(commentId, userDetails.getUser());
+    return commentLikeService.cancelLike(commentId, userDetails.getUser());
   }
 }

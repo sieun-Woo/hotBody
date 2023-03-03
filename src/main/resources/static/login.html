@@ -422,8 +422,8 @@
     $.ajax().done(function (response) {
 
           var cookienames = getAllCookieNames();
-          var cookieTokenName = cookienames[1];
-          var cookieRefreshName = cookienames[0];
+          var cookieTokenName = cookienames[0];
+          var cookieRefreshName = cookienames[1];
           var cookieToken = getCookie(cookieTokenName);
           var cookieRefresh = getCookie(cookieRefreshName);
           console.log(cookieToken);

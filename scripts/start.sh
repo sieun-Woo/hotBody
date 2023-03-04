@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export DECODE_PASSWORD=IOuDpeuDpe2OgOy5mDYzNTI=
+
 PROJECT_ROOT="/home/ubuntu/app"
 JAR_FILE="$PROJECT_ROOT/hotBody-0.0.1-SNAPSHOT.jar"
 

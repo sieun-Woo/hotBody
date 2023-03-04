@@ -639,7 +639,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://13.124.94.63:8080/api/user/log-out",
+  "url": "http://15.165.120.66:8080/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -683,7 +683,7 @@ $(document).on('click', '#p', function (e) {
 
 function getApplications(page) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/apply?pageNum=${page}`,
+  "url": `http://15.165.120.66:8080/api/admin/apply?pageNum=${page}`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -784,7 +784,7 @@ function getApplications(page) {
 
 function accept(index) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/requests/${index}`,
+  "url": `http://15.165.120.66:8080/api/admin/requests/${index}`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -803,7 +803,7 @@ $.ajax(settings).done(function (response) {
 
 function reject(index) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/requests/${index}`,
+  "url": `http://15.165.120.66:8080/api/admin/requests/${index}`,
   "method": "DELETE",
   "timeout": 0,
   "headers": {

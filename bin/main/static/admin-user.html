@@ -637,7 +637,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://13.124.94.63:8080/api/user/log-out",
+  "url": "http://15.165.120.66:8080/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -681,7 +681,7 @@ $(document).on('click', '#p', function (e) {
 
 function getUsers(page) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/users?currentPage=${page}`,
+  "url": `http://15.165.120.66:8080/api/admin/users?currentPage=${page}`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -784,7 +784,7 @@ function getUsers(page) {
 
 function suspend(index) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/users/${index}/suspend`,
+  "url": `http://15.165.120.66:8080/api/admin/users/${index}/suspend`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -803,7 +803,7 @@ $.ajax(settings).done(function (response) {
 
 function activate(index) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/users/${index}/normalize`,
+  "url": `http://15.165.120.66:8080/api/admin/users/${index}/normalize`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -822,7 +822,7 @@ $.ajax(settings).done(function (response) {
 
 function remove(index) {
   var settings = {
-  "url": `http://13.124.94.63:8080/api/admin/users/${index}`,
+  "url": `http://15.165.120.66:8080/api/admin/users/${index}`,
   "method": "DELETE",
   "timeout": 0,
   "headers": {

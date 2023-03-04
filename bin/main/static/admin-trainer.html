@@ -640,7 +640,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://localhost:8080/api/user/log-out",
+  "url": "http://13.124.94.63/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -684,7 +684,7 @@ $(document).on('click', '#p', function (e) {
 
 function getApplications(page) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/trainers?currentPage=${page}`,
+  "url": `http://13.124.94.63/api/admin/trainers?currentPage=${page}`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -723,7 +723,7 @@ function getApplications(page) {
                     </div>
                     <div class="article-list__cell-gender">${trainer.gender}</div>
                     <div class="article-list__cell-age">${trainer.age}</div>
-                    <div class="article-list__cell-region">${trainer.regioin}</div>
+                    <div class="article-list__cell-region">${trainer.region}</div>
                     <div class="article-list__cell-email">${trainer.email}</div>
                     <div class="article-list__cell-func">`
         if(trainer.role==="TRAINER") {
@@ -789,7 +789,7 @@ function getApplications(page) {
 
 function suspend(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/trainers/${index}/suspend`,
+  "url": `http://13.124.94.63/api/admin/trainers/${index}/suspend`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -808,7 +808,7 @@ $.ajax(settings).done(function (response) {
 
 function activate(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/trainers/${index}/normalize`,
+  "url": `http://13.124.94.63/api/admin/trainers/${index}/normalize`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -827,7 +827,7 @@ $.ajax(settings).done(function (response) {
 
 function cancel(index) {
   var settings = {
-  "url": "http://localhost:8080/api/admin/users/3/cancel",
+  "url": "http://13.124.94.63/api/admin/users/3/cancel",
   "method": "PUT",
   "timeout": 0,
   "headers": {

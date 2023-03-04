@@ -10,258 +10,275 @@
 </head>
 
 <body>
-  <!-- 회원가입/로그인 -->
-  <!-- Wordpress Site header-bar -->
-  <header class="wp-header" role="banner">
-    <ul>
-      <li id="signup"><a href="signup.html">회원가입</a></li>
-      <li id="signin"><a href="login.html">로그인</a></li>
-      <li id="logout"><a onclick="logout()">로그아웃</a></li>
-    </ul>
-  </header>
+<!-- 회원가입/로그인 -->
+<!-- Wordpress Site header-bar -->
+<header class="wp-header" role="banner">
+  <ul>
+    <li id="signup"><a href="signup.html">회원가입</a></li>
+    <li id="signin"><a href="login.html">로그인</a></li>
+    <li id="logout"><a onclick="logout()">로그아웃</a></li>
+  </ul>
+</header>
 
-  <!-- vue 헤더 -->
-  <!-- 제이쿼리 불러오기 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- vue 헤더 -->
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <!-- lodash 불러오기 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+<!-- lodash 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
-  <!-- vue 불러오기 -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+<!-- vue 불러오기 -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
 
 
-  <div class="body-content min-height-100vh flex flex-column">
-    <!-- 로고바 시작 -->
-    <header class="logo-bar con-min-width">
-      <div class="con height-100p flex flex-jc-c">
-        <a href="index.html" class="logo flex flex-ai-c">
-          <i class="fa-solid fa-dumbbell"></i>
-          <span>
+<div class="body-content min-height-100vh flex flex-column">
+  <!-- 로고바 시작 -->
+  <header class="logo-bar con-min-width">
+    <div class="con height-100p flex flex-jc-c">
+      <a href="index.html" class="logo flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
             Hot<span></span>body
           </span>
-        </a>
-      </div>
-    </header>
-    <!-- 로고바 끝 -->
-    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-home"></i> 홈
+      </a>
     </div>
-    <!-- 메뉴바 시작 -->
-    <header class="menu-bar con-min-width">
-      <div class="con height-100p" style="position: relative; z-index: 2;">
-        <nav class="menu-bar__menu-1">
+  </header>
+  <!-- 로고바 끝 -->
+  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i
+      class="fas fa-home"></i> 홈
+  </div>
+  <!-- 메뉴바 시작 -->
+  <header class="menu-bar con-min-width">
+    <div class="con height-100p" style="position: relative; z-index: 2;">
+      <nav class="menu-bar__menu-1">
 
-          <ul class="flex">
-            <li>
-              <a href="index.html" class="block">
-                <i class="fas fa-home"></i>
-                <span>홈</span>
-              </a>
-            </li>
-            <li>
-              <a class="block">
-                <i class="fas fa-list"></i>
-                <span>커뮤니티</span>
-              </a>
-              <ul>
-                <li>
-                  <a href="communities_exercise.html" class="block">
-                    <i class="fa-solid fa-person-walking"></i>
-                    <span>운동 게시판</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="communities_diet.html" class="block">
-                    <i class="fa-regular fa-clipboard"></i>
-                    <span>식단 게시판</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="communities_trainer.html" class="block">
-                    <i class="fa-solid fa-square-h"></i>
-                    <span>트레이너 게시판</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="communities_etc.html" class="block">
-                    <i class="fa-regular fa-comments"></i>
-                    <span>잡담 게시판</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a class="block">
-                <i class="fa-solid fa-gear"></i>
-                <span>마이페이지</span>
-              </a>
-              <ul>
-                <li>
-                  <a href="exercise.html" class="block">
-                    <i class="fa-solid fa-person-walking"></i>
-                    <span>운동</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="diet.html" class="block">
-                    <i class="fa-regular fa-clipboard"></i>
-                    <span>식단</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="my-page.html" class="block">
-                    <i class="fa-regular fa-address-card"></i>
-                    <span>프로필</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="map.html" class="block">
-                <i class="fa-solid fa-map-location-dot"></i>
-                <span>주변 헬스장</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <!-- 메뉴바 끝 -->
-    <div class="main flex-grow-1">
+        <ul class="flex">
+          <li>
+            <a href="index.html" class="block">
+              <i class="fas fa-home"></i>
+              <span>홈</span>
+            </a>
+          </li>
+          <li>
+            <a class="block">
+              <i class="fas fa-list"></i>
+              <span>커뮤니티</span>
+            </a>
+            <ul>
+              <li>
+                <a href="communities_exercise.html" class="block">
+                  <i class="fa-solid fa-person-walking"></i>
+                  <span>운동 게시판</span>
+                </a>
+              </li>
+              <li>
+                <a href="communities_diet.html" class="block">
+                  <i class="fa-regular fa-clipboard"></i>
+                  <span>식단 게시판</span>
+                </a>
+              </li>
+              <li>
+                <a href="communities_trainer.html" class="block">
+                  <i class="fa-solid fa-square-h"></i>
+                  <span>트레이너 게시판</span>
+                </a>
+              </li>
+              <li>
+                <a href="communities_etc.html" class="block">
+                  <i class="fa-regular fa-comments"></i>
+                  <span>잡담 게시판</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="block">
+              <i class="fa-solid fa-gear"></i>
+              <span>마이페이지</span>
+            </a>
+            <ul>
+              <li>
+                <a href="exercise.html" class="block">
+                  <i class="fa-solid fa-person-walking"></i>
+                  <span>운동</span>
+                </a>
+              </li>
+              <li>
+                <a href="diet.html" class="block">
+                  <i class="fa-regular fa-clipboard"></i>
+                  <span>식단</span>
+                </a>
+              </li>
+              <li>
+                <a href="my-page.html" class="block">
+                  <i class="fa-regular fa-address-card"></i>
+                  <span>프로필</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="map.html" class="block">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <span>주변 헬스장</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- 메뉴바 끝 -->
+  <div class="main flex-grow-1">
 
-      </section>
+    </section>
 
-      <section id="article-list-wrap" class="section-1 con-min-width">
-        <div class="con">
-          <div class="article-search">
-            <form">
-              <div style="width: 650px; margin: auto;">
-                <h1 style="margin-top: 20px; margin-left: 110px; cursor: default;">
-                  <span>Search</span>
-                </h1>
-                <div style="display:flex; position: relative; margin-top: 5px;">
-                  <h1>
-                    <select id="searchType"
-                      style="width: 100px; height: 35px; font-size: 16px; margin-right: 10px; padding-left: 5px;">
-                      <option value="title">제목</option>
-                      <option value="content">내용</option>
-                      <option value="nickname">작성자</option>
-                    </select>
-                  </h1>
-                  <input id="searchKeyword" type="text" @input="search" :value="searchKeyword" placeholder=" 검색어 입력"
-                    style="width: 100%; height: 30px; font-size: 20px;">
-                  <h1 style="position: absolute; right: 10px; top: 5px" onclick="searchPost(1)">
-                    <i class="fas fa-search"></i>
-                  </h1>
-                </div>
-              </div>
-              </form>
+    <section id="article-list-wrap" class="section-1 con-min-width">
+      <div class="con">
+        <div class="article-search">
+          <form
+          ">
+          <div style="width: 650px; margin: auto;">
+            <h1 style="margin-top: 20px; margin-left: 110px; cursor: default;">
+              <span>Search</span>
+            </h1>
+            <div style="display:flex; position: relative; margin-top: 5px;">
+              <h1>
+                <select id="searchType"
+                        style="width: 100px; height: 35px; font-size: 16px; margin-right: 10px; padding-left: 5px;">
+                  <option value="title">제목</option>
+                  <option value="content">내용</option>
+                  <option value="nickname">작성자</option>
+                </select>
+              </h1>
+              <input id="searchKeyword" type="text" @input="search" :value="searchKeyword"
+                     placeholder=" 검색어 입력"
+                     style="width: 100%; height: 30px; font-size: 20px;">
+              <h1 style="position: absolute; right: 10px; top: 5px" onclick="searchPost(1)">
+                <i class="fas fa-search"></i>
+              </h1>
+            </div>
           </div>
-          
-          <div class="article-list" style="position: relative; z-index: 1;">
-            <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-              <h1 class="flex-0 info-article" style="margin-right: 50px;">오늘의 식단</h1>
-              <h1 class="flex-0 info-article">운동 기록</h1>
+          </form>
+        </div>
+
+        <div class="article-list" style="position: relative; z-index: 1;">
+          <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
+            <h1 class="flex-0 info-article" style="margin-right: 50px;">오늘의 식단</h1>
+            <h1 class="flex-0 info-article">운동 기록</h1>
+          </div>
+          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트
+            게시글
+          </div>
+          <header>
+            <div>
+              <div class="article-list__cell-id">번호</div>
+              <div class="article-list__cell-category">게시판</div>
+              <div class="article-list__cell-reg-date">날짜</div>
+              <div class="article-list__cell-writer">작성자</div>
+              <div class="article-list__cell-title">제목</div>
+              <div class="article-list__cell-like">좋아요</div>
             </div>
-            <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트 게시글</div>
-            <header>
-              <div>
-                <div class="article-list__cell-id">번호</div>
-                <div class="article-list__cell-category">게시판</div>
-                <div class="article-list__cell-reg-date">날짜</div>
-                <div class="article-list__cell-writer">작성자</div>
-                <div class="article-list__cell-title">제목</div>
-                <div class="article-list__cell-like">좋아요</div>
+          </header>
+          <div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">{{article.id}}</div>
+              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="article-list__cell-writer">{{article.writer}}</div>
+              <div class="article-list__cell-title">
+                <a :href="'article_' + article.id + '.html'"
+                   class="hover-pointer">{{article.title}}</a>
               </div>
-            </header>
-            <div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">{{article.id}}</div>
-                <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-                <div class="article-list__cell-writer">{{article.writer}}</div>
-                <div class="article-list__cell-title">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-                </div>
-                <div class="article-list__cell-like">{{article.like}}</div>
-              </div>
+              <div class="article-list__cell-like">{{article.like}}</div>
             </div>
-            <div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">{{article.id}}</div>
-                <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-                <div class="article-list__cell-writer">{{article.writer}}</div>
-                <div class="article-list__cell-title">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-                </div>
-                <div class="article-list__cell-like">{{article.like}}</div>
+          </div>
+          <div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">{{article.id}}</div>
+              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="article-list__cell-writer">{{article.writer}}</div>
+              <div class="article-list__cell-title">
+                <a :href="'article_' + article.id + '.html'"
+                   class="hover-pointer">{{article.title}}</a>
               </div>
+              <div class="article-list__cell-like">{{article.like}}</div>
             </div>
-            <div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">{{article.id}}</div>
-                <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-                <div class="article-list__cell-writer">{{article.writer}}</div>
-                <div class="article-list__cell-title">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-                </div>
-                <div class="article-list__cell-like">{{article.like}}</div>
+          </div>
+          <div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">{{article.id}}</div>
+              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="article-list__cell-writer">{{article.writer}}</div>
+              <div class="article-list__cell-title">
+                <a :href="'article_' + article.id + '.html'"
+                   class="hover-pointer">{{article.title}}</a>
               </div>
+              <div class="article-list__cell-like">{{article.like}}</div>
             </div>
-            <div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">{{article.id}}</div>
-                <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-                <div class="article-list__cell-writer">{{article.writer}}</div>
-                <div class="article-list__cell-title">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-                </div>
-                <div class="article-list__cell-like">{{article.like}}</div>
+          </div>
+          <div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">{{article.id}}</div>
+              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="article-list__cell-writer">{{article.writer}}</div>
+              <div class="article-list__cell-title">
+                <a :href="'article_' + article.id + '.html'"
+                   class="hover-pointer">{{article.title}}</a>
               </div>
+              <div class="article-list__cell-like">{{article.like}}</div>
             </div>
-            <div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">{{article.id}}</div>
-                <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-                <div class="article-list__cell-writer">{{article.writer}}</div>
-                <div class="article-list__cell-title">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-                </div>
-                <div class="article-list__cell-like">{{article.like}}</div>
+          </div>
+          <div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">{{article.id}}</div>
+              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="article-list__cell-writer">{{article.writer}}</div>
+              <div class="article-list__cell-title">
+                <a :href="'article_' + article.id + '.html'"
+                   class="hover-pointer">{{article.title}}</a>
               </div>
+              <div class="article-list__cell-like">{{article.like}}</div>
             </div>
-            <div class="main">
-              <div v-for="article in filtered">
-                <div class="article-list__cell-id">{{article.id}}</div>
-                <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-                <div class="article-list__cell-writer">{{article.writer}}</div>
-                <div class="article-list__cell-title">
-                  <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-                </div>
-                <div class="article-list__cell-like">{{article.like}}</div>
+          </div>
+          <div class="main">
+            <div v-for="article in filtered">
+              <div class="article-list__cell-id">{{article.id}}</div>
+              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
+              <div class="article-list__cell-writer">{{article.writer}}</div>
+              <div class="article-list__cell-title">
+                <a :href="'article_' + article.id + '.html'"
+                   class="hover-pointer">{{article.title}}</a>
               </div>
+              <div class="article-list__cell-like">{{article.like}}</div>
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
 
-    <footer class="bottom-bar con-min-width">
-      <div class="con flex flex-ai-c">
-        <a href="index.html" class="logo logo--mini flex flex-ai-c">
-          <i class="fa-solid fa-dumbbell"></i>
-          <span>
+    <div class="paging">
+      <!-- 페이지 들어오는 곳 -->
+    </div>
+  </div>
+
+  <footer class="bottom-bar con-min-width">
+    <div class="con flex flex-ai-c">
+      <a href="index.html" class="logo logo--mini flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
             Hot<span></span>Body
           </span>
-        </a>
+      </a>
 
-        <div class="bottom-bar__site-info">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eos ipsum necessitatibus doloremque quos
-          voluptate debitis earum aut a consequuntur explicabo deleniti qui eius facere, harum error eveniet vel
-          laudantium.
-        </div>
+      <div class="bottom-bar__site-info">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum eos ipsum necessitatibus
+        doloremque quos
+        voluptate debitis earum aut a consequuntur explicabo deleniti qui eius facere, harum error
+        eveniet vel
+        laudantium.
       </div>
-    </footer>
-  </div>
+    </div>
+  </footer>
+</div>
 </body>
 
 <style>
@@ -283,7 +300,7 @@
     list-style: none;
   }
 
-  header+header {
+  header + header {
     margin-top: 50px;
   }
 
@@ -443,12 +460,12 @@
     color: white;
   }
 
-  .logo>span {
+  .logo > span {
     margin-left: 10px;
     color: white;
   }
 
-  .logo>span>span {
+  .logo > span > span {
     color: red;
   }
 
@@ -473,26 +490,26 @@
     color: white;
   }
 
-  .menu-bar__menu-1>ul>li {
+  .menu-bar__menu-1 > ul > li {
     width: 25%;
     position: relative;
   }
 
-  .menu-bar__menu-1 ul>li>a {
+  .menu-bar__menu-1 ul > li > a {
     text-align: center;
     padding: 20px 0;
   }
 
-  .menu-bar__menu-1 ul>li:hover>a {
+  .menu-bar__menu-1 ul > li:hover > a {
     background-color: white;
     color: black;
   }
 
-  .menu-bar__menu-1>ul>li>a {
+  .menu-bar__menu-1 > ul > li > a {
     border-radius: 10px 10px 0 0;
   }
 
-  .menu-bar__menu-1>ul ul {
+  .menu-bar__menu-1 > ul ul {
     display: none;
     position: absolute;
     top: 100%;
@@ -504,11 +521,11 @@
     border-radius: 0 0 20px 20px;
   }
 
-  .menu-bar__menu-1>ul>li:hover>ul {
+  .menu-bar__menu-1 > ul > li:hover > ul {
     display: block;
   }
 
-  .menu-bar__menu-1>ul ul>li:last-child>a {
+  .menu-bar__menu-1 > ul ul > li:last-child > a {
     border-radius: 0 0 10px 10px;
   }
 
@@ -539,7 +556,7 @@
 
   /* 게시물 검색 시작 */
 
-  .article-search>form {
+  .article-search > form {
     display: flex;
     width: 1000px;
     margin: auto;
@@ -559,15 +576,15 @@
     --article-list__cell-title__width: calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
   }
 
-  .article-list>*>div {
+  .article-list > * > div {
     display: flex;
   }
 
-  .article-list>header>div>div {
+  .article-list > header > div > div {
     position: relative;
   }
 
-  .article-list>header>div>div:not(:last-child)::after {
+  .article-list > header > div > div:not(:last-child)::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -578,7 +595,7 @@
     background-color: black;
   }
 
-  .article-list>*>div>div {
+  .article-list > * > div > div {
     box-sizing: border-box;
     text-align: center;
     padding-top: 10px;
@@ -605,12 +622,12 @@
     width: var(--article-list__cell-like__width);
   }
 
-  .article-list>.main .article-list__cell-title {
+  .article-list > .main .article-list__cell-title {
     text-align: left;
     padding-left: 10px;
   }
 
-  .article-list>.main>div {
+  .article-list > .main > div {
     border-top: 1px solid black;
   }
 
@@ -621,11 +638,11 @@
     margin-top: 20px;
   }
 
-  .article-page-menu>ul>li>a {
+  .article-page-menu > ul > li > a {
     padding: 7px;
   }
 
-  .article-page-menu>ul>li:not(:first-child):not(:last-child)>a {
+  .article-page-menu > ul > li:not(:first-child):not(:last-child) > a {
     border: 1px solid transparent;
     padding-left: 0;
     padding-right: 0;
@@ -633,7 +650,7 @@
     justify-content: center;
   }
 
-  .article-page-menu>ul>li:not(:first-child):not(:last-child):hover>a {
+  .article-page-menu > ul > li:not(:first-child):not(:last-child):hover > a {
     border-color: #afafaf;
   }
 
@@ -678,7 +695,7 @@
     line-height: 46px;
   }
 
-  .wp-header li>a {
+  .wp-header li > a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -687,12 +704,46 @@
     transition: color 0.15s ease-in-out;
   }
 
-  .wp-header li:hover>a {
+  .wp-header li:hover > a {
     color: #78c8e6;
+  }
+
+  /* 페이징 */
+  .paging {
+    margin: 0 auto;
+    width: 1000px;
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0
+  }
+
+  .paging .current {
+    color: #00f;
+    font-weight: bold
+  }
+
+  .paging a {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #000;
+    font-size: 12px
+  }
+
+  .paging a + a {
+    margin-left: 5px
+  }
+
+  .paging a.on {
+    color: #f00
   }
 </style>
 <script>
+
   jQuery(document).ready(function ($) {
+    var kakaoCode = document.location.href.split("?")[1];
+
+      callback(kakaoCode);
+
 
     $("#logout").hide();
     $("#signup").show();
@@ -705,28 +756,45 @@
     }
   })
 
+  function callback(kakaoCode) {
+
+    console.log(kakaoCode+": kakao code");
+    var settings = {
+      "url": "http://13.124.94.63/api/user/kakao/callback?" + kakaoCode,
+      "method": "GET",
+      "timeout": 0,
+    };
+
+    $.ajax(settings).done(function (response, status, xhr) {
+      console.log(xhr);
+      localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
+      localStorage.setItem('refreshToken', xhr.getResponseHeader('RefreshToken'));
+      console.log("callback : "+ response);
+      location.reload();
+    });
+  }
+
   function logout() {
 
     var settings = {
-      "url": "http://localhost:8080/api/user/log-out",
+      "url": "http://13.124.94.63/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
-        "Authorization": localStorage.removeItem('accessToken')
+        "Authorization": localStorage.getItem('accessToken'),
+        "RefreshToken": localStorage.getItem('refreshToken')
+
       },
     };
 
     $.ajax(settings).done(function (response) {
       console.log(response);
-      localStorage.removeItem('accessToken');
-      var now = new Date();
-      now.setDate(now.getDate() - 1);
-      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+
+      window.localStorage.clear();
+      location.reload();
     });
 
-    location.reload();
   }
-
 
   $(document).on('click', '#s', function (e) {
     page = parseInt($(this).data('page'));
@@ -734,16 +802,15 @@
     return false;
   });
 
-
   function searchPost(page) {
 
     var searchType = ($('#searchType').val())
     var searchKeyword = ($('#searchKeyword').val())
 
-
-
     var settings = {
-      "url": `http://localhost:8080/api/posts/search?&page=`+ page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
+      "url": `http://13.124.94.63/api/posts/search?&page=` + page
+          + `&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=`
+          + searchKeyword,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -765,8 +832,6 @@
       var end = VIEW_DATA;
       var j = 0;
 
-
-
       console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
       console.log(response);
       board_list(response.content);
@@ -779,9 +844,9 @@
           var k = TOTAL_DATA - j
           str += `<div class="main">
                 <div v-for="article in filtered">
-                  <div class="article-list__cell-id">`+ k + `</div>              
+                  <div class="article-list__cell-id">` + k + `</div>
                   <div class="article-list__cell-title">
-                    <a href="view_post.html?`+ `${post.id}` + `"class="hover-pointer">${post.title}</a>
+                    <a href="view_post.html?` + `${post.id}` + `"class="hover-pointer">${post.title}</a>
                   </div>
                   <div class="article-list__cell-writer">${post.nickname}</div>
                   <div class="article-list__cell-reg-date">${post.createdAt}</div>

@@ -25,7 +25,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 
-<ㅇ class="body-content min-height-100vh flex flex-column">
+<div class="body-content min-height-100vh flex flex-column">
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
@@ -130,6 +130,10 @@
         <input name="title" id="title" type="text" class="title" style="resize: none; width: 500px;">
         </input>
         <br /><br />
+      </div>
+      <div class="textForm">
+        <div id="post_category"disabled>DIET</div>
+        <br />
       </div>
       <div class="textForm">
         <div type="nickname" id="nickname" name="nickname" disabled>
@@ -648,7 +652,7 @@
 
     function getUser() {
       var settings = {
-        "url": "http://localhost:8080/api/user/auth/profile",
+        "url": "http://13.124.94.63/api/user/auth/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -664,7 +668,7 @@
     function logout() {
 
       var settings = {
-        "url": "http://localhost:8080/api/user/log-out",
+        "url": "http://13.124.94.63/api/user/log-out",
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -691,7 +695,7 @@
       form.append("file", $('#image')[0].files[0]);
 
       var settings = {
-        "url": "http://localhost:8080/api/posts/image",
+        "url": "http://13.124.94.63/api/posts/image",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -708,13 +712,14 @@
         createPost(response)
       });
     }
+    
     function createPost(response) {
 
       $.ajax(settings).done(function (response) {
       });
 
       var settings = {
-        "url": "http://localhost:8080/api/posts",
+        "url": "http://13.124.94.63/api/posts",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -730,7 +735,6 @@
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
         alert("글 등록이 완료되었습니다!");
         window.location.href = "communities_diet.html";
       });

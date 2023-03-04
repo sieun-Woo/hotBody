@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-    <!-- 회원가입/로그인 -->
-    <!-- Wordpress Site header-bar -->
+<!-- 회원가입/로그인 -->
+<!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
-    <ul>
-        <li><a href="index.html">홈으로</a></li>
-        <li><a href="signup.html">회원가입</a></li>
-    </ul>
+  <ul>
+    <li><a href="index.html">홈으로</a></li>
+    <li><a href="signup.html">회원가입</a></li>
+  </ul>
 </header>
 
 <!-- vue 헤더 -->
@@ -32,185 +34,202 @@
       <a href="index.html" class="logo flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
-          Hot<span></span>body
-        </span>
+            Hot<span></span>body
+          </span>
       </a>
     </div>
   </header>
   <!-- 로고바 끝 -->
 
-    <div class="joinForm">
-                                                                                               
-      <h2>로그인</h2>
-      <div class="textForm">
-        <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
-        </input>
-      </div>
-      <div class="textForm">
-        <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
-      </div>
-      <button type="submit" onclick="login()" class="btn">로그인</button>
-      <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
-      <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기</button>
-      
-      
+  <div class="joinForm">
+
+    <h2>로그인</h2>
+    <div class="textForm">
+      <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
+      </input>
     </div>
+    <div class="textForm">
+      <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
+    </div>
+    <button type="submit" onclick="login()" class="btn">로그인</button>
+
+
+    <button type="submit" onclick="kakaoLogin()" class="btnkakao">카카오로 시작하기</button>
+
+    <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
+    <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기
+    </button>
+
+
+  </div>
+</div>
 </body>
 <style>
-/* vue 헤더 */
-/* 폰트 */
-@font-face {
-  font-family: 'LotteMartDream';
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
-}
-@font-face {
-  font-family: 'LotteMartDream';
-  font-style: normal;
-  font-weight: 700;
-  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
-}
-@font-face {
-  font-family: 'LotteMartDream';
-  font-style: normal;
-  font-weight: 300;
-  src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
-}
-html {
-  font-family: 'LotteMartDream', sans-serif;
-}
+  /* vue 헤더 */
+  /* 폰트 */
+  @font-face {
+    font-family: 'LotteMartDream';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamMedium.woff') format('woff');
+  }
 
-/* 노말라이즈 */
-body, ul, li, h1, h2, h3 {
-  margin:0;
-  padding:0;
-  list-style:none;
-}
-a {
-  color:inherit;
-  text-decoration:none;
-}
+  @font-face {
+    font-family: 'LotteMartDream';
+    font-style: normal;
+    font-weight: 700;
+    src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamBold.woff') format('woff');
+  }
 
-/* 라이브러리 */
-.hover-underline:hover {
-  text-decoration:underline;
-}
+  @font-face {
+    font-family: 'LotteMartDream';
+    font-style: normal;
+    font-weight: 300;
+    src: url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff2') format('woff2'), url('https://cdn.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartDream/LotteMartDreamLight.woff') format('woff');
+  }
 
-.hover-pointer:hover {
-  cursor: pointer;
-}
+  html {
+    font-family: 'LotteMartDream', sans-serif;
+  }
 
-.flex {
-  display:flex;
-}
+  /* 노말라이즈 */
+  body,
+  ul,
+  li,
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.flex-jc-c {
-  justify-content:center;
-}
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 
-.flex-ai-c {
-  align-items:center;
-}
+  /* 라이브러리 */
+  .hover-underline:hover {
+    text-decoration: underline;
+  }
 
-.flex-wrap {
-  flex-wrap:wrap;
-}
+  .hover-pointer:hover {
+    cursor: pointer;
+  }
 
-.flex-column {
-  flex-direction:column;
-}
+  .flex {
+    display: flex;
+  }
 
-.flex-grow-1 {
-  flex-grow:1;
-}
+  .flex-jc-c {
+    justify-content: center;
+  }
 
-.flex-none {
+  .flex-ai-c {
+    align-items: center;
+  }
+
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  .flex-column {
+    flex-direction: column;
+  }
+
+  .flex-grow-1 {
+    flex-grow: 1;
+  }
+
+  .flex-none {
     flex: none;
-}
+  }
 
-.flex-1 {
+  .flex-1 {
     flex: 1;
-}
+  }
 
-.flex-200 {
+  .flex-200 {
     flex: 0 0 300px;
-}
+  }
 
-.con {
-  position: relative;
-  margin: auto;
-}
+  .con {
+    position: relative;
+    margin: auto;
+  }
 
-.min-height-100vh {
-  min-height:100vh;
-}
+  .min-height-100vh {
+    min-height: 100vh;
+  }
 
-.bg-pink {
-  background-color:pink;
-}
+  .bg-pink {
+    background-color: pink;
+  }
 
-.bd-green {
-  border:10px solid green;
-}
+  .bd-green {
+    border: 10px solid green;
+  }
 
-.bg-red {
-  background-color:red;
-}
+  .bg-red {
+    background-color: red;
+  }
 
-.bg-blue {
-  background-color:blue;
-}
+  .bg-blue {
+    background-color: blue;
+  }
 
-.height-100p {
-  height:100%;
-}
+  .height-100p {
+    height: 100%;
+  }
 
-.block {
-  display:block;
-}
+  .block {
+    display: block;
+  }
 
-/* 커스텀 */
-.con {
-  width:100%;
-}
+  /* 커스텀 */
+  .con {
+    width: 100%;
+  }
 
-.info-article {
+  .info-article {
     border: 1px solid black;
     width: 300px;
     height: 200px;
-}
+  }
 
-/* 로고 시작 */
-.logo {
-  font-size:4rem;
-  color: white;
-}
+  /* 로고 시작 */
+  .logo {
+    font-size: 4rem;
+    color: white;
+  }
 
-.logo > span {
-  margin-left:10px;
-  color: white;
-}
+  .logo > span {
+    margin-left: 10px;
+    color: white;
+  }
 
-.logo > span > span {
-  color:red;
-}
+  .logo > span > span {
+    color: red;
+  }
 
-.logo--mini {
-  font-size:2rem;
-}
-/* 로고 끝 */
+  .logo--mini {
+    font-size: 2rem;
+  }
 
-/* 로고바 시작 */
-.logo-bar {
-  background-color:black;
-  color:white;
-  height:200px;
-}
-/* 로고바 끝 */
+  /* 로고 끝 */
 
-/* Wordpress Site header-bar */
-.wp-header {
+  /* 로고바 시작 */
+  .logo-bar {
+    background-color: black;
+    color: white;
+    height: 200px;
+  }
+
+  /* 로고바 끝 */
+
+  /* Wordpress Site header-bar */
+  .wp-header {
     font-family: Arial;
     height: 46px;
     left: 0;
@@ -218,9 +237,10 @@ a {
     top: 0;
     width: 100%;
     z-index: 9999;
-}
-.wp-header h1 {
-    float:left;
+  }
+
+  .wp-header h1 {
+    float: left;
     padding-left: 40px;
     color: #78c8e6;
     font-size: 20px;
@@ -229,149 +249,232 @@ a {
     font-weight: 400;
     -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
-}
-.wp-header h1:hover {
+  }
+
+  .wp-header h1:hover {
     color: #fff;
     cursor: pointer;
-}
-.wp-header li {
-    float:right;
+  }
+
+  .wp-header li {
+    float: right;
     height: 46px;
     padding-right: 20px;
-    line-height: 46px;   
-}
-.wp-header li > a {
+    line-height: 46px;
+  }
+
+  .wp-header li > a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
     text-decoration: none;
-     -webkit-transition: color 0.15s ease-in-out;
+    -webkit-transition: color 0.15s ease-in-out;
     transition: color 0.15s ease-in-out;
-}
-.wp-header li:hover > a {
+  }
+
+  .wp-header li:hover > a {
     color: #78c8e6;
-}
+  }
 
-    * {
-  margin: 0px;
-  padding: 0px;
-  text-decoration: none;
-  font-family:sans-serif;
+  * {
+    margin: 0px;
+    padding: 0px;
+    text-decoration: none;
+    font-family: sans-serif;
 
-}
+  }
 
-body {
-  background-image:#34495e;
-}
+  body {
+    background-image: #34495e;
+  }
 
-.joinForm {
-  position:absolute;
-  width:400px;
-  height:400px;
-  padding: 30px, 20px;
-  background-color:#FFFFFF;
-  text-align:center;
-  top:400px;
-  left:50%;
-  transform: translate(-50%,-50%);
-  border-radius: 15px;
-}
+  .joinForm {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    padding: 30px 20px;
+    background-color: #FFFFFF;
+    text-align: center;
+    top: 400px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+  }
 
-.joinForm h2 {
-  text-align: center;
-  margin: 30px;
-}
+  .joinForm h2 {
+    text-align: center;
+    margin: 30px;
+  }
 
-.textForm {
-  border-bottom: 2px solid #adadad;
-  margin: 30px;
-  padding: 10px 10px;
-}
+  .textForm {
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
+  }
 
 
-.id {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
+  .id {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+  }
 
-.pw {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
+  .pw {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+  }
 
-.name {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
 
-.email {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
+  .name {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+  }
 
-.nickname {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
+  .email {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+  }
 
-.cellphoneNo {
-  width: 100%;
-  border:none;
-  outline:none;
-  color: #636e72;
-  font-size:16px;
-  height:25px;
-  background: none;
-}
+  .nickname {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+  }
 
-.btn {
-  position:relative;
-  left:40%;
-  transform: translateX(-50%);
-  margin-bottom: 40px;
-  width:80%;
-  height:40px;
-  background: linear-gradient(125deg,#495555,#05040c,#5b5e5e);
-  background-position: left;
-  background-size: 200%;
-  color:white;
-  font-weight: bold;
-  border:none;
-  cursor:pointer;
-  transition: 0.4s;
-  display:inline;
-}
+  .cellphoneNo {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #636e72;
+    font-size: 16px;
+    height: 25px;
+    background: none;
+  }
 
-.btn:hover {
-  background-position: right;
-}
+  .btn {
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: linear-gradient(125deg, #495555, #05040c, #5b5e5e);
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
+  .btnkakao {
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: #FEE500;
+    background-position: left;
+    background-size: 200%;
+    color: #191919;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
+  .btn:hover {
+    background-position: right;
+  }
 </style>
 <script>
+  function kakaoLogin() {
+
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=84bb3d050c5f1743aba916fceffca717&redirect_uri=http://localhost:8080/index.html&response_type=code';
+
+    
+    
+    $.ajax().done(function (response,xhr) {
+
+
+          // var cookienames = getAllCookieNames();
+          // var cookieTokenName = cookienames[0];
+          // var cookieRefreshName = cookienames[1];
+          // var cookieToken = getCookie(cookieTokenName);
+          // var cookieRefresh = getCookie(cookieRefreshName);
+          // console.log(cookieToken);
+          // //
+          // localStorage.setItem('accessToken', cookieToken);
+          // localStorage.setItem('refreshToken', cookieRefresh);
+          alert("로그인 완료");
+          //location.href = "index.html"
+
+        }
+    ).fail(function (response) {
+      alert(response.responseJSON.message);
+    })
+  }
+
+  // 쿠키 값을 가져오는 함수
+  function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i];
+      while (cookie.charAt(0) == ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(name) == 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return "";
+  }
+
+  function getCookieName(cookieString) {
+    var cookieName = cookieString.substring(0, cookieString.indexOf('='));
+    return cookieName.trim();
+  }
+
+  function getAllCookieNames() {
+    var cookieString = document.cookie;
+    var cookieArray = cookieString.split(';');
+    var cookieNames = [];
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookieName = getCookieName(cookieArray[i]);
+      cookieNames.push(cookieName);
+    }
+    return cookieNames;
+  }
+
   function login() {
 
     let username = $('#id').val();
@@ -380,13 +483,13 @@ body {
     if (username == '') {
       alert('ID를 입력해주세요.');
       return;
-    } else if(password == '') {
+    } else if (password == '') {
       alert('비밀번호를 입력해주세요.');
       return;
     }
 
     var settings = {
-      "url": "http://localhost:8080/api/user/log-in",
+      "url": "http://13.124.94.63/api/user/log-in",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -401,27 +504,26 @@ body {
     $.ajax(settings).done(function (response, status, xhr) {
       console.log(response);
       localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
-      console.log(xhr.getResponseHeader('Authorization'));
+      localStorage.setItem('refreshToken', xhr.getResponseHeader('RefreshToken'));
       alert("로그인 완료")
       location.href = "index.html"
-    }).fail(function(response) {
+    }).fail(function (response) {
       alert(response.responseJSON.message);
     })
   }
 
   // 구글 로그인 버튼 클릭
-function loginWithGoogle() {
-  var settings = {
-    "url": "http://localhost:8080/google/login",
-    "method": "GET",
-    "timeout": 0,
-    "headers": {
-    }
-  };
+  function loginWithGoogle() {
+    var settings = {
+      "url": "http://13.124.94.63/google/login",
+      "method": "GET",
+      "timeout": 0,
+      "headers": {}
+    };
 
-  $.ajax(settings).done(function (response) {
-    console.log(response);
-  });
-}
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
 </script>
 </html>

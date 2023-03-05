@@ -57,8 +57,12 @@ public class AdminController {
 
   // 트레이너 등록 요청 조회
   @GetMapping("/apply")
-  public Page<TrainerResponseDto> getRegistrations(@RequestParam int pageNum) {
-    return adminService.getRegistrations(pageNum);
+  public Page<TrainerResponseDto> getRegistrations(
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return adminService.getRegistrations(page, size, sortBy, isAsc);
   }
 
   // 트레이너 등록 요청 허용
@@ -102,9 +106,13 @@ public class AdminController {
   }
 
   // 전체 유저 정보 조회
-  @GetMapping("/users")  // users가 더 나을 것 같습니다.
-  public Page<UsersResponseDto> getUserList(@RequestParam(value="currentPage") int pageNum) {
-    return adminService.getUserList(pageNum);
+  @GetMapping("/users")
+  public Page<UsersResponseDto> getUserList(
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return adminService.getUserList(page, size, sortBy, isAsc);
   }
 
   // 단건 유저 정보 조회
@@ -115,8 +123,12 @@ public class AdminController {
 
   // 전체 트레이너 정보 조회
   @GetMapping("/trainers")
-  public Page<UsersResponseDto> getTrainerList(@RequestParam(value="currentPage") int pageNum) {
-    return adminService.getTrainerList(pageNum);
+  public Page<UsersResponseDto> getTrainerList(
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return adminService.getTrainerList(page, size, sortBy, isAsc);
   }
 
   // 단건 트레이너 정보 조회

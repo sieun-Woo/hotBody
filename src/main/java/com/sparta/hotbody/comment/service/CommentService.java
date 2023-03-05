@@ -6,6 +6,7 @@ import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 
+import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.entity.Post;
@@ -44,9 +45,7 @@ public class CommentService {
   public Page<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
 
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
 
     Page<Comment> comments = commentRepository.findAll(pageable);
     Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));
@@ -98,9 +97,7 @@ public class CommentService {
   public Page<CommentResponseDto> getPostComments(Long postId, int page, int size, String sortBy, boolean isAsc) {
 
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
 
     Page<Comment> comments = commentRepository.findAllByPostId(postId, pageable);
     Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));

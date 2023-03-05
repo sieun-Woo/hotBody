@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.service;
 
+import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
@@ -184,9 +185,7 @@ public class PostService {
       String nickname, String searchType, String searchKeyword,
       int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
 
     if (searchType.equals("title")) {
       Page<Post> posts = postRepository.findAllByNicknameContainingAndTitleContaining

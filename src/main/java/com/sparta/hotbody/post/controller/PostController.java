@@ -75,7 +75,8 @@ public class PostController {
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc) {
-    return postService.searchPost(category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
+    return postService.searchPost(
+        category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
   }
 
   // 4. 게시글 수정
@@ -125,6 +126,7 @@ public class PostController {
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc) {
-    return postService.searchMyPosts(userDetails.getUser().getNickname(), searchType, searchKeyword, page - 1, size, sortBy, isAsc);
+    return postService.searchMyPosts(userDetails.getUser().getNickname(), searchType, searchKeyword,
+        page - 1, size, sortBy, isAsc);
   }
 }

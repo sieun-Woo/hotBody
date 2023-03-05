@@ -28,7 +28,7 @@ public interface AdminService {
 
   ResponseEntity<String> permitTrainer(Long requestId);
 
-  Page<TrainerResponseDto> getRegistrations(int pageNum);
+  Page<TrainerResponseDto> getRegistrations(int page, int size, String sortBy, boolean isAsc);
 
   ResponseEntity<String> refuseTrainer(Long userId);
 
@@ -42,11 +42,11 @@ public interface AdminService {
 
   ResponseEntity<String> deleteComment(Long commentId);
 
-  Page<UsersResponseDto> getUserList(int pageNum);
+  Page<UsersResponseDto> getUserList(int page, int size, String sortBy, boolean isAsc);
 
   UserProfileResponseDto getUser(Long userId);
 
-  Page<UsersResponseDto> getTrainerList(int pageNum);
+  Page<UsersResponseDto> getTrainerList(int page, int size, String sortBy, boolean isAsc);
 
   TrainerResponseDto getTrainer(Long trainerId);
 

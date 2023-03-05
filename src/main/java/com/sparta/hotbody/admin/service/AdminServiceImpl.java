@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -118,8 +119,9 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<TrainerResponseDto> getRegistrations(int pageNum) {
-    Page<Trainer> trainerList = promoteRepository.findAll(new PageDto(pageNum).toPageable());
+  public Page<TrainerResponseDto> getRegistrations(int page, int size, String sortBy, boolean isAsc) {
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+    Page<Trainer> trainerList = promoteRepository.findAll(pageable);
     if (trainerList.isEmpty()) {
       throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }
@@ -200,8 +202,9 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getUserList(int pageNum) {
-    Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, new PageDto(pageNum).toPageable());
+  public Page<UsersResponseDto> getUserList(int page, int size, String sortBy, boolean isAsc) {
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+    Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, pageable);
     if (userPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }
@@ -223,9 +226,10 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getTrainerList(int pageNum) {
+  public Page<UsersResponseDto> getTrainerList(int page, int size, String sortBy, boolean isAsc) {
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
     Page<User> userPage = userRepository.findAllByRoleOrRole(
-        UserRole.TRAINER, UserRole.REPORTED_TRAINER, new PageDto(pageNum).toPageable());
+        UserRole.TRAINER, UserRole.REPORTED_TRAINER, pageable);
     if (userPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }

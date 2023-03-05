@@ -683,7 +683,7 @@ $(document).on('click', '#p', function (e) {
 
 function getApplications(page) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/apply?pageNum=${page}`,
+  "url": `http://localhost:8080/api/admin/apply?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {

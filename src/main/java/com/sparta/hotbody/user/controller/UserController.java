@@ -148,7 +148,7 @@ public class UserController {
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc
   ) {
-    return userService.getTrainerList(page - 1, size, sortBy, isAsc);
+    return userService.getTrainerList(page, size, sortBy, isAsc);
   }
 
   //11. 트레이너 조회

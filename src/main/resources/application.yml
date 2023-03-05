@@ -18,9 +18,10 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://hotbody-database.crf6p4x0budv.ap-northeast-2.rds.amazonaws.com:3306/hotbodyDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: admin
-    password: fixfix6352#
+    url: ENC(Q4TjqpKn2d7Cj9tIdRu+LgKYA+o0T/17g33kpnr554fWe0fZWuevBj5lxBbtIRKkJoyrqF7q9r87y0Zquemb1DhkAnHQF2ltG//BuZ+EOlTGANz7V/ZUgHYNdzu54LIUCftxkBMIcIS2dbIW7W+3jg/ZxTA72Llu3alSI+0kLYfW1joSdq4rS+ZDq6jnXf+LgsayjGg/AzM=)
+    username: ENC(R9bSjcoNl5jXqETfhvtYFw==)
+    password: ENC(5KHkXoQKQf+2mrLrQuQjaY5TfutyLww0)
+
 
   batch:
     jdbc:

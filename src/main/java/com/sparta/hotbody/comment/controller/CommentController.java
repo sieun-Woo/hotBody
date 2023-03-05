@@ -34,7 +34,7 @@ public class CommentController {
   private final CommentService commentService;
 
   // 1. 댓글 등록
-  @PostMapping("/comments/{postId}")
+  @PostMapping("/posts/{postId}/comment")
   public ResponseEntity<String> createComment(
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -78,7 +78,7 @@ public class CommentController {
   }
 
   // 6. 해당 게시글 댓글 전체 조회
-  @GetMapping("/comments/posts/{postId}")
+  @GetMapping("/posts/{postId}/comments")
   public Page<CommentResponseDto> getPostComments(
       @PathVariable Long postId,
       @RequestParam("page") int page,

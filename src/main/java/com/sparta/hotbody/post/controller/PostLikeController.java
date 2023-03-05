@@ -20,7 +20,7 @@ public class PostLikeController {
 
   // 6. 게시글 좋아요
   @PostMapping("/posts/{postId}/like")
-  public ResponseEntity<String> pushLikes(
+  public ResponseEntity<String> pushLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return postLikeService.pushLike(postId, userDetails.getUser());
@@ -28,9 +28,9 @@ public class PostLikeController {
 
   // 7. 게시글 좋아요 취소
   @DeleteMapping("/posts/{postId}/like")
-  public void cancelLikes(
+  public void cancelLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postLikeService.cancelLikes(postId, userDetails.getUser());
+    postLikeService.cancelLike(postId, userDetails.getUser());
   }
 }

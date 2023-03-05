@@ -352,7 +352,6 @@ public class AdminServiceImpl implements AdminService {
     // 비밀번호 encode 후 저장
     String encodePassword = passwordEncoder.encode(password);
     admin.modifyPassword(encodePassword);
-    adminRepository.save(admin);
 
     MimeMessage mimeMessage = javaMailSender.createMimeMessage();
     MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");

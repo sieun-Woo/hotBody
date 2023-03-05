@@ -34,7 +34,7 @@ public class ExerciseRecordController {
     return exerciseRecordService.createExerciseRecord(exerciseRecordRequestDto, userDetails);
   }
 
-  @GetMapping("/record")
+  @GetMapping("/records")
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(
       @RequestParam("page") int page,
       @RequestParam("size") int size,

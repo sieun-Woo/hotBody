@@ -26,10 +26,10 @@ public class CommentLikeService {
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST)
     );
     if (commentLikeRepository.existsByCommentIdAndUserId(commentId, user.getId())) {
-      throw new CustomException(ExceptionStatus.PUSHED_LIKE);
+      throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
     CommentLike commentLike = new CommentLike(comment, user);
-    comment.plusLikes();
+    comment.plusLikes(); // TODO: count로 수정해야 합니다.
     commentLikeRepository.save(commentLike);
     return ResponseEntity.ok("좋아요를 눌렀습니다.");
   }
@@ -44,7 +44,7 @@ public class CommentLikeService {
       throw new CustomException(ExceptionStatus.CANCELED_LIKE);
     }
     commentLikeRepository.deleteByCommentIdAndUserId(commentId, user.getId());
-    comment.minusLikes();
+    comment.minusLikes(); // TODO: count로 수정해야 합니다.
     return ResponseEntity.ok("좋아요를 취소했습니다.");
   }
 }

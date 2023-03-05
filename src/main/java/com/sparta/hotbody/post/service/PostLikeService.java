@@ -21,13 +21,12 @@ public class PostLikeService {
   private final PostLikeRepository postLikeRepository;
 
   // 6. 게시글 좋아요 추가
-  @Transactional
   public ResponseEntity<String> pushLike(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
     );
     if (postLikeRepository.existsByPostIdAndUserId(postId, user.getId())) {
-      throw new CustomException(ExceptionStatus.PUSHED_LIKE);
+      throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
     PostLike postLike = new PostLike(post, user);
     postLikeRepository.countAllByPostId(postId);
@@ -36,8 +35,7 @@ public class PostLikeService {
   }
 
   // 7. 게시글 좋아요 취소
-  @Transactional
-  public ResponseEntity<String> cancelLikes(Long postId, User user) {
+  public ResponseEntity<String> cancelLike(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
     );

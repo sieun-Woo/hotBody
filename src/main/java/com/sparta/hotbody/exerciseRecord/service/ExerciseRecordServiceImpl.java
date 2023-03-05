@@ -35,7 +35,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
 
   @Override
-  @Transactional
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails) {
     // 페이징 처리
     Long id = userDetails.getUser().getId();
@@ -53,7 +52,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   }
 
   @Override
-  @Transactional
   public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id)
@@ -63,15 +61,13 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
     } else {
       throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
     }
-
   }
 
   @Override
-  @Transactional
   public ExerciseRecordResponseDto createExerciseRecord(
       ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
-    ExerciseRecord exerciseRecord = exerciseRecordRepository.saveAndFlush(
+    ExerciseRecord exerciseRecord = exerciseRecordRepository.save(
         new ExerciseRecord(user, exerciseRecordRequestDto));
     return new ExerciseRecordResponseDto(exerciseRecord);
   }
@@ -85,7 +81,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
         .orElseThrow(() -> new CustomException(ExceptionStatus.EXERCISE_RECORD_IS_NOT_EXIST));
     if (exerciseRecord.getUser().getUsername().equals(user.getUsername())) {
       exerciseRecord.update(exerciseRecordRequestDto);
-      exerciseRecordRepository.flush();
       return new ExerciseRecordResponseDto(
           exerciseRecordRepository.findById(exerciseRecord.getId()).get());
     } else {
@@ -95,7 +90,6 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   }
 
   @Override
-  @Transactional
   public ResponseEntity<String> deleteExerciseRecord(Long id, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
     ExerciseRecord exerciseRecord = exerciseRecordRepository.findById(id)

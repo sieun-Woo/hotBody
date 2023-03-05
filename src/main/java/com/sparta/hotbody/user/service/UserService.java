@@ -71,7 +71,6 @@ public class UserService {
   @Value("${spring.mail.username}")
   private String from;
 
-  @Transactional
   public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = passwordEncoder.encode(requestDto.getPassword());
@@ -94,7 +93,6 @@ public class UserService {
 
 
   //2.로그인
-  @Transactional
   public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response,
       HttpServletRequest request)
       throws UnsupportedEncodingException {
@@ -142,7 +140,6 @@ public class UserService {
   }
 
   //3.회원탈퇴
-  @Transactional
   public ResponseEntity<String> deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 
     if (user.getRole().equals(UserRole.ADMIN) ||
@@ -155,7 +152,6 @@ public class UserService {
   }
 
   //5. 트레이너 폼 요청
-  @Transactional
   public ResponseEntity<String> promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
@@ -166,7 +162,6 @@ public class UserService {
   }
 
   //6. 트레이너 폼 취소
-  @Transactional
   public ResponseEntity<String> deletePermission(User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
@@ -179,7 +174,7 @@ public class UserService {
     return ResponseEntity.ok("트레이너 신청을 취소하였습니다.");
   }
 
-  //7. 유저 프로필 생성
+  //7. 유저 프로필 수정
   @Transactional
   public ResponseEntity<String> createProfile(UserProfileRequestDto requestDto,
       UserDetails userDetails) {
@@ -187,7 +182,6 @@ public class UserService {
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
     user.update(requestDto);
-    userRepository.save(user);
 
     return ResponseEntity.ok("프로필을 수정하였습니다.");
   }
@@ -219,7 +213,6 @@ public class UserService {
   }
 
   //8.유저 프로필 조회
-  @Transactional
   public UserProfileResponseDto getUserProfile(String username) {
     User user = userRepository.findByUsername(username).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
@@ -228,7 +221,6 @@ public class UserService {
   }
 
   // 유저 아이디 찾기
-  @Transactional
   public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto)
       throws MessagingException {
     User user = userRepository.findByEmail(findUserIdRequestDto.getEmail()).orElseThrow(
@@ -249,7 +241,6 @@ public class UserService {
   }
 
   // 유저 비밀번호 찾기
-  @Transactional
   public FindUserPwResponseDto findUserPw(FindUserPwRequestDto findUserPwRequestDto)
       throws MessagingException {
     User user = userRepository.findByUsernameAndEmail(findUserPwRequestDto.getUsername(),
@@ -308,7 +299,6 @@ public class UserService {
   }
 
   // 트레이너 전체 조회
-  @Transactional
   public Page<UsersResponseDto> getTrainerList(int page, int size,
       String sortBy, boolean isAsc) {
     // 페이징 처리
@@ -321,8 +311,8 @@ public class UserService {
 
     return usersResponseDto;
   }
+
   // 트레이너 개인 조회
-  @Transactional
   public UsersResponseDto getTrainer(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)

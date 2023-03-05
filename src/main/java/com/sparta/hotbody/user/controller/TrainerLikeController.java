@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth/trainer")
+@RequestMapping("/api/trainers")
 public class TrainerLikeController {
   private final TrainerLikeService trainerLikeService;
 

@@ -32,17 +32,15 @@ public class CommentService {
   private final PostRepository postRepository;
 
   // 1. 댓글 등록
-  @Transactional
   public ResponseEntity<String> createComment(User user, CommentRequestDto requestDto, Long postId) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
     Comment comment = new Comment(requestDto, user, post);
-    commentRepository.saveAndFlush(comment);
+    commentRepository.save(comment);
     return ResponseEntity.ok("댓글이 작성되었습니다.");
   }
 
   // 2. 댓글 전체 조회
-  @Transactional
   public Page<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
 
     // 페이징 처리
@@ -57,7 +55,6 @@ public class CommentService {
   }
 
   // 3. 댓글 선택 조회
-  @Transactional
   public CommentResponseDto getComment(Long commentId) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST)
@@ -76,7 +73,6 @@ public class CommentService {
     );
     if (comment.getUser().getId().equals(user.getId())) {
       comment.modifyComment(commentModifyRequestDto);
-      commentRepository.save(comment);
     } else {
       throw new CustomException(ExceptionStatus.WRITER_IS_NOT_CORRECT);
     }
@@ -84,7 +80,6 @@ public class CommentService {
   }
 
   // 5. 댓글 삭제
-  @Transactional
   public ResponseEntity<String> deleteComment(Long commentId, User user) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST)

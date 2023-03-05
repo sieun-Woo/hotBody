@@ -24,13 +24,12 @@ public class TrainerLikeService {
   private final TrainerLikeRepository trainerLikeRepository;
   private final UserRepository userRepository;
 
-  @Transactional
   public ResponseEntity<String> addLike(Long trainerId, User user) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST)
     );
     if (trainerLikeRepository.existsByUserIdAndTrainerId(user.getId(), trainerId)) {
-      throw new CustomException(ExceptionStatus.PUSHED_LIKE);
+      throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
     if(trainer.getRole().equals(UserRole.TRAINER)){
       TrainerLike trainerLike = new TrainerLike(user, trainer);
@@ -40,7 +39,6 @@ public class TrainerLikeService {
   }
 
   // 7. 트레이너 좋아요 취소
-  @Transactional
   public ResponseEntity<String> cancelLike(Long trainerId, User user) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST)

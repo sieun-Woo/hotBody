@@ -34,17 +34,15 @@ public class PostService {
   private final UploadService uploadService;
 
   // 1. 게시글 등록
-  @Transactional
   public ResponseEntity<String> createPost(PostRequestDto postRequestDto,
       UserDetailsImpl userDetails) {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
-    postRepository.saveAndFlush(post);
+    postRepository.save(post);
 
     return ResponseEntity.ok("작성 완료");
   }
 
-  @Transactional
   public String createImage(MultipartFile file)
       throws IOException {
     Image image = uploadService.storeFile(file);
@@ -68,7 +66,6 @@ public class PostService {
   }
 
   // 3. 게시글 선택 조회
-  @Transactional
   public PostResponseDto getPost(Long postId) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
@@ -78,7 +75,6 @@ public class PostService {
     return postResponseDto;
   }
 
-  @Transactional
   // 키워드로 게시글 검색
   public Page<PostResponseDto> searchPost(
       PostCategory postCategory, String searchType, String searchKeyword,
@@ -121,7 +117,6 @@ public class PostService {
   }
 
   // 5. 게시글 삭제
-  @Transactional
   public ResponseEntity<String> deletePost(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
@@ -148,7 +143,6 @@ public class PostService {
 
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
       post.modifyPost(postModifyRequestDto);
-      postRepository.save(post);
 
     } else {
       throw new CustomException(ExceptionStatus.NOT_USER);
@@ -185,7 +179,6 @@ public class PostService {
     return postResponseDto;
   }
 
-  @Transactional
   // 8. 키워드로 나의 게시글 검색
   public Page<PostResponseDto> searchMyPosts(
       String nickname, String searchType, String searchKeyword,

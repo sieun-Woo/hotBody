@@ -11,6 +11,21 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
+
   redis:
     host: localhost
     port: 6379
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://hotbody-database.crf6p4x0budv.ap-northeast-2.rds.amazonaws.com:3306/hotbodyDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: fixfix6352#
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: validate

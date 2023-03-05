@@ -29,7 +29,7 @@ public class CommentLikeService {
       throw new CustomException(ExceptionStatus.PUSHED_LIKE);
     }
     CommentLike commentLike = new CommentLike(comment, user);
-    comment.plusLikes();
+//    comment.plusLikes();
     commentLikeRepository.save(commentLike);
     return ResponseEntity.ok("좋아요를 눌렀습니다.");
   }
@@ -44,7 +44,7 @@ public class CommentLikeService {
       throw new CustomException(ExceptionStatus.CANCELED_LIKE);
     }
     commentLikeRepository.deleteByCommentIdAndUserId(commentId, user.getId());
-    comment.minusLikes();
+//    comment.minusLikes();
     return ResponseEntity.ok("좋아요를 취소했습니다.");
   }
 }

@@ -20,19 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/api/report")
 public class CommentReportController {
   private final CommentReportService commentReportService;
 
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping("/post")
+  @PostMapping("/comment")
   public CommentReportResponseDto reportComment(
       @RequestBody CommentReportRequestDto commentReportRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return commentReportService.reportComment(userDetails.getUser(), commentReportRequestDto);
   }
 
-  @GetMapping("/posts")
+  @GetMapping("/comments")
   public Page<CommentReportResponseDto> getAllReportedComments(
       @RequestParam("page") int page,
       @RequestParam("size") int size,

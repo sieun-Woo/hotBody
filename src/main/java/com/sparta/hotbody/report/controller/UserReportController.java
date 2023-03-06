@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,12 +29,14 @@ public class UserReportController {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("/user")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public UserReportResponseDto reportUser(@RequestBody UserReportRequestDto userReportRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userReportService.reportUser(userDetails.getUser(), userReportRequestDto);
   }
 
   @GetMapping("/users")
+  @PreAuthorize("hasRole('ADMIN')")
   public Page<UserReportResponseDto> getAllReportedUsers(
       @RequestParam("page") int page,
       @RequestParam("size") int size,

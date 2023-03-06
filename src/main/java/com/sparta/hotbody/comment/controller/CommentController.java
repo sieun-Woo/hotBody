@@ -15,6 +15,7 @@ import javax.swing.Spring;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class CommentController {
 
   // 1. 댓글 등록
   @PostMapping("/posts/{postId}/comment")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> createComment(
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -62,6 +64,7 @@ public class CommentController {
 
   // 4. 댓글 수정
   @PatchMapping("/comments/{commentId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> updateComment(
       @PathVariable Long commentId,
       @RequestBody CommentModifyRequestDto commentModifyRequestDto,
@@ -71,6 +74,7 @@ public class CommentController {
 
   // 5. 댓글 삭제
   @DeleteMapping("/comments/{commentId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> deleteComment(
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

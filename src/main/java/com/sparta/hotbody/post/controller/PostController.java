@@ -12,6 +12,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class PostController {
 
   // 1. 게시글 등록
   @PostMapping("/post")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> createPost(
       @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -42,6 +44,7 @@ public class PostController {
 
   // 2. 이미지 등록
   @PostMapping("/posts/image")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public String createImage(
       @RequestPart MultipartFile file) throws IOException {
     return postService.createImage(file);
@@ -81,6 +84,7 @@ public class PostController {
 
   // 4. 게시글 수정
   @PatchMapping("/posts/{postId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public void updatePost(
       @PathVariable Long postId,
       @RequestBody PostModifyRequestDto postModifyRequestDto,
@@ -90,6 +94,7 @@ public class PostController {
 
   // 4-1. 게시글 이미지 수정
   @PostMapping("/posts/{postId}/image")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> updateImage(
       @PathVariable Long postId,
       @RequestPart MultipartFile file) throws IOException {
@@ -98,6 +103,7 @@ public class PostController {
 
   // 5. 게시글 삭제
   @DeleteMapping("/posts/{postId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> deletePost(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -106,6 +112,7 @@ public class PostController {
 
   // 나의 게시글 전체 조회
   @GetMapping("/my-posts")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public Page<PostResponseDto> getMyAllPosts(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam("page") int page,
@@ -118,6 +125,7 @@ public class PostController {
 
   // 나의 게시글 키워드 조회
   @GetMapping("/my-posts/search")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public Page<PostResponseDto> searchMyPosts(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestParam("searchType") String searchType,

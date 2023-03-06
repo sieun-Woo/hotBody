@@ -24,15 +24,15 @@ public class TrainerLikeService {
   private final TrainerLikeRepository trainerLikeRepository;
   private final UserRepository userRepository;
 
-  public ResponseEntity<String> addLike(Long trainerId, User user) {
+  public ResponseEntity<String> addLike(Long trainerId, Long userId) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST)
     );
-    if (trainerLikeRepository.existsByUserIdAndTrainerId(user.getId(), trainerId)) {
+    if (trainerLikeRepository.existsByUserIdAndTrainerId(userId, trainerId)) {
       throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
     if(trainer.getRole().equals(UserRole.TRAINER)){
-      TrainerLike trainerLike = new TrainerLike(user, trainer);
+      TrainerLike trainerLike = new TrainerLike(userId, trainer);
       trainerLikeRepository.save(trainerLike);
     }
     return ResponseEntity.ok("좋아요 눌렀습니다.");

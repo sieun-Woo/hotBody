@@ -86,11 +86,4 @@ public class Comment extends TimeStamp {
     this.content = commentModifyRequestDto.getContent();
   }
 
-  public void plusLikes() {
-    this.likes += 1;
-  }
-
-  public void minusLikes() {
-    this.likes -= 1;
-  }
 }

@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:text="${@environment.getProperty('kakao.login.restapi.key')}"
+    lang="ko">
 
 <head>
   <meta charset="UTF-8">
@@ -417,7 +420,7 @@
 <script>
   function kakaoLogin() {
 
-    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=11a491f4926c585e1e9219e15cb4a4a3&redirect_uri=http://localhost:8080/index.html&response_type=code';
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=11a491f4926c585e1e9219e15cb4a4a3&redirect_uri=http://15.165.120.66:8080/index.html&response_type=code';
 
     
     

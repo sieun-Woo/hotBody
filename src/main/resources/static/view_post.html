@@ -158,36 +158,14 @@
             <div class="postLike-box" >
               <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
               <div id="CountLove"></div>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
+              <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
             </div>
           </div>
 
           <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
           <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
       </div>
-
-        <!--좋아요 -->
-        <!-- <div class="write" style="position:center;">
-          <ul class="flex-write">
-            <li>
-              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
-            </li>
-            <li>
-              <div id="CountLove"></div>
-            </li>
-            <li>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
-            </li>
-        </div>
-      </div> -->
-      <!-- <div class="write" style="position:center;">
-        <div class="postLike-box">
-          <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
-          <div id="CountLove"></div>
-          <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
-        </div>
-      </div> -->
-
+      
     <div id="article-list-wrap" class="con-min-width">
         <div class="comment-list" >
           <!-- 댓글 들어오는 공간 -->
@@ -791,6 +769,7 @@
     $('#CountLove').text(response.likes);
     $('#postId').val(postId);
     $('#category').text(response.category);
+    console.log(response.postId);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)
@@ -983,8 +962,8 @@
                       <div class="comment-list__cell-content">${comment.content}</div>
                       <div class="commentLike-box">
                         <i onclick="likeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-up"></i>
-                        <div class="comment-list__cell-content">${comment.likes}</div>
-                        <i onclick="dislikeComment(${comment.id})" id="minus" class="fa-solid fa-thumbs-down"></i>
+                        <div class="comment-list__cell-content" >${comment.likes}</div>
+                        <i onclick="dislikeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-down"></i>
                       </div>
                       <div class = "commentModify">
                         <div>

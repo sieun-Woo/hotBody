@@ -86,7 +86,7 @@ public class DietServiceImpl implements DietService {
     }
     return null;
   }
-
+  @Transactional
   @Override
   public Long saveDiet(UserDetails userDetails, String time) {
     Long id = userRepository.findByUsername(userDetails.getUsername()).get().getId();
@@ -110,6 +110,7 @@ public class DietServiceImpl implements DietService {
     throw new CustomException(ExceptionStatus.DIET_IS_NOT_EXIST);
   }
 
+  @Transactional
   @Override
   public ResponseEntity<String> saveFood(
       List<FoodOfDietRequestDto> foodOfDietRequestDtoList, Long id) {

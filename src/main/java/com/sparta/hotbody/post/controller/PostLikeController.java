@@ -34,7 +34,6 @@ public class PostLikeController {
   public ResponseEntity<String> cancelLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postLikeService.cancelLike(postId, userDetails.getUser());
     return postLikeService.cancelLike(postId, userDetails.getUser());
   }
 }

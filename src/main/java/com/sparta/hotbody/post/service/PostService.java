@@ -41,7 +41,6 @@ public class PostService {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
     postRepository.save(post);
-
     return ResponseEntity.ok("작성 완료");
   }
 
@@ -113,6 +112,7 @@ public class PostService {
   }
 
   // 5. 게시글 삭제
+  @Transactional
   public ResponseEntity<String> deletePost(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)

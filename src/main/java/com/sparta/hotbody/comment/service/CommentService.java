@@ -35,6 +35,7 @@ public class CommentService {
   private final PostRepository postRepository;
 
   // 1. 댓글 등록
+  @Transactional
   public ResponseEntity<String> createComment(User user, CommentRequestDto requestDto, Long postId) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
@@ -81,6 +82,7 @@ public class CommentService {
   }
 
   // 5. 댓글 삭제
+  @Transactional
   public ResponseEntity<String> deleteComment(Long commentId, User user) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST)
@@ -95,7 +97,6 @@ public class CommentService {
   }
 
   // 6. 해당 게시글 관련 댓글 전체 조회
-  @Transactional
   public Page<CommentResponseDto> getPostComments(Long postId, GetPageModel getPageModel) {
 
     // 페이징 처리

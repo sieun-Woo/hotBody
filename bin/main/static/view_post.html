@@ -158,7 +158,7 @@
             <div class="postLike-box" >
               <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
               <div id="CountLove"></div>
-              <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
+              <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
             </div>
           </div>
 
@@ -791,7 +791,6 @@
     $('#CountLove').text(response.likes);
     $('#postId').val(postId);
     $('#category').text(response.category);
-    console.log(response.postId);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)
@@ -815,7 +814,7 @@
 
   function getUser() {
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/profile",
+      "url": "http://15.165.120.66:8080/api/user/profile",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -951,7 +950,7 @@
 
   function getComments(page) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/${postId}/comments?page=${page}&size=3&sortBy=id&isAsc=true`,
+      "url": `http://15.165.120.66:8080/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -984,8 +983,8 @@
                       <div class="comment-list__cell-content">${comment.content}</div>
                       <div class="commentLike-box">
                         <i onclick="likeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-up"></i>
-                        <div class="comment-list__cell-content" >${comment.likes}</div>
-                        <i onclick="dislikeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-down"></i>
+                        <div class="comment-list__cell-content">${comment.likes}</div>
+                        <i onclick="dislikeComment(${comment.id})" id="minus" class="fa-solid fa-thumbs-down"></i>
                       </div>
                       <div class = "commentModify">
                         <div>
@@ -1148,7 +1147,6 @@
     });
 
     $.ajax(settings).fail(function (response) {
-      console.log(response)
       alert("삭제 권한이 없습니다.")
       window.location.reload();
   });

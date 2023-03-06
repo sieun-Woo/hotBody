@@ -108,15 +108,6 @@ public class Post extends TimeStamp {
     this.content = postModifyRequestDto.getContent();
   }
 
-
-  public void plusLikes() {
-    this.likes += 1;
-  }
-
-  public void minusLikes() {
-    this.likes -= 1;
-  }
-
   public void updateImage(String resourcePath) {
     this.image = resourcePath;
   }

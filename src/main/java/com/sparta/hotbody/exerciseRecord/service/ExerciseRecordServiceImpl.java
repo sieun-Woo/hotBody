@@ -29,6 +29,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
   private final UserRepository userRepository;
 
 
+  @Transactional
   @Override
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(GetPageModel getPageModel,
       UserDetailsImpl userDetails) {
@@ -46,6 +47,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
     return exerciseRecordResponseDtos;
   }
 
+  @Transactional
   @Override
   public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();
@@ -58,6 +60,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
     }
   }
 
+  @Transactional
   @Override
   public ExerciseRecordResponseDto createExerciseRecord(
       ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails) {
@@ -84,6 +87,7 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
   }
 
+  @Transactional
   @Override
   public ResponseEntity<String> deleteExerciseRecord(Long id, UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).get();

@@ -8,11 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface DietService {
 
-  public Page searchFood(String FoodTyp0e, String searchWord, int page);
+  Page searchFood(String FoodTyp0e, String searchWord, int page);
 
   Long saveDiet(UserDetails userDetails, String time);
 
-  ResponseEntity readDiet(String time, UserDetails userDetails);
+  ResponseEntity<List> readDiet(String time, UserDetails userDetails);
 
   ResponseEntity<String> saveFood(List<FoodOfDietRequestDto> foodOfDietRequestDto, Long id);
 }

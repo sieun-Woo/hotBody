@@ -34,7 +34,7 @@ public class CommentController {
   private final CommentService commentService;
 
   // 1. 댓글 등록
-  @PostMapping("/comments/{postId}")
+  @PostMapping("/posts/{postId}/comment")
   public ResponseEntity<String> createComment(
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -62,23 +62,23 @@ public class CommentController {
 
   // 4. 댓글 수정
   @PatchMapping("/comments/{commentId}")
-  public void updateComment(
+  public ResponseEntity<String> updateComment(
       @PathVariable Long commentId,
       @RequestBody CommentModifyRequestDto commentModifyRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.updateComment(commentId, commentModifyRequestDto, userDetails.getUser());
+    return commentService.updateComment(commentId, commentModifyRequestDto, userDetails.getUser());
   }
 
   // 5. 댓글 삭제
   @DeleteMapping("/comments/{commentId}")
-  public void deleteComment(
+  public ResponseEntity<String> deleteComment(
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    commentService.deleteComment(commentId, userDetails.getUser());
+    return commentService.deleteComment(commentId, userDetails.getUser());
   }
 
   // 6. 해당 게시글 댓글 전체 조회
-  @GetMapping("/comments/posts/{postId}")
+  @GetMapping("/posts/{postId}/comments")
   public Page<CommentResponseDto> getPostComments(
       @PathVariable Long postId,
       @RequestParam("page") int page,

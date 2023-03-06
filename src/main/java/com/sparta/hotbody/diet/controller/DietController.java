@@ -55,7 +55,7 @@ public class DietController {
 
   @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @GetMapping("/diet")
-  public ResponseEntity readDiet(
+  public ResponseEntity<List> readDiet(
       @RequestParam("time") String time,
       @AuthenticationPrincipal UserDetails userDetails) {
     return dietService.readDiet(time, userDetails);

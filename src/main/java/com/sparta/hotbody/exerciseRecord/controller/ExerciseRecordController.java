@@ -55,6 +55,7 @@ public class ExerciseRecordController {
     return exerciseRecordService.getExerciseRecordById(recordId, userDetails);
   }
 
+
   // 운동 기록 수정
   @PatchMapping("/records/{recordId}")
   @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER','REPORTED')")

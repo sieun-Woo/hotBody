@@ -36,6 +36,7 @@ public class UserReportController {
     return userReportService.reportUser(userDetails.getUser(), userReportRequestDto);
   }
 
+
   @GetMapping("/users")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<UserReportResponseDto> getAllReportedUsers(

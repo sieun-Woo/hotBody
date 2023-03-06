@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -57,6 +58,7 @@ public class AdminController {
 
   // 트레이너 등록 요청 조회
   @GetMapping("/apply")
+  @PreAuthorize("hasRole('ADMIN')")
   public Page<TrainerResponseDto> getRegistrations(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -67,46 +69,54 @@ public class AdminController {
 
   // 트레이너 등록 요청 허용
   @PutMapping("/requests/{requestId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity permitTrainer(@PathVariable Long requestId) {
     return adminService.permitTrainer(requestId);
   }
 
   // 트레이너 등록 요청 거부
   @DeleteMapping ("/requests/{requestId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> refuseTrainer(@PathVariable Long requestId) {
     return adminService.refuseTrainer(requestId);
   }
 
   // 트레이너 권한 삭제
   @PutMapping("/users/{userId}/cancel")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> cancelTrainer(@PathVariable Long userId) {
     return adminService.cancelTrainer(userId);
   }
 
   @PatchMapping("/posts/{postId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> updatePost(@PathVariable Long postId,
       @RequestBody PostModifyRequestDto postModifyRequestDto) {
     return adminService.updatePost(postId, postModifyRequestDto);
   }
 
   @DeleteMapping("/posts/{postId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> deletePost(@PathVariable Long postId) {
     return adminService.deletePost(postId);
   }
 
   @PatchMapping("/comments/{commentId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> updateComment(@PathVariable Long commentId,
       @RequestBody CommentModifyRequestDto commentModifyRequestDto) {
     return adminService.updateComment(commentId, commentModifyRequestDto);
   }
 
   @DeleteMapping("/comments/{commentId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> deleteComment(@PathVariable Long commentId) {
     return adminService.deleteComment(commentId);
   }
 
   // 전체 유저 정보 조회
   @GetMapping("/users")
+  @PreAuthorize("hasRole('ADMIN')")
   public Page<UsersResponseDto> getUserList(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -117,12 +127,14 @@ public class AdminController {
 
   // 단건 유저 정보 조회
   @GetMapping("/users/{userId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public UserProfileResponseDto getUser(@PathVariable Long userId) {
     return adminService.getUser(userId);
   }
 
   // 전체 트레이너 정보 조회
   @GetMapping("/trainers")
+  @PreAuthorize("hasRole('ADMIN')")
   public Page<UsersResponseDto> getTrainerList(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -133,12 +145,14 @@ public class AdminController {
 
   // 단건 트레이너 정보 조회
   @GetMapping("/trainers/{trainerId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public TrainerResponseDto getTrainer(@PathVariable Long trainerId) {
     return adminService.getTrainer(trainerId);
   }
 
   // 유저 정보 수정
-  @PatchMapping("/users/{userId}") // ToDo: 유저 기능이랑 중복
+  @PatchMapping("/users/{userId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> updateUserInfo(@PathVariable Long userId, @RequestBody
       UserProfileRequestDto userProfileRequestDto) {
     return adminService.updateUserInfo(userId, userProfileRequestDto);
@@ -146,29 +160,35 @@ public class AdminController {
 
   // 유저 불량 유저로 전환
   @PutMapping("/users/{userId}/suspend")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> makeUserSuspended(@PathVariable Long userId) {
     return adminService.makeUserSuspended(userId);
   }
 
   // 불량 트레이너로 전환
   @PutMapping("/trainers/{trainerId}/suspend")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> makeTrainerSuspended(@PathVariable Long trainerId) {
     return adminService.makeTrainerSuspended(trainerId);
   };
 
   // 유저 정상 유저로 전환
   @PutMapping("/users/{userId}/normalize")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> makeUserNormal(@PathVariable Long userId) {
     return adminService.makeUserNormal(userId);
   }
 
+  // 정상 트레이너로 전환
   @PutMapping("/trainers/{trainerId}/normalize")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> makeTrainerNormal(@PathVariable Long trainerId) {
       return adminService.makeTrainerNormal(trainerId);
   }
 
   // 유저 회원 탈퇴
   @DeleteMapping("/users/{userId}")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
     return adminService.deleteUser(userId);
   }

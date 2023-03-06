@@ -1,9 +1,11 @@
 package com.sparta.hotbody.user.service;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
+import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.upload.entity.Image;
@@ -297,12 +299,9 @@ public class UserService {
   }
 
   //13. 트레이너 전체 조회
-  public Page<UsersResponseDto> getTrainerList(int page, int size,
-      String sortBy, boolean isAsc) {
+  public Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<User> users = userRepository.findAllByRole(UserRole.TRAINER, pageable);
     Page<UsersResponseDto> usersResponseDto = users.map(p -> new UsersResponseDto(p));

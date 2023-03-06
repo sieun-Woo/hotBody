@@ -6,6 +6,7 @@ import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
 import com.sparta.hotbody.comment.service.CommentService;
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
@@ -15,6 +16,7 @@ import javax.swing.Spring;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,7 @@ public class CommentController {
 
   // 1. 댓글 등록
   @PostMapping("/posts/{postId}/comment")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> createComment(
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -45,13 +48,8 @@ public class CommentController {
 
   // 2. 댓글 전체 조회
   @GetMapping("/comments")
-  public Page<CommentResponseDto> getAllComments(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ) {
-    return commentService.getAllComments(page - 1, size, sortBy, isAsc);
+  public Page<CommentResponseDto> getAllComments(GetPageModel getPageModel) {
+    return commentService.getAllComments(getPageModel);
   }
 
   // 3. 댓글 선택 조회
@@ -62,6 +60,7 @@ public class CommentController {
 
   // 4. 댓글 수정
   @PatchMapping("/comments/{commentId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> updateComment(
       @PathVariable Long commentId,
       @RequestBody CommentModifyRequestDto commentModifyRequestDto,
@@ -71,6 +70,7 @@ public class CommentController {
 
   // 5. 댓글 삭제
   @DeleteMapping("/comments/{commentId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> deleteComment(
       @PathVariable Long commentId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -80,12 +80,7 @@ public class CommentController {
   // 6. 해당 게시글 댓글 전체 조회
   @GetMapping("/posts/{postId}/comments")
   public Page<CommentResponseDto> getPostComments(
-      @PathVariable Long postId,
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ) {
-    return commentService.getPostComments(postId, page - 1, size, sortBy, isAsc);
+      @PathVariable Long postId, GetPageModel getPageModel) {
+    return commentService.getPostComments(postId, getPageModel);
   }
 }

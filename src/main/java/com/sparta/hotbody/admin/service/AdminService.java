@@ -6,6 +6,7 @@ import com.sparta.hotbody.admin.dto.FindAdminIdResponseDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
@@ -28,7 +29,7 @@ public interface AdminService {
 
   ResponseEntity<String> permitTrainer(Long requestId);
 
-  Page<TrainerResponseDto> getRegistrations(int page, int size, String sortBy, boolean isAsc);
+  Page<TrainerResponseDto> getRegistrations(GetPageModel getPageModel);
 
   ResponseEntity<String> refuseTrainer(Long userId);
 
@@ -42,11 +43,11 @@ public interface AdminService {
 
   ResponseEntity<String> deleteComment(Long commentId);
 
-  Page<UsersResponseDto> getUserList(int page, int size, String sortBy, boolean isAsc);
+  Page<UsersResponseDto> getUserList(GetPageModel getPageModel);
 
   UserProfileResponseDto getUser(Long userId);
 
-  Page<UsersResponseDto> getTrainerList(int page, int size, String sortBy, boolean isAsc);
+  Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel);
 
   TrainerResponseDto getTrainer(Long trainerId);
 

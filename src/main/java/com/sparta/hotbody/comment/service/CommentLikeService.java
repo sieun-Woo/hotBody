@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentLikeService {
 
   private final CommentRepository commentRepository;
   private final CommentLikeRepository commentLikeRepository;
 
   // 6. 댓글 좋아요 추가
-  @Transactional
   public ResponseEntity<String> pushLike(Long commentId, User user) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST)
@@ -35,7 +35,6 @@ public class CommentLikeService {
   }
 
   // 7. 댓글 좋아요 취소
-  @Transactional
   public ResponseEntity<String> cancelLike(Long commentId, User user) {
     Comment comment = commentRepository.findById(commentId).orElseThrow(
         () -> new CustomException(ExceptionStatus.COMMENT_IS_NOT_EXIST)

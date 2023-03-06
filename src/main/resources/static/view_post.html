@@ -156,9 +156,9 @@
         <div class="textForm3">
           <div class="write-center" style="position:center;">
             <div class="postLike-box" >
-              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>              
               <div id="CountLove"></div>
-              <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
+              <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>              
             </div>
           </div>
 
@@ -790,6 +790,10 @@
     getComments(1);
   })
 
+    $.ajax(settings).done(function (response) {
+      $('#nickname').text(response.nickname);
+    });
+  
   function logout() {
 
     var settings = {
@@ -834,11 +838,6 @@
       alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
       history.back();
     });
-
-    // $.ajax(settings).fail(function (response) {
-    //   alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
-    //   history.back();
-    // });
   }
 
   // 글 좋아요
@@ -856,7 +855,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -873,7 +872,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -895,13 +894,9 @@
     };
 
   $.ajax(settings).done(function (response) {
-    window.location.reload();
+    location.reload();
+    console.log(response)
   });
-
-  // $.ajax(settings).fail(function (response) {
-  //   alert("로그인을 해주세요.")
-  //   window.location.reload();
-  // });
 
 }
 
@@ -1025,7 +1020,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -1042,7 +1037,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -1084,14 +1079,8 @@
     };
 
     $.ajax(settings).done(function (response) {
-      window.location.reload();
+      location.reload();
     });
-
-  //   $.ajax(settings).fail(function (response) {
-  //     alert("수정 권한이 없습니다.")
-  //     window.location.reload();
-  // });
-
   }
 
   function deleteComment(id) {
@@ -1106,13 +1095,8 @@
     };
 
     $.ajax(settings).done(function (response) {
-      window.location.reload();
+      location.reload();
     });
-
-  //   $.ajax(settings).fail(function (response) {
-  //     alert("삭제 권한이 없습니다.")
-  //     window.location.reload();
-  // });
 
 }
 

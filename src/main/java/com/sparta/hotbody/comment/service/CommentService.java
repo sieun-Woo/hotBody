@@ -98,7 +98,6 @@ public class CommentService {
   }
 
   // 6. 해당 게시글 관련 댓글 전체 조회
-  @Transactional
   public Page<CommentResponseDto> getPostComments(Long postId, GetPageModel getPageModel) {
 
     // 페이징 처리

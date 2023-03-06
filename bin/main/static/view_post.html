@@ -814,7 +814,8 @@
 
   function getUser() {
     var settings = {
-      "url": "http://hotbody.store/api/user/profile",
+
+      "url": "http://15.165.120.66:8080/api/user/profile",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -950,7 +951,7 @@
 
   function getComments(page) {
     var settings = {
-      "url": `http://hotbody.store/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
+      "url": `http://15.165.120.66:8080/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {

@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentReportService {
 
   public final CommentRepository commentRepository;
-
   public final CommentReportRepository commentReportHistoryRepository;
 
   @Transactional
@@ -46,14 +45,16 @@ public class CommentReportService {
     return commentReportHistory;
   }
 
-  public Page<CommentReportResponseDto> getAllReportedComments(int page, int size, String sortBy, boolean isAsc) {
+  public Page<CommentReportResponseDto> getAllReportedComments(
+      int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
     Page<CommentReportHistory> reportedComments = commentReportHistoryRepository.findAll(pageable);
-    Page<CommentReportResponseDto> commentReportResponseDtos = reportedComments.map(p -> new CommentReportResponseDto(p));
+    Page<CommentReportResponseDto> commentReportResponseDtos = reportedComments.map(
+        p -> new CommentReportResponseDto(p));
 
     return commentReportResponseDtos;
   }

@@ -1,6 +1,7 @@
 package com.sparta.hotbody.common.page;
 
 import javax.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -11,15 +12,15 @@ import org.springframework.data.domain.Sort;
 @NoArgsConstructor
 public class PageDto {
   @Positive
-  private int currentPage;
-//  private Integer size;
-//  private String sortBy;
+  private int page;
+  private int size;
+  private String sortBy;
+  private boolean isAsc;
 
-  public PageDto(int currentPage) {
-    this.currentPage = currentPage;
-  }
-
-  public Pageable toPageable() {
-    return PageRequest.of(currentPage-1, 10, Sort.by("id").ascending());
+  public Pageable toPageable(int page, int size, String sortBy, boolean isAsc) {
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(page-1, size, sort);
+    return pageable;
   }
 }

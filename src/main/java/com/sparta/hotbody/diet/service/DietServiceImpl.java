@@ -15,6 +15,8 @@ import com.sparta.hotbody.diet.entity.Diet;
 import com.sparta.hotbody.diet.entity.FoodOfDiet;
 import com.sparta.hotbody.diet.repository.DietRepository;
 import com.sparta.hotbody.diet.repository.FoodOfDietRepository;
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +44,15 @@ public class DietServiceImpl implements DietService {
   private final FoodOfDietRepository foodOfDietRepository;
   private final UserRepository userRepository;
 
+  @Override
   public Page<FoodResponseDto> searchFood(String FoodType, String searchWord, int page) {
     Sort sort = Sort.by(Direction.DESC, "id");
     Pageable pageable = PageRequest.of(page - 1, 10, sort);
 
     switch (FoodType) {
       case ("농축산물"):
-        Page<AgriculturalAndLivestockProducts> agr = agriculturalAndLivestockProductsRepository.findAllByFoodNameContaining(
+        Page<AgriculturalAndLivestockProducts> agr
+            = agriculturalAndLivestockProductsRepository.findAllByFoodNameContaining(
             searchWord, pageable);
         Page<FoodResponseDto> agrPage = agr.map(
             agriculturalAndLivestockProducts -> new FoodResponseDto(
@@ -83,18 +87,17 @@ public class DietServiceImpl implements DietService {
     return null;
   }
 
-  @Transactional
   @Override
   public Long saveDiet(UserDetails userDetails, String time) {
     Long id = userRepository.findByUsername(userDetails.getUsername()).get().getId();
     if (dietRepository.findByUserIdAndTime(id, time).isPresent()) {
       return dietRepository.findByUserIdAndTime(id, time).get().getId();
     }
-    return dietRepository.saveAndFlush(new Diet(id, time)).getId();
+    return dietRepository.save(new Diet(id, time)).getId();
   }
 
   @Override
-  public ResponseEntity readDiet(String time, UserDetails userDetails) {
+  public ResponseEntity<List> readDiet(String time, UserDetails userDetails) {
     List<FoodOfDietResponseDto> foodOfDietResponseDtoList = new ArrayList<>();
     Long id = userRepository.findByUsername(userDetails.getUsername()).get().getId();
     if (dietRepository.findByUserIdAndTime(id, time).isPresent()) {
@@ -102,20 +105,19 @@ public class DietServiceImpl implements DietService {
       for (FoodOfDiet foodOfDiet : diet.getFoodOfDiets()) {
         foodOfDietResponseDtoList.add(new FoodOfDietResponseDto(foodOfDiet));
       }
-      return new ResponseEntity<List>(foodOfDietResponseDtoList, HttpStatus.OK);
+      return ResponseEntity.ok(foodOfDietResponseDtoList);
     }
-    return new ResponseEntity<String>("식단이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+    throw new CustomException(ExceptionStatus.DIET_IS_NOT_EXIST);
   }
 
-  @Transactional
   @Override
-  public ResponseEntity<String> saveFood(List<FoodOfDietRequestDto> foodOfDietRequestDtoList,
-      Long id) {
+  public ResponseEntity<String> saveFood(
+      List<FoodOfDietRequestDto> foodOfDietRequestDtoList, Long id) {
     Diet diet = dietRepository.findById(id).get();
     for (FoodOfDietRequestDto foodOfDietRequestDto : foodOfDietRequestDtoList) {
       FoodOfDiet foodOfDiet = new FoodOfDiet(foodOfDietRequestDto, diet);
-      foodOfDietRepository.saveAndFlush(foodOfDiet);
+      foodOfDietRepository.save(foodOfDiet);
     }
-    return new ResponseEntity<>("음식 저장 성공", HttpStatus.OK);
+    return ResponseEntity.ok("음식 저장 성공");
   }
 }

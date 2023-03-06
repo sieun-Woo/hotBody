@@ -29,4 +29,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
   // 닉네임으로 검색
   Page<Post> findByCategoryAndNicknameContaining(PostCategory postCategory, String searchKeyword, Pageable pageable);
+
+  // 닉네임과 제목으로 검색
+  Page<Post> findAllByNicknameContainingAndTitleContaining(String nickname, String searchKeyword, Pageable pageable);
+
+  // 닉네임과 내용으로 검색
+  Page<Post> findAllByNicknameContainingAndContentContaining(String nickname, String searchKeyword, Pageable pageable);
 }

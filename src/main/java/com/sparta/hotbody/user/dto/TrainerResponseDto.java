@@ -20,14 +20,14 @@ public class TrainerResponseDto {
   private String introduce;
   private int isPromoted;
 
-  public TrainerResponseDto(Trainer trainer) {
-    this.id = trainer.getId();
-    this.nickname = trainer.getUser().getNickname();
-    this.gender = trainer.getUser().getGender();
-    this.age = trainer.getUser().getAge();
-    this.region = trainer.getUser().getRegion();
-    this.email = trainer.getUser().getEmail();
-    this.introduce = trainer.getIntroduce();
-    this.isPromoted = trainer.getIsPromoted();
+  public TrainerResponseDto(User user) {
+    this.id = user.getTrainer().getId();
+    this.nickname = user.getNickname();
+    this.gender = user.getGender();
+    this.age = user.getAge();
+    this.region = user.getRegion();
+    this.email = user.getEmail();
+    this.introduce = user.getTrainer().getIntroduce();
+    this.isPromoted = user.getTrainer().getIsPromoted();
   }
 }

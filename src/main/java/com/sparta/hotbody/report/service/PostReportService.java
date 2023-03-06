@@ -26,29 +26,37 @@ public class PostReportService {
   @Transactional
   public PostReportResponseDto reportPost(User reporter, PostReportRequestDto postReportRequestDto) {
     
-    Post reportedPost = postRepository.findById(postReportRequestDto.getReportedPostId()).orElseThrow(RuntimeException::new);
-    PostReportHistory postReportHistory = createPostReportHistory(reporter, reportedPost, postReportRequestDto);
-    postReportHistory.setReportCount(postReportHistoryRepository.findByReportedPostId(postReportRequestDto.getReportedPostId()).size());
+    Post reportedPost = postRepository.findById(postReportRequestDto.getReportedPostId())
+        .orElseThrow(RuntimeException::new);
+    PostReportHistory postReportHistory = createPostReportHistory(
+        reporter, reportedPost, postReportRequestDto);
+    postReportHistory.setReportCount(postReportHistoryRepository
+        .findByReportedPostId(postReportRequestDto.getReportedPostId()).size());
 
     return new PostReportResponseDto(postReportHistory);
   }
 
 
-  private PostReportHistory createPostReportHistory(User reporter, Post reported, PostReportRequestDto postReportRequestDto) {
-    PostReportHistory postReportHistory = new PostReportHistory(reporter, reported, postReportRequestDto.getContent());
+  private PostReportHistory createPostReportHistory(User reporter,Post reported,
+      PostReportRequestDto postReportRequestDto) {
+    PostReportHistory postReportHistory = new PostReportHistory(reporter, reported,
+        postReportRequestDto.getContent());
     postReportHistoryRepository.save(postReportHistory);
+
     return postReportHistory;
   }
 
 
-  public Page<PostReportResponseDto> getAllReportedPosts(int page, int size, String sortBy, boolean isAsc) {
+  public Page<PostReportResponseDto> getAllReportedPosts(
+      int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
     Page<PostReportHistory> reportedPosts = postReportHistoryRepository.findAll(pageable);
-    Page<PostReportResponseDto> postReportResponseDtos = reportedPosts.map(p -> new PostReportResponseDto(p));
+    Page<PostReportResponseDto> postReportResponseDtos = reportedPosts
+        .map(p -> new PostReportResponseDto(p));
 
     return postReportResponseDtos;
   }

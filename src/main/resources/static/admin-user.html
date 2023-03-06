@@ -681,7 +681,7 @@ $(document).on('click', '#p', function (e) {
 
 function getUsers(page) {
   var settings = {
-  "url": `http://15.165.120.66:8080/api/admin/users?currentPage=${page}`,
+  "url": `http://15.165.120.66:8080/api/admin/users?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {

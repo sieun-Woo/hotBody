@@ -17,24 +17,24 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth/trainers")
+@RequestMapping("/api/trainers")
 public class TrainerLikeController {
   private final TrainerLikeService trainerLikeService;
 
   //1. 트레이너 좋아요
   @PostMapping("/{trainerId}")
-  public void addLike(
+  public ResponseEntity<String> addLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    trainerLikeService.addLike(trainerId, userDetailsImpl.getUser());
+    return trainerLikeService.addLike(trainerId, userDetailsImpl.getUser());
   }
 
   //2. 트레이너 좋아요 취소
   @DeleteMapping("/{trainerId}")
-  public void cancelLike(
+  public ResponseEntity<String> cancelLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    trainerLikeService.cancelLike(trainerId, userDetailsImpl.getUser());
+    return trainerLikeService.cancelLike(trainerId, userDetailsImpl.getUser());
   }
 
 }

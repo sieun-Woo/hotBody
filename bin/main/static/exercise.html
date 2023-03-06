@@ -801,7 +801,7 @@
   function recordExercise() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/mypage/records",
+      "url": "http://15.165.120.66:8080/api/record",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -828,7 +828,7 @@
 
   function getExerciseRecord(recordId) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/user/auth/mypage/records/${recordId}`,
+      "url": `http://15.165.120.66:8080/api/records/${recordId}`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -849,7 +849,7 @@
 
   function deleteExerciseRecord(recordId) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/user/auth/mypage/records/${recordId}`,
+      "url": `http://15.165.120.66:8080/api/records/${recordId}`,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -872,7 +872,7 @@
   function updateExerciseRecord() {
     recordId = selectedId;
     var settings = {
-      "url": `http://15.165.120.66:8080/api/user/auth/mypage/records/${recordId}`,
+      "url": `http://15.165.120.66:8080/api/records/${recordId}`,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -894,7 +894,7 @@
 
   function getExerciseRecords(page) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/user/auth/mypage/records?page=${page}&size=5&sortBy=id&isAsc=false`,
+      "url": `http://15.165.120.66:8080/api/records?page=${page}&size=5&sortBy=id&isAsc=false`,
       "method": "GET",
       "timeout": 0,
       "headers": {

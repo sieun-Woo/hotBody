@@ -54,9 +54,19 @@ public class PostService {
     return resourcePath;
   }
 
-
   // 2. 게시글 전체 조회
-  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, GetPageModel getPageModel) {
+  public Page<PostResponseDto> getAllPosts(GetPageModel getPageModel) {
+    // 페이징 처리
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+
+    Page<Post> posts = postRepository.findAll(pageable);
+    Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
+
+    return postResponseDto;
+  }
+
+  // 2-1 게시글 전체 조회
+  public Page<PostResponseDto> getCategoryAllPosts(PostCategory postCategory, GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);
 

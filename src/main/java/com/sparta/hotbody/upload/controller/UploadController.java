@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +30,13 @@ public class UploadController {
   private final ImageRepository imageRepository;
   private final UploadService uploadService;
 
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @GetMapping("/upload")
   public String newFile() {
     return "upload-form";
   }
 
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @PostMapping("/upload")
   public String saveFile(
       @RequestParam MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
@@ -44,6 +47,7 @@ public class UploadController {
     return "redirect:/api/upload/{itemId}";
   }
 
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @GetMapping("/upload/{id}")
   public String items(@PathVariable Long id, Model model) {
     Image image = imageRepository.findById(id).get();
@@ -52,6 +56,7 @@ public class UploadController {
   }
 
   // 이미지 조회
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @ResponseBody
   @GetMapping("/image/{filename}")
   public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {

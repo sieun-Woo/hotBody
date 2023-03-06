@@ -775,7 +775,7 @@
     page = postId;
 
     var settings = {
-      "url": "http://localhost:8080/api/posts/" + postId,
+      "url": "http://15.165.120.66:8080/api/posts/" + postId,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -815,7 +815,7 @@
 
   function getUser() {
     var settings = {
-      "url": "http://localhost:8080/api/user/auth/profile",
+      "url": "http://15.165.120.66:8080/api/user/auth/profile",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -831,7 +831,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://localhost:8080/api/user/log-out",
+      "url": "http://15.165.120.66:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -860,7 +860,7 @@
 
   function deletePost(){
     var settings = {
-      "url": "http://localhost:8080/api/posts/"+postId,
+      "url": "http://15.165.120.66:8080/api/posts/"+postId,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -883,7 +883,7 @@
 
   function likePost(){
       var settings = {
-        "url": "http://localhost:8080/api/posts/"+postId+"/like",
+        "url": "http://15.165.120.66:8080/api/posts/"+postId+"/like",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -900,7 +900,7 @@
 
   function dislikePost(){
       var settings = {
-        "url": "http://localhost:8080/api/posts/"+postId+"/like",
+        "url": "http://15.165.120.66:8080/api/posts/"+postId+"/like",
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -920,7 +920,7 @@
   function commentUp() {
 
     var settings = {
-      "url": `http://localhost:8080/api/posts/${postId}/comment`,
+      "url": `http://15.165.120.66:8080/api/posts/${postId}/comment`,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -951,7 +951,7 @@
 
   function getComments(page) {
     var settings = {
-      "url": `http://localhost:8080/api/posts/${postId}/comments?page=${page}&size=3&sortBy=id&isAsc=true`,
+      "url": `http://15.165.120.66:8080/api/posts/${postId}/comments?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1052,7 +1052,7 @@
   // 댓글 좋아요 & 취소
   function likeComment(id){
       var settings = {
-        "url": "http://localhost:8080/api/comments/"+id+"/like",
+        "url": "http://15.165.120.66:8080/api/comments/"+id+"/like",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -1069,7 +1069,7 @@
 
   function dislikeComment(id){
       var settings = {
-        "url": "http://localhost:8080/api/comments/"+id+"/like",
+        "url": "http://15.165.120.66:8080/api/comments/"+id+"/like",
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -1109,7 +1109,7 @@
     var inputValue = document.getElementById('modifyContent' + id).value;
 
     var settings = {
-      "url": "http://localhost:8080/api/comments/" + id,
+      "url": "http://15.165.120.66:8080/api/comments/" + id,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -1135,7 +1135,7 @@
   function deleteComment(id) {
 
     var settings = {
-      "url": "http://localhost:8080/api/comments/" + id,
+      "url": "http://15.165.120.66:8080/api/comments/" + id,
       "method": "DELETE",
       "timeout": 0,
       "headers": {

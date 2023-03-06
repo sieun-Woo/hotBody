@@ -7,6 +7,7 @@ import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
@@ -60,11 +61,8 @@ public class AdminController {
   @GetMapping("/apply")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<TrainerResponseDto> getRegistrations(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc) {
-    return adminService.getRegistrations(page, size, sortBy, isAsc);
+      GetPageModel getPageModel) {
+    return adminService.getRegistrations(getPageModel);
   }
 
   // 트레이너 등록 요청 허용
@@ -118,11 +116,8 @@ public class AdminController {
   @GetMapping("/users")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<UsersResponseDto> getUserList(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc) {
-    return adminService.getUserList(page, size, sortBy, isAsc);
+      GetPageModel getPageModel) {
+    return adminService.getUserList(getPageModel);
   }
 
   // 단건 유저 정보 조회
@@ -136,11 +131,8 @@ public class AdminController {
   @GetMapping("/trainers")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<UsersResponseDto> getTrainerList(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc) {
-    return adminService.getTrainerList(page, size, sortBy, isAsc);
+      GetPageModel getPageModel) {
+    return adminService.getTrainerList(getPageModel);
   }
 
   // 단건 트레이너 정보 조회

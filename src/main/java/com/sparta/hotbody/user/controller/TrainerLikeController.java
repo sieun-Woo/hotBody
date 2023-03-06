@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +24,16 @@ public class TrainerLikeController {
 
   //1. 트레이너 좋아요
   @PostMapping("/{trainerId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> addLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    return trainerLikeService.addLike(trainerId, userDetailsImpl.getUser());
+    return trainerLikeService.addLike(trainerId, userDetailsImpl.getUser().getId());
   }
 
   //2. 트레이너 좋아요 취소
   @DeleteMapping("/{trainerId}")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public ResponseEntity<String> cancelLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {

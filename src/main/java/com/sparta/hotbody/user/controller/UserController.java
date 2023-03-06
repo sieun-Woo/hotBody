@@ -85,6 +85,7 @@ public class UserController {
 
   //3. 로그아웃
   @DeleteMapping("/log-out")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> logout(HttpServletRequest request) {
     return userService.logout(request);
   }
@@ -92,6 +93,7 @@ public class UserController {
 
   //4. 탈퇴
   @DeleteMapping("/delete")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.deleteUser(deleteRequestDto, userDetails.getUser());
@@ -114,6 +116,7 @@ public class UserController {
 
   //6. 유저 프로필 작성
   @PutMapping("/profile")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> createProfile(
       @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
@@ -122,6 +125,7 @@ public class UserController {
 
   //6-1. 유저 프로필 사진 첨부
   @PostMapping("/profile/image")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> uploadImage(
       @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
@@ -132,6 +136,7 @@ public class UserController {
 
   //7. 프로필 이미지 조회
   @GetMapping("/profile/image")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails)
       throws MalformedURLException {
     return userService.viewImage(userDetails);
@@ -139,6 +144,7 @@ public class UserController {
 
   //7-1. 유저 프로필 조회
   @GetMapping("/profile")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public UserProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("연결상태 불량입니다. 다시 조회 해주시기 바랍니다.")

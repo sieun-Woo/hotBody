@@ -6,6 +6,7 @@ import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,10 +44,10 @@ public class CommentService {
   }
 
   // 2. 댓글 전체 조회
-  public Page<CommentResponseDto> getAllComments(int page, int size, String sortBy, boolean isAsc) {
+  public Page<CommentResponseDto> getAllComments(GetPageModel getPageModel) {
 
     // 페이징 처리
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<Comment> comments = commentRepository.findAll(pageable);
     Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));
@@ -94,10 +96,10 @@ public class CommentService {
 
   // 6. 해당 게시글 관련 댓글 전체 조회
   @Transactional
-  public Page<CommentResponseDto> getPostComments(Long postId, int page, int size, String sortBy, boolean isAsc) {
+  public Page<CommentResponseDto> getPostComments(Long postId, GetPageModel getPageModel) {
 
     // 페이징 처리
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<Comment> comments = commentRepository.findAllByPostId(postId, pageable);
     Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));

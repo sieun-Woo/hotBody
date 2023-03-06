@@ -1,5 +1,6 @@
 package com.sparta.hotbody.exerciseRecord.service;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordResponseDto;
 
@@ -13,13 +14,16 @@ public interface ExerciseRecordService {
 
 
   //운동 기록
-  Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails);
+  Page<ExerciseRecordResponseDto> getAllExerciseRecords(GetPageModel getPageModel,
+      UserDetailsImpl userDetails);
 
   ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) ;
 
-  ExerciseRecordResponseDto createExerciseRecord(ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
+  ExerciseRecordResponseDto createExerciseRecord(ExerciseRecordRequestDto exerciseRecordRequestDto,
+      UserDetailsImpl userDetails);
 
-  ExerciseRecordResponseDto updateExerciseRecord(Long id, ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
+  ExerciseRecordResponseDto updateExerciseRecord(Long id,
+      ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
 
   ResponseEntity<String> deleteExerciseRecord(Long id, UserDetailsImpl userDetails) ;
 

@@ -10,6 +10,7 @@ import com.sparta.hotbody.admin.repository.AdminRepository;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.common.jwt.entity.RefreshToken;
 import com.sparta.hotbody.common.jwt.repository.RefreshTokenRedisRepository;
@@ -119,8 +120,8 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<TrainerResponseDto> getRegistrations(int page, int size, String sortBy, boolean isAsc) {
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+  public Page<TrainerResponseDto> getRegistrations(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<Trainer> trainerList = promoteRepository.findAll(pageable);
     if (trainerList.isEmpty()) {
       throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
@@ -202,8 +203,8 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getUserList(int page, int size, String sortBy, boolean isAsc) {
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+  public Page<UsersResponseDto> getUserList(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, pageable);
     if (userPage.isEmpty()) {
       throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
@@ -226,8 +227,8 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getTrainerList(int page, int size, String sortBy, boolean isAsc) {
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+  public Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<User> userPage = userRepository.findAllByRoleOrRole(
         UserRole.TRAINER, UserRole.REPORTED_TRAINER, pageable);
     if (userPage.isEmpty()) {

@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.service;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
@@ -53,12 +54,9 @@ public class PostService {
 
 
   // 2. 게시글 전체 조회
-  public Page<PostResponseDto> getAllPosts(PostCategory postCategory,
-      int page, int size, String sortBy, boolean isAsc) {
+  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, GetPageModel getPageModel) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<Post> posts = postRepository.findAllByCategory(postCategory, pageable);
     Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
@@ -182,10 +180,9 @@ public class PostService {
 
   // 8. 키워드로 나의 게시글 검색
   public Page<PostResponseDto> searchMyPosts(
-      String nickname, String searchType, String searchKeyword,
-      int page, int size, String sortBy, boolean isAsc) {
+      String nickname, String searchType, String searchKeyword, GetPageModel getPageModel) {
     // 페이징 처리
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     if (searchType.equals("title")) {
       Page<Post> posts = postRepository.findAllByNicknameContainingAndTitleContaining

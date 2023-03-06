@@ -30,8 +30,8 @@ public class TrainerLike {
   @JoinColumn(name = "trainer_id")
   private User trainer;
 
-  public TrainerLike(User user, User trainer){
-    this.userId = user.getId();
+  public TrainerLike(Long user, User trainer){
+    this.userId = userId;
     this.trainer = trainer;
   }
 }

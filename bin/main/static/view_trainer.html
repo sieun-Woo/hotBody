@@ -154,7 +154,7 @@
             <div class="postLike-box" >
               <i onclick="likeTrainer()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
               <div id="CountLove"></div>
-              <i onclick="dislikeTrainer()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
+              <i onclick="dislikeTrainer()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
             </div>
           </div>
       </div>
@@ -595,34 +595,6 @@
     padding-left: 10px;
   }
 
-  .write-center {
-    margin-left: 46%;
-  }
-
-  .postLike-box{
-    display: flex;
-    left: 20%;
-    align-items: center;
-  }
-  
-  .postLike-box>*{
-    margin: 3px;
-  }
-
-  .textForm3 {
-    margin: 30px;
-    padding: 10px 10px;
-  }
-
-  .textForm3 > button {
-    display: row;
-    width: 50px;
-    align-items: center;
-    justify-content: center;
-    margin: 30px;
-    padding: 10px 10px;
-  }
-
   .btn {
     position: relative;
     left: 40%;
@@ -694,7 +666,7 @@
     page = trainerId;
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/trainers/" + localStorage.getItem('currentTrainerId'),
+      "url": "http://hotbody.store/api/user/trainers/" + localStorage.getItem('currentTrainerId'),
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -731,7 +703,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-out",
+      "url": "http://hotbody.store/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -751,7 +723,7 @@
     // 좋아요
     function likeTrainer(){
       var settings = {
-        "url": "http://15.165.120.66:8080/api/trainers/"+ localStorage.getItem('currentTrainerId'),
+        "url": "http://hotbody.store/api/trainers/"+ localStorage.getItem('currentTrainerId'),
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -768,7 +740,7 @@
 
   function dislikeTrainer(){
       var settings = {
-        "url": "http://15.165.120.66:8080/api/trainers/"+localStorage.getItem('currentTrainerId'),
+        "url": "http://hotbody.store/api/trainers/"+localStorage.getItem('currentTrainerId'),
         "method": "DELETE",
         "timeout": 0,
         "headers": {

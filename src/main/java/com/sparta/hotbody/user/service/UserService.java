@@ -135,7 +135,7 @@ public class UserService {
     }
   }
 
-  //3.회원탈퇴
+  //3. 회원탈퇴
   public ResponseEntity<String> deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 
     if (user.getRole().equals(UserRole.ADMIN) ||
@@ -148,7 +148,6 @@ public class UserService {
   }
 
   //4. 트레이너 폼 요청
-  @PreAuthorize("hasanyRole('USER', 'ADMIN')")
   public ResponseEntity<String> promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
@@ -160,7 +159,6 @@ public class UserService {
 
   //5. 트레이너 폼 취소
   @Transactional
-  @PreAuthorize("hasanyRole('USER')")
   public ResponseEntity<String> deletePermission(User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
@@ -213,7 +211,7 @@ public class UserService {
     }
   }
 
-  //9.유저 프로필 조회
+  //9. 유저 프로필 조회
   public UserProfileResponseDto getUserProfile(String username) {
     User user = userRepository.findByUsername(username).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
@@ -299,7 +297,6 @@ public class UserService {
   }
 
   //13. 트레이너 전체 조회
-  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public Page<UsersResponseDto> getTrainerList(int page, int size,
       String sortBy, boolean isAsc) {
     // 페이징 처리
@@ -314,7 +311,6 @@ public class UserService {
   }
 
   //14. 트레이너 개인 조회
-  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public UsersResponseDto getTrainer(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)

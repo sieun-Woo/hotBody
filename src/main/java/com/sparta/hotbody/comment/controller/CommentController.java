@@ -6,6 +6,7 @@ import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
 import com.sparta.hotbody.comment.service.CommentService;
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
@@ -45,13 +46,8 @@ public class CommentController {
 
   // 2. 댓글 전체 조회
   @GetMapping("/comments")
-  public Page<CommentResponseDto> getAllComments(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ) {
-    return commentService.getAllComments(page - 1, size, sortBy, isAsc);
+  public Page<CommentResponseDto> getAllComments(GetPageModel getPageModel) {
+    return commentService.getAllComments(getPageModel);
   }
 
   // 3. 댓글 선택 조회
@@ -80,12 +76,7 @@ public class CommentController {
   // 6. 해당 게시글 댓글 전체 조회
   @GetMapping("/posts/{postId}/comments")
   public Page<CommentResponseDto> getPostComments(
-      @PathVariable Long postId,
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ) {
-    return commentService.getPostComments(postId, page - 1, size, sortBy, isAsc);
+      @PathVariable Long postId, GetPageModel getPageModel) {
+    return commentService.getPostComments(postId, getPageModel);
   }
 }

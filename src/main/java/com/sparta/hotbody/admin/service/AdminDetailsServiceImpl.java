@@ -2,6 +2,8 @@ package com.sparta.hotbody.admin.service;
 
 import com.sparta.hotbody.admin.entity.Admin;
 import com.sparta.hotbody.admin.repository.AdminRepository;
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,7 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     Admin admin = adminRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User Not Found "));
+        .orElseThrow(() -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST));
     return new AdminDetailsImpl(admin, admin.getUsername());
   }
 

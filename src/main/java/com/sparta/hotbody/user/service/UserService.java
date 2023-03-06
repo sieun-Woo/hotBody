@@ -46,6 +46,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,7 @@ public class UserService {
   @Value("${spring.mail.username}")
   private String from;
 
+  //1. 회원가입
   @Transactional
   public MessageResponseDto signUp(SignUpRequestDto requestDto) {
     String username = requestDto.getUsername();
@@ -93,7 +95,7 @@ public class UserService {
   }
 
 
-  //2.로그인
+  //2. 로그인
   @Transactional
   public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response,
       HttpServletRequest request)
@@ -131,7 +133,7 @@ public class UserService {
     return new ResponseEntity("로그인 완료", HttpStatus.OK);
   }
 
-  // 로그아웃
+  //2-1. 로그아웃
   @Transactional
   public ResponseEntity<String> logout(HttpServletRequest request) {
     if (jwtUtil.logout(request)) {
@@ -154,8 +156,9 @@ public class UserService {
     throw new SecurityException("가입한 회원만이 탈퇴할 수 있습니다.");
   }
 
-  //5. 트레이너 폼 요청
+  //4. 트레이너 폼 요청
   @Transactional
+  @PreAuthorize("hasanyRole('USER', 'ADMIN')")
   public TrainerResponseDto promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new SecurityException("이미 트레이너 전환 요청을 하였습니다.");
@@ -165,8 +168,9 @@ public class UserService {
     return new TrainerResponseDto(trainer);
   }
 
-  //6. 트레이너 폼 취소
+  //5. 트레이너 폼 취소
   @Transactional
+  @PreAuthorize("hasanyRole('USER')")
   public void deletePermission(User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("유저가 없습니다.")
@@ -178,7 +182,7 @@ public class UserService {
     promoteRepository.deleteByUserUsername(trainer.getUser().getUsername());
   }
 
-  //7. 유저 프로필 생성
+  //6. 유저 프로필 생성
   @Transactional
   public String createProfile(UserProfileRequestDto requestDto, UserDetails userDetails)
       throws IOException {
@@ -192,6 +196,7 @@ public class UserService {
     return "수정이 완료되었습니다.";
   }
 
+  //7. 유저 프로필 업로드
   @Transactional
   public Image uploadImage(MultipartFile file, UserDetails userDetails) throws IOException {
 
@@ -209,6 +214,7 @@ public class UserService {
     return image;
   }
 
+  //8. 이미지 불러오기
   public String viewImage(UserDetailsImpl userDetails) {
     Optional<String> image = Optional.of(userDetails.getUser().getImage());
     if(image.isPresent()){
@@ -218,7 +224,7 @@ public class UserService {
     }
   }
 
-  //8.유저 프로필 조회
+  //9.유저 프로필 조회
   @Transactional
   public UserProfileResponseDto getUserProfile(String username) {
     User user = userRepository.findByUsername(username).orElseThrow(
@@ -227,7 +233,7 @@ public class UserService {
     return UserProfileResponseDto.from(user);
   }
 
-  // 유저 아이디 찾기
+  //10. 유저 아이디 찾기
   @Transactional
   public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto)
       throws MessagingException {
@@ -248,7 +254,7 @@ public class UserService {
     return findUserIdResponseDto;
   }
 
-  // 유저 비밀번호 찾기
+  //11. 유저 비밀번호 찾기
   @Transactional
   public FindUserPwResponseDto findUserPw(FindUserPwRequestDto findUserPwRequestDto)
       throws MessagingException {
@@ -280,7 +286,7 @@ public class UserService {
     return null;
   }
 
-  // 임시 비밀번호 생성
+  //12. 임시 비밀번호 생성
   public String generateTempPassword() {
     char[] charSet = new char[]{
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -307,8 +313,9 @@ public class UserService {
     return stringBuffer.toString();
   }
 
-  // 트레이너 전체 조회
+  //13. 트레이너 전체 조회
   @Transactional
+  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public Page<UsersResponseDto> getTrainerList(int page, int size,
       String sortBy, boolean isAsc) {
     // 페이징 처리
@@ -321,8 +328,10 @@ public class UserService {
 
     return usersResponseDto;
   }
-  // 트레이너 개인 조회
+
+  //14. 트레이너 개인 조회
   @Transactional
+  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public UsersResponseDto getTrainer(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new IllegalArgumentException("해당 유저는 존재하지 않습니다.")

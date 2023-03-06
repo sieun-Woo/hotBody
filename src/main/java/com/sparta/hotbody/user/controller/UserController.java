@@ -61,13 +61,13 @@ public class UserController {
   private final UserRepository userRepository;
   private final KakaoService kakaoService;
 
-  //1.회원가입
+  //1. 회원가입
   @PostMapping("/sign-up")
   public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
     return userService.signUp(signupRequestDto);
   }
 
-  //2.로그인
+  //2. 로그인
   @PostMapping("/log-in")
   public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto,
       HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -85,62 +85,63 @@ public class UserController {
     return "로그인 완료";
   }
 
-  // 로그아웃
+  //3. 로그아웃
   @DeleteMapping("/log-out")
   public ResponseEntity<String> logout(HttpServletRequest request) {
     return userService.logout(request);
   }
 
-
-  //3. 탈퇴
-  @DeleteMapping("/auth/delete")
+  //4. 탈퇴
+  @DeleteMapping("/delete")
   public MessageResponseDto delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.deleteUser(deleteRequestDto, userDetails.getUser());
   }
 
-  //4. 트레이너 요청
-  @PostMapping("/auth/promote")
+  //5. 트레이너 요청
+  @PostMapping("/promote")
   @PreAuthorize("hasRole('USER')")
   public TrainerResponseDto promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.promoteTrainer(requestDto, userDetails.getUser());
   }
 
-  //4-1. 트레이너 승인 전 취소
-  @DeleteMapping("/auth/permission")
+  //5-1. 트레이너 승인 전 취소
+  @DeleteMapping("/permission")
   @PreAuthorize("hasRole('USER')")
   public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     userService.deletePermission(userDetails.getUser());
     return "삭제 완료되었습니다.";
   }
 
-  //5. 유저 프로필 작성
-  @PutMapping("/auth/profile")
+  //6. 유저 프로필 작성
+  @PutMapping("/profile")
   public String createProfile(
       @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
     return userService.createProfile(requestDto, userDetails);
   }
 
-  //6. 유저 프로필 사진 첨부
-  @PostMapping("/auth/profile/image")
+  //6-1. 유저 프로필 사진 첨부
+  @PostMapping("/profile/image")
   public ResponseEntity<String> saveProfileImage(
-      @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+      @RequestPart MultipartFile file,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
     userService.uploadImage(file, userDetails);
 
     return new ResponseEntity<>("업로드 되었습니다.", HttpStatus.OK);
   }
 
-  //6-1. 프로필 이미지 조회
-  @GetMapping("/auth/profile/image")
-  public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
+  //7. 프로필 이미지 조회
+  @GetMapping("/profile/image")
+  public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails)
+      throws MalformedURLException {
     return userService.viewImage(userDetails);
   }
 
-  //7. 유저 프로필 조회
-  @GetMapping("/auth/profile")
+  //7-1. 유저 프로필 조회
+  @GetMapping("/profile")
   public UserProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new IllegalArgumentException("연결상태 불량입니다. 다시 조회 해주시기 바랍니다.")
@@ -162,8 +163,9 @@ public class UserController {
     return userService.findUserPw(findUserPwRequestDto);
   }
 
-  //10.트레이너 전체 조회
-  @GetMapping("/auth/trainers")
+  //10. 트레이너 전체 조회
+  @GetMapping("/trainers")
+  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public Page<UsersResponseDto> getTrainerList(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -174,11 +176,10 @@ public class UserController {
   }
 
   //11. 트레이너 조회
-  @GetMapping("/auth/trainers/{trainerId}")
+  @GetMapping("/trainers/{trainerId}")
+  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public UsersResponseDto getTrainer(@PathVariable Long trainerId) {
     return userService.getTrainer(trainerId);
   }
-
-
 
 }

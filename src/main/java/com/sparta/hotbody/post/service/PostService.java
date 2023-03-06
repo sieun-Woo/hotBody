@@ -36,6 +36,7 @@ public class PostService {
   private final UploadService uploadService;
 
   // 1. 게시글 등록
+  @Transactional
   public ResponseEntity<String> createPost(PostRequestDto postRequestDto,
       UserDetailsImpl userDetails) {
     User user = userDetails.getUser();
@@ -45,6 +46,7 @@ public class PostService {
     return ResponseEntity.ok("작성 완료");
   }
 
+  @Transactional
   public String createImage(MultipartFile file)
       throws IOException {
     Image image = uploadService.storeFile(file);

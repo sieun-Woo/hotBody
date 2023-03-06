@@ -29,7 +29,7 @@ public class PostReportController {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping
-  @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER')")
+  @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER','REPORTED')")
   public ResponseEntity reportUser(@RequestBody PostReportRequestDto postReportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return new ResponseEntity(postReportService.reportPost(userDetails.getUser(),
         postReportRequestDto),HttpStatus.OK);

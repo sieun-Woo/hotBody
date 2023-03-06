@@ -30,7 +30,7 @@ public class UserReportController {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping
-  @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER')")
+  @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER','REPORTED')")
   public ResponseEntity reportUser(@RequestBody UserReportRequestDto userReportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return new ResponseEntity(userReportService.reportUser(userDetails.getUser(),
         userReportRequestDto),HttpStatus.OK);

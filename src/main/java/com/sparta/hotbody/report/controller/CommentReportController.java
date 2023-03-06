@@ -26,7 +26,7 @@ public class CommentReportController {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping
-  @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER')")
+  @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER','REPORTED')")
   public ResponseEntity reportUser(@RequestBody CommentReportRequestDto commentReportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return new ResponseEntity(commentReportService.reportComment(userDetails.getUser(),
         commentReportRequestDto),HttpStatus.OK);

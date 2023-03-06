@@ -61,9 +61,9 @@ public class UserController {
   private final UserRepository userRepository;
   private final KakaoService kakaoService;
 
-  //1.회원가입
+  //1. 회원가입
   @PostMapping("/sign-up")
-  public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
+  public ResponseEntity<String> signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
     return userService.signUp(signupRequestDto);
   }
 

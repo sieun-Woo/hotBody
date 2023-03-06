@@ -116,14 +116,8 @@ public class UserService {
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-//    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-//    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
-//    cookieRefreshToken.setPath("/");
-
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
-
-//    response.addCookie(cookieRefreshToken);
 
     refreshTokenRedisRepository.save(
         new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
@@ -258,7 +252,6 @@ public class UserService {
       // 임시 비밀번호 생성
       String password = generateTempPassword();
       FindUserPwResponseDto findUserPwResponseDto = new FindUserPwResponseDto(password);
-
       // 비밀번호 encode 후 저장
       String encodePassword = passwordEncoder.encode(password);
       user.modifyPassword(encodePassword);

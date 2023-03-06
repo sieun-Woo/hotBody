@@ -2,6 +2,7 @@ package com.sparta.hotbody.user.controller;
 
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.entity.PostCategory;
@@ -165,13 +166,9 @@ public class UserController {
   //10. 트레이너 전체 조회
   @GetMapping("/trainers")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
-  public Page<UsersResponseDto> getTrainerList(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
+  public Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel
   ) {
-    return userService.getTrainerList(page, size, sortBy, isAsc);
+    return userService.getTrainerList(getPageModel);
   }
 
   //11. 트레이너 조회

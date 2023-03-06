@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -35,6 +36,9 @@ public class KakaoService {
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final JwtUtil jwtUtil;
 
+  @Value("${kakao.login.restapi.key}")
+  private String kakaoLoginKey;
+
   public String kakaoLogin(String code, HttpServletResponse response)
       throws JsonProcessingException, UnsupportedEncodingException {
     // 1. "인가 코드"로 "액세스 토큰" 요청
@@ -50,15 +54,6 @@ public class KakaoService {
     String refreshToken = jwtUtil.createRefreshToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
 
-
-   /* Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, "Bearer " + accessToken);
-    cookie.setPath("/");
-    response.addCookie(cookie);
-
-    //String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN,"Bearer " + refreshToken);
-    cookieRefreshToken.setPath("/");
-    response.addCookie(cookieRefreshToken);*/
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     refreshTokenRedisRepository.save(new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
@@ -75,8 +70,8 @@ public class KakaoService {
     // HTTP Body 생성
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", "authorization_code");
-    body.add("client_id", "84bb3d050c5f1743aba916fceffca717");
-    body.add("redirect_uri", "http://localhost:8080/index.html");
+    body.add("client_id", kakaoLoginKey);
+    body.add("redirect_uri", "http://15.165.120.66:8080/index.html");
     body.add("code", code);
 
     // HTTP 요청 보내기

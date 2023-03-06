@@ -827,11 +827,11 @@ $.ajax(settings).done(function (response) {
 
 function cancel(index) {
   var settings = {
-  "url": "http://15.165.120.66:8080/api/admin/users/3/cancel",
+  "url": `http://localhost:8080/api/admin/users/${index}/cancel`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
-    "Authorization": localStorage.getItem('accessTonken')
+    "Authorization": localStorage.getItem('accessToken')
   },
 };
 

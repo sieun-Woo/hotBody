@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user/auth/mypage")
+@RequestMapping("/api")
 public class ExerciseRecordController {
 
   private final ExerciseRecordServiceImpl exerciseRecordService;
 
   // 운동 기록
-  @PostMapping("/records")
   @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER','REPORTED')")
+  @PostMapping("/record")
   public ExerciseRecordResponseDto createExerciseRecord(
       @RequestBody ExerciseRecordRequestDto exerciseRecordRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

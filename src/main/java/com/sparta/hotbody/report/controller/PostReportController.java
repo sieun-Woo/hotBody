@@ -22,20 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/reports/posts")
+@RequestMapping("/api/report")
 public class PostReportController {
 
   private final PostReportService postReportService;
 
   @ResponseStatus(HttpStatus.OK)
-  @PostMapping
+  @PostMapping("/post")
   @PreAuthorize("hasAnyRole('USER','ADMIN', 'TRAINER','REPORTED')")
-  public ResponseEntity reportUser(@RequestBody PostReportRequestDto postReportRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return new ResponseEntity(postReportService.reportPost(userDetails.getUser(),
-        postReportRequestDto),HttpStatus.OK);
+  public PostReportResponseDto reportPost(@RequestBody PostReportRequestDto postReportRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return postReportService.reportPost(userDetails.getUser(), postReportRequestDto);
   }
 
-  @GetMapping
+  @GetMapping("/posts")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<PostReportResponseDto> getAllReportedPosts(
       @RequestParam("page") int page,

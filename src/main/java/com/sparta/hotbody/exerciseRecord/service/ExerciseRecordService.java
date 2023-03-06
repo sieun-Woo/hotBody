@@ -13,14 +13,14 @@ public interface ExerciseRecordService {
 
 
   //운동 기록
-  public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails);
+  Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails);
 
-  public ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) ;
+  ExerciseRecordResponseDto getExerciseRecordById(Long id, UserDetailsImpl userDetails) ;
 
-  public ExerciseRecordResponseDto createExerciseRecord(ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
+  ExerciseRecordResponseDto createExerciseRecord(ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
 
-  public ExerciseRecordResponseDto updateExerciseRecord(Long id, ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
+  ExerciseRecordResponseDto updateExerciseRecord(Long id, ExerciseRecordRequestDto exerciseRecordRequestDto, UserDetailsImpl userDetails);
 
-  public ResponseEntity deleteExerciseRecord(Long id, UserDetailsImpl userDetails) ;
+  ResponseEntity<String> deleteExerciseRecord(Long id, UserDetailsImpl userDetails) ;
 
 }

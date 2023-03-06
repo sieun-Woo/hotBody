@@ -1,9 +1,11 @@
 package com.sparta.hotbody.post.service;
 
+import com.sparta.hotbody.common.page.PageDto;
+import com.sparta.hotbody.exception.CustomException;
+import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.post.dto.PostResponseDto;
-import com.sparta.hotbody.post.dto.PostSearchRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.entity.PostCategory;
 import com.sparta.hotbody.post.repository.PostLikeRepository;
@@ -14,8 +16,6 @@ import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,20 +33,17 @@ public class PostService {
 
   private final PostRepository postRepository;
   private final UploadService uploadService;
-  private final PostLikeRepository postLikeRepository;
 
   // 1. 게시글 등록
-  @Transactional
   public ResponseEntity<String> createPost(PostRequestDto postRequestDto,
       UserDetailsImpl userDetails) {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
-    postRepository.saveAndFlush(post);
+    postRepository.save(post);
 
-    return new ResponseEntity<>("작성 완료", HttpStatus.OK);
+    return ResponseEntity.ok("작성 완료");
   }
 
-  @Transactional
   public String createImage(MultipartFile file)
       throws IOException {
     Image image = uploadService.storeFile(file);
@@ -56,8 +53,8 @@ public class PostService {
 
 
   // 2. 게시글 전체 조회
-  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, int page, int size,
-      String sortBy, boolean isAsc) {
+  public Page<PostResponseDto> getAllPosts(PostCategory postCategory,
+      int page, int size, String sortBy, boolean isAsc) {
     // 페이징 처리
     Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
     Sort sort = Sort.by(direction, sortBy);
@@ -70,17 +67,15 @@ public class PostService {
   }
 
   // 3. 게시글 선택 조회
-  @Transactional
   public PostResponseDto getPost(Long postId) {
     Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
     );
     PostResponseDto postResponseDto = new PostResponseDto(post);
 
     return postResponseDto;
   }
 
-  @Transactional
   // 키워드로 게시글 검색
   public Page<PostResponseDto> searchPost(
       PostCategory postCategory, String searchType, String searchKeyword,
@@ -90,54 +85,42 @@ public class PostService {
     Sort sort = Sort.by(direction, sortBy);
     Pageable pageable = PageRequest.of(page, size, sort);
 
+    Page<Post> posts = null;
+
     if(postCategory == null) {
       if (searchType.equals("title")) {
-        Page<Post> posts = postRepository.findByTitleContaining(
+        posts = postRepository.findByTitleContaining(
             searchKeyword, pageable);
-        return posts.map(post -> new PostResponseDto(post));
-      }
-
-      if (searchType.equals("content")) {
-        Page<Post> posts = postRepository.findByContentContaining(
+      } else if (searchType.equals("content")) {
+        posts = postRepository.findByContentContaining(
             searchKeyword, pageable);
-        return posts.map(post -> new PostResponseDto(post));
-      }
-
-      if (searchType.equals("nickname")) {
-        Page<Post> posts = postRepository.findByNicknameContaining(
+      } else {
+        posts = postRepository.findByNicknameContaining(
             searchKeyword, pageable);
-        return posts.map(post -> new PostResponseDto(post));
       }
-      return null;
+    } else {
+      if (searchType.equals("title")) {
+        posts = postRepository.findByCategoryAndTitleContaining(
+            postCategory, searchKeyword, pageable);
+      } else if (searchType.equals("content")) {
+        posts = postRepository.findByCategoryAndContentContaining(
+            postCategory, searchKeyword, pageable);
+      } else {
+        posts = postRepository.findByCategoryAndNicknameContaining(
+            postCategory, searchKeyword, pageable);
+      }
     }
-
-    if (searchType.equals("title")) {
-      Page<Post> posts = postRepository.findByCategoryAndTitleContaining(
-          postCategory, searchKeyword, pageable);
-      return posts.map(post -> new PostResponseDto(post));
-    }
-
-    if (searchType.equals("content")) {
-      Page<Post> posts = postRepository.findByCategoryAndContentContaining(
-          postCategory, searchKeyword, pageable);
-      return posts.map(post -> new PostResponseDto(post));
-    }
-
-    if (searchType.equals("nickname")) {
-      Page<Post> posts = postRepository.findByCategoryAndNicknameContaining(
-          postCategory, searchKeyword, pageable);
-      return posts.map(post -> new PostResponseDto(post));
-    }
-    return null;
+    return toPage(posts);
   }
 
-
+  private Page<PostResponseDto> toPage(Page<Post> posts) {
+    return posts.map(post -> new PostResponseDto(post));
+  }
 
   // 5. 게시글 삭제
-  @Transactional
-  public void deletePost(Long postId, User user) {
+  public ResponseEntity<String> deletePost(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
     );
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
       if (post.getImage() != null) {
@@ -145,26 +128,27 @@ public class PostService {
       }
       postRepository.delete(post);
     } else {
-      throw new IllegalArgumentException("게시글을 삭제하려면 로그인이 필요합니다.");
+      throw new CustomException(ExceptionStatus.NOT_USER);
     }
+    return ResponseEntity.ok("게시글 삭제가 완료되었습니다.");
   }
 
   // 4. 게시글 수정
   @Transactional
-  public void updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
+  public ResponseEntity<String> updatePost(Long postId, PostModifyRequestDto postModifyRequestDto,
       User user) {
 
     Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
     );
 
     if (post.getUser().getId().equals(user.getId()) || user.getRole().equals(UserRole.ADMIN)) {
       post.modifyPost(postModifyRequestDto);
-      postRepository.save(post);
 
     } else {
-      throw new IllegalArgumentException("게시글을 수정하려면 로그인이 필요합니다.");
+      throw new CustomException(ExceptionStatus.NOT_USER);
     }
+    return ResponseEntity.ok("게시글 수정이 완료되었습니다.");
   }
 
   // 6. 게시글 이미지 수정
@@ -172,7 +156,7 @@ public class PostService {
   public ResponseEntity<String> modifyImage(Long postId, MultipartFile file)
       throws IOException {
     Post post = postRepository.findById(postId).orElseThrow(
-        () -> new IllegalArgumentException("해당 게시글은 존재하지 않습니다.")
+        () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
     );
     if(post.getImage() != null) {
       uploadService.remove(post.getImage());
@@ -180,6 +164,37 @@ public class PostService {
     Image image = uploadService.storeFile(file);
     String resourcePath = image.getResourcePath();
     post.updateImage(resourcePath);
-    return new ResponseEntity<>("수정되었습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("이미지가 수정되었습니다.");
+  }
+
+  // 7. 나의 게시글 조회
+  public Page<PostResponseDto> getMyAllPosts(
+      String nickname, int i, int size, String sortBy,
+      boolean isAsc) {
+    // 페이징 처리
+    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sortBy);
+    Pageable pageable = PageRequest.of(i, size, sort);
+    Page<Post> posts = postRepository.findByNicknameContaining(nickname, pageable);
+    Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
+    return postResponseDto;
+  }
+
+  // 8. 키워드로 나의 게시글 검색
+  public Page<PostResponseDto> searchMyPosts(
+      String nickname, String searchType, String searchKeyword,
+      int page, int size, String sortBy, boolean isAsc) {
+    // 페이징 처리
+    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+
+    if (searchType.equals("title")) {
+      Page<Post> posts = postRepository.findAllByNicknameContainingAndTitleContaining
+          (nickname, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
+    } else {
+      Page<Post> posts = postRepository.findAllByNicknameContainingAndContentContaining
+          (nickname, searchKeyword, pageable);
+      return posts.map(post -> new PostResponseDto(post));
+    }
   }
 }

@@ -63,7 +63,7 @@ public class UserController {
 
   //1.회원가입
   @PostMapping("/sign-up")
-  public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
+  public ResponseEntity<String> signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
     return userService.signUp(signupRequestDto);
   }
 
@@ -93,7 +93,7 @@ public class UserController {
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")
-  public MessageResponseDto delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
+  public ResponseEntity<String> delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.deleteUser(deleteRequestDto, userDetails.getUser());
   }
@@ -101,7 +101,7 @@ public class UserController {
   //4. 트레이너 요청
   @PostMapping("/auth/promote")
   @PreAuthorize("hasRole('USER')")
-  public TrainerResponseDto promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
+  public ResponseEntity<String> promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.promoteTrainer(requestDto, userDetails.getUser());
   }
@@ -109,14 +109,13 @@ public class UserController {
   //4-1. 트레이너 승인 전 취소
   @DeleteMapping("/auth/permission")
   @PreAuthorize("hasRole('USER')")
-  public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    userService.deletePermission(userDetails.getUser());
-    return "삭제 완료되었습니다.";
+  public ResponseEntity<String> deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return userService.deletePermission(userDetails.getUser());
   }
 
   //5. 유저 프로필 작성
   @PutMapping("/auth/profile")
-  public String createProfile(
+  public ResponseEntity<String> createProfile(
       @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
     return userService.createProfile(requestDto, userDetails);
@@ -124,12 +123,12 @@ public class UserController {
 
   //6. 유저 프로필 사진 첨부
   @PostMapping("/auth/profile/image")
-  public ResponseEntity<String> saveProfileImage(
+  public ResponseEntity<String> uploadImage(
       @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
     userService.uploadImage(file, userDetails);
 
-    return new ResponseEntity<>("업로드 되었습니다.", HttpStatus.OK);
+    return ResponseEntity.ok("이미지가 업로드 되었습니다.");
   }
 
   //6-1. 프로필 이미지 조회
@@ -169,7 +168,7 @@ public class UserController {
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc
   ) {
-    return userService.getTrainerList(page - 1, size, sortBy, isAsc);
+    return userService.getTrainerList(page, size, sortBy, isAsc);
   }
 
   //11. 트레이너 조회

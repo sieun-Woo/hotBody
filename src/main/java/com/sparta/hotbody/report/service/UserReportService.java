@@ -24,7 +24,6 @@ public class UserReportService {
   private final static int NORMAL_USER_REPORT_LIMIT_FOR_BEING_REPORTED = 3;
   public final UserReportRepository userReportRepository;
   public final UserRepository userRepository;
-  
   public final UserReportRepository userReportHistoryRepository;
 
   @Transactional

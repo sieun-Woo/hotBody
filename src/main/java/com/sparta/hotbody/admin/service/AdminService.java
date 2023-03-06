@@ -6,52 +6,53 @@ import com.sparta.hotbody.admin.dto.FindAdminIdResponseDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwRequestDto;
 import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
-import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
+import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
-import com.sparta.hotbody.user.service.UserDetailsImpl;
+import com.sparta.hotbody.user.dto.UserProfileResponseDto;
+import com.sparta.hotbody.user.dto.UsersResponseDto;
 import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 public interface AdminService {
 
-  ResponseEntity signup(AdminSignUpRequestDto adminSignUpRequestDto);
+  ResponseEntity<String> signup(AdminSignUpRequestDto adminSignUpRequestDto);
 
-  ResponseEntity login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
+  ResponseEntity<String> login(LoginRequestDto loginRequestDto, HttpServletResponse response, HttpServletRequest request)
       throws UnsupportedEncodingException;
 
-  ResponseEntity permitTrainer(Long requestId);
+  ResponseEntity<String> permitTrainer(Long requestId);
 
-  ResponseEntity getRegistrations(int pageNum);
+  Page<TrainerResponseDto> getRegistrations(int page, int size, String sortBy, boolean isAsc);
 
-  ResponseEntity refuseTrainer(Long userId);
+  ResponseEntity<String> refuseTrainer(Long userId);
 
-  ResponseEntity cancelTrainer(Long userId);
+  ResponseEntity<String> cancelTrainer(Long userId);
 
-  ResponseEntity updatePost(Long postId, PostModifyRequestDto postModifyRequestDto);
+  ResponseEntity<String> updatePost(Long postId, PostModifyRequestDto postModifyRequestDto);
 
-  ResponseEntity deletePost(Long postId);
+  ResponseEntity<String> deletePost(Long postId);
 
-  ResponseEntity updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto);
+  ResponseEntity<String> updateComment(Long commentId, CommentModifyRequestDto commentModifyRequestDto);
 
-  ResponseEntity deleteComment(Long commentId);
+  ResponseEntity<String> deleteComment(Long commentId);
 
-  ResponseEntity getUserList(int pageNum);
+  Page<UsersResponseDto> getUserList(int page, int size, String sortBy, boolean isAsc);
 
-  ResponseEntity getUser(Long userId);
+  UserProfileResponseDto getUser(Long userId);
 
-  ResponseEntity getTrainerList(int pageNum);
+  Page<UsersResponseDto> getTrainerList(int page, int size, String sortBy, boolean isAsc);
 
-  ResponseEntity getTrainer(Long trainerId);
+  TrainerResponseDto getTrainer(Long trainerId);
 
-  ResponseEntity updateUserInfo(Long userId, UserProfileRequestDto userProfileRequestDto);
+  ResponseEntity<String> updateUserInfo(Long userId, UserProfileRequestDto userProfileRequestDto);
 
-  ResponseEntity deleteUser(Long userId);
+  ResponseEntity<String> deleteUser(Long userId);
 
   FindAdminIdResponseDto findAdminId(FindAdminIdRequestDto findAdminIdRequestDto)
       throws MessagingException;
@@ -59,13 +60,13 @@ public interface AdminService {
   FindAdminPwResponseDto findAdminPw(FindAdminPwRequestDto findAdminPwRequestDto)
       throws MessagingException;
 
-  ResponseEntity logout(HttpServletRequest request);
+  ResponseEntity<String> logout(HttpServletRequest request);
 
-  ResponseEntity makeUserSuspended(Long userId);
+  ResponseEntity<String> makeUserSuspended(Long userId);
 
-  ResponseEntity makeTrainerSuspended(Long userId);
+  ResponseEntity<String> makeTrainerSuspended(Long userId);
 
-  ResponseEntity makeUserNormal(Long userId);
+  ResponseEntity<String> makeUserNormal(Long userId);
 
-  ResponseEntity makeTrainerNormal(Long userId);
+  ResponseEntity<String> makeTrainerNormal(Long userId);
 }

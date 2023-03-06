@@ -12,7 +12,9 @@
 <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
   <ul>
-    <li><a href="logout.html">로그아웃</a></li>
+    <li id="signup"><a href="signup.html">회원가입</a></li>
+    <li id="signin"><a href="login.html">로그인</a></li>
+    <li id="logout"><a onclick="logout()">로그아웃</a></li>
   </ul>
 </header>
 
@@ -31,7 +33,7 @@
   <!-- 로고바 시작 -->
   <header class="logo-bar con-min-width">
     <div class="con height-100p flex flex-jc-c">
-      <a href="main.html" class="logo flex flex-ai-c">
+      <a href="index.html" class="logo flex flex-ai-c">
         <i class="fa-solid fa-dumbbell"></i>
         <span>
           Hot<span></span>body
@@ -48,7 +50,7 @@
 
         <ul class="flex">
           <li>
-            <a href="main.html" class="block">
+            <a href="index.html" class="block">
               <i class="fas fa-home"></i>
               <span>홈</span>
             </a>
@@ -121,6 +123,8 @@
       </nav>
     </div>
   </header>
+  <div id="map" style="width:100%;height:50vh;"></div>
+  <div id="place-list" style="margin: auto;"></div>
   <!-- 메뉴바 끝 -->
 </body>
 <style>
@@ -414,13 +418,58 @@
 
   /* 게시물 검색 끝 */
 
-  
+  /* 지도 마커 */
+  .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;cursor:pointer;}
+  .placeinfo {position:relative;width:600px;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
+  .placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+  .placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+  .placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
+  .placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+  .placeinfo span {margin:5px 5px 0 5px;font-size:18px;}
+  .placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: black url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+  .placeinfo .tel {color:#0f7833;}
+  .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+  /* 지도 마커 끝 */
 
 </style>
-  <div id="map" style="width:100%;height:350px;"></div>
 
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f09f9655a4bd5b71df1d29c598929c6&libraries=services"></script>
-  <script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7f09f9655a4bd5b71df1d29c598929c6&libraries=services"></script>
+<script>
+  jQuery(document).ready(function ($) {
+
+    $("#logout").hide();
+    $("#signup").show();
+    $("#signin").show();
+
+    if (localStorage.getItem('accessToken')) {
+      $("#logout").show();
+      $("#signup").hide();
+      $("#signin").hide();
+    }
+  })
+
+  function logout() {
+
+    var settings = {
+      "url": "http://localhost:8080/api/user/log-out",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.removeItem('accessToken'),
+        "RefreshToken": localStorage.removeItem('refreshToken')
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      localStorage.removeItem('accessToken');
+      var now = new Date();
+      now.setDate(now.getDate() - 1);
+      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+    });
+
+    location.reload();
+  }
 
     var options = {
       enableHighAccuracy: true,
@@ -472,7 +521,7 @@
       var mapContainer = document.getElementById('map'), // 지도를 표시할 div
           mapOption = {
             center: new kakao.maps.LatLng(lat, lon), // 지도의 중심좌표
-            level: 3 // 지도의 확대 레벨
+            level: 2 // 지도의 확대 레벨
           };
 
       // 지도를 생성합니다
@@ -482,8 +531,8 @@
       var ps = new kakao.maps.services.Places();
 
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch('헬스장', placesSearchCB, {
-        radius : 2000,
+      ps.keywordSearch('헬스클럽', placesSearchCB, {
+        radius : 1500,
         location: new kakao.maps.LatLng(lat, lon)
       });
 
@@ -497,6 +546,7 @@
 
           for (var i=0; i<data.length; i++) {
             displayMarker(data[i]);
+            addPlaceList(data[i]);
             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
           }
 
@@ -518,9 +568,35 @@
         kakao.maps.event.addListener(marker, 'click', function () {
           // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
           infowindow.setContent(
-              '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+
+                '<div class="placeinfo" style="width:300px;">' +
+                '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>' +
+                '    <span title="' + place.road_address_name + '">' + place.road_address_name + '</span>' +
+                '  <span class="jibun" title="' + place.address_name + '">(지번 : ' + place.address_name + ')</span>' +
+                '    <span class="tel">' + place.phone + '</span>' + 
+                '</div>' + 
+                '<div class="after"></div>'
+              )              
+
           infowindow.open(map, marker);
+          console.log(place)
         });
+
+        
+      }
+
+      // 지도 아래 리스트를 표시하는 함수
+      function addPlaceList(place) {
+        var content =
+          '<div class="placeinfo" style="margin-top:10px">' +
+          '  <a href="' + place.place_url + '">' +
+          '  <span class="title" title="' + place.place_name + '" style="margin-bottom:5px">' + place.place_name + '</span>' +
+          '  <span class="jibun" title="' + place.road_address_name + '" style="font-size:18px; color:black;">' + place.road_address_name + '</span>' +
+          '  <span class="jibun" title="' + place.address_name + '">(지번 : ' + place.address_name + ')</span>' +
+          '  <span class="tel">' + place.phone + '</span></a>' +
+          '</div>'
+
+          $('#place-list').append(content);
       }
     }
 

@@ -751,7 +751,7 @@
     // 좋아요
     function likeTrainer(){
       var settings = {
-        "url": "http://localhost:8080/api/auth/trainers/"+ localStorage.getItem('currentTrainerId'),
+        "url": "http://localhost:8080/api/trainers/"+ localStorage.getItem('currentTrainerId'),
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -768,7 +768,7 @@
 
   function dislikeTrainer(){
       var settings = {
-        "url": "http://localhost:8080/api/auth/trainers/"+localStorage.getItem('currentTrainerId'),
+        "url": "http://localhost:8080/api/trainers/"+localStorage.getItem('currentTrainerId'),
         "method": "DELETE",
         "timeout": 0,
         "headers": {

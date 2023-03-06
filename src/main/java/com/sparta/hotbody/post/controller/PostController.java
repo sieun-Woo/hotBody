@@ -33,7 +33,7 @@ public class PostController {
   private final PostService postService;
 
   // 1. 게시글 등록
-  @PostMapping("/posts")
+  @PostMapping("/post")
   public ResponseEntity<String> createPost(
       @RequestBody PostRequestDto postRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -75,7 +75,8 @@ public class PostController {
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc) {
-    return postService.searchPost(category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
+    return postService.searchPost(
+        category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
   }
 
   // 4. 게시글 수정
@@ -97,9 +98,35 @@ public class PostController {
 
   // 5. 게시글 삭제
   @DeleteMapping("/posts/{postId}")
-  public void deletePost(
+  public ResponseEntity<String> deletePost(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postService.deletePost(postId, userDetails.getUser());
+    return postService.deletePost(postId, userDetails.getUser());
+  }
+
+  // 나의 게시글 전체 조회
+  @GetMapping("/my-posts")
+  public Page<PostResponseDto> getMyAllPosts(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return postService.getMyAllPosts(userDetails.getUser().getNickname(),
+        page - 1, size, sortBy, isAsc);
+  }
+
+  // 나의 게시글 키워드 조회
+  @GetMapping("/my-posts/search")
+  public Page<PostResponseDto> searchMyPosts(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam("searchType") String searchType,
+      @RequestParam("searchKeyword") String searchKeyword,
+      @RequestParam("page") int page,
+      @RequestParam("size") int size,
+      @RequestParam("sortBy") String sortBy,
+      @RequestParam("isAsc") boolean isAsc) {
+    return postService.searchMyPosts(userDetails.getUser().getNickname(), searchType, searchKeyword,
+        page - 1, size, sortBy, isAsc);
   }
 }

@@ -35,7 +35,6 @@ public class CommentReportController {
   }
 
 
-
   @GetMapping("/comments")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<CommentReportResponseDto> getAllReportedComments(

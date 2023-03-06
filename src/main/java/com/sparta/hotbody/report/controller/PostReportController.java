@@ -35,7 +35,6 @@ public class PostReportController {
     return postReportService.reportPost(userDetails.getUser(), postReportRequestDto);
   }
 
-
   @GetMapping("/posts")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<PostReportResponseDto> getAllReportedPosts(

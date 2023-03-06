@@ -828,6 +828,7 @@ $.ajax(settings).done(function (response) {
 function cancel(index) {
   var settings = {
   "url": `http://localhost:8080/api/admin/users/${index}/cancel`,
+
   "method": "PUT",
   "timeout": 0,
   "headers": {

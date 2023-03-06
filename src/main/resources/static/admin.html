@@ -79,25 +79,25 @@
             </a>
             <ul>
               <li>
-                <a href="exercise.html" class="block">
+                <a href="admin-reported-user.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
                   <span>유저 신고</span>
                 </a>
               </li>
               <li>
-                <a href="diet.html" class="block">
+                <a href="admin-reported-trainer.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
                   <span>트레이너 신고</span>
                 </a>
               </li>
               <li>
-                <a href="my-page.html" class="block">
+                <a href="admin-reported-post.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
                   <span>게시글 신고</span>
                 </a>
               </li>
               <li>
-                <a href="my-page.html" class="block">
+                <a href="admin-reported-comment.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
                   <span>댓글 신고</span>
                 </a>
@@ -153,72 +153,6 @@
               <div class="article-list__cell-like">좋아요</div>
             </div>
           </header>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'" class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

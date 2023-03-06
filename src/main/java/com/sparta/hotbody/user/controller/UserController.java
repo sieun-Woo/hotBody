@@ -115,7 +115,7 @@ public class UserController {
   }
 
   //6. 유저 프로필 작성
-  @PutMapping("/auth/profile")
+  @PutMapping("/profile")
   public ResponseEntity<String> createProfile(
       @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
@@ -164,7 +164,7 @@ public class UserController {
 
   //10. 트레이너 전체 조회
   @GetMapping("/trainers")
-  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public Page<UsersResponseDto> getTrainerList(
       @RequestParam("page") int page,
       @RequestParam("size") int size,
@@ -176,7 +176,7 @@ public class UserController {
 
   //11. 트레이너 조회
   @GetMapping("/trainers/{trainerId}")
-  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public UsersResponseDto getTrainer(@PathVariable Long trainerId) {
     return userService.getTrainer(trainerId);
   }

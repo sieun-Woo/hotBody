@@ -36,6 +36,7 @@ public class PostService {
   private final UploadService uploadService;
 
   // 1. 게시글 등록
+  @Transactional
   public ResponseEntity<String> createPost(PostRequestDto postRequestDto,
       UserDetailsImpl userDetails) {
     User user = userDetails.getUser();
@@ -44,6 +45,7 @@ public class PostService {
     return ResponseEntity.ok("작성 완료");
   }
 
+  @Transactional
   public String createImage(MultipartFile file)
       throws IOException {
     Image image = uploadService.storeFile(file);
@@ -163,6 +165,7 @@ public class PostService {
   }
 
   // 7. 나의 게시글 조회
+  @Transactional
   public Page<PostResponseDto> getMyAllPosts(
       String nickname, GetPageModel getPageModel) {
     // 페이징 처리
@@ -173,6 +176,7 @@ public class PostService {
   }
 
   // 8. 키워드로 나의 게시글 검색
+  @Transactional
   public Page<PostResponseDto> searchMyPosts(
       String nickname, String searchType, String searchKeyword, GetPageModel getPageModel) {
     // 페이징 처리

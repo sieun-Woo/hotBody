@@ -4,6 +4,7 @@ import com.sparta.hotbody.post.service.PostLikeService;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ public class PostLikeController {
 
   // 6. 게시글 좋아요
   @PostMapping("/posts/{postId}/like")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> pushLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -28,6 +30,7 @@ public class PostLikeController {
 
   // 7. 게시글 좋아요 취소
   @DeleteMapping("/posts/{postId}/like")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public void cancelLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

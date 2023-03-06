@@ -44,7 +44,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
   public WebSecurityCustomizer webSecurityCustomizer() {
     // h2-console 사용 및 resources 접근 허용 설정
     return (web) -> web.ignoring()
-        .requestMatchers(PathRequest.toH2Console())
+//        .requestMatchers(PathRequest.toH2Console())
         .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
   }
   @Bean
@@ -56,12 +56,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         .antMatchers("/**").permitAll()
         .antMatchers("/api/**").permitAll()
         .antMatchers("/s3/**").permitAll()
-        .antMatchers("/api/user/sign-up").permitAll()
-        .antMatchers("/api/user/log-in").permitAll()
+        .antMatchers("/api/user/**").permitAll()
         .antMatchers("/api/admin/sign-up").permitAll()
         .antMatchers("/api/admin/log-in").permitAll()
-        .antMatchers("/api/user/auth/**").hasAnyAuthority("ROLE_USER", "ROLE_TRAINER", "ROLE_ADMIN", "ROLE_REPORTED")
         .antMatchers("/h2-console").permitAll()
+        .antMatchers("/api/comments/**").hasAnyAuthority("ROLE_ADMIN")
         .antMatchers("/api/posts/**").permitAll()
         .antMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
         .antMatchers("/api/").hasAnyAuthority("ROLE_TRAINER")
@@ -77,7 +76,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     registry.addMapping("/**")
 //        .allowedMethods("GET", "SET", "PUT", "DELETE", "OPTIONS", "HEAD")
         .exposedHeaders("Authorization", "RefreshToken")
-        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500") // 허용할 출처
+        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500", "http://hotbody.store") // 허용할 출처
         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD") // 허용할 HTTP method
         .allowCredentials(true) // 쿠키 인증 요청 허용
         .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱

@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class DietController {
   private final DietService dietService;
 
   // 음식 검색
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @GetMapping("/diet/food")
   public Page<FoodResponseDto> searchFood(
       @RequestParam("foodType") String foodType,
@@ -34,6 +36,7 @@ public class DietController {
   }
 
   // 음식을 저장하기 위한 식단 생성
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @PostMapping("/diet")
   public Long createDiet(
       @RequestParam("time") String time,
@@ -42,6 +45,7 @@ public class DietController {
   }
 
   // 식단에 음식 저장
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @PostMapping("/diet/food")
   public ResponseEntity<String> createFood(
       @RequestBody List<FoodOfDietRequestDto> foodOfDietRequestDtoList,
@@ -49,6 +53,7 @@ public class DietController {
     return dietService.saveFood(foodOfDietRequestDtoList, id);
   }
 
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @GetMapping("/diet")
   public ResponseEntity<List> readDiet(
       @RequestParam("time") String time,

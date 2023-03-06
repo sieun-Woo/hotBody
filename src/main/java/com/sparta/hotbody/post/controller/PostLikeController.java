@@ -21,7 +21,7 @@ public class PostLikeController {
 
   // 6. 게시글 좋아요
   @PostMapping("/posts/{postId}/like")
-  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
+  @PreAuthorize("hasAnyRole('ROLE_USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> pushLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {

@@ -31,9 +31,9 @@ public class PostLikeController {
   // 7. 게시글 좋아요 취소
   @DeleteMapping("/posts/{postId}/like")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
-  public void cancelLike(
+  public ResponseEntity<String> cancelLike(
       @PathVariable Long postId,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    postLikeService.cancelLike(postId, userDetails.getUser());
+    return postLikeService.cancelLike(postId, userDetails.getUser());
   }
 }

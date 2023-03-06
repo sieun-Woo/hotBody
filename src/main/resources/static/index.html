@@ -136,7 +136,6 @@
       <div class="con">
         <div class="article-search">
           <form>
-
           <div style="width: 650px; margin: auto;">
             <h1 style="margin-top: 20px; margin-left: 110px; cursor: default;">
               <span>Search</span>
@@ -161,11 +160,7 @@
           </form>
         </div>
 
-        <div class="article-list" style="position: relative; z-index: 1;">
-          <div class="flex" style="justify-content: center; margin-top: 30px; text-align: center;">
-            <h1 class="flex-0 info-article" style="margin-right: 50px;">오늘의 식단</h1>
-            <h1 class="flex-0 info-article">운동 기록</h1>
-          </div>
+        <div class="article-header" style="position: relative; z-index: 1;">
           <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">베스트
             게시글
           </div>
@@ -179,78 +174,10 @@
               <div class="article-list__cell-like">좋아요</div>
             </div>
           </header>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'"
-                   class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'"
-                   class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'"
-                   class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'"
-                   class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'"
-                   class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
-          <div class="main">
-            <div v-for="article in filtered">
-              <div class="article-list__cell-id">{{article.id}}</div>
-              <div class="article-list__cell-reg-date">{{article.regDate}}</div>
-              <div class="article-list__cell-writer">{{article.writer}}</div>
-              <div class="article-list__cell-title">
-                <a :href="'article_' + article.id + '.html'"
-                   class="hover-pointer">{{article.title}}</a>
-              </div>
-              <div class="article-list__cell-like">{{article.like}}</div>
-            </div>
-          </div>
+        <div class="article-list" style="position: relative; z-index: 1;">
+
+
+        </div>
         </div>
       </div>
     </section>
@@ -570,10 +497,11 @@
   /* 게시물 리스트 */
   :root {
     --article-list__cell-id__width: 100px;
-    --article-list__cell-reg-date__width: 220px;
+    --article-list__cell-category__width: 150px;
+    --article-list__cell-reg-date__width: 150px;
     --article-list__cell-writer__width: 150px;
     --article-list__cell-like__width: 100px;
-    --article-list__cell-title__width: calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-reg-date__width) - var(--article-list__cell-writer__width) - var(--article-list__cell-like__width));
+    --article-list__cell-title__width: 350px;
   }
 
   .article-list > * > div {
@@ -606,6 +534,10 @@
     width: var(--article-list__cell-id__width);
   }
 
+  .article-list__cell-category {
+    width: var(--article-list__cell-category__width);
+  }
+
   .article-list__cell-reg-date {
     width: var(--article-list__cell-reg-date__width);
   }
@@ -628,6 +560,42 @@
   }
 
   .article-list > .main > div {
+    border-top: 1px solid black;
+  }
+
+   /* 위에는 본문 아래는 헤더 */
+   .article-header>*>div {
+    display: flex;
+  }
+
+  .article-header>header>div>div {
+    position: relative;
+  }
+
+  .article-header>header>div>div:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    width: 1px;
+    height: 10px;
+    background-color: black;
+  }
+
+  .article-header>*>div>div {
+    box-sizing: border-box;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .article-header>.main .article-list__cell-title {
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  .article-header>.main>div {
     border-top: 1px solid black;
   }
 
@@ -742,7 +710,11 @@
   jQuery(document).ready(function ($) {
     var kakaoCode = document.location.href.split("?")[1];
 
+
+    if(kakaoCode) {
       callback(kakaoCode);
+    }
+      BestPosts()
 
 
     $("#logout").hide();
@@ -760,7 +732,8 @@
 
     console.log(kakaoCode+": kakao code");
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/kakao/callback?" + kakaoCode,
+
+      "url": "http://localhost:8080/api/user/kakao/callback?" + kakaoCode,
       "method": "GET",
       "timeout": 0,
     };
@@ -774,10 +747,66 @@
     });
   }
 
+  function BestPosts() {
+        var settings = {
+          "url": `http://localhost:8080/api/posts/search?&page=` + 1
+          + `&size=5&isAsc=false&sortBy=likes&searchType=` + `&searchKeyword=`,
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+      },
+
+    };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+
+        const TOTAL_DATA = response.totalElements; // 데이터 총개수
+      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+      const TOTAL_PAGE = response.totalPages // 총페이지
+
+      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+
+      var start = VIEW_DATA - VIEW_DATA;
+      var end = VIEW_DATA;
+      var j = 1;
+
+      console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+      console.log(response);
+      board_list(response.content);
+
+      // 게시물 목록
+      function board_list(data) {
+        var str = '';
+        data.forEach((post) => {
+          str += `<div class="main">
+                <div v-for="article in filtered">
+                  <div class="article-list__cell-id">` + j + `</div>
+                  <div class="article-list__cell-category">${post.category}</div>
+                  <div class="article-list__cell-reg-date">${post.createdAt}</div>
+                  <div class="article-list__cell-writer">${post.nickname}</div>
+                  <div class="article-list__cell-title">
+                    <a href="view_post.html?` + `${post.id}` + `"class="hover-pointer">${post.title}</a>
+                  </div>
+                  <div class="article-list__cell-like">${post.likes}</div>
+                </div>
+              </div>`
+          j++
+        });
+
+        $('.article-list').empty();
+        $('.article-list').append(str);
+
+      }
+    })
+  };
+
   function logout() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-out",
+      "url": "http://localhost:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -808,7 +837,7 @@
     var searchKeyword = ($('#searchKeyword').val())
 
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/search?&page=` + page
+      "url": `http://localhost:8080/api/posts/search?&page=` + page
           + `&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=`
           + searchKeyword,
       "method": "GET",
@@ -830,7 +859,7 @@
 
       var start = VIEW_DATA - VIEW_DATA;
       var end = VIEW_DATA;
-      var j = 0;
+      var j = 1;
 
       console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
       console.log(response);
@@ -844,12 +873,13 @@
           var k = TOTAL_DATA - j
           str += `<div class="main">
                 <div v-for="article in filtered">
-                  <div class="article-list__cell-id">` + k + `</div>
+                  <div class="article-list__cell-id">` + j + `</div>
+                  <div class="article-list__cell-category">${post.category}</div>
+                  <div class="article-list__cell-reg-date">${post.createdAt}</div>
+                  <div class="article-list__cell-writer">${post.nickname}</div>
                   <div class="article-list__cell-title">
                     <a href="view_post.html?` + `${post.id}` + `"class="hover-pointer">${post.title}</a>
                   </div>
-                  <div class="article-list__cell-writer">${post.nickname}</div>
-                  <div class="article-list__cell-reg-date">${post.createdAt}</div>
                   <div class="article-list__cell-like">${post.likes}</div>
                 </div>
               </div>`

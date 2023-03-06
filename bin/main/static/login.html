@@ -10,53 +10,59 @@
 </head>
 
 <body>
-  <!-- 회원가입/로그인 -->
-  <!-- Wordpress Site header-bar -->
-  <header class="wp-header" role="banner">
-    <ul>
-      <li><a href="index.html">홈으로</a></li>
-      <li><a href="signup.html">회원가입</a></li>
-    </ul>
-  </header>
+<!-- 회원가입/로그인 -->
+<!-- Wordpress Site header-bar -->
+<header class="wp-header" role="banner">
+  <ul>
+    <li><a href="index.html">홈으로</a></li>
+    <li><a href="signup.html">회원가입</a></li>
+  </ul>
+</header>
 
-  <!-- vue 헤더 -->
-  <!-- 제이쿼리 불러오기 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- vue 헤더 -->
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <!-- lodash 불러오기 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+<!-- lodash 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 
-  <div class="body-content min-height-100vh flex flex-column">
-    <!-- 로고바 시작 -->
-    <header class="logo-bar con-min-width">
-      <div class="con height-100p flex flex-jc-c">
-        <a href="index.html" class="logo flex flex-ai-c">
-          <i class="fa-solid fa-dumbbell"></i>
-          <span>
+<div class="body-content min-height-100vh flex flex-column">
+  <!-- 로고바 시작 -->
+  <header class="logo-bar con-min-width">
+    <div class="con height-100p flex flex-jc-c">
+      <a href="index.html" class="logo flex flex-ai-c">
+        <i class="fa-solid fa-dumbbell"></i>
+        <span>
             Hot<span></span>body
           </span>
-        </a>
-      </div>
-    </header>
-    <!-- 로고바 끝 -->
-
-    <div class="joinForm">
-
-      <h2>로그인</h2>
-      <div class="textForm">
-        <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
-        </input>
-      </div>
-      <div class="textForm">
-        <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
-      </div>
-      <button type="submit" onclick="login()" class="btn">로그인</button>
-      <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
-      <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기</button>
-
-
+      </a>
     </div>
+  </header>
+  <!-- 로고바 끝 -->
+
+  <div class="joinForm">
+
+    <h2>로그인</h2>
+    <div class="textForm">
+      <input name="loginId" type="text" class="id" id="id" placeholder="아이디">
+      </input>
+    </div>
+    <div class="textForm">
+      <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
+    </div>
+    <button type="submit" onclick="login()" class="btn">로그인</button>
+
+
+    <button type="submit" onclick="kakaoLogin()" class="btnkakao">카카오로 시작하기</button>
+
+    <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
+    <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기
+    </button>
+
+
+  </div>
+</div>
 </body>
 <style>
   /* vue 헤더 */
@@ -198,12 +204,12 @@
     color: white;
   }
 
-  .logo>span {
+  .logo > span {
     margin-left: 10px;
     color: white;
   }
 
-  .logo>span>span {
+  .logo > span > span {
     color: red;
   }
 
@@ -257,7 +263,7 @@
     line-height: 46px;
   }
 
-  .wp-header li>a {
+  .wp-header li > a {
     color: #fff;
     font-size: 14px;
     padding: 10px 15px;
@@ -266,7 +272,7 @@
     transition: color 0.15s ease-in-out;
   }
 
-  .wp-header li:hover>a {
+  .wp-header li:hover > a {
     color: #78c8e6;
   }
 
@@ -286,7 +292,7 @@
     position: absolute;
     width: 400px;
     height: 400px;
-    padding: 30px, 20px;
+    padding: 30px 20px;
     background-color: #FFFFFF;
     text-align: center;
     top: 400px;
@@ -326,6 +332,7 @@
     height: 25px;
     background: none;
   }
+
 
   .name {
     width: 100%;
@@ -385,11 +392,88 @@
     display: inline;
   }
 
+  .btnkakao {
+    position: relative;
+    left: 40%;
+    transform: translateX(-50%);
+    margin-bottom: 40px;
+    width: 80%;
+    height: 40px;
+    background: #FEE500;
+    background-position: left;
+    background-size: 200%;
+    color: #191919;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
   .btn:hover {
     background-position: right;
   }
 </style>
 <script>
+  function kakaoLogin() {
+
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=84bb3d050c5f1743aba916fceffca717&redirect_uri=http://localhost:8080/index.html&response_type=code';
+
+    
+    
+    $.ajax().done(function (response,xhr) {
+
+
+          // var cookienames = getAllCookieNames();
+          // var cookieTokenName = cookienames[0];
+          // var cookieRefreshName = cookienames[1];
+          // var cookieToken = getCookie(cookieTokenName);
+          // var cookieRefresh = getCookie(cookieRefreshName);
+          // console.log(cookieToken);
+          // //
+          // localStorage.setItem('accessToken', cookieToken);
+          // localStorage.setItem('refreshToken', cookieRefresh);
+          alert("로그인 완료");
+          //location.href = "index.html"
+
+        }
+    ).fail(function (response) {
+      alert(response.responseJSON.message);
+    })
+  }
+
+  // 쿠키 값을 가져오는 함수
+  function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i];
+      while (cookie.charAt(0) == ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(name) == 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return "";
+  }
+
+  function getCookieName(cookieString) {
+    var cookieName = cookieString.substring(0, cookieString.indexOf('='));
+    return cookieName.trim();
+  }
+
+  function getAllCookieNames() {
+    var cookieString = document.cookie;
+    var cookieArray = cookieString.split(';');
+    var cookieNames = [];
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookieName = getCookieName(cookieArray[i]);
+      cookieNames.push(cookieName);
+    }
+    return cookieNames;
+  }
 
   function login() {
 
@@ -418,6 +502,7 @@
     };
 
     $.ajax(settings).done(function (response, status, xhr) {
+      console.log(response);
       localStorage.setItem('accessToken', xhr.getResponseHeader('Authorization'));
       localStorage.setItem('refreshToken', xhr.getResponseHeader('RefreshToken'));
       alert("로그인 완료")
@@ -433,8 +518,7 @@
       "url": "http://15.165.120.66:8080/google/login",
       "method": "GET",
       "timeout": 0,
-      "headers": {
-      }
+      "headers": {}
     };
 
     $.ajax(settings).done(function (response) {
@@ -442,5 +526,4 @@
     });
   }
 </script>
-
 </html>

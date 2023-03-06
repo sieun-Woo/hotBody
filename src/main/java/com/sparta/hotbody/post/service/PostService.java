@@ -76,12 +76,9 @@ public class PostService {
 
   // 키워드로 게시글 검색
   public Page<PostResponseDto> searchPost(
-      PostCategory postCategory, String searchType, String searchKeyword,
-      int page, int size, String sortBy, boolean isAsc) {
+      PostCategory postCategory, String searchType, String searchKeyword, GetPageModel getPageModel) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<Post> posts = null;
 
@@ -167,12 +164,9 @@ public class PostService {
 
   // 7. 나의 게시글 조회
   public Page<PostResponseDto> getMyAllPosts(
-      String nickname, int i, int size, String sortBy,
-      boolean isAsc) {
+      String nickname, GetPageModel getPageModel) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(i, size, sort);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<Post> posts = postRepository.findByNicknameContaining(nickname, pageable);
     Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
     return postResponseDto;

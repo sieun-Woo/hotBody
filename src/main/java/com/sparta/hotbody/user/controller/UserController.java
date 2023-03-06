@@ -1,11 +1,6 @@
 package com.sparta.hotbody.user.controller;
 
-import com.sparta.hotbody.comment.dto.CommentRequestDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.sparta.hotbody.common.dto.MessageResponseDto;
-import com.sparta.hotbody.post.dto.PostResponseDto;
-import com.sparta.hotbody.post.entity.PostCategory;
-import com.sparta.hotbody.common.jwt.JwtUtil;
+
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -13,7 +8,6 @@ import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
-import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
@@ -27,18 +21,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import javax.mail.MessagingException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -80,8 +71,6 @@ public class UserController {
       throws IOException {
 
     kakaoService.kakaoLogin(code,response);
-
-    //response.sendRedirect("/index.html");
     return "로그인 완료";
   }
 
@@ -171,13 +160,9 @@ public class UserController {
   //10. 트레이너 전체 조회
   @GetMapping("/trainers")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
-  public Page<UsersResponseDto> getTrainerList(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
+  public Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel
   ) {
-    return userService.getTrainerList(page, size, sortBy, isAsc);
+    return userService.getTrainerList(getPageModel);
   }
 
   //11. 트레이너 조회

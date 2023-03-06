@@ -113,6 +113,7 @@ public class PostService {
   }
 
   // 5. 게시글 삭제
+  @Transactional
   public ResponseEntity<String> deletePost(Long postId, User user) {
     Post post = postRepository.findById(postId).orElseThrow(
         () -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST)
@@ -163,6 +164,7 @@ public class PostService {
   }
 
   // 7. 나의 게시글 조회
+  @Transactional
   public Page<PostResponseDto> getMyAllPosts(
       String nickname, GetPageModel getPageModel) {
     // 페이징 처리
@@ -173,6 +175,7 @@ public class PostService {
   }
 
   // 8. 키워드로 나의 게시글 검색
+  @Transactional
   public Page<PostResponseDto> searchMyPosts(
       String nickname, String searchType, String searchKeyword, GetPageModel getPageModel) {
     // 페이징 처리

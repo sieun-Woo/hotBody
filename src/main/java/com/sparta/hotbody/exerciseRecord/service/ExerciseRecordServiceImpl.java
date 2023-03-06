@@ -1,5 +1,6 @@
 package com.sparta.hotbody.exerciseRecord.service;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
@@ -29,11 +30,12 @@ public class ExerciseRecordServiceImpl implements ExerciseRecordService {
 
 
   @Override
-  public Page<ExerciseRecordResponseDto> getAllExerciseRecords(int page, int size, String sortBy, boolean isAsc, UserDetailsImpl userDetails) {
+  public Page<ExerciseRecordResponseDto> getAllExerciseRecords(GetPageModel getPageModel,
+      UserDetailsImpl userDetails) {
     // 페이징 처리
     Long id = userDetails.getUser().getId();
 
-    Pageable pageable = new PageDto().toPageable(page, size, sortBy, isAsc);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<ExerciseRecord> exerciseRecords = exerciseRecordRepository.findAllByUserId(pageable,id);
 

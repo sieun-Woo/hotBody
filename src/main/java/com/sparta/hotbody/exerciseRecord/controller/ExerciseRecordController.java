@@ -1,5 +1,6 @@
 package com.sparta.hotbody.exerciseRecord.controller;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordResponseDto;
 import com.sparta.hotbody.exerciseRecord.service.ExerciseRecordServiceImpl;
@@ -36,12 +37,9 @@ public class ExerciseRecordController {
 
   @GetMapping("/records")
   public Page<ExerciseRecordResponseDto> getAllExerciseRecords(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc,
+      GetPageModel getPageModel,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return exerciseRecordService.getAllExerciseRecords(page-1, size, sortBy, isAsc, userDetails);
+    return exerciseRecordService.getAllExerciseRecords(getPageModel, userDetails);
   }
 
   // 운동 기록 조회

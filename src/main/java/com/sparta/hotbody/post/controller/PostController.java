@@ -70,12 +70,9 @@ public class PostController {
       @RequestParam(value = "category", required = false) PostCategory category,
       @RequestParam("searchType") String searchType,
       @RequestParam("searchKeyword") String searchKeyword,
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc) {
+      GetPageModel getPageModel) {
     return postService.searchPost(
-        category, searchType, searchKeyword, page - 1, size, sortBy, isAsc);
+        category, searchType, searchKeyword, getPageModel);
   }
 
   // 4. 게시글 수정
@@ -111,12 +108,8 @@ public class PostController {
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public Page<PostResponseDto> getMyAllPosts(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc) {
-    return postService.getMyAllPosts(userDetails.getUser().getNickname(),
-        page - 1, size, sortBy, isAsc);
+      GetPageModel getPageModel) {
+    return postService.getMyAllPosts(userDetails.getUser().getNickname(), getPageModel);
   }
 
   // 나의 게시글 키워드 조회

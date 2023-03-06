@@ -22,7 +22,7 @@ public class CommentResponseDto {
     this.id = comment.getId();
     this.nickname = comment.getNickname();
     this.content = comment.getContent();
-    this.likes = comment.getLikes();
+    this.likes = comment.getCommentLikeList().size();
     this.createdAt = comment.getCreatedAt();
     this.modifiedAt = comment.getModifiedAt();
   }

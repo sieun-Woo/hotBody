@@ -1,6 +1,11 @@
 package com.sparta.hotbody.user.controller;
 
+import com.sparta.hotbody.comment.dto.CommentRequestDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sparta.hotbody.common.dto.MessageResponseDto;
+import com.sparta.hotbody.post.dto.PostResponseDto;
+import com.sparta.hotbody.post.entity.PostCategory;
+import com.sparta.hotbody.common.jwt.JwtUtil;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
@@ -8,18 +13,21 @@ import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
+import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserDeleteRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
 import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.repository.UserRepository;
+import com.sparta.hotbody.user.service.KakaoService;
 import com.sparta.hotbody.user.service.UserDetailsImpl;
 import com.sparta.hotbody.user.service.UserService;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -30,6 +38,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,10 +59,11 @@ public class UserController {
 
   private final UserService userService;
   private final UserRepository userRepository;
+  private final KakaoService kakaoService;
 
   //1.회원가입
   @PostMapping("/sign-up")
-  public ResponseEntity<String> signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
+  public MessageResponseDto signup(@RequestBody @Valid SignUpRequestDto signupRequestDto) {
     return userService.signUp(signupRequestDto);
   }
 
@@ -62,6 +72,17 @@ public class UserController {
   public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto,
       HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
     return userService.login(loginRequestDto, response, request);
+  }
+
+  //2.1 카카오 로그인
+  @GetMapping("/kakao/callback")
+  public String kakaoLogin(@RequestParam String code, HttpServletResponse response)
+      throws IOException {
+
+    kakaoService.kakaoLogin(code,response);
+
+    //response.sendRedirect("/index.html");
+    return "로그인 완료";
   }
 
   // 로그아웃
@@ -73,7 +94,7 @@ public class UserController {
 
   //3. 탈퇴
   @DeleteMapping("/auth/delete")
-  public ResponseEntity<String> delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
+  public MessageResponseDto delete(@RequestBody UserDeleteRequestDto deleteRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.deleteUser(deleteRequestDto, userDetails.getUser());
   }
@@ -81,7 +102,7 @@ public class UserController {
   //4. 트레이너 요청
   @PostMapping("/auth/promote")
   @PreAuthorize("hasRole('USER')")
-  public ResponseEntity<String> promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
+  public TrainerResponseDto promoteUser(@RequestBody @Valid TrainerRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.promoteTrainer(requestDto, userDetails.getUser());
   }
@@ -89,13 +110,14 @@ public class UserController {
   //4-1. 트레이너 승인 전 취소
   @DeleteMapping("/auth/permission")
   @PreAuthorize("hasRole('USER')")
-  public ResponseEntity<String> deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return userService.deletePermission(userDetails.getUser());
+  public String deletePermission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    userService.deletePermission(userDetails.getUser());
+    return "삭제 완료되었습니다.";
   }
 
   //5. 유저 프로필 작성
   @PutMapping("/auth/profile")
-  public ResponseEntity<String> createProfile(
+  public String createProfile(
       @RequestBody UserProfileRequestDto requestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
     return userService.createProfile(requestDto, userDetails);
@@ -103,12 +125,12 @@ public class UserController {
 
   //6. 유저 프로필 사진 첨부
   @PostMapping("/auth/profile/image")
-  public ResponseEntity<String> uploadImage(
+  public ResponseEntity<String> saveProfileImage(
       @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
     userService.uploadImage(file, userDetails);
 
-    return ResponseEntity.ok("이미지가 업로드 되었습니다.");
+    return new ResponseEntity<>("업로드 되었습니다.", HttpStatus.OK);
   }
 
   //6-1. 프로필 이미지 조회
@@ -148,7 +170,7 @@ public class UserController {
       @RequestParam("sortBy") String sortBy,
       @RequestParam("isAsc") boolean isAsc
   ) {
-    return userService.getTrainerList(page, size, sortBy, isAsc);
+    return userService.getTrainerList(page - 1, size, sortBy, isAsc);
   }
 
   //11. 트레이너 조회
@@ -156,5 +178,7 @@ public class UserController {
   public UsersResponseDto getTrainer(@PathVariable Long trainerId) {
     return userService.getTrainer(trainerId);
   }
+
+
 
 }

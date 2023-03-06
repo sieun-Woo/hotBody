@@ -70,6 +70,8 @@ public class User extends TimeStamp {
   @Column
   private String region;
 
+  private Long kakaoId;
+
   // 유저와 게시글의 연관 관계(1 : N)
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Post> postList = new ArrayList<>();
@@ -98,6 +100,16 @@ public class User extends TimeStamp {
     this.email = email;
   }
 
+  //카카오 아이디
+  public User(String username, Long kakaoId, String nickname, String password, String email, UserRole role) {
+    this.username = username;
+    this.kakaoId = kakaoId;
+    this.nickname = nickname;
+    this.password = password;
+    this.email = email;
+    this.role = role;
+  }
+
   public User(SignUpRequestDto signUpRequestDto, String password,UserRole role) {
     this.username = signUpRequestDto.getUsername();
     this.nickname = signUpRequestDto.getNickname();
@@ -122,6 +134,13 @@ public class User extends TimeStamp {
     public void TrainerPermission(String introduce) {
     this.introduce = introduce;
     this.role = UserRole.TRAINER;
+  }
+
+
+  //카카오 아이디 업데이트
+  public User kakaoIdUpdate(Long kakaoId) {
+    this.kakaoId = kakaoId;
+    return this;
   }
 
   public void cancelPermission() {

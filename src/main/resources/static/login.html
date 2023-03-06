@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
+  <script src="apikey.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/dist/crypto-js.min.js"></script>
 </head>
 
 <body>
@@ -18,9 +20,6 @@
     <li><a href="signup.html">회원가입</a></li>
   </ul>
 </header>
-
-<script src="apikey.js"></script>
-<!--<script src="encrypt.js"></script>-->
 <!-- vue 헤더 -->
 <!-- 제이쿼리 불러오기 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -420,7 +419,7 @@
 </style>
 <script>
   const KAKAO_LOGIN_API = config.kakao_login_apikey;
-  
+
   function kakaoLogin() {
 
     location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_LOGIN_API}&redirect_uri=http://localhost:8080/index.html&response_type=code`;

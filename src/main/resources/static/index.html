@@ -733,7 +733,7 @@
     console.log(kakaoCode+": kakao code");
     var settings = {
 
-      "url": "http://localhost:8080/api/user/kakao/callback?" + kakaoCode,
+      "url": "http://hotbody.store/api/user/kakao/callback?" + kakaoCode,
       "method": "GET",
       "timeout": 0,
     };
@@ -749,7 +749,7 @@
 
   function BestPosts() {
         var settings = {
-          "url": `http://localhost:8080/api/posts/search?&page=` + 1
+          "url": `http://hotbody.store/api/posts/search?&page=` + 1
           + `&size=5&isAsc=false&sortBy=likes&searchType=` + `&searchKeyword=`,
       "method": "GET",
       "timeout": 0,
@@ -806,7 +806,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://localhost:8080/api/user/log-out",
+      "url": "http://hotbody.store/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -837,7 +837,7 @@
     var searchKeyword = ($('#searchKeyword').val())
 
     var settings = {
-      "url": `http://localhost:8080/api/posts/search?&page=` + page
+      "url": `http://hotbody.store/api/posts/search?&page=` + page
           + `&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=`
           + searchKeyword,
       "method": "GET",

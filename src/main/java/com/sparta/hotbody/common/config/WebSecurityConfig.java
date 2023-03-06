@@ -4,7 +4,9 @@ import com.sparta.hotbody.common.exception.CustomAccessDeniedHandler;
 import com.sparta.hotbody.common.exception.CustomAuthenticationEntryPoint;
 import com.sparta.hotbody.common.jwt.JwtAuthFilter;
 import com.sparta.hotbody.common.jwt.JwtUtil;
+
 import javax.persistence.OrderBy;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -31,54 +33,45 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableScheduling // @Scheduled 어노테이션 활성화
 public class WebSecurityConfig implements WebMvcConfigurer {
 
-  private final JwtUtil jwtUtil;
-  private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-  private final CustomAccessDeniedHandler customAccessDeniedHandler;
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    private final JwtUtil jwtUtil;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-  // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    // h2-console 사용 및 resources 접근 허용 설정
-    return (web) -> web.ignoring()
-//        .requestMatchers(PathRequest.toH2Console())
-        .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-  }
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf().disable();
-    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    http.authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-        .antMatchers("/**").permitAll()
-        .antMatchers("/api/**").permitAll()
-        .antMatchers("/s3/**").permitAll()
-        .antMatchers("/api/user/**").permitAll()
-        .antMatchers("/api/admin/sign-up").permitAll()
-        .antMatchers("/api/admin/log-in").permitAll()
-        .antMatchers("/h2-console").permitAll()
-        .antMatchers("/api/comments/**").hasAnyAuthority("ROLE_ADMIN")
-        .antMatchers("/api/posts/**").permitAll()
-        .antMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
-        .antMatchers("/api/").hasAnyAuthority("ROLE_TRAINER")
-        .anyRequest().authenticated()
-        .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-    http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-    http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
-    return http.build();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Override
-  public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**")
+    // 가장 먼저 시큐리티를 사용하기 위해선 선언해준다.
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // h2-console 사용 및 resources 접근 허용 설정
+        return (web) -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+        return http.build();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
 //        .allowedMethods("GET", "SET", "PUT", "DELETE", "OPTIONS", "HEAD")
-        .exposedHeaders("Authorization", "RefreshToken")
-        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500", "http://hotbody.store") // 허용할 출처
-        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD") // 허용할 HTTP method
-        .allowCredentials(true) // 쿠키 인증 요청 허용
-        .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
-  }
+                .exposedHeaders("Authorization", "RefreshToken")
+                .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500", "http://hotbody.store") // 허용할 출처
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD") // 허용할 HTTP method
+                .allowCredentials(true) // 쿠키 인증 요청 허용
+                .maxAge(3000); // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
+    }
 }

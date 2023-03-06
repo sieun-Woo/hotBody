@@ -44,6 +44,7 @@ public class CommentService {
     return ResponseEntity.ok("댓글이 작성되었습니다.");
   }
 
+  
   // 2. 댓글 전체 조회
   public Page<CommentResponseDto> getAllComments(GetPageModel getPageModel) {
 

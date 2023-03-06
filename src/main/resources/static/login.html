@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    lang="ko" >
 
 <head>
   <meta charset="UTF-8">
@@ -7,8 +9,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
-  <script src="apikey.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/dist/crypto-js.min.js"></script>
+
+  <script type="text/javascript">
+    // Thymeleaf에서 가져온 값을 JavaScript 변수에 저장
+    var myApiKey = th:text="${@environment.getProperty('kakao.login.restapi.key')}";
+  </script>
 </head>
 
 <body>
@@ -418,11 +425,11 @@
   }
 </style>
 <script>
-  const KAKAO_LOGIN_API = config.kakao_login_apikey;
+  var KAKAO_LOGIN_API = myApiKey;
 
   function kakaoLogin() {
 
-    location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_LOGIN_API}&redirect_uri=http://localhost:8080/index.html&response_type=code`;
+    location.href = "https://kauth.kakao.com/oauth/authorize?client_id=11a491f4926c585e1e9219e15cb4a4a3&redirect_uri=http://localhost:8080/index.html&response_type=code";
 
 
     $.ajax().done(function () {

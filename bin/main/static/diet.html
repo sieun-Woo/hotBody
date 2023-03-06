@@ -829,6 +829,7 @@
     let foodName = $('#foodName').val();
 
     var settings = {
+
       "url": `http://15.165.120.66:8080/api/diet/food?foodType=${foodType}&searchWord=${foodName}&page=${page}`,
       "method": "GET",
       "timeout": 0,

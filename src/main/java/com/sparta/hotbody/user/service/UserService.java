@@ -46,6 +46,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,7 @@ public class UserService {
   @Value("${spring.mail.username}")
   private String from;
 
+  //1. 회원가입
   public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = passwordEncoder.encode(requestDto.getPassword());
@@ -92,7 +94,7 @@ public class UserService {
   }
 
 
-  //2.로그인
+  //2. 로그인
   public ResponseEntity<String> login(LoginRequestDto requestDto, HttpServletResponse response,
       HttpServletRequest request)
       throws UnsupportedEncodingException {
@@ -114,14 +116,8 @@ public class UserService {
     String accessToken = jwtUtil.createAccessToken(user.getUsername(), user.getRole());
     String refreshToken = jwtUtil.createRefreshToken(user.getUsername(), user.getRole());
 
-//    String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-//    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN, encodedRefreshToken);
-//    cookieRefreshToken.setPath("/");
-
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
-
-//    response.addCookie(cookieRefreshToken);
 
     refreshTokenRedisRepository.save(
         new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
@@ -129,7 +125,7 @@ public class UserService {
     return ResponseEntity.ok("로그인 완료");
   }
 
-  // 로그아웃
+  //2-1. 로그아웃
   @Transactional
   public ResponseEntity<String> logout(HttpServletRequest request) {
     if (jwtUtil.logout(request)) {
@@ -151,7 +147,8 @@ public class UserService {
     throw new CustomException(ExceptionStatus.PASSWORD_DO_NOT_MATCH);
   }
 
-  //5. 트레이너 폼 요청
+  //4. 트레이너 폼 요청
+  @PreAuthorize("hasanyRole('USER', 'ADMIN')")
   public ResponseEntity<String> promoteTrainer(TrainerRequestDto requestDto, User user) {
     if (promoteRepository.findByUserUsername(user.getUsername()).isPresent()) {
       throw new CustomException(ExceptionStatus.USER_IS_NOT_EXIST);
@@ -161,7 +158,9 @@ public class UserService {
     return ResponseEntity.ok("트레이너 신청을 완료하였습니다.");
   }
 
-  //6. 트레이너 폼 취소
+  //5. 트레이너 폼 취소
+  @Transactional
+  @PreAuthorize("hasanyRole('USER')")
   public ResponseEntity<String> deletePermission(User user) {
     User user1 = userRepository.findByUsername(user.getUsername()).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
@@ -174,7 +173,7 @@ public class UserService {
     return ResponseEntity.ok("트레이너 신청을 취소하였습니다.");
   }
 
-  //7. 유저 프로필 수정
+  //6. 유저 프로필 수정
   @Transactional
   public ResponseEntity<String> createProfile(UserProfileRequestDto requestDto,
       UserDetails userDetails) {
@@ -186,6 +185,7 @@ public class UserService {
     return ResponseEntity.ok("프로필을 수정하였습니다.");
   }
 
+  //7. 유저 프로필 업로드
   @Transactional
   public Image uploadImage(MultipartFile file, UserDetails userDetails) throws IOException {
 
@@ -203,6 +203,7 @@ public class UserService {
     return image;
   }
 
+  //8. 이미지 불러오기
   public String viewImage(UserDetailsImpl userDetails) {
     Optional<String> image = Optional.of(userDetails.getUser().getImage());
     if(image.isPresent()){
@@ -212,7 +213,7 @@ public class UserService {
     }
   }
 
-  //8.유저 프로필 조회
+  //9.유저 프로필 조회
   public UserProfileResponseDto getUserProfile(String username) {
     User user = userRepository.findByUsername(username).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
@@ -220,7 +221,7 @@ public class UserService {
     return UserProfileResponseDto.from(user);
   }
 
-  // 유저 아이디 찾기
+  //10. 유저 아이디 찾기
   public FindUserIdResponseDto findUserId(FindUserIdRequestDto findUserIdRequestDto)
       throws MessagingException {
     User user = userRepository.findByEmail(findUserIdRequestDto.getEmail()).orElseThrow(
@@ -240,7 +241,7 @@ public class UserService {
     return findUserIdResponseDto;
   }
 
-  // 유저 비밀번호 찾기
+  //11. 유저 비밀번호 찾기
   public FindUserPwResponseDto findUserPw(FindUserPwRequestDto findUserPwRequestDto)
       throws MessagingException {
     User user = userRepository.findByUsernameAndEmail(findUserPwRequestDto.getUsername(),
@@ -251,7 +252,6 @@ public class UserService {
       // 임시 비밀번호 생성
       String password = generateTempPassword();
       FindUserPwResponseDto findUserPwResponseDto = new FindUserPwResponseDto(password);
-
       // 비밀번호 encode 후 저장
       String encodePassword = passwordEncoder.encode(password);
       user.modifyPassword(encodePassword);
@@ -271,7 +271,7 @@ public class UserService {
     return null;
   }
 
-  // 임시 비밀번호 생성
+  //12. 임시 비밀번호 생성
   public String generateTempPassword() {
     char[] charSet = new char[]{
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -298,7 +298,8 @@ public class UserService {
     return stringBuffer.toString();
   }
 
-  // 트레이너 전체 조회
+  //13. 트레이너 전체 조회
+  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public Page<UsersResponseDto> getTrainerList(int page, int size,
       String sortBy, boolean isAsc) {
     // 페이징 처리
@@ -312,7 +313,8 @@ public class UserService {
     return usersResponseDto;
   }
 
-  // 트레이너 개인 조회
+  //14. 트레이너 개인 조회
+  @PreAuthorize("hasanyRole('USER', 'TRAINER', 'ADMIN')")
   public UsersResponseDto getTrainer(Long userId) {
     User user = userRepository.findById(userId).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)

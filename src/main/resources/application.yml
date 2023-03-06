@@ -16,17 +16,17 @@ spring:
     host: localhost
     port: 6379
 
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: ENC(Q4TjqpKn2d7Cj9tIdRu+LgKYA+o0T/17g33kpnr554fWe0fZWuevBj5lxBbtIRKkJoyrqF7q9r87y0Zquemb1DhkAnHQF2ltG//BuZ+EOlTGANz7V/ZUgHYNdzu54LIUCftxkBMIcIS2dbIW7W+3jg/ZxTA72Llu3alSI+0kLYfW1joSdq4rS+ZDq6jnXf+LgsayjGg/AzM=)
-#    username: ENC(R9bSjcoNl5jXqETfhvtYFw==)
-#    password: ENC(5KHkXoQKQf+2mrLrQuQjaY5TfutyLww0)
-#
-#
-#  batch:
-#    jdbc:
-#      initialize-schema: always
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: validate
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(Q4TjqpKn2d7Cj9tIdRu+LgKYA+o0T/17g33kpnr554fWe0fZWuevBj5lxBbtIRKkJoyrqF7q9r87y0Zquemb1DhkAnHQF2ltG//BuZ+EOlTGANz7V/ZUgHYNdzu54LIUCftxkBMIcIS2dbIW7W+3jg/ZxTA72Llu3alSI+0kLYfW1joSdq4rS+ZDq6jnXf+LgsayjGg/AzM=)
+    username: ENC(R9bSjcoNl5jXqETfhvtYFw==)
+    password: ENC(5KHkXoQKQf+2mrLrQuQjaY5TfutyLww0)
+
+
+  batch:
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: validate

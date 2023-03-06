@@ -794,6 +794,10 @@
   var refreshToken = null;
 
   window.onload = function () {
+    const log = [[${}]];
+    console.log(log)
+
+
     var token = localStorage.getItem('accessToken')
     var exp = parseJwt(token).exp
     var now = Math.floor(new Date().getTime() / 1000)
@@ -829,8 +833,7 @@
     let foodName = $('#foodName').val();
 
     var settings = {
-
-      "url": `http://15.165.120.66:8080/api/diet/food?foodType=${foodType}&searchWord=${foodName}&page=${page}`,
+      "url": `http://localhost:8080/api/diet/food?foodType=${foodType}&searchWord=${foodName}&page=${page}`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -921,7 +924,9 @@
           $('.paging').append(pageNums);
         }
       }
-      )
+      ).fail(function(response){
+        response
+      })
   }
 
 
@@ -971,7 +976,7 @@
     }
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/diet?time=" + date,
+      "url": "http://localhost:8080/api/diet?time=" + date,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1040,7 +1045,7 @@
     }
 
     var settings = {
-      "url": `http://15.165.120.66:8080/api/diet?time=` + date,
+      "url": `http://localhost:8080/api/diet?time=` + date,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -1080,7 +1085,7 @@
       }
 
       var settings = {
-        "url": `http://15.165.120.66:8080/api/diet/food?dietId=` + dietId,
+        "url": `http://localhost:8080/api/diet/food?dietId=` + dietId,
         "method": "POST",
         "timeout": 0,
         "headers": {

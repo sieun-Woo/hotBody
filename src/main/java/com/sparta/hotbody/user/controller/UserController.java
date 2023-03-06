@@ -1,6 +1,7 @@
 package com.sparta.hotbody.user.controller;
 
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;

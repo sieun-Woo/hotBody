@@ -12,10 +12,11 @@ import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.UserRepository;
 import java.io.UnsupportedEncodingException;
 import java.util.UUID;
-import javax.servlet.http.Cookie;
+
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,8 @@ public class KakaoService {
   private final UserRepository userRepository;
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
   private final JwtUtil jwtUtil;
+  @Value("${kakao.login.restapi.key}")
+  private String kakaoRestApiKey;
 
   public String kakaoLogin(String code, HttpServletResponse response)
       throws JsonProcessingException, UnsupportedEncodingException {
@@ -49,16 +52,6 @@ public class KakaoService {
     String accessToken = jwtUtil.createAccessToken(kakaoUser.getUsername(), kakaoUser.getRole());
     String refreshToken = jwtUtil.createRefreshToken(kakaoUser.getUsername(), kakaoUser.getRole());
 
-
-
-   /* Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, "Bearer " + accessToken);
-    cookie.setPath("/");
-    response.addCookie(cookie);
-
-    //String encodedRefreshToken = jwtUtil.urlEncoder(refreshToken);
-    Cookie cookieRefreshToken = new Cookie(jwtUtil.REFRESH_TOKEN,"Bearer " + refreshToken);
-    cookieRefreshToken.setPath("/");
-    response.addCookie(cookieRefreshToken);*/
     response.addHeader(jwtUtil.REFRESH_TOKEN, refreshToken);
     response.addHeader(jwtUtil.AUTHORIZATION_HEADER, accessToken);
     refreshTokenRedisRepository.save(new RefreshToken(refreshToken)); // 리프레쉬 토큰 저장소에 리프레쉬 토큰을 저장
@@ -75,7 +68,8 @@ public class KakaoService {
     // HTTP Body 생성
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", "authorization_code");
-    body.add("client_id", "84bb3d050c5f1743aba916fceffca717");
+
+    body.add("client_id", kakaoRestApiKey);
     body.add("redirect_uri", "http://localhost:8080/index.html");
     body.add("code", code);
 

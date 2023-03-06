@@ -81,7 +81,6 @@ public class UserController {
 
     kakaoService.kakaoLogin(code,response);
 
-    //response.sendRedirect("/index.html");
     return "로그인 완료";
   }
 

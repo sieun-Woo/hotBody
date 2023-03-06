@@ -72,7 +72,6 @@ public class Comment extends TimeStamp {
     this.user = user;
     this.nickname = user.getNickname();
     this.content = commentRequestDto.getContent();
-    this.likes = commentLikeList.size();
   }
 
   /**

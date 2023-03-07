@@ -44,6 +44,7 @@ public class CommentService {
     return ResponseEntity.ok("댓글이 작성되었습니다.");
   }
 
+
   // 2. 댓글 전체 조회
   public Page<CommentResponseDto> getAllComments(GetPageModel getPageModel) {
 
@@ -97,7 +98,6 @@ public class CommentService {
   }
 
   // 6. 해당 게시글 관련 댓글 전체 조회
-  @Transactional
   public Page<CommentResponseDto> getPostComments(Long postId, GetPageModel getPageModel) {
 
     // 페이징 처리

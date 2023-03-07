@@ -42,7 +42,6 @@ public class PostService {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
     postRepository.save(post);
-
     return ResponseEntity.ok("작성 완료");
   }
 

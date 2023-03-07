@@ -156,37 +156,15 @@
         <div class="textForm3">
           <div class="write-center" style="position:center;">
             <div class="postLike-box" >
-              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>              
               <div id="CountLove"></div>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
+              <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>              
             </div>
           </div>
 
           <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
           <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
       </div>
-
-        <!--좋아요 -->
-        <!-- <div class="write" style="position:center;">
-          <ul class="flex-write">
-            <li>
-              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
-            </li>
-            <li>
-              <div id="CountLove"></div>
-            </li>
-            <li>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
-            </li>
-        </div>
-      </div> -->
-      <!-- <div class="write" style="position:center;">
-        <div class="postLike-box">
-          <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
-          <div id="CountLove"></div>
-          <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
-        </div>
-      </div> -->
 
     <div id="article-list-wrap" class="con-min-width">
         <div class="comment-list" >
@@ -791,6 +769,7 @@
     $('#CountLove').text(response.likes);
     $('#postId').val(postId);
     $('#category').text(response.category);
+    console.log(response.postId);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)
@@ -808,25 +787,13 @@
       $("#signup").show();
       $("#signin").show();
     }
-    getUser();
     getComments(1);
   })
-
-  function getUser() {
-    var settings = {
-      "url": "http://15.165.120.66:8080/api/user/profile",
-      "method": "GET",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken')
-      }
-    };
 
     $.ajax(settings).done(function (response) {
       $('#nickname').text(response.nickname);
     });
-  }
-
+  
   function logout() {
 
     var settings = {
@@ -871,11 +838,6 @@
       alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
       history.back();
     });
-
-    $.ajax(settings).fail(function (response) {
-      alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
-      history.back();
-    });
   }
 
   // 글 좋아요
@@ -893,7 +855,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -910,7 +872,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -932,12 +894,8 @@
     };
 
   $.ajax(settings).done(function (response) {
-    window.location.reload();
-  });
-
-  $.ajax(settings).fail(function (response) {
-    alert("로그인을 해주세요.")
-    window.location.reload();
+    location.reload();
+    console.log(response)
   });
 
 }
@@ -983,8 +941,8 @@
                       <div class="comment-list__cell-content">${comment.content}</div>
                       <div class="commentLike-box">
                         <i onclick="likeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-up"></i>
-                        <div class="comment-list__cell-content">${comment.likes}</div>
-                        <i onclick="dislikeComment(${comment.id})" id="minus" class="fa-solid fa-thumbs-down"></i>
+                        <div class="comment-list__cell-content" >${comment.likes}</div>
+                        <i onclick="dislikeComment(${comment.id})" id="plus" class="fa-solid fa-thumbs-down"></i>
                       </div>
                       <div class = "commentModify">
                         <div>
@@ -1062,7 +1020,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -1079,7 +1037,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      window.location.reload();
+      location.reload();
     });
   }
 
@@ -1121,14 +1079,8 @@
     };
 
     $.ajax(settings).done(function (response) {
-      window.location.reload();
+      location.reload();
     });
-
-    $.ajax(settings).fail(function (response) {
-      alert("수정 권한이 없습니다.")
-      window.location.reload();
-  });
-
   }
 
   function deleteComment(id) {
@@ -1143,13 +1095,8 @@
     };
 
     $.ajax(settings).done(function (response) {
-      window.location.reload();
+      location.reload();
     });
-
-    $.ajax(settings).fail(function (response) {
-      alert("삭제 권한이 없습니다.")
-      window.location.reload();
-  });
 
 }
 

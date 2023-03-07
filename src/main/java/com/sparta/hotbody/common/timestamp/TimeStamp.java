@@ -1,4 +1,4 @@
-package com.sparta.hotbody.common;
+package com.sparta.hotbody.common.timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
@@ -13,10 +13,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class TimeStamp {
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy", timezone = "Asia/Seoul")
   @CreatedDate
   private LocalDateTime createdAt;
+
   @LastModifiedDate
   private LocalDateTime modifiedAt;
-
 }

@@ -1,12 +1,10 @@
 package com.sparta.hotbody.post.entity;
 
-import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
-import com.sparta.hotbody.common.TimeStamp;
+import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
 import com.sparta.hotbody.user.entity.User;
-import com.sparta.hotbody.user.entity.UserRole;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;

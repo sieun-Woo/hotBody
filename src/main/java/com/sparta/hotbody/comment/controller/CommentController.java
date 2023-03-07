@@ -42,7 +42,6 @@ public class CommentController {
       @RequestBody CommentRequestDto commentRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @PathVariable Long postId) {
-
     return commentService.createComment(userDetails.getUser(), commentRequestDto, postId);
   }
 

@@ -1,6 +1,6 @@
 package com.sparta.hotbody.report.entity;
 
-import com.sparta.hotbody.common.TimeStamp;
+import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.user.entity.User;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

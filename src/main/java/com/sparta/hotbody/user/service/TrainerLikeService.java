@@ -1,5 +1,7 @@
 package com.sparta.hotbody.user.service;
 
+import com.sparta.hotbody.comment.entity.Comment;
+import com.sparta.hotbody.comment.entity.CommentLike;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.entity.Post;
@@ -24,21 +26,21 @@ public class TrainerLikeService {
   private final TrainerLikeRepository trainerLikeRepository;
   private final UserRepository userRepository;
 
+  // 1. 트레이너 좋아요
   public ResponseEntity<String> addLike(Long trainerId, Long userId) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST)
     );
-    if (trainerLikeRepository.existsByUserIdAndTrainerId(userId, trainerId)) {
+    if (trainerLikeRepository.existsByUserIdAndTrainerId(user.getId(), trainerId)) {
       throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
-    if(trainer.getRole().equals(UserRole.TRAINER)){
-      TrainerLike trainerLike = new TrainerLike(userId, trainer);
-      trainerLikeRepository.save(trainerLike);
-    }
+    TrainerLike trainerLike = new TrainerLike(user.getId(), trainer);
+    trainerLikeRepository.countAllByTrainerLike(trainerId);
+    trainerLikeRepository.save(trainerLike);
     return ResponseEntity.ok("좋아요 눌렀습니다.");
   }
 
-  // 7. 트레이너 좋아요 취소
+  // 2. 트레이너 좋아요 취소
   public ResponseEntity<String> cancelLike(Long trainerId, User user) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST)

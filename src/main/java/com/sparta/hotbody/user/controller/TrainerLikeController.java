@@ -37,7 +37,7 @@ public class TrainerLikeController {
   public ResponseEntity<String> cancelLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    return trainerLikeService.cancelLike(trainerId, userDetailsImpl.getUser());
+    return trainerLikeService.cancelLike(trainerId, userDetailsImpl.getUser().getId());
   }
 
 }

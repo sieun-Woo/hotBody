@@ -170,39 +170,37 @@
         
       </div>
 
-      <!-- 게시물 신고 -->
+      <!-- 신고 -->
       <div>
         <button type="button" class="btn4 btn-outline-dark" id="reportButton${comment.id}" title="게시물 신고하기"
-         onclick="openReportPopup(${comment.id});setSelectedId(${comment.id});">🚨</button>
+         onclick="openPostReportPopup()">🚨</button>
       </div>
 
       <!-- 게시물 신고 팝업 -->
     <div class="overlay" id="overlay" style="display:none;"></div>
 
-    <div class="popup" id="popup" style="display:none;">
+    <div class="popup" id="popup-report-post" style="display:none;">
       <h2>게시물 신고 하기</h2>
       
       <textarea id="post-report-content" rows="4" cols="50" value></textarea>
-      <button onclick="submitReport()">확인</button>
-      <button onclick="closeReport()">취소</button>
+      <button class="dtn2" onclick="submitPostReport()">확인</button>
+      <button class="dtn2" onclick="closePostReport()">취소</button>
     </div>
+
+    <!-- 댓글 신고 팝업 -->
+    <div class="popup" id="popup-report-comment" style="display:none;">
+      <h2>댓글 신고 하기</h2>
       
+      <textarea id="comment-report-content" rows="4" cols="50" value></textarea>
+      <button class="dtn2" onclick="submitCommentReport()">확인</button>
+      <button class="dtn2" onclick="closeCommentReport()">취소</button>
+    </div>
+      <!-- 신고 끝 -->
 
       <div id="article-list-wrap" class="con-min-width">
         <div class="comment-list">
           <!-- 댓글 들어오는 공간 -->
         </div>
-
-        <!-- 댓글 신고 팝업 -->
-    <div class="overlay" id="overlay" style="display:none;"></div>
-
-    <div class="popup" id="popup" style="display:none;">
-      <h2>댓글 신고 하기</h2>
-      
-      <textarea id="popup-content" rows="4" cols="50" value></textarea>
-      <button onclick="submitReport()">확인</button>
-      <button onclick="closeReport()">취소</button>
-    </div>
 
         <div class="paging">
           <!-- 페이징 -->
@@ -1046,7 +1044,7 @@ function setSelectedId(id){
                         </div>
                         <button type="button" class="btn2 btn-outline-dark" id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
                         <button type="button" class="btn2 btn-outline-dark" id="deleteButton${comment.id}" onclick=deleteComment(${comment.id});>삭제</button>
-                        <button type="button" class="btn3 btn-outline-dark" id="reportButton${comment.id}" onclick="openReportPopup(${comment.id});setSelectedId(${comment.id});">🚨</button>
+                        <button type="button" class="btn3 btn-outline-dark" id="reportButton${comment.id}" onclick="openCommentReportPopup(${comment.id});setSelectedId(${comment.id});">🚨</button>
                       </div>
                       <button type="button" class="btn2 btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick="modifyComment(${comment.id});>저장</button>
                       <button type="button" class="btn2 btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
@@ -1188,25 +1186,6 @@ function setSelectedId(id){
 
   }
 
-  function reportComment(reportedCommentId){
-    var settings = {
-      "url": "http://localhost:8080/api/report/comment",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Authorization": localStorage.getItem('accessToken'),
-        "Content-Type": "application/json"
-      },
-      "data": JSON.stringify({
-        "reportedCommentId": reportedCommentId,
-        "content": $('#popup-content').val()
-      }),
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
-  }
 
 
   function deleteComment(id) {
@@ -1230,24 +1209,88 @@ function setSelectedId(id){
 
 }
 
-  function openReportPopup() {
+// 게시물 신고
+
+  function reportPost(reportedPostId){
+
+    var settings = {
+      "url": "http://localhost:8080/api/report/post",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "reportedPostId": reportedPostId,
+        "content": $('#post-report-content').val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
+function openPostReportPopup() {
     document.getElementById("overlay").style.display = "block";
-    document.getElementById("popup").style.display = "block";
+    document.getElementById("popup-report-post").style.display = "block";
   }
 
-  function closeReport() {
+  function closePostReport() {
     document.getElementById("overlay").style.display = "none";
-    document.getElementById("popup").style.display = "none";
-    document.getElementById("popup-content").value = "";
+    document.getElementById("popup-report-post").style.display = "none";
+    document.getElementById("post-report-content").value = "";
   }
 
 
-  function submitReport() {
+  function submitPostReport() {
+    var reportedPostId = postId;
+    var popupContent = document.getElementById("post-report-content").value;
+    reportPost(reportedPostId);
+    alert("신고 내용: " + popupContent);
+    closePostReport();
+  }
+
+
+// 댓글 신고
+  function reportComment(reportedCommentId){
+    var settings = {
+      "url": "http://localhost:8080/api/report/comment",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "reportedCommentId": reportedCommentId,
+        "content": $('#comment-report-content').val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
+
+  function openCommentReportPopup() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup-report-comment").style.display = "block";
+  }
+
+  function closeCommentReport() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("popup-report-comment").style.display = "none";
+    document.getElementById("comment-report-content").value = "";
+  }
+
+
+  function submitCommentReport() {
     var reportedCommentId = selectedId;
-    var popupContent = document.getElementById("popup-content").value;
+    var popupContent = document.getElementById("comment-report-content").value;
     reportComment(reportedCommentId);
     alert("신고 내용: " + popupContent);
-    closeReport();
+    closeCommentReport();
   }
 
 </script>

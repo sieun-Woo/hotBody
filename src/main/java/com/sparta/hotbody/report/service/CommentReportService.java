@@ -2,6 +2,8 @@ package com.sparta.hotbody.report.service;
 
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.comment.repository.CommentRepository;
+import com.sparta.hotbody.common.GetPageModel;
+import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.report.dto.CommentReportRequestDto;
 import com.sparta.hotbody.report.dto.CommentReportResponseDto;
 import com.sparta.hotbody.report.entity.CommentReportHistory;
@@ -45,12 +47,9 @@ public class CommentReportService {
     return commentReportHistory;
   }
 
-  public Page<CommentReportResponseDto> getAllReportedComments(
-      int page, int size, String sortBy, boolean isAsc) {
+  public Page<CommentReportResponseDto> getAllReportedComments(GetPageModel getPageModel) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<CommentReportHistory> reportedComments = commentReportHistoryRepository.findAll(pageable);
     Page<CommentReportResponseDto> commentReportResponseDtos = reportedComments.map(

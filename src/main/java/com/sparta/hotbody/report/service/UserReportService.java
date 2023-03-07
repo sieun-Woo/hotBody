@@ -1,5 +1,7 @@
 package com.sparta.hotbody.report.service;
 
+import com.sparta.hotbody.common.GetPageModel;
+import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.report.dto.PostReportResponseDto;
 import com.sparta.hotbody.report.dto.UserReportRequestDto;
 import com.sparta.hotbody.report.dto.UserReportResponseDto;
@@ -61,12 +63,12 @@ public class UserReportService {
   }
 
 
-  public Page<UserReportResponseDto> getAllReportedUsers(int page, int size, String sortBy, boolean isAsc) {
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
+  public Page<UserReportResponseDto> getAllReportedUsers(GetPageModel getPageModel) {
+
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
     Page<UserReportHistory> reportedUsers = userReportHistoryRepository.findAll(pageable);
+
     Page<UserReportResponseDto> userReportResponseDtos = reportedUsers.map(u -> new UserReportResponseDto(u));
 
     return userReportResponseDtos;

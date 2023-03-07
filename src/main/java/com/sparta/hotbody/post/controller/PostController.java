@@ -52,6 +52,12 @@ public class PostController {
   }
 
   // 2. 게시글 전체 조회
+  @GetMapping("/posts/best")
+  public Page<PostResponseDto> getBestPosts(GetPageModel getPageModel) {
+    return postService.getBestPosts(getPageModel);
+  }
+
+  // 2-1 게시글 전체 조회
   @GetMapping("/posts")
   public Page<PostResponseDto> getAllPosts(
       @RequestParam("category") PostCategory postCategory, GetPageModel getPageModel) {

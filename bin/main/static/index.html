@@ -710,6 +710,7 @@
   jQuery(document).ready(function ($) {
     var kakaoCode = document.location.href.split("?")[1];
 
+
     if(kakaoCode) {
       callback(kakaoCode);
     }
@@ -731,6 +732,7 @@
 
     console.log(kakaoCode+": kakao code");
     var settings = {
+
       "url": "http://localhost:8080/api/user/kakao/callback?" + kakaoCode,
       "method": "GET",
       "timeout": 0,
@@ -747,8 +749,7 @@
 
   function BestPosts() {
         var settings = {
-          "url": `http://localhost:8080/api/posts/search?&page=` + 1
-          + `&size=5&isAsc=false&sortBy=likes&searchType=` + `&searchKeyword=`,
+      "url": `http://localhost:8080/api/posts/best?&page=1&size=5&isAsc=true&sortBy=likes`,
       "method": "GET",
       "timeout": 0,
       "headers": {

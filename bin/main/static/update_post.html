@@ -1,191 +1,177 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>글</title>
-    <script
-      src="https://kit.fontawesome.com/1423b77daa.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
 
-  <body>
-    <!-- 로그아웃/ -->
-    <!-- Wordpress Site header-bar -->
-    <header class="wp-header" role="banner">
-      <ul>
-        <li><a href="index.html">로그아웃</a></li>
-      </ul>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>글</title>
+  <script src="https://kit.fontawesome.com/1423b77daa.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- 로그아웃/ -->
+  <!-- Wordpress Site header-bar -->
+  <header class="wp-header" role="banner">
+    <ul>
+      <li><a href="index.html">로그아웃</a></li>
+    </ul>
+  </header>
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- lodash 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+
+  <div class="body-content min-height-100vh flex flex-column">
+    <!-- 로고바 시작 -->
+    <header class="logo-bar con-min-width">
+      <div class="con height-100p flex flex-jc-c">
+        <a href="index.html" class="logo flex flex-ai-c">
+          <i class="fa-solid fa-dumbbell"></i>
+          <span> Hot<span></span>body </span>
+        </a>
+      </div>
     </header>
-    <!-- 제이쿼리 불러오기 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- lodash 불러오기 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
-
-    <div class="body-content min-height-100vh flex flex-column">
-      <!-- 로고바 시작 -->
-      <header class="logo-bar con-min-width">
-        <div class="con height-100p flex flex-jc-c">
-          <a href="index.html" class="logo flex flex-ai-c">
-            <i class="fa-solid fa-dumbbell"></i>
-            <span> Hot<span></span>body </span>
-          </a>
-        </div>
-      </header>
-      <!-- 로고바 끝 -->
-      <div
-        style="
+    <!-- 로고바 끝 -->
+    <div style="
           text-align: center;
           font-size: 30px;
           height: 40px;
           margin-top: 10px;
-        "
-      >
-        <i class="fas fa-list"></i> 커뮤니티
+        ">
+      <i class="fas fa-list"></i> 커뮤니티
+    </div>
+    <!-- 메뉴바 시작 -->
+    <header class="menu-bar con-min-width">
+      <div class="con height-100p" style="position: relative; z-index: 2">
+        <nav class="menu-bar__menu-1">
+          <ul class="flex">
+            <li>
+              <a href="index.html" class="block">
+                <i class="fas fa-home"></i>
+                <span>홈</span>
+              </a>
+            </li>
+            <li>
+              <a class="block">
+                <i class="fas fa-list"></i>
+                <span>커뮤니티</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="communities_exercise.html" class="block">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <span>운동 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_diet.html" class="block">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>식단 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_trainer.html" class="block">
+                    <i class="fa-solid fa-square-h"></i>
+                    <span>트레이너 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_etc.html" class="block">
+                    <i class="fa-regular fa-comments"></i>
+                    <span>잡담 게시판</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="block">
+                <i class="fa-solid fa-gear"></i>
+                <span>마이페이지</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="exercise.html" class="block">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <span>운동</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="diet.html" class="block">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>식단</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="my-page.html" class="block">
+                    <i class="fa-regular fa-address-card"></i>
+                    <span>프로필</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="map.html" class="block">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>주변 헬스장</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <!-- 메뉴바 시작 -->
-      <header class="menu-bar con-min-width">
-        <div class="con height-100p" style="position: relative; z-index: 2">
-          <nav class="menu-bar__menu-1">
-            <ul class="flex">
-              <li>
-                <a href="index.html" class="block">
-                  <i class="fas fa-home"></i>
-                  <span>홈</span>
-                </a>
-              </li>
-              <li>
-                <a class="block">
-                  <i class="fas fa-list"></i>
-                  <span>커뮤니티</span>
-                </a>
-                <ul>
-                  <li>
-                    <a href="communities_exercise.html" class="block">
-                      <i class="fa-solid fa-person-walking"></i>
-                      <span>운동 게시판</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="communities_diet.html" class="block">
-                      <i class="fa-regular fa-clipboard"></i>
-                      <span>식단 게시판</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="communities_trainer.html" class="block">
-                      <i class="fa-solid fa-square-h"></i>
-                      <span>트레이너 게시판</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="communities_etc.html" class="block">
-                      <i class="fa-regular fa-comments"></i>
-                      <span>잡담 게시판</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a class="block">
-                  <i class="fa-solid fa-gear"></i>
-                  <span>마이페이지</span>
-                </a>
-                <ul>
-                  <li>
-                    <a href="exercise.html" class="block">
-                      <i class="fa-solid fa-person-walking"></i>
-                      <span>운동</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="diet.html" class="block">
-                      <i class="fa-regular fa-clipboard"></i>
-                      <span>식단</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="my-page.html" class="block">
-                      <i class="fa-regular fa-address-card"></i>
-                      <span>프로필</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a href="map.html" class="block">
-                  <i class="fa-solid fa-map-location-dot"></i>
-                  <span>주변 헬스장</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-      <!-- 메뉴바 끝 -->
+    </header>
+    <!-- 메뉴바 끝 -->
 
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="index.html">Home</a>
-            <i class="fa-solid fa-circle-right"></i> 커뮤니티
-          </li>
-        </ol>
-      </nav>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="index.html">Home</a>
+          <i class="fa-solid fa-circle-right"></i> 커뮤니티
+        </li>
+      </ol>
+    </nav>
 
-      <div class="con">
-        <div class="WriteForm_post">
-          <div class="article-list">
-            <!-- 게시글 -->
+    <div class="con">
+      <div class="WriteForm_post">
+        <div class="article-list">
+          <!-- 게시글 -->
 
-            <div class="textForm">
-              <div type="category" id="category" name="category" disabled></div>
-              <br />
-            </div>
+          <div class="textForm">
+            <div type="category" id="category" name="category" disabled></div>
+            <br />
+          </div>
 
-            <div class="textForm">
-              <div
-                type="nickname"
-                id="nickname"
-                name="nickname"
-                disabled
-              ></div>
-              <br />
-            </div>
+          <div class="textForm">
+            <div type="nickname" id="nickname" name="nickname" disabled></div>
+            <br />
+          </div>
 
-            <div class="textForm">
-              <textarea id="title" type="textarea" class="text"
+          <div class="textForm">
+            <textarea id="title" type="textarea" class="text"
               style="resize: none; width: 500px; height: 20px;"></textarea>
-              <br />
-              <img src="" id="post_image" />
-              <br />
-            </div>
+            <br />
+            <img src="" id="post_image" />
+            <br />
+          </div>
 
-            <div class="textForm">
-              <textarea id="content" type="textarea" class="text"
+          <div class="textForm">
+            <textarea id="content" type="textarea" class="text"
               style="resize: none; width: 500px; height: 100px;"></textarea>
-              <br />
-            </div>
+            <br />
+          </div>
 
-            <div class="textForm">
-              <label for="avatar">이미지 업로드 :</label><br /><br />
-              <input type="file" id="image" />
-              <br /><br />
-            </div>
+          <div class="textForm">
+            <label for="avatar">이미지 업로드 :</label><br /><br />
+            <input type="file" id="image" />
+            <br /><br />
+          </div>
 
-            <!-- 게시글 수정 & 삭제 -->
-            <div class="textForm3">
-              <button
-                type="button"
-                class="btn btn-outline-dark"
-                onclick="updateImage()"
-              >
-                수정
-              </button>
-            </div>
+          <!-- 게시글 수정 & 삭제 -->
+          <div class="textForm3">
+            <button type="button" class="btn btn-outline-dark" onclick="updateImage()">
+              수정
+            </button>
           </div>
         </div>
       </div>
@@ -722,105 +708,88 @@
         $("#signup").show();
         $("#signin").show();
       }
-      getUser();
     });
 
-    function getUser() {
-      var settings = {
-        url: "https://www.hotbody.store/api/user/profile",
-        method: "GET",
-        timeout: 0,
-        headers: {
-          Authorization: localStorage.getItem("accessToken"),
-        },
-      };
 
-      $.ajax(settings).done(function (response) {
-        $("#nickname").text(response.nickname);
-      });
-    }
+  function logout() {
+    var settings = {
+      url: "https://www.hotbody.store/api/user/log-out",
+      method: "DELETE",
+      timeout: 0,
+      headers: {
+        Authorization: localStorage.removeItem("accessToken"),
+      },
+    };
 
-    function logout() {
-      var settings = {
-        url: "https://www.hotbody.store/api/user/log-out",
-        method: "DELETE",
-        timeout: 0,
-        headers: {
-          Authorization: localStorage.removeItem("accessToken"),
-        },
-      };
-
-      $.ajax(settings).done(function (response) {
-        localStorage.removeItem("accessToken");
-        var now = new Date();
-        now.setDate(now.getDate() - 1);
-        document.cookie = "RefreshToken=; expires=" + now.toUTCString();
-        location.reload();
-      });
-    }
-
-    // 글 수정
-    function updatePost() {
-      var settings = {
-        url: "https://www.hotbody.store/api/posts/" + postId,
-        method: "PATCH",
-        timeout: 0,
-        headers: {
-          Authorization: localStorage.getItem("accessToken"),
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          title: $("#title").val(),
-          content: $("#content").val()
-        }),
-      };
-
-      $.ajax(settings).done(function (response) {
-        console.log(response);        
-        history.back();
-      });
-
-      $.ajax(settings).fail(function (response) {
-        alert("수정 권한이 없습니다.");
-        history.back();
+    $.ajax(settings).done(function (response) {
+      localStorage.removeItem("accessToken");
+      var now = new Date();
+      now.setDate(now.getDate() - 1);
+      document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+      location.reload();
     });
+  }
+
+  // 글 수정
+  function updatePost() {
+    var settings = {
+      url: "https://www.hotbody.store/api/posts/" + postId,
+      method: "PATCH",
+      timeout: 0,
+      headers: {
+        Authorization: localStorage.getItem("accessToken"),
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        title: $("#title").val(),
+        content: $("#content").val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+      history.back();
+    }).fail(function (response) {
+      alert("수정 권한이 없습니다.");
+      history.back();
+    });
+  }
+
+
+  function updateImage() {
+
+    var form = new FormData();
+    if ($("#image")[0].files[0] == null) {
+      updatePost();
+      history.back();
+      return;
     }
 
+    form.append("file", $("#image")[0].files[0]);
 
-    function updateImage() {
+    var settings = {
+      url: "https://www.hotbody.store/api/posts/" + postId + "/image",
+      method: "POST",
+      timeout: 0,
+      headers: {
+        Authorization: localStorage.getItem("accessToken"),
+      },
+      processData: false,
+      mimeType: "multipart/form-data",
+      contentType: false,
+      data: form,
+    };
 
-      var form = new FormData();
-      if ($("#image")[0].files[0] == null) {
-        updatePost();
-        history.back();
-        return;
-      }
+    $.ajax(settings).done(function (response) {
+      updatePost();
+      alert("글 수정이 완료되었습니다.")
+      history.back();
+    }).fail(function (response) {
+      alert("수정 권한이 없습니다.");
+      history.back();
+    });
+    
+  }
+</script>
 
-      form.append("file", $("#image")[0].files[0]);
-
-      var settings = {
-        url: "https://www.hotbody.store/api/posts/" + postId + "/image",
-        method: "POST",
-        timeout: 0,
-        headers: {
-          Authorization: localStorage.getItem("accessToken"),
-        },
-        processData: false,
-        mimeType: "multipart/form-data",
-        contentType: false,
-        data: form,
-      };
-
-      $.ajax(settings).done(function (response) {
-        updatePost();
-        alert("글 수정이 완료되었습니다.")
-        history.back();
-      });
-
-      $.ajax(settings).fail(function (response) {
-        alert("수정 권한이 없습니다.");
-        history.back();
-      });
-    }
-  </script>
 </html>

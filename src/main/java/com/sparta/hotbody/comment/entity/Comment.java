@@ -4,6 +4,7 @@ import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.comment.dto.CommentRequestDto;
 import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.post.entity.Post;
+import com.sparta.hotbody.report.entity.CommentReportHistory;
 import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,9 @@ public class Comment extends TimeStamp {
   // 댓글과 댓글 좋아요의 연관 관계(1 : N)
   @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CommentLike> commentLikeList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "reportedComment", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<CommentReportHistory> commentReportHistories = new ArrayList<>();
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.

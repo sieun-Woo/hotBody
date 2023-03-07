@@ -2,6 +2,7 @@ package com.sparta.hotbody.report.repository;
 
 import com.sparta.hotbody.report.entity.PostReportHistory;
 import com.sparta.hotbody.report.entity.UserReportHistory;
+import com.sparta.hotbody.user.entity.UserRole;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,5 +15,7 @@ public interface UserReportRepository extends JpaRepository<UserReportHistory, S
   List<UserReportHistory> findByReportedNickname(String reportedNickname);
 
   Page<UserReportHistory> findAll(Pageable pageable);
+
+  Page<UserReportHistory> findAllByReportedNicknameContaining(String reportedNickname, Pageable pageable);
 
 }

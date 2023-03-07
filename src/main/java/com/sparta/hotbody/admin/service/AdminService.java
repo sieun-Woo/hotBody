@@ -8,6 +8,8 @@ import com.sparta.hotbody.admin.dto.FindAdminPwResponseDto;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.report.dto.PostReportResponseDto;
+import com.sparta.hotbody.report.dto.UserReportResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -43,11 +45,11 @@ public interface AdminService {
 
   ResponseEntity<String> deleteComment(Long commentId);
 
-  Page<UsersResponseDto> getUserList(GetPageModel getPageModel);
+  Page<UsersResponseDto> getUsers(GetPageModel getPageModel);
 
   UserProfileResponseDto getUser(Long userId);
 
-  Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel);
+  Page<UsersResponseDto> getTrainers(GetPageModel getPageModel);
 
   TrainerResponseDto getTrainer(Long trainerId);
 
@@ -70,4 +72,12 @@ public interface AdminService {
   ResponseEntity<String> makeUserNormal(Long userId);
 
   ResponseEntity<String> makeTrainerNormal(Long userId);
+
+  Page<UserReportResponseDto> getReportedUsers(GetPageModel getPageModel);
+
+  Page<UsersResponseDto> searchUsers(String searchKeyword, GetPageModel getPageModel);
+
+  Page<UserReportResponseDto> searchReportedUsers(String searchKeyword, GetPageModel getPageModel);
+
+  Page<PostReportResponseDto> getReportedPosts(GetPageModel getPageModel);
 }

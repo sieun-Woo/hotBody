@@ -82,4 +82,24 @@ public class CommentController {
       @PathVariable Long postId, GetPageModel getPageModel) {
     return commentService.getPostComments(postId, getPageModel);
   }
+
+  // 나의 댓글 전체 조회
+  @GetMapping("/my-comments")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
+  public Page<CommentResponseDto> getMyAllComments(
+      @AuthenticationPrincipal UserDetailsImpl userDetails, GetPageModel getPageModel) {
+    return commentService.getMyAllComments(userDetails.getUser().getNickname(), getPageModel);
+  }
+
+  // 나의 댓글 키워드 조회
+  @GetMapping("/my-comments/search")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
+  public Page<CommentResponseDto> searchMyComments(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam("searchType") String searchType,
+      @RequestParam("searchKeyword") String searchKeyword,
+      GetPageModel getPageModel) {
+    return commentService.searchMyComments(userDetails.getUser().getNickname(), searchType,
+        searchKeyword, getPageModel);
+  }
 }

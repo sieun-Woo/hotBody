@@ -10,6 +10,7 @@ import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;
 import com.sparta.hotbody.exception.ExceptionStatus;
+import com.sparta.hotbody.post.dto.PostResponseDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.user.entity.User;
@@ -107,5 +108,25 @@ public class CommentService {
     Page<CommentResponseDto> commentResponseDto = comments.map(m -> new CommentResponseDto(m));
 
     return commentResponseDto;
+  }
+
+  // 9. 나의 댓글 조회
+  public Page<CommentResponseDto> getMyAllComments(String nickname, GetPageModel getPageModel) {
+    // 페이징 처리
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<Comment> comments = commentRepository.findByNicknameContaining(nickname, pageable);
+    Page<CommentResponseDto> commentResponseDto = comments.map(c -> new CommentResponseDto(c));
+    return commentResponseDto;
+  }
+
+  // 10. 키워드로 나의 댓글 검색
+  @Transactional
+  public Page<CommentResponseDto> searchMyComments(
+      String nickname, String searchType, String searchKeyword, GetPageModel getPageModel) {
+    // 페이징 처리
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<Comment> comments = commentRepository.findAllByNicknameContainingAndContentContaining
+          (nickname, searchKeyword, pageable);
+    return comments.map(c -> new CommentResponseDto(c));
   }
 }

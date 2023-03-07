@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.service;
 
+import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.exception.CustomException;

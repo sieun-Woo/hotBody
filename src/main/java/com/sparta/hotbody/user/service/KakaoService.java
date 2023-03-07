@@ -71,7 +71,7 @@ public class KakaoService {
     MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
     body.add("grant_type", "authorization_code");
     body.add("client_id", kakaoLoginKey);
-    body.add("redirect_uri", "http://hotbody.store/index.html");
+    body.add("redirect_uri", "https://www.hotbody.store/index.html");
     body.add("code", code);
 
     // HTTP 요청 보내기

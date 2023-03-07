@@ -848,7 +848,7 @@
     page = postId;
 
     var settings = {
-      "url": "http://www.hotbody.store/api/posts/" + postId,
+      "url": "https://www.hotbody.store/api/posts/" + postId,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -888,7 +888,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://www.hotbody.store/api/user/log-out",
+      "url": "https://www.hotbody.store/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -917,7 +917,7 @@
 
   function deletePost(){
     var settings = {
-      "url": "http://www.hotbody.store/api/posts/" + postId,
+      "url": "https://www.hotbody.store/api/posts/" + postId,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -936,7 +936,7 @@
 
   function likePost() {
     var settings = {
-      "url": "http://www.hotbody.store/api/posts/" + postId + "/like",
+      "url": "https://www.hotbody.store/api/posts/" + postId + "/like",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -953,7 +953,7 @@
 
   function dislikePost() {
     var settings = {
-      "url": "http://www.hotbody.store/api/posts/" + postId + "/like",
+      "url": "https://www.hotbody.store/api/posts/" + postId + "/like",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -978,7 +978,7 @@ function setSelectedId(id){
   function commentUp() {
 
     var settings = {
-      "url": `http://www.hotbody.store/api/posts/${postId}/comment`,
+      "url": `https://www.hotbody.store/api/posts/${postId}/comment`,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -1004,7 +1004,7 @@ function setSelectedId(id){
 
   function getComments(page) {
     var settings = {
-      "url": `http://www.hotbody.store/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
+      "url": `https://www.hotbody.store/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1106,7 +1106,7 @@ function setSelectedId(id){
   // 댓글 좋아요 & 취소
   function likeComment(id) {
     var settings = {
-      "url": "http://www.hotbody.store/api/comments/" + id + "/like",
+      "url": "https://www.hotbody.store/api/comments/" + id + "/like",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -1123,7 +1123,7 @@ function setSelectedId(id){
 
   function dislikeComment(id) {
     var settings = {
-      "url": "http://www.hotbody.store/api/comments/" + id + "/like",
+      "url": "https://www.hotbody.store/api/comments/" + id + "/like",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -1167,7 +1167,7 @@ function setSelectedId(id){
     var inputValue = document.getElementById('modifyContent' + id).value;
 
     var settings = {
-      "url": "http://www.hotbody.store/api/comments/" + id,
+      "url": "https://www.hotbody.store/api/comments/" + id,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -1212,7 +1212,7 @@ function setSelectedId(id){
   function deleteComment(id) {
 
     var settings = {
-      "url": "http://www.hotbody.store/api/comments/" + id,
+      "url": "https://www.hotbody.store/api/comments/" + id,
       "method": "DELETE",
       "timeout": 0,
       "headers": {

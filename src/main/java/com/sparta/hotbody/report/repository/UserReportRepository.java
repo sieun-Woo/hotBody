@@ -14,8 +14,8 @@ public interface UserReportRepository extends JpaRepository<UserReportHistory, S
 
   List<UserReportHistory> findByReportedNickname(String reportedNickname);
 
-  Page<UserReportHistory> findAllByRole(UserRole role,Pageable pageable);
+  Page<UserReportHistory> findAll(Pageable pageable);
 
-  Page<UserReportHistory> findByReportedNickname(String reportedNickname, Pageable pageable);
+  Page<UserReportHistory> findAllByReportedNicknameContaining(String reportedNickname, Pageable pageable);
 
 }

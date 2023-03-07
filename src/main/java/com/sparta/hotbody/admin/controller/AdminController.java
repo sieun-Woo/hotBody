@@ -9,6 +9,7 @@ import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.report.dto.PostReportResponseDto;
 import com.sparta.hotbody.report.dto.UserReportResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
@@ -120,11 +121,27 @@ public class AdminController {
     return adminService.getUsers(getPageModel);
   }
 
+  // 유저 검색 조회
+  @GetMapping("/users/search")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UsersResponseDto> searchUsers(
+      @RequestParam("searchKeyword") String searchKeyword, GetPageModel getPageModel) {
+    return adminService.searchUsers(searchKeyword, getPageModel);
+  }
+
   // 신고된 유저 정보 조회
   @GetMapping("/users/report")
   @PreAuthorize("hasRole('ADMIN')")
   public Page<UserReportResponseDto> getReportedUsers(GetPageModel getPageModel) {
     return adminService.getReportedUsers(getPageModel);
+  }
+
+  // 신고된 유저 검색 조회
+  @GetMapping("/users/report/search")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UserReportResponseDto> searchReportedUsers(
+      @RequestParam("searchKeyword") String searchKeyword, GetPageModel getPageModel) {
+    return adminService.searchReportedUsers(searchKeyword, getPageModel);
   }
 
   // 단건 유저 정보 조회
@@ -140,13 +157,6 @@ public class AdminController {
   public Page<UsersResponseDto> getTrainers(
       GetPageModel getPageModel) {
     return adminService.getTrainers(getPageModel);
-  }
-
-  // 신고된 트레이너 정보 조회
-  @GetMapping("/trainers/report")
-  @PreAuthorize("hasRole('ADMIN')")
-  public Page<UserReportResponseDto> getReportedTrainers(GetPageModel getPageModel) {
-    return adminService.getReportedTrainers(getPageModel);
   }
 
   // 단건 트레이너 정보 조회
@@ -212,5 +222,12 @@ public class AdminController {
   public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto)
       throws MessagingException {
     return adminService.findAdminPw(findAdminPwRequestDto);
+  }
+
+  // 신고된 게시글 조회
+  @GetMapping("/posts/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<PostReportResponseDto> getReportedPosts(GetPageModel getPageModel) {
+    return adminService.getReportedPosts(getPageModel);
   }
 }

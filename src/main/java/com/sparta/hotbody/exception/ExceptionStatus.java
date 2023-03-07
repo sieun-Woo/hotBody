@@ -35,7 +35,7 @@ public enum ExceptionStatus {
   POST_IS_NOT_EXIST(404, "게시글이 존재하지 않습니다."),
   COMMENT_IS_NOT_EXIST(404, "댓글이 존재하지 않습니다."),
   APPLY_IS_NOT_EXIST(404, "요청이 존재하지 않습니다."),
-  PAGINATION_IS_NOT_EXIST(404, "요청하신 페이지가 존재하지 않습니다."),
+  PAGINATION_IS_NOT_EXIST(404, "검색 결과가 없습니다."),
   ID_OR_EMAIL_IS_NOT_EXIST(404, "요청하신 페이지가 존재하지 않습니다."),
   DIET_IS_NOT_EXIST(404, "식단이 존재하지 않습니다."),
   EXERCISE_RECORD_IS_NOT_EXIST(404, "운동 기록이 존재하지 않습니다."),

@@ -4,6 +4,8 @@ import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.entity.PostLike;
+import com.sparta.hotbody.report.entity.PostReportHistory;
+import com.sparta.hotbody.report.entity.UserReportHistory;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import java.util.ArrayList;
@@ -82,6 +84,14 @@ public class User extends TimeStamp {
 
   @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<TrainerLike> trainerLikeList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PostReportHistory> postReportHistoryList = new ArrayList<>();
+  @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserReportHistory> userReportedHistoryList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserReportHistory> userReporterHistoryList = new ArrayList<>();
 
 
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {

@@ -20,6 +20,11 @@ import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
+import com.sparta.hotbody.report.dto.UserReportResponseDto;
+import com.sparta.hotbody.report.entity.UserReportHistory;
+import com.sparta.hotbody.report.repository.CommentReportRepository;
+import com.sparta.hotbody.report.repository.PostReportRepository;
+import com.sparta.hotbody.report.repository.UserReportRepository;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -60,6 +65,9 @@ public class AdminServiceImpl implements AdminService {
   private final CommentRepository commentRepository;
   private final PromoteRepository promoteRepository;
   private final AdminRepository adminRepository;
+  private final UserReportRepository userReportRepository;
+  private final PostReportRepository postReportRepository;
+  private final CommentReportRepository commentReportRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
@@ -122,11 +130,11 @@ public class AdminServiceImpl implements AdminService {
   @Transactional
   public Page<TrainerResponseDto> getRegistrations(GetPageModel getPageModel) {
     Pageable pageable = new PageDto().toPageable(getPageModel);
-    Page<Trainer> trainerList = promoteRepository.findAll(pageable);
-    if (trainerList.isEmpty()) {
+    Page<Trainer> trainers = promoteRepository.findAll(pageable);
+    if (trainers.isEmpty()) {
       throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
     }
-    Page<TrainerResponseDto> result = trainerList
+    Page<TrainerResponseDto> result = trainers
         .map(m -> new TrainerResponseDto(m.getUser()));
     return result;
   }
@@ -203,7 +211,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getUserList(GetPageModel getPageModel) {
+  public Page<UsersResponseDto> getUsers(GetPageModel getPageModel) {
     Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, pageable);
     if (userPage.isEmpty()) {
@@ -211,6 +219,17 @@ public class AdminServiceImpl implements AdminService {
     }
     Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
     return userResponseDtoPage;
+  }
+
+  @Override
+  public Page<UserReportResponseDto> getReportedUsers(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<UserReportHistory> userPage = userReportRepository.findAllByRole(UserRole.USER, pageable);
+    if (userPage.isEmpty()) {
+      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
+    }
+    Page<UserReportResponseDto> userReportResponseDtoPage = userPage.map(u -> new UserReportResponseDto(u));
+    return userReportResponseDtoPage;
   }
 
   @Override
@@ -227,7 +246,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel) {
+  public Page<UsersResponseDto> getTrainers(GetPageModel getPageModel) {
     Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<User> userPage = userRepository.findAllByRoleOrRole(
         UserRole.TRAINER, UserRole.REPORTED_TRAINER, pageable);
@@ -236,6 +255,17 @@ public class AdminServiceImpl implements AdminService {
     }
       Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
     return userResponseDtoPage;
+  }
+
+  @Override
+  public Page<UserReportResponseDto> getReportedTrainers(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<UserReportHistory> userPage = userReportRepository.findAllByRole(UserRole.TRAINER, pageable);
+    if (userPage.isEmpty()) {
+      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
+    }
+    Page<UserReportResponseDto> trainerReportResponseDtoPage = userPage.map(t -> new UserReportResponseDto(t));
+    return trainerReportResponseDtoPage;
   }
 
   @Override

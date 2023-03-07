@@ -9,6 +9,7 @@ import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.report.dto.UserReportResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -61,8 +62,7 @@ public class AdminController {
   // 트레이너 등록 요청 조회
   @GetMapping("/apply")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<TrainerResponseDto> getRegistrations(
-      GetPageModel getPageModel) {
+  public Page<TrainerResponseDto> getRegistrations(GetPageModel getPageModel) {
     return adminService.getRegistrations(getPageModel);
   }
 
@@ -116,9 +116,15 @@ public class AdminController {
   // 전체 유저 정보 조회
   @GetMapping("/users")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<UsersResponseDto> getUserList(
-      GetPageModel getPageModel) {
-    return adminService.getUserList(getPageModel);
+  public Page<UsersResponseDto> getUsers(GetPageModel getPageModel) {
+    return adminService.getUsers(getPageModel);
+  }
+
+  // 신고된 유저 정보 조회
+  @GetMapping("/users/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UserReportResponseDto> getReportedUsers(GetPageModel getPageModel) {
+    return adminService.getReportedUsers(getPageModel);
   }
 
   // 단건 유저 정보 조회
@@ -131,9 +137,16 @@ public class AdminController {
   // 전체 트레이너 정보 조회
   @GetMapping("/trainers")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<UsersResponseDto> getTrainerList(
+  public Page<UsersResponseDto> getTrainers(
       GetPageModel getPageModel) {
-    return adminService.getTrainerList(getPageModel);
+    return adminService.getTrainers(getPageModel);
+  }
+
+  // 신고된 트레이너 정보 조회
+  @GetMapping("/trainers/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UserReportResponseDto> getReportedTrainers(GetPageModel getPageModel) {
+    return adminService.getReportedTrainers(getPageModel);
   }
 
   // 단건 트레이너 정보 조회

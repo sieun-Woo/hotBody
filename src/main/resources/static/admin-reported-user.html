@@ -132,7 +132,7 @@
           </form>
         </div>
         <div class="article-header" style="position: relative; z-index: 1;">
-          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 30px; margin-bottom: 20px;">유저 리스트</div>
+          <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 30px; margin-bottom: 20px;">신고된 유저 리스트</div>
           <header>
             <div>
               <div class="article-list__cell-id">번호</div>
@@ -711,19 +711,13 @@ function getUsers(page) {
       var str = '';
       var j = 1;
       data.forEach((user) => {
-        var gender = ""
-        if (user.gender==1) {
-          var gender = "여성"
-        } else if (user.gender==0) {
-          var gender = "남성"
-        }
         str += `<div class="main">
                   <div v-for="article in filtered">
                     <div class="article-list__cell-id">` + ((page-1) * 10 + j) + `</div>
                     <div class="article-list__cell-nickname">
                       <a :href="'article_' + article.id + '.html'" class="hover-pointer">${user.nickname}</a>
                     </div>
-                    <div class="article-list__cell-gender">${gender}</div>
+                    <div class="article-list__cell-gender">${user.gender}</div>
                     <div class="article-list__cell-age">${user.age}</div>
                     <div class="article-list__cell-region">${user.region}</div>
                     <div class="article-list__cell-email">${user.email}</div>

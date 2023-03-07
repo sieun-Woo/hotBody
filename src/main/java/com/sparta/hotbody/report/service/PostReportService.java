@@ -1,5 +1,7 @@
 package com.sparta.hotbody.report.service;
 
+import com.sparta.hotbody.common.GetPageModel;
+import com.sparta.hotbody.common.page.PageDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
 import com.sparta.hotbody.report.dto.PostReportRequestDto;
@@ -47,13 +49,9 @@ public class PostReportService {
   }
 
 
-  public Page<PostReportResponseDto> getAllReportedPosts(
-      int page, int size, String sortBy, boolean isAsc) {
+  public Page<PostReportResponseDto> getAllReportedPosts(GetPageModel getPageModel) {
     // 페이징 처리
-    Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-    Sort sort = Sort.by(direction, sortBy);
-    Pageable pageable = PageRequest.of(page, size, sort);
-
+    Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<PostReportHistory> reportedPosts = postReportHistoryRepository.findAll(pageable);
     Page<PostReportResponseDto> postReportResponseDtos = reportedPosts
         .map(p -> new PostReportResponseDto(p));

@@ -1,5 +1,6 @@
 package com.sparta.hotbody.report.controller;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.report.dto.CommentReportRequestDto;
 import com.sparta.hotbody.report.dto.CommentReportResponseDto;
 import com.sparta.hotbody.report.dto.UserReportResponseDto;
@@ -36,13 +37,8 @@ public class CommentReportController {
 
   @GetMapping("/comments")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<CommentReportResponseDto> getAllReportedComments(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ){
-    return commentReportService.getAllReportedComments (page-1,size,sortBy, isAsc);
+  public Page<CommentReportResponseDto> getAllReportedComments(GetPageModel getPageModel){
+    return commentReportService.getAllReportedComments (getPageModel);
   }
 
 }

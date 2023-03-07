@@ -10,14 +10,14 @@ import lombok.Getter;
 @Getter
 public class UserReportResponseDto {
 
-  private String reporterUsername;
-  private String reportedUsername;
+  private String reporterNickname;
+  private String reportedNickname;
   private String content;
   private LocalDateTime createdAt;
 
   public UserReportResponseDto(UserReportHistory userReportHistory) {
-    this.reporterUsername = userReportHistory.getReporterUserName();
-    this.reportedUsername = userReportHistory.getReportedUsername();
+    this.reporterNickname = userReportHistory.getReporterNickname();
+    this.reportedNickname = userReportHistory.getReportedNickname();
     this.content = userReportHistory.getContent();
     this.createdAt = userReportHistory.getCreatedAt();
   }

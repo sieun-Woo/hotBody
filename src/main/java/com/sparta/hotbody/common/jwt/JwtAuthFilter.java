@@ -47,7 +47,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         return;
       }
       if (jwtUtil.validateRefreshToken(refreshToken)) {
-        log.info(refreshToken);
         String reCreateAccessToken = jwtUtil.reCreateAccessToken(refreshToken);
         Claims info = jwtUtil.getUserInfoFromToken(reCreateAccessToken.substring(7));
 

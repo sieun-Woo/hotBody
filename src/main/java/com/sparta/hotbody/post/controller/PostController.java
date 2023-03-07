@@ -1,5 +1,6 @@
 package com.sparta.hotbody.post.controller;
 
+import com.sparta.hotbody.comment.dto.CommentResponseDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
@@ -113,8 +114,7 @@ public class PostController {
   @GetMapping("/my-posts")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public Page<PostResponseDto> getMyAllPosts(
-      @AuthenticationPrincipal UserDetailsImpl userDetails,
-      GetPageModel getPageModel) {
+      @AuthenticationPrincipal UserDetailsImpl userDetails, GetPageModel getPageModel) {
     return postService.getMyAllPosts(userDetails.getUser().getNickname(), getPageModel);
   }
 

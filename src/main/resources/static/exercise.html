@@ -784,7 +784,7 @@
 </style>
 
 <script>
-  const myButton = document.querySelector('#modifyComplete');
+  
 
 jQuery(document).ready(function ($) {
 
@@ -893,7 +893,7 @@ location.href = "index.html";
     };
 
     $.ajax(settings).done(function (response) {
-      $("#modifyRecord").show();
+      $("#modifyComplete").show();
       $('input[name=date]').val(response.date);
       $('select[name=exercise]').val(response.exercise);
       $('input[name=time]').attr('value', response.time);

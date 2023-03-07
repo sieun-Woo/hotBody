@@ -915,7 +915,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-out",
+      "url": "http://hotbody.store/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -951,7 +951,7 @@
   function getTrainers(page) {
     var settings = {
 
-      "url": `http://15.165.120.66:8080/api/user/trainers?page=${page}&size=4&sortBy=id&isAsc=true`,
+      "url": `http://hotbody.store/api/user/trainers?page=${page}&size=4&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1059,7 +1059,7 @@
     var searchKeyword = ($('#searchKeyword').val())
 
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/search?category=TRAINER&page=${page}&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
+      "url": `http://hotbody.store/api/posts/search?category=TRAINER&page=${page}&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1161,7 +1161,7 @@
 
   function getPosts(page) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts?category=TRAINER&page=${page}&size=10&sortBy=id&isAsc=false`,
+      "url": `http://hotbody.store/api/posts?category=TRAINER&page=${page}&size=10&sortBy=id&isAsc=false`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1275,7 +1275,7 @@
 
 
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/search?category=TRAINER&page=` + page + `&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
+      "url": `http://hotbody.store/api/posts/search?category=TRAINER&page=` + page + `&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
       "method": "GET",
       "timeout": 0,
       "headers": {

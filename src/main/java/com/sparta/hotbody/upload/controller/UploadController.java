@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,8 +31,8 @@ public class UploadController {
 
 
   @GetMapping("/image")
-  public String getImage() {
-    return uploadService.getPresignedUrl();
+  public String putImage() {
+    return uploadService.putImage();
   }
 
 

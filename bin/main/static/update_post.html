@@ -691,7 +691,7 @@
     jQuery(document).ready(function () {
 
       var settings = {
-        url: "http://15.165.120.66:8080/api/posts/" + postId,
+        url: "http://hotbody.store/api/posts/" + postId,
         method: "GET",
         timeout: 0,
         headers: {
@@ -727,7 +727,7 @@
 
     function getUser() {
       var settings = {
-        url: "http://15.165.120.66:8080/api/user/profile",
+        url: "http://hotbody.store/api/user/profile",
         method: "GET",
         timeout: 0,
         headers: {
@@ -742,7 +742,7 @@
 
     function logout() {
       var settings = {
-        url: "http://15.165.120.66:8080/api/user/log-out",
+        url: "http://hotbody.store/api/user/log-out",
         method: "DELETE",
         timeout: 0,
         headers: {
@@ -762,7 +762,7 @@
     // 글 수정
     function updatePost() {
       var settings = {
-        url: "http://15.165.120.66:8080/api/posts/" + postId,
+        url: "http://hotbody.store/api/posts/" + postId,
         method: "PATCH",
         timeout: 0,
         headers: {
@@ -799,7 +799,7 @@
       form.append("file", $("#image")[0].files[0]);
 
       var settings = {
-        url: "http://15.165.120.66:8080/api/posts/" + postId + "/image",
+        url: "http://hotbody.store/api/posts/" + postId + "/image",
         method: "POST",
         timeout: 0,
         headers: {

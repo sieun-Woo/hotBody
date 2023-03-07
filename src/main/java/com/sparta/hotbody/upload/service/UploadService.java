@@ -3,6 +3,7 @@ package com.sparta.hotbody.upload.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -129,7 +130,7 @@ public class UploadService {
     amazonS3.deleteObject(bucket, image.getFilePath());
   }
 
-  public String getPresignedUrl(){
+  public String getImage(){
 
     Date expiration = new Date();
     long expTimeMillis = expiration.getTime();
@@ -138,6 +139,27 @@ public class UploadService {
 
     GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image/008bc7a2-5412-4c11-b24a-04ea13e76502.jpg")
             .withMethod(HttpMethod.GET)
+            .withExpiration(expiration);
+
+    generatePresignedUrlRequest.addRequestParameter(Headers.S3_CANNED_ACL,
+            CannedAccessControlList.PublicRead.toString());
+
+    URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+
+    return url.toExternalForm();
+  }
+
+  public String putImage(){
+
+
+
+    Date expiration = new Date();
+    long expTimeMillis = expiration.getTime();
+    expTimeMillis += 1000 * 60 * 60; // 1시간
+    expiration.setTime(expTimeMillis);
+
+    GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image/123.jpg")
+            .withMethod(HttpMethod.PUT)
             .withExpiration(expiration);
 
     generatePresignedUrlRequest.addRequestParameter(Headers.S3_CANNED_ACL,

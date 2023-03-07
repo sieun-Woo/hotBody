@@ -715,7 +715,7 @@
 
   function getImage() {
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/profile/image",
+      "url": "http://localhost:8080/api/user/profile/image",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -731,7 +731,7 @@
 
   function getUser() {
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/profile",
+      "url": "http://localhost:8080/api/user/profile",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -751,7 +751,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-out",
+      "url": "http://localhost:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -778,7 +778,7 @@
     }
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/profile",
+      "url": "http://localhost:8080/api/user/profile",
       "method": "PUT",
       "timeout": 0,
       "headers": {
@@ -806,7 +806,7 @@
     form.append("file", $("#upload-image")[0].files[0]);
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/profile/image",
+      "url": "http://localhost:8080/api/user/profile/image",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -833,7 +833,7 @@
     }
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/auth/delete",
+      "url": "http://localhost:8080/api/user/delete",
       "method": "DELETE",
       "timeout": 0,
       "headers": {

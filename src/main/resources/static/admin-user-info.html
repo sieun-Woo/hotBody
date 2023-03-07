@@ -79,25 +79,25 @@
             </a>
             <ul>
               <li>
-                <a href="exercise.html" class="block">
+                <a href="admin-reported-user.html" class="block">
                   <i class="fa-solid fa-person-walking"></i>
                   <span>유저 신고</span>
                 </a>
               </li>
               <li>
-                <a href="diet.html" class="block">
+                <a href="admin-reported-trainer.html" class="block">
                   <i class="fa-regular fa-clipboard"></i>
                   <span>트레이너 신고</span>
                 </a>
               </li>
               <li>
-                <a href="my-page.html" class="block">
+                <a href="admin-reported-post.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
                   <span>게시글 신고</span>
                 </a>
               </li>
               <li>
-                <a href="my-page.html" class="block">
+                <a href="admin-reported-comment.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
                   <span>댓글 신고</span>
                 </a>
@@ -634,7 +634,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://15.165.120.66:8080/api/user/log-out",
+  "url": "http://localhost:8080/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -668,7 +668,7 @@ $(document).on('click', '#p', function (e) {
 
 function getUsers(page) {
   var settings = {
-  "url": `http://15.165.120.66:8080/api/admin-users?currentPage=${page}`,
+  "url": `http://localhost:8080/api/admin-users?currentPage=${page}`,
   "method": "GET",
   "timeout": 0,
   "headers": {

@@ -48,7 +48,7 @@ public class PostLike {
   private User user;
 
   // 게시글 좋아요와 게시글의 연관 관계
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id")
   private Post post;
 

@@ -127,63 +127,64 @@
       </ol>
     </nav>
 
-      <div class="con">
+    <div class="con">
 
-        <!-- 게시글 -->
+      <!-- 게시글 -->
 
-        <div class="textForm">
-          <div type="category" id="category" name="category" disabled></div>
-          <br />
-        </div>
-
-        <div class="textForm">
-          <div id="title"></div>
-          <br/>
-          <img src="" id="image">
-        </div> 
-
-        <div class="textForm">
-          <div type="nickname" id="post_nickname" name="nickname" disabled></div>
-          <br />
-        </div>
-
-        <div class="textForm">
-          <div id="post_content"></div>
-          <br />
-        </div>
-
-        <!-- 게시글 수정 & 삭제 -->
-        <div class="textForm3">
-          <div class="write-center" style="position:center;">
-            <div class="postLike-box" >
-              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
-              <div id="CountLove"></div>
-              <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
-            </div>
-          </div>
-
-          <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
-          <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
+      <div class="textForm">
+        <div type="category" id="category" name="category" disabled></div>
+        <br />
       </div>
 
-    <div id="article-list-wrap" class="con-min-width">
-        <div class="comment-list" >
+      <div class="textForm">
+        <div id="title"></div>
+        <br />
+        <img src="" id="image">
+      </div>
+
+      <div class="textForm">
+        <div type="nickname" id="post_nickname" name="nickname" disabled></div>
+        <br />
+      </div>
+
+      <div class="textForm">
+        <div id="post_content"></div>
+        <br />
+      </div>
+
+      <!-- 게시글 수정 & 삭제 -->
+      <div class="textForm3">
+        <div class="write-center" style="position:center;">
+          <div class="postLike-box">
+            <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+            <div id="CountLove"></div>
+            <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
+        <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
+      </div>
+
+
+      <div id="article-list-wrap" class="con-min-width">
+        <div class="comment-list">
           <!-- 댓글 들어오는 공간 -->
         </div>
 
         <div class="paging">
           <!-- 페이징 -->
         </div>
-    </div>
-
-    <div class="textForm2">
-      <div class="commentForm">
-        <textarea id="comment" class="text" style="resize: none; width: 700px; height: 100px;"></textarea>
-        <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()"/>
       </div>
-    </div>
 
-  </div>
+      <div class="textForm2">
+        <div class="commentForm">
+          <textarea id="comment" class="text" style="resize: none; width: 700px; height: 100px;"></textarea>
+          <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()" />
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </body>
@@ -240,11 +241,11 @@
     cursor: pointer;
   }
 
-  .row{
-    padding : 20px;
+  .row {
+    padding: 20px;
   }
 
-  .row > button {
+  .row>button {
     display: row;
     width: 50px;
     align-items: center;
@@ -291,6 +292,7 @@
     position: relative;
     margin: auto;
   }
+
   .con-comment {
     position: relative;
     margin: auto;
@@ -507,7 +509,8 @@
     margin: 30px;
     margin-bottom: 10px;
   }
-  .textForm2 > * {
+
+  .textForm2>* {
     display: flex;
     width: 50px;
     align-items: center;
@@ -520,7 +523,7 @@
     padding: 10px 10px;
   }
 
-  .textForm3 > button {
+  .textForm3>button {
     display: row;
     width: 50px;
     align-items: center;
@@ -545,13 +548,13 @@
     margin-left: 5px;
   }
 
-  .postLike-box{
+  .postLike-box {
     display: flex;
     left: 20%;
     align-items: center;
   }
-  
-  .postLike-box>*{
+
+  .postLike-box>* {
     margin: 3px;
   }
 
@@ -585,12 +588,12 @@
     display: inline;
   }
 
-  .commentLike-box{
+  .commentLike-box {
     display: flex;
     align-items: center;
   }
-  
-  .commentLike-box>*{
+
+  .commentLike-box>* {
     margin: 3px;
   }
 
@@ -603,14 +606,15 @@
     --comment-list__cell-content__width: calc(100% - var(--comment-list__cell-id__width) - var(--comment-list__cell-reg-date__width) - var(--comment-list__cell-writer__width) - var(--comment-list__cell-like__width));
   }
 
-  .commentModify{
+  .commentModify {
     display: flex;
   }
 
-  .inputComment{
+  .inputComment {
     width: 300px;
   }
-  .commentModify >div{
+
+  .commentModify>div {
     display: row;
   }
 
@@ -705,7 +709,7 @@
     background-position: right;
   }
 
-  .main>button{
+  .main>button {
     display: row;
     width: 50px;
     justify-content: left;
@@ -750,10 +754,9 @@
   var postId = document.location.href.split("?")[1];
 
   jQuery(document).ready(function () {
-    page = postId;
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/posts/" + postId,
+      "url": "http://localhost:8080/api/posts/" + postId,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -762,21 +765,21 @@
       }
     };
 
-  $.ajax(settings).done(function (response) {
-    $('#post_nickname').text(response.nickname);
-    $('#title').text(response.title);
-    $('#post_content').text(response.content);
-    $('#CountLove').text(response.likes);
-    $('#postId').val(postId);
-    $('#category').text(response.category);
-    console.log(response.postId);
+    $.ajax(settings).done(function (response) {
+      $('#post_nickname').text(response.nickname);
+      $('#title').text(response.title);
+      $('#post_content').text(response.content);
+      $('#CountLove').text(response.likes);
+      $('#postId').val(postId);
+      $('#category').text(response.category);
+      console.log(response.id);
 
-    if(response.image != null) {
-      $('#image').attr("src", response.image)
-      $('#image').attr("style", "max-width: 100%; height: auto;")
+      if (response.image != null) {
+        $('#image').attr("src", response.image)
+        $('#image').attr("style", "max-width: 100%; height: auto;")
 
-    }
-  })
+      }
+    })
 
     if (localStorage.getItem('accessToken')) {
       $("#logout").show();
@@ -793,7 +796,7 @@
   function logout() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-out",
+      "url": "http://localhost:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -812,17 +815,18 @@
 
   // 글 수정
 
-  function updatePost(postId){
+  function updatePost(postId) {
     localStorage.setItem("currentPostId", postId)
-    location.href='update_post.html';
-    console.log("수정 : "+ postId)
+    location.href = 'update_post.html';
+    console.log("수정 : " + postId)
   }
-  
+
   // 글 삭제
 
-  function deletePost(){
+  function deletePost() {
     var settings = {
-      "url": "http://15.165.120.66:8080/api/posts/"+postId,
+
+      "url": "http://localhost:8080/api/posts/" + postId,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -832,57 +836,64 @@
 
     $.ajax(settings).done(function (response) {
       alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
-      // history.back();
+      history.back();
     });
 
-    // $.ajax(settings).fail(function (response) {
-    //   alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
-    //   history.back();
-    // });
+    $.ajax(settings).fail(function (response) {
+      alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
+      history.back();
+    });
   }
 
   // 글 좋아요
 
-  function likePost(){
-      var settings = {
-        "url": "http://15.165.120.66:8080/api/posts/"+postId+"/like",
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
 
-        },
-      };
+  function likePost() {
+    var settings = {
+      "url": "http://localhost:8080/api/posts/" + postId + "/like",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+
+      },
+    };
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      // window.location.reload();
+      location.reload();
+    }).fail(function (response) {
+      alert("이미 눌렀습니다.");
+      location.reload();
     });
   }
 
-  function dislikePost(){
-      var settings = {
-        "url": "http://15.165.120.66:8080/api/posts/"+postId+"/like",
-        "method": "DELETE",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+  function dislikePost() {
+    var settings = {
+      "url": "http://localhost:8080/api/posts/" + postId + "/like",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
 
-        },
-      };
+      },
+    };
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      // window.location.reload();
+      location.reload();
+    }).fail(function (response) {
+      alert("이미 눌렀습니다.");
+      location.reload();
     });
   }
 
   // 댓글
-  
+
   function commentUp() {
 
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/${postId}/comment`,
+      "url": `http://localhost:8080/api/posts/${postId}/comment`,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -894,26 +905,23 @@
       })
     };
 
-  $.ajax(settings).done(function (response) {
-    // window.location.reload();
-  });
+    $.ajax(settings).done(function (response) {
+      location.reload();
+      console.log(response)
+    });
 
-  // $.ajax(settings).fail(function (response) {
-  //   alert("로그인을 해주세요.")
-  //   window.location.reload();
-  // });
-
-}
-
+  }
   $(document).on('click', '#p', function (e) {
     page = parseInt($(this).data('page'));
+    console.log(page)
     getComments(page)
     return false;
   });
 
+
   function getComments(page) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
+      "url": `http://localhost:8080/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -926,14 +934,14 @@
       const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
       const TOTAL_PAGE = response.totalPages // 총페이지
 
-      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+      const VIEW_SECTION = 5; // 화면 출력 개수(페이지 버튼 출력개수)
       const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
 
       console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
 
-      if(TOTAL_DATA != 0) {
-        paging_list();
+      if (TOTAL_DATA != 0) {
         comments_list(response.content);
+        paging_list(page);
       }
 
       function comments_list(data) {
@@ -967,7 +975,7 @@
         $('.comment-list').append(str);
       }
 
-      function paging_list() {
+      function paging_list(page) {
         // page  = page < 0 ? 0 : page;
         var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
         var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
@@ -1012,37 +1020,45 @@
   }
 
   // 댓글 좋아요 & 취소
-  function likeComment(id){
-      var settings = {
-        "url": "http://15.165.120.66:8080/api/comments/"+id+"/like",
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
 
-        },
-      };
+  function likeComment(id) {
+    var settings = {
+      "url": "http://localhost:8080/api/comments/" + id + "/like",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+
+      },
+    };
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      // window.location.reload();
+      location.reload();
+    }).fail(function (response) {
+      alert("이미 눌렀습니다.");
+      location.reload();
     });
   }
 
-  function dislikeComment(id){
-      var settings = {
-        "url": "http://15.165.120.66:8080/api/comments/"+id+"/like",
-        "method": "DELETE",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+  function dislikeComment(id) {
+    var settings = {
+      "url": "http://localhost:8080/api/comments/" + id + "/like",
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
 
-        },
-      };
+      },
+    };
 
     $.ajax(settings).done(function (response) {
-      console.log("좋아요를 취소했습니다.");
-      // window.location.reload();
+      console.log(response)
+      location.reload();
+    }).fail(function (response) {
+      console.log(response)
+      alert("이미 취소했습니다.");
+      location.reload();
     });
   }
 
@@ -1071,7 +1087,7 @@
     var inputValue = document.getElementById('modifyContent' + id).value;
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/comments/" + id,
+      "url": "http://localhost:8080/api/comments/" + id,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -1084,20 +1100,23 @@
     };
 
     $.ajax(settings).done(function (response) {
-      // window.location.reload();
+      alert("수정되었습니다.");
+      location.reload();
+    }).fail(function (response) {
+      alert("수정 권한이 없습니다.");
     });
 
-  //   $.ajax(settings).fail(function (response) {
-  //     alert("수정 권한이 없습니다.")
-  //     window.location.reload();
-  // });
+    $.ajax(settings).fail(function (response) {
+      alert("수정 권한이 없습니다.")
+      window.location.reload();
+  });
 
   }
 
   function deleteComment(id) {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/comments/" + id,
+      "url": "http://localhost:8080/api/comments/" + id,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -1106,15 +1125,14 @@
     };
 
     $.ajax(settings).done(function (response) {
-      // window.location.reload();
+      alert("삭제되었습니다.")
+      location.reload();
+    }).fail(function (response) {
+      alert("삭제 권한이 없습니다.");
+      location.reload();
     });
 
-  //   $.ajax(settings).fail(function (response) {
-  //     alert("삭제 권한이 없습니다.")
-  //     window.location.reload();
-  // });
-
-}
+  }
 
 </script>
 

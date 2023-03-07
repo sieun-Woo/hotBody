@@ -42,7 +42,6 @@ public class PostService {
     User user = userDetails.getUser();
     Post post = new Post(postRequestDto, user);
     postRepository.save(post);
-
     return ResponseEntity.ok("작성 완료");
   }
 
@@ -54,8 +53,18 @@ public class PostService {
     return resourcePath;
   }
 
+  // 2-1 베스트 게시글 조회
+  public Page<PostResponseDto> getBestPosts(GetPageModel getPageModel) {
+    // 페이징 처리
+    Pageable pageable = new PageDto().toPageable(getPageModel);
 
-  // 2. 게시글 전체 조회
+    Page<Post> posts = postRepository.findAll(pageable);
+    Page<PostResponseDto> postResponseDto = posts.map(p -> new PostResponseDto(p));
+
+    return postResponseDto;
+  }
+
+  // 2 게시글 전체 조회
   public Page<PostResponseDto> getAllPosts(PostCategory postCategory, GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);

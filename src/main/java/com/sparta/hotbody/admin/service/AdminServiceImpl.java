@@ -20,8 +20,10 @@ import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
+import com.sparta.hotbody.report.dto.CommentReportResponseDto;
 import com.sparta.hotbody.report.dto.PostReportResponseDto;
 import com.sparta.hotbody.report.dto.UserReportResponseDto;
+import com.sparta.hotbody.report.entity.CommentReportHistory;
 import com.sparta.hotbody.report.entity.PostReportHistory;
 import com.sparta.hotbody.report.entity.UserReportHistory;
 import com.sparta.hotbody.report.repository.CommentReportRepository;
@@ -421,5 +423,12 @@ public class AdminServiceImpl implements AdminService {
     Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<PostReportHistory> postPage = postReportRepository.findAll(pageable);
     return postPage.map(PostReportResponseDto::new);
+  }
+
+  @Override
+  public Page<CommentReportResponseDto> getReportedComments(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<CommentReportHistory> postPage = commentReportRepository.findAll(pageable);
+    return postPage.map(CommentReportResponseDto::new);
   }
 }

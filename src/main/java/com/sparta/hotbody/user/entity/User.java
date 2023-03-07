@@ -1,16 +1,12 @@
 package com.sparta.hotbody.user.entity;
 
-import com.sparta.hotbody.admin.dto.AdminSignUpRequestDto;
 import com.sparta.hotbody.comment.entity.Comment;
-import com.sparta.hotbody.common.TimeStamp;
-import com.sparta.hotbody.common.jwt.entity.RefreshToken;
+import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.entity.PostLike;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
-import com.sparta.hotbody.user.dto.UserProfileResponseDto;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +14,6 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +22,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -3,7 +3,6 @@ package com.sparta.hotbody.upload.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -151,14 +150,13 @@ public class UploadService {
 
   public String putImage(){
 
-
-
     Date expiration = new Date();
     long expTimeMillis = expiration.getTime();
     expTimeMillis += 1000 * 60 * 60; // 1시간
     expiration.setTime(expTimeMillis);
 
     GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image/123.jpg")
+            .withContentType("jpg")
             .withMethod(HttpMethod.PUT)
             .withExpiration(expiration);
 

@@ -11,7 +11,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
   // 게시글 전체 조회
   Page<Post> findAllByCategory(PostCategory postCategory,Pageable pageable);
 
-  Page<Post> findAll(Pageable pageable);
+  // 게시글 전체 조회
+  Page<Post> findAllByOrderByLikes(Pageable pageable);
 
   // 제목으로 검색
   Page<Post> findByTitleContaining(String searchKeyword, Pageable pageable);

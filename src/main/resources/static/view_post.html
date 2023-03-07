@@ -156,15 +156,37 @@
         <div class="textForm3">
           <div class="write-center" style="position:center;">
             <div class="postLike-box" >
-              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>              
+              <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
               <div id="CountLove"></div>
-              <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>              
+              <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
             </div>
           </div>
 
           <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
           <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
       </div>
+
+        <!--좋아요 -->
+        <!-- <div class="write" style="position:center;">
+          <ul class="flex-write">
+            <li>
+              <i onclick="likePost()" id="plus" class="fa-solid fa-thumbs-up"></i>
+            </li>
+            <li>
+              <div id="CountLove"></div>
+            </li>
+            <li>
+              <i onclick="dislikePost()" id="minus" class="fa-solid fa-thumbs-down"></i>
+            </li>
+        </div>
+      </div> -->
+      <!-- <div class="write" style="position:center;">
+        <div class="postLike-box">
+          <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+          <div id="CountLove"></div>
+          <i onclick="dislikePost()" id="plus" class="fa-solid fa-heart-circle-minus"></i>
+        </div>
+      </div> -->
 
     <div id="article-list-wrap" class="con-min-width">
         <div class="comment-list" >
@@ -753,7 +775,7 @@
     page = postId;
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/posts/" + postId,
+      "url": "http://localhost:8080/api/posts/" + postId,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -787,17 +809,29 @@
       $("#signup").show();
       $("#signin").show();
     }
+    getUser();
     getComments(1);
   })
+
+  function getUser() {
+    var settings = {
+      "url": "http://localhost:8080/api/user/profile",
+      "method": "GET",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
+      }
+    };
 
     $.ajax(settings).done(function (response) {
       $('#nickname').text(response.nickname);
     });
-  
+  }
+
   function logout() {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-out",
+      "url": "http://localhost:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -826,7 +860,7 @@
 
   function deletePost(){
     var settings = {
-      "url": "http://15.165.120.66:8080/api/posts/"+postId,
+      "url": "http://localhost:8080/api/posts/"+postId,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -838,13 +872,18 @@
       alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
       history.back();
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
+      history.back();
+    });
   }
 
   // 글 좋아요
 
   function likePost(){
       var settings = {
-        "url": "http://15.165.120.66:8080/api/posts/"+postId+"/like",
+        "url": "http://localhost:8080/api/posts/"+postId+"/like",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -855,13 +894,13 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      location.reload();
+      window.location.reload();
     });
   }
 
   function dislikePost(){
       var settings = {
-        "url": "http://15.165.120.66:8080/api/posts/"+postId+"/like",
+        "url": "http://localhost:8080/api/posts/"+postId+"/like",
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -872,7 +911,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      location.reload();
+      window.location.reload();
     });
   }
 
@@ -881,7 +920,7 @@
   function commentUp() {
 
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/${postId}/comment`,
+      "url": `http://localhost:8080/api/posts/${postId}/comment`,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -894,8 +933,12 @@
     };
 
   $.ajax(settings).done(function (response) {
-    location.reload();
-    console.log(response)
+    window.location.reload();
+  });
+
+  $.ajax(settings).fail(function (response) {
+    alert("로그인을 해주세요.")
+    window.location.reload();
   });
 
 }
@@ -908,7 +951,7 @@
 
   function getComments(page) {
     var settings = {
-      "url": `http://15.165.120.66:8080/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
+      "url": `http://localhost:8080/api/posts/${postId}/comments/?page=${page}&size=3&sortBy=id&isAsc=true`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -1009,7 +1052,7 @@
   // 댓글 좋아요 & 취소
   function likeComment(id){
       var settings = {
-        "url": "http://15.165.120.66:8080/api/comments/"+id+"/like",
+        "url": "http://localhost:8080/api/comments/"+id+"/like",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -1020,13 +1063,13 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요 눌렀습니다.");
-      location.reload();
+      window.location.reload();
     });
   }
 
   function dislikeComment(id){
       var settings = {
-        "url": "http://15.165.120.66:8080/api/comments/"+id+"/like",
+        "url": "http://localhost:8080/api/comments/"+id+"/like",
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -1037,7 +1080,7 @@
 
     $.ajax(settings).done(function (response) {
       console.log("좋아요를 취소했습니다.");
-      location.reload();
+      window.location.reload();
     });
   }
 
@@ -1066,7 +1109,7 @@
     var inputValue = document.getElementById('modifyContent' + id).value;
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/comments/" + id,
+      "url": "http://localhost:8080/api/comments/" + id,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -1079,14 +1122,20 @@
     };
 
     $.ajax(settings).done(function (response) {
-      location.reload();
+      window.location.reload();
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("수정 권한이 없습니다.")
+      window.location.reload();
+  });
+
   }
 
   function deleteComment(id) {
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/comments/" + id,
+      "url": "http://localhost:8080/api/comments/" + id,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -1095,8 +1144,13 @@
     };
 
     $.ajax(settings).done(function (response) {
-      location.reload();
+      window.location.reload();
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("삭제 권한이 없습니다.")
+      window.location.reload();
+  });
 
 }
 

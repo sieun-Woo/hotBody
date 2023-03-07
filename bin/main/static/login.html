@@ -420,7 +420,7 @@
 <script>
   function kakaoLogin() {
 
-    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=d6e0af59d3a7e3c74ed6322647d2f3f7&redirect_uri=http://hotbody.store/index.html&response_type=code';
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=d6e0af59d3a7e3c74ed6322647d2f3f7&redirect_uri=http://localhost:8080/index.html&response_type=code';
 
     
     
@@ -449,7 +449,7 @@
     }
 
     var settings = {
-      "url": "http://15.165.120.66:8080/api/user/log-in",
+      "url": "http://localhost:8080/api/user/log-in",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -475,7 +475,7 @@
   // 구글 로그인 버튼 클릭
   function loginWithGoogle() {
     var settings = {
-      "url": "http://15.165.120.66:8080/google/login",
+      "url": "http://localhost:8080/google/login",
       "method": "GET",
       "timeout": 0,
       "headers": {}

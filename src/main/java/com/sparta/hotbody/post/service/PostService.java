@@ -53,8 +53,8 @@ public class PostService {
     return resourcePath;
   }
 
-  // 2. 게시글 전체 조회
-  public Page<PostResponseDto> getAllPosts(GetPageModel getPageModel) {
+  // 2-1 베스트 게시글 조회
+  public Page<PostResponseDto> getBestPosts(GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);
 
@@ -64,8 +64,8 @@ public class PostService {
     return postResponseDto;
   }
 
-  // 2-1 게시글 전체 조회
-  public Page<PostResponseDto> getCategoryAllPosts(PostCategory postCategory, GetPageModel getPageModel) {
+  // 2 게시글 전체 조회
+  public Page<PostResponseDto> getAllPosts(PostCategory postCategory, GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);
 

@@ -131,7 +131,8 @@
           <header>
             <div>
               <div class="article-list__cell-id">번호</div>
-              <div class="article-list__cell-role">게시글</div>
+              <div class="article-list__cell-nickname">작성자</div>
+              <div class="article-list__cell-role">댓글 내용</div>
               <div class="article-list__cell-reporter">신고자</div>
               <div class="article-list__cell-content">신고 내용</div>
               <div class="article-list__cell-date">신고 날짜</div>
@@ -423,12 +424,12 @@ a {
 /* 게시물 리스트 */
 :root {
   --article-list__cell-id__width:100px;
-  --article-list__cell-nickname__width:100px;
-  --article-list__cell-role__width:100px;
+  --article-list__cell-nickname__width:150px;
+  --article-list__cell-role__width:200px;
   --article-list__cell-reporter__width:150px;
-  --article-list__cell-date__width:150px;
+  --article-list__cell-date__width:100px;
   --article-list__cell-func__width:100px;
-  --article-list__cell-content__width:250px;
+  --article-list__cell-content__width:150px;
 }
 
 .article-list > * > div {
@@ -662,7 +663,7 @@ jQuery(document).ready(function($) {
     $("#signin").hide();
   } 
 
-  getPosts(1);
+  getComments(1);
 
 })
 
@@ -673,9 +674,9 @@ $(document).on('click', '#p', function (e) {
     return false;
   });
 
-function getPosts(page) {
+function getComments(page) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/posts/report?page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `http://localhost:8080/api/admin/comments/report?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -704,17 +705,17 @@ function getPosts(page) {
     function board_list(data) {
       var str = '';
       var j = 1;
-      data.forEach((post) => {
+      data.forEach((comment) => {
         str += `<div class="main">
                   <div v-for="article in filtered">
                     <div class="article-list__cell-id">` + ((page-1) * 10 + j) + `</div>
-                    <div class="article-list__cell-nickname">${post.category}</div>
-                    <div class="article-list__cell-role">${post.title}</div>
-                    <div class="article-list__cell-reporter">${post.reportedNickname}</div>
-                    <div class="article-list__cell-content">${post.content}</div>
-                    <div class="article-list__cell-date">${post.createdAt}</div>
+                    <div class="article-list__cell-nickname">${comment.writerNickname}</div>
+                    <div class="article-list__cell-role">${comment.commentContent}</div>
+                    <div class="article-list__cell-reporter">${comment.reporterNickname}</div>
+                    <div class="article-list__cell-content">${comment.content}</div>
+                    <div class="article-list__cell-date">${comment.createdAt}</div>
                     <div class="article-list__cell-func">
-                      <button onclick="remove(${post.userId})" class="hover-pointer" style="margin-left:5px">삭제</button>
+                      <button onclick="remove(${comment.reportedCommentId})" class="hover-pointer" style="margin-left:5px">삭제</button>
                   </div>
                  </div>
                </div>`
@@ -811,7 +812,7 @@ $.ajax(settings).done(function (response) {
 
 function remove(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}`,
+  "url": `http://localhost:8080/api/admin/comments/${index}`,
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -821,10 +822,10 @@ function remove(index) {
 
 $.ajax(settings).done(function (response) {
   console.log(response);
-  alert("탈퇴가 완료되었습니다.")
+  alert("삭제가 완료되었습니다.")
   location.reload();
 }).fail(function(response) {
-  alert("이미 삭제되었거나 트레이너가 존재하지 않습니다.")
+  alert("이미 삭제되었거나 댓글이 존재하지 않습니다.")
 });
 }
 

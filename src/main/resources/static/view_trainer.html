@@ -666,7 +666,7 @@
     page = trainerId;
 
     var settings = {
-      "url": "https://www.hotbody.store/api/user/trainers/" + localStorage.getItem('currentTrainerId'),
+      "url": "http://localhost:8080/api/user/trainers/" + localStorage.getItem('currentTrainerId'),
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -703,7 +703,7 @@
   function logout() {
 
     var settings = {
-      "url": "https://www.hotbody.store/api/user/log-out",
+      "url": "http://localhost:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -723,7 +723,7 @@
     // 좋아요
     function likeTrainer(){
       var settings = {
-        "url": "https://www.hotbody.store/api/trainers/"+ localStorage.getItem('currentTrainerId'),
+        "url": "http://localhost:8080/api/trainers/"+ localStorage.getItem('currentTrainerId'),
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -740,7 +740,7 @@
 
   function dislikeTrainer(){
       var settings = {
-        "url": "https://www.hotbody.store/api/trainers/"+localStorage.getItem('currentTrainerId'),
+        "url": "http://localhost:8080/api/trainers/"+localStorage.getItem('currentTrainerId'),
         "method": "DELETE",
         "timeout": 0,
         "headers": {

@@ -28,7 +28,7 @@ public class CommentReportHistory extends TimeStamp {
   @JoinColumn(nullable = false)
   private User reporter;
 
-  private String reporterUserName;
+  private String reporterNickname;
 
   @ManyToOne
   @JoinColumn(nullable = false)
@@ -43,7 +43,7 @@ public class CommentReportHistory extends TimeStamp {
 
 
   public CommentReportHistory(User reporter, Comment reportedComment, String content) {
-    this.reporterUserName = reporter.getUsername();
+    this.reporterNickname = reporter.getNickname();
     this.reportedCommentId = reportedComment.getId();
     this.reporter = reporter;
     this.reportedComment = reportedComment;

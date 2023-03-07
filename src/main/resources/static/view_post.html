@@ -166,6 +166,7 @@
         <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
       </div>
 
+
       <div id="article-list-wrap" class="con-min-width">
         <div class="comment-list">
           <!-- 댓글 들어오는 공간 -->
@@ -824,6 +825,7 @@
 
   function deletePost() {
     var settings = {
+
       "url": "http://localhost:8080/api/posts/" + postId,
       "method": "DELETE",
       "timeout": 0,
@@ -836,9 +838,15 @@
       alert("글이 삭제 되었습니다. 게시판으로 이동합니다.");
       history.back();
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("삭제 권한이 없습니다. 게시판으로 이동합니다.");
+      history.back();
+    });
   }
 
   // 글 좋아요
+
 
   function likePost() {
     var settings = {
@@ -1012,6 +1020,7 @@
   }
 
   // 댓글 좋아요 & 취소
+
   function likeComment(id) {
     var settings = {
       "url": "http://localhost:8080/api/comments/" + id + "/like",
@@ -1096,6 +1105,12 @@
     }).fail(function (response) {
       alert("수정 권한이 없습니다.");
     });
+
+    $.ajax(settings).fail(function (response) {
+      alert("수정 권한이 없습니다.")
+      window.location.reload();
+  });
+
   }
 
   function deleteComment(id) {

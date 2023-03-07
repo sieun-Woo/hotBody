@@ -31,8 +31,10 @@ public class PostLikeService {
       throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
     PostLike postLike = new PostLike(post, user);
-    postLikeRepository.countAllByPostId(postId);
     postLikeRepository.save(postLike);
+
+    int count = postLikeRepository.countAllByPostId(postId);
+    post.setLikes(count);
     return ResponseEntity.ok("좋아요를 눌렀습니다.");
   }
 
@@ -46,6 +48,9 @@ public class PostLikeService {
       throw new CustomException(ExceptionStatus.CANCELED_LIKE);
     }
     postLikeRepository.deleteByPostIdAndUserId(postId, user.getId());
+
+    int count = postLikeRepository.countAllByPostId(postId);
+    post.setLikes(count);
     return ResponseEntity.ok("좋아요를 취소하였습니다.");
   }
 }

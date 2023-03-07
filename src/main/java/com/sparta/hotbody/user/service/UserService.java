@@ -59,9 +59,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
   private static final String ADMIN_TOKEN = "D1d@A$5dm4&4D1d1i34n%7";
-
   // 회원가입 로직
   private final UserRepository userRepository;
   private final PromoteRepository promoteRepository;

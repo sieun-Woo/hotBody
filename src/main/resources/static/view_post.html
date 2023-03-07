@@ -125,8 +125,10 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티</li>
       </ol>
-    </nav>
+    </nav>   
 
+    
+    
     <div class="con">
 
       <!-- 게시글 -->
@@ -135,6 +137,7 @@
         <div type="category" id="category" name="category" disabled></div>
         <br />
       </div>
+      
 
       <div class="textForm">
         <div id="title"></div>
@@ -164,12 +167,42 @@
 
         <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
         <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
+        
       </div>
+
+      <!-- 게시물 신고 -->
+      <div>
+        <button type="button" class="btn4 btn-outline-dark" id="reportButton${comment.id}" title="게시물 신고하기"
+         onclick="openReportPopup(${comment.id});setSelectedId(${comment.id});">🚨</button>
+      </div>
+
+      <!-- 게시물 신고 팝업 -->
+    <div class="overlay" id="overlay" style="display:none;"></div>
+
+    <div class="popup" id="popup" style="display:none;">
+      <h2>게시물 신고 하기</h2>
+      
+      <textarea id="post-report-content" rows="4" cols="50" value></textarea>
+      <button onclick="submitReport()">확인</button>
+      <button onclick="closeReport()">취소</button>
+    </div>
+      
 
       <div id="article-list-wrap" class="con-min-width">
         <div class="comment-list">
           <!-- 댓글 들어오는 공간 -->
         </div>
+
+        <!-- 댓글 신고 팝업 -->
+    <div class="overlay" id="overlay" style="display:none;"></div>
+
+    <div class="popup" id="popup" style="display:none;">
+      <h2>댓글 신고 하기</h2>
+      
+      <textarea id="popup-content" rows="4" cols="50" value></textarea>
+      <button onclick="submitReport()">확인</button>
+      <button onclick="closeReport()">취소</button>
+    </div>
 
         <div class="paging">
           <!-- 페이징 -->
@@ -693,13 +726,56 @@
     background-position: left;
     background-size: 200%;
     color: white;
-    font-weight: bold;
+    font-weight: bold;    
     border: none;
     cursor: pointer;
     transition: 0.4s;
     display: inline;
   }
 
+  .btn3 {
+    position: relative;
+    /* left: 65%;
+    transform: translateX(-50%);  */
+    margin-top: 5px;
+    margin-bottom: 40px;
+    margin-right: 5px;
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    background: white;
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    font-size:large;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
+
+  .btn4 {
+    position: relative;
+    left: 90%;
+    /* transform: translateX(-50%);   */
+    margin-top: 5px;
+    margin-bottom: 40px;
+    margin-right: 5px;
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    background: white;
+    background-position: left;
+    background-size: 200%;
+    color: white;
+    font-weight: bold;
+    font-size:large;
+    border: none;
+    cursor: pointer;
+    transition: 0.4s;
+    display: inline;
+  }
 
   .btn:hover {
     background-position: right;
@@ -743,6 +819,25 @@
   .my_pointer {
     cursor: pointer;
   }
+  .popup {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			padding: 20px;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 9999;
+		}
+		.overlay {
+			background-color: rgba(0, 0, 0, 0.5);
+			height: 100%;
+			left: 0;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 9998;
+		}
 </style>
 
 <script>
@@ -875,6 +970,11 @@
 
   // 댓글
 
+  var selectedId;
+function setSelectedId(id){
+  selectedId = id;
+}
+
   function commentUp() {
 
     var settings = {
@@ -946,8 +1046,9 @@
                         </div>
                         <button type="button" class="btn2 btn-outline-dark" id="modifyButton${comment.id}" onclick=modifyButton(${comment.id})>수정</button>
                         <button type="button" class="btn2 btn-outline-dark" id="deleteButton${comment.id}" onclick=deleteComment(${comment.id});>삭제</button>
+                        <button type="button" class="btn3 btn-outline-dark" id="reportButton${comment.id}" onclick="openReportPopup(${comment.id});setSelectedId(${comment.id});">🚨</button>
                       </div>
-                      <button type="button" class="btn2 btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick=modifyComment(${comment.id})>저장</button>
+                      <button type="button" class="btn2 btn-outline-dark" id="saveModifyContent${comment.id}" style="display:none" onclick="modifyComment(${comment.id});>저장</button>
                       <button type="button" class="btn2 btn-outline-dark" id="cancelModifyContent${comment.id}" style="display:none" onclick=modifyButton(${comment.id})>취소</button>
                     </div>
                   </div>
@@ -1087,6 +1188,27 @@
 
   }
 
+  function reportComment(reportedCommentId){
+    var settings = {
+      "url": "http://localhost:8080/api/report/comment",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken'),
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({
+        "reportedCommentId": reportedCommentId,
+        "content": $('#popup-content').val()
+      }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+  }
+
+
   function deleteComment(id) {
 
     var settings = {
@@ -1107,6 +1229,26 @@
     });
 
 }
+
+  function openReportPopup() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup").style.display = "block";
+  }
+
+  function closeReport() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("popup-content").value = "";
+  }
+
+
+  function submitReport() {
+    var reportedCommentId = selectedId;
+    var popupContent = document.getElementById("popup-content").value;
+    reportComment(reportedCommentId);
+    alert("신고 내용: " + popupContent);
+    closeReport();
+  }
 
 </script>
 

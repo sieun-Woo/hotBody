@@ -1,6 +1,6 @@
 package com.sparta.hotbody.exerciseRecord.entity;
 
-import com.sparta.hotbody.common.TimeStamp;
+import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.exerciseRecord.dto.ExerciseRecordRequestDto;
 import com.sparta.hotbody.exerciseRecord.service.CalorieCalculator;
 import com.sparta.hotbody.exerciseRecord.service.CalorieCalculator.ExerciseType;

@@ -1,15 +1,20 @@
 package com.sparta.hotbody.upload.service;
 
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.sparta.hotbody.upload.entity.Image;
 import com.sparta.hotbody.upload.repository.ImageRepository;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -124,4 +129,24 @@ public class UploadService {
     amazonS3.deleteObject(bucket, image.getFilePath());
   }
 
+  public String getPresignedUrl(){
+
+    Date expiration = new Date();
+    long expTimeMillis = expiration.getTime();
+    expTimeMillis += 1000 * 60 * 60; // 1시간
+    expiration.setTime(expTimeMillis);
+
+    GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image/008bc7a2-5412-4c11-b24a-04ea13e76502.jpg")
+            .withMethod(HttpMethod.GET)
+            .withExpiration(expiration);
+
+    generatePresignedUrlRequest.addRequestParameter(Headers.S3_CANNED_ACL,
+            CannedAccessControlList.PublicRead.toString());
+
+    URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+
+    return url.toExternalForm();
+  }
+
 }
+

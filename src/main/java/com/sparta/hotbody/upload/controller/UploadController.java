@@ -11,21 +11,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class UploadController {
-
 
   private final ImageRepository imageRepository;
   private final UploadService uploadService;
@@ -35,6 +29,13 @@ public class UploadController {
   public String newFile() {
     return "upload-form";
   }
+
+
+  @GetMapping("/image")
+  public String getImage() {
+    return uploadService.getPresignedUrl();
+  }
+
 
   @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
   @PostMapping("/upload")

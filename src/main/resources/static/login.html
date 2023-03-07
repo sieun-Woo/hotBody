@@ -5,6 +5,7 @@
     lang="ko">
 
 <head>
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -420,10 +421,10 @@
 <script>
   function kakaoLogin() {
 
-    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=d6e0af59d3a7e3c74ed6322647d2f3f7&redirect_uri=http://localhost:8080/index.html&response_type=code';
 
-    
-    
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=d6e0af59d3a7e3c74ed6322647d2f3f7&redirect_uri=https://www.hotbody.store/index.html&response_type=code';
+
+
     $.ajax().done(function () {
 
           alert("로그인 완료");
@@ -449,7 +450,7 @@
     }
 
     var settings = {
-      "url": "http://localhost:8080/api/user/log-in",
+      "url": "https://www.hotbody.store/api/user/log-in",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -475,7 +476,7 @@
   // 구글 로그인 버튼 클릭
   function loginWithGoogle() {
     var settings = {
-      "url": "http://localhost:8080/google/login",
+      "url": "https://www.hotbody.store/google/login",
       "method": "GET",
       "timeout": 0,
       "headers": {}

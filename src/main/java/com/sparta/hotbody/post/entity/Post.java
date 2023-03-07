@@ -54,7 +54,7 @@ public class Post extends TimeStamp {
   @Column
   private String image;
   @Column(nullable = false)
-  private int likes = 0;
+  private int likes;
   @Column(nullable = false)
   @Enumerated(value = EnumType.STRING)
   private PostCategory category;

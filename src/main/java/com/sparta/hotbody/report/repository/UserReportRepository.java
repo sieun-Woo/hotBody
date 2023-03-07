@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserReportRepository extends JpaRepository<UserReportHistory, String> {
 
-  boolean existsByReporterUsernameAndReportedUsername(String reporterUsername, String reportedUsername);
+  boolean existsByReporterNicknameAndReportedNickname(String reporterNickname, String reportedNickname);
 
-  List<UserReportHistory> findByReportedUsername(String reportedUsername);
+  List<UserReportHistory> findByReportedNickname(String reportedNickname);
 
   Page<UserReportHistory> findAllByRole(UserRole role,Pageable pageable);
 

@@ -1,5 +1,6 @@
 package com.sparta.hotbody.report.controller;
 
+import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.report.dto.PostReportRequestDto;
 import com.sparta.hotbody.report.dto.PostReportResponseDto;
 import com.sparta.hotbody.report.dto.UserReportRequestDto;
@@ -37,13 +38,8 @@ public class PostReportController {
 
   @GetMapping("/posts")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<PostReportResponseDto> getAllReportedPosts(
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy,
-      @RequestParam("isAsc") boolean isAsc
-  ){
-    return postReportService.getAllReportedPosts (page-1,size,sortBy, isAsc);
+  public Page<PostReportResponseDto> getAllReportedPosts(GetPageModel getPageModel){
+    return postReportService.getAllReportedPosts (getPageModel);
   }
 
 }

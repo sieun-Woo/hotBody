@@ -635,7 +635,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://localhost:8080/api/user/log-out",
+  "url": "http://https://www.hotbody.store//api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -679,7 +679,7 @@ $(document).on('click', '#p', function (e) {
 
 function getApplications(page) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/trainers?page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `http://https://www.hotbody.store//api/admin/trainers?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -784,7 +784,7 @@ function getApplications(page) {
 
 function suspend(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/trainers/${index}/suspend`,
+  "url": `http://https://www.hotbody.store//api/admin/trainers/${index}/suspend`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -803,7 +803,7 @@ $.ajax(settings).done(function (response) {
 
 function activate(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/trainers/${index}/normalize`,
+  "url": `http://https://www.hotbody.store//api/admin/trainers/${index}/normalize`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -822,7 +822,7 @@ $.ajax(settings).done(function (response) {
 
 function cancel(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}/cancel`,
+  "url": `http://https://www.hotbody.store//api/admin/users/${index}/cancel`,
 
   "method": "PUT",
   "timeout": 0,

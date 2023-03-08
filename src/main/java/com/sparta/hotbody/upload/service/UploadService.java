@@ -35,9 +35,7 @@ public class UploadService {
     // S3 버킷
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    // 임시 파일
-    @Value("${file.dir}")
-    private String fileDir;
+
 
     // S3 이미지 주소
     @Value("${Resource.Url}")

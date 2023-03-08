@@ -821,11 +821,9 @@
     };
 
     $.ajax(settings).done(function (response) {
-      history.back();
       console.log(response);
 
     }).fail(function (response) {
-      history.back();
       alert("수정 권한이 없습니다.");
     });
   }

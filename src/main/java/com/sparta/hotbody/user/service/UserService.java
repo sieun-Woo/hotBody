@@ -323,6 +323,7 @@ public class UserService {
     return null;
   }
 
+  @Transactional
   public Page<LikedTrainerResponseDto> getLikedTrainers(UserDetailsImpl userDetails, GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);

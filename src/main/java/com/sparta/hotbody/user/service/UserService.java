@@ -15,6 +15,7 @@ import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
 import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
+import com.sparta.hotbody.user.dto.LikedTrainerResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
@@ -23,9 +24,11 @@ import com.sparta.hotbody.user.dto.UserProfileRequestDto;
 import com.sparta.hotbody.user.dto.UserProfileResponseDto;
 import com.sparta.hotbody.user.dto.UsersResponseDto;
 import com.sparta.hotbody.user.entity.Trainer;
+import com.sparta.hotbody.user.entity.TrainerLike;
 import com.sparta.hotbody.user.entity.User;
 import com.sparta.hotbody.user.entity.UserRole;
 import com.sparta.hotbody.user.repository.PromoteRepository;
+import com.sparta.hotbody.user.repository.TrainerLikeRepository;
 import com.sparta.hotbody.user.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import java.io.IOException;
@@ -69,6 +72,7 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final UploadService uploadService;
   private final ImageRepository imageRepository;
+  private final TrainerLikeRepository trainerLikeRepository;
   private final JavaMailSender javaMailSender;
   @Value("${spring.mail.username}")
   private String from;
@@ -323,4 +327,14 @@ public class UserService {
     return null;
   }
 
+  public Page<LikedTrainerResponseDto> getLikedTrainers(UserDetailsImpl userDetails, GetPageModel getPageModel) {
+    // 페이징 처리
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+
+    Page<TrainerLike> likedTrainers = trainerLikeRepository.findAllByUserId(userDetails.getUser()
+        .getId(), pageable);
+    Page<LikedTrainerResponseDto> likedTrainersPage = likedTrainers.map(p -> new LikedTrainerResponseDto(p));
+
+    return likedTrainersPage;
+  }
 }

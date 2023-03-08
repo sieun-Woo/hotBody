@@ -2,7 +2,9 @@ package com.sparta.hotbody.user.dto;
 
 import com.sparta.hotbody.user.entity.TrainerLike;
 import com.sparta.hotbody.user.entity.UserRole;
+import lombok.Getter;
 
+@Getter
 public class LikedTrainerResponseDto {
 
   private Long id;

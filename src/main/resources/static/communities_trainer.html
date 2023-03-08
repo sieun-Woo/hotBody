@@ -154,7 +154,7 @@
     <!-- 검색 끝 -->
 
           <div class="article-header" style="position: relative; z-index: 1;">
-            <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">트레이너 게시판</div>
+            <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">운동 게시판</div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
             <div class="first"><br/>
               <div class="second"><br/>
@@ -935,7 +935,6 @@
 
   function goView(trainerId) {
     localStorage.setItem("currentTrainerId", trainerId)
-    alert("넘어가기전 확인")
     location.href = 'view_trainer.html';
     console.log("view Trainer : " + trainerId)
   }

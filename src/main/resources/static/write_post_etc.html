@@ -132,7 +132,7 @@
         <br /><br />
       </div>
       <div class="textForm">
-        <div id="post_category"disabled>TALK</div>
+        <div id="post_category" disabled>TALK</div>
         <br />
       </div>
       <div class="textForm">
@@ -142,7 +142,8 @@
       </div>
       <div class="textForm">
         <span>글 내용</span><br /><br />
-        <textarea name="content" id="content" type="textarea" class="text"style="resize: none; width: 500px; height: 100px;"></textarea>
+        <textarea name="content" id="content" type="textarea" class="text"
+          style="resize: none; width: 500px; height: 100px;"></textarea>
       </div>
       <div class="textForm">
         <label for="avatar">이미지 업로드 :</label><br /><br />
@@ -646,7 +647,7 @@
       }
 
       getUser();
-      
+
 
     })
 
@@ -694,12 +695,13 @@
       }
       form.append("file", $('#image')[0].files[0]);
 
+
       var settings = {
         "url": "http://localhost:8080/api/posts/image",
         "method": "POST",
         "timeout": 0,
         "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+          "Authorization": localStorage.getItem('accessToken'),
         },
         "processData": false,
         "mimeType": "multipart/form-data",
@@ -708,12 +710,16 @@
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
-        createPost(response);
+        getPresignedUrl(response.split("&")[1]);
+        createPost(response.split("&")[0])
       });
     }
 
     function createPost(response) {
+
+      $.ajax(settings).done(function (response) {
+      });
+
       var settings = {
         "url": "http://localhost:8080/api/post",
         "method": "POST",
@@ -732,8 +738,64 @@
 
       $.ajax(settings).done(function (response) {
         alert("글 등록이 완료되었습니다!");
-        window.location.href = "communities_etc.html";
+        window.location.href = "communities_diet.html";
       });
+
+    }
+
+    var settings = {
+      "url": "http://localhost:8080/api/image?storeFileName=123.jpg",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": "{{token}}"
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+
+    function getPresignedUrl(storeFileName) {
+      const selectedFile = document.getElementById('image').files[0];
+
+      var form = new FormData();
+
+      form.append("file", $('#image')[0].files[0]);
+
+      var settings = {
+        "url": "http://localhost:8080/api/image?storeFileName=" + storeFileName,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Authorization": "{{token}}"
+        },
+      };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        uploadImage(response)
+      });
+
+      function uploadImage(response) {
+
+        var settings = {
+          "url": response,
+          "method": "PUT",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": selectedFile.type
+          },
+          "data": selectedFile,
+          contentType: false,
+          processData: false,
+        };
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+        });
+
+      }
 
     }
 

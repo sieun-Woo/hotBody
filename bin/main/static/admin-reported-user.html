@@ -632,7 +632,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://localhost:8080/api/user/log-out",
+  "url": "http://www.hotbody.store/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -676,7 +676,7 @@ $(document).on('click', '#p', function (e) {
 
 function getUsers(page) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users/report?page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `http://www.hotbody.store/api/admin/users/report?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -783,7 +783,7 @@ function getUsers(page) {
 
 function suspend(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}/suspend`,
+  "url": `http://www.hotbody.store/api/admin/users/${index}/suspend`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -802,7 +802,7 @@ $.ajax(settings).done(function (response) {
 
 function activate(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}/normalize`,
+  "url": `http://www.hotbody.store/api/admin/users/${index}/normalize`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -821,7 +821,7 @@ $.ajax(settings).done(function (response) {
 
 function remove(index) {
   var settings = {
-  "url": `http://localhost:8080/api/admin/users/${index}`,
+  "url": `http://www.hotbody.store/api/admin/users/${index}`,
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -851,7 +851,7 @@ function searchUsers(page) {
 var searchKeyword = ($('#searchKeyword').val())
 
 var settings = {
-  "url": `http://localhost:8080/api/admin/users/report/search?page=` + page +`&size=10&isAsc=false&sortBy=id&searchKeyword=` + searchKeyword,
+  "url": `http://www.hotbody.store/api/admin/users/report/search?page=` + page +`&size=10&isAsc=false&sortBy=id&searchKeyword=` + searchKeyword,
   "method": "GET",
   "timeout": 0,
   "headers": {

@@ -827,11 +827,6 @@
 
   function getPresignedUrl(storeFileName) {
       const selectedFile = document.getElementById('upload-image').files[0];
-
-      var form = new FormData();
-
-      form.append("file", $('#image')[0].files[0]);
-
       var settings = {
         "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
         "method": "POST",

@@ -654,7 +654,7 @@
 
     function getUser() {
       var settings = {
-        "url": "http://localhost:8080/api/user/profile",
+        "url": "https://www.hotbody.store/api/user/profile",
         "method": "GET",
         "timeout": 0,
         "headers": {
@@ -670,7 +670,7 @@
     function logout() {
 
       var settings = {
-        "url": "http://localhost:8080/api/user/log-out",
+        "url": "https://www.hotbody.store/api/user/log-out",
         "method": "DELETE",
         "timeout": 0,
         "headers": {
@@ -698,7 +698,7 @@
 
 
       var settings = {
-        "url": "http://localhost:8080/api/posts/image",
+        "url": "https://www.hotbody.store/api/posts/image",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -711,8 +711,8 @@
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
-        createPost(response)
+        getPresignedUrl(response.split("&")[1]);
+        createPost(response.split("&")[0])
       });
     }
 
@@ -722,7 +722,7 @@
       });
 
       var settings = {
-        "url": "http://localhost:8080/api/post",
+        "url": "https://www.hotbody.store/api/post",
         "method": "POST",
         "timeout": 0,
         "headers": {
@@ -745,27 +745,33 @@
     }
 
 
-    function image1() {
+    var settings = {
+      "url": "https://www.hotbody.store/api/image?storeFileName=123.jpg",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": "{{token}}"
+      },
+    };
 
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+
+    function getPresignedUrl(storeFileName) {
       const selectedFile = document.getElementById('image').files[0];
 
       var form = new FormData();
 
       form.append("file", $('#image')[0].files[0]);
 
-      console.log(form)
-
       var settings = {
-        "url": "http://localhost:8080/api/image",
-        "method": "GET",
+        "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+        "method": "POST",
         "timeout": 0,
         "headers": {
-          "Authorization": "{{token}}",
+          "Authorization": "{{token}}"
         },
-        "processData": false,
-        "mimeType": "multipart/form-data",
-        "contentType": false,
-        "data": form
       };
 
       $.ajax(settings).done(function (response) {
@@ -773,28 +779,25 @@
         image(response)
       });
 
-      // function image(response) {
+      function image(response) {
 
+        var settings = {
+          "url": response,
+          "method": "PUT",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": selectedFile.type
+          },
+          "data": selectedFile,
+          contentType: false,
+          processData: false,
+        };
 
-      //   console.log(selectedFile)
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+        });
 
-      //   var settings = {
-      //     "url": response,
-      //     "method": "PUT",
-      //     "timeout": 0,
-      //     "headers": {
-      //       "Content-Type": selectedFile.type
-      //     },
-      //     "data": selectedFile,
-      //     contentType: false,
-      //     processData: false,
-      //   };
-
-      //   $.ajax(settings).done(function (response) {
-      //     console.log(response);
-      //   });
-
-      // }
+      }
 
     }
 

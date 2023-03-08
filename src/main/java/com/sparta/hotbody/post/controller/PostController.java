@@ -95,9 +95,9 @@ public class PostController {
   // 4-1. 게시글 이미지 수정
   @PostMapping("/posts/{postId}/image")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
-  public ResponseEntity<String> updateImage(
+  public String updateImage(
       @PathVariable Long postId,
-      @RequestPart MultipartFile file) throws IOException {
+      @RequestPart MultipartFile file) {
     return postService.modifyImage(postId, file);
   }
 

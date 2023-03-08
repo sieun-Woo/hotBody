@@ -44,9 +44,6 @@ public class UploadService {
     private String Resource;
 
     public Image storeFile(MultipartFile multipartFile) {
-        if (multipartFile.isEmpty()) {
-            return null;
-        }
         return upload(multipartFile);
     }
 
@@ -106,10 +103,7 @@ public class UploadService {
         return url.toExternalForm();
     }
 
-    public String putImage(MultipartFile multipartFile) {
-
-        String originalFilename = multipartFile.getOriginalFilename();
-        String storeFileName = createStoreFileName(originalFilename);
+    public String putImage(String storeFileName) {
 
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();

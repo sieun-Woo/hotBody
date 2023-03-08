@@ -9,6 +9,9 @@ import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.report.dto.CommentReportResponseDto;
+import com.sparta.hotbody.report.dto.PostReportResponseDto;
+import com.sparta.hotbody.report.dto.UserReportResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -19,6 +22,7 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,8 +64,7 @@ public class AdminController {
   // 트레이너 등록 요청 조회
   @GetMapping("/apply")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<TrainerResponseDto> getRegistrations(
-      GetPageModel getPageModel) {
+  public Page<TrainerResponseDto> getRegistrations(GetPageModel getPageModel) {
     return adminService.getRegistrations(getPageModel);
   }
 
@@ -115,9 +118,31 @@ public class AdminController {
   // 전체 유저 정보 조회
   @GetMapping("/users")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<UsersResponseDto> getUserList(
-      GetPageModel getPageModel) {
-    return adminService.getUserList(getPageModel);
+  public Page<UsersResponseDto> getUsers(GetPageModel getPageModel) {
+    return adminService.getUsers(getPageModel);
+  }
+
+  // 유저 검색 조회
+  @GetMapping("/users/search")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UsersResponseDto> searchUsers(
+      @RequestParam("searchKeyword") String searchKeyword, GetPageModel getPageModel) {
+    return adminService.searchUsers(searchKeyword, getPageModel);
+  }
+
+  // 신고된 유저 정보 조회
+  @GetMapping("/users/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UserReportResponseDto> getReportedUsers(GetPageModel getPageModel) {
+    return adminService.getReportedUsers(getPageModel);
+  }
+
+  // 신고된 유저 검색 조회
+  @GetMapping("/users/report/search")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<UserReportResponseDto> searchReportedUsers(
+      @RequestParam("searchKeyword") String searchKeyword, GetPageModel getPageModel) {
+    return adminService.searchReportedUsers(searchKeyword, getPageModel);
   }
 
   // 단건 유저 정보 조회
@@ -130,9 +155,9 @@ public class AdminController {
   // 전체 트레이너 정보 조회
   @GetMapping("/trainers")
   @PreAuthorize("hasRole('ADMIN')")
-  public Page<UsersResponseDto> getTrainerList(
+  public Page<UsersResponseDto> getTrainers(
       GetPageModel getPageModel) {
-    return adminService.getTrainerList(getPageModel);
+    return adminService.getTrainers(getPageModel);
   }
 
   // 단건 트레이너 정보 조회
@@ -179,6 +204,7 @@ public class AdminController {
   }
 
   // 유저 회원 탈퇴
+  @CacheEvict
   @DeleteMapping("/users/{userId}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
@@ -197,5 +223,19 @@ public class AdminController {
   public FindAdminPwResponseDto findUserPw(@RequestBody FindAdminPwRequestDto findAdminPwRequestDto)
       throws MessagingException {
     return adminService.findAdminPw(findAdminPwRequestDto);
+  }
+
+  // 신고된 게시글 조회
+  @GetMapping("/posts/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<PostReportResponseDto> getReportedPosts(GetPageModel getPageModel) {
+    return adminService.getReportedPosts(getPageModel);
+  }
+
+  // 신고된 댓글 조회
+  @GetMapping("/comments/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<CommentReportResponseDto> getReportedComments(GetPageModel getPageModel) {
+    return adminService.getReportedComments(getPageModel);
   }
 }

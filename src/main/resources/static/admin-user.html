@@ -84,12 +84,7 @@
                   <span>유저 신고</span>
                 </a>
               </li>
-              <li>
-                <a href="admin-reported-trainer.html" class="block">
-                  <i class="fa-regular fa-clipboard"></i>
-                  <span>트레이너 신고</span>
-                </a>
-              </li>
+
               <li>
                 <a href="admin-reported-post.html" class="block">
                   <i class="fa-regular fa-address-card"></i>
@@ -122,9 +117,9 @@
                   <h1 style="margin-top: 7px; margin-right: 10px; cursor: default;">
                     <span>Search</span>
                   </h1>
-                  <input type="text" @input="search" :value="searchKeyword"
+                  <input id="searchKeyword" type="text" @input="search" :value="searchKeyword"
                       placeholder=" 유저 입력" style="width: 100%; height: 30px; font-size: 20px;">
-                  <h1 style="position: absolute; right: 10px; top: 5px">
+                  <h1 style="position: absolute; right: 10px; top: 5px" onclick="searchUsers(1)">
                       <i class="fas fa-search"></i>
                   </h1>
                 </div>
@@ -429,10 +424,10 @@ a {
 /* 게시물 리스트 */
 :root {
   --article-list__cell-id__width:100px;
-  --article-list__cell-nickname__width:200px;
+  --article-list__cell-nickname__width:150px;
   --article-list__cell-gender__width:100px;
   --article-list__cell-age__width:100px;
-  --article-list__cell-region__width:150px;
+  --article-list__cell-region__width:200px;
   --article-list__cell-func__width:100px;
   --article-list__cell-email__width:calc(100% - var(--article-list__cell-id__width) - var(--article-list__cell-nickname__width) - var(--article-list__cell-gender__width) - var(--article-list__cell-age__width) - var(--article-list__cell-region__width));
 }
@@ -637,7 +632,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "https://www.hotbody.store/api/user/log-out",
+  "url": "http://localhost:8080/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -681,7 +676,7 @@ $(document).on('click', '#p', function (e) {
 
 function getUsers(page) {
   var settings = {
-  "url": `https://www.hotbody.store/api/admin/users?page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `http://localhost:8080/api/admin/users?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -711,13 +706,19 @@ function getUsers(page) {
       var str = '';
       var j = 1;
       data.forEach((user) => {
+        var gender = ""
+        if (user.gender==1) {
+          var gender = "여성"
+        } else if (user.gender==0) {
+          var gender = "남성"
+        }
         str += `<div class="main">
                   <div v-for="article in filtered">
                     <div class="article-list__cell-id">` + ((page-1) * 10 + j) + `</div>
                     <div class="article-list__cell-nickname">
                       <a :href="'article_' + article.id + '.html'" class="hover-pointer">${user.nickname}</a>
                     </div>
-                    <div class="article-list__cell-gender">${user.gender}</div>
+                    <div class="article-list__cell-gender">${gender}</div>
                     <div class="article-list__cell-age">${user.age}</div>
                     <div class="article-list__cell-region">${user.region}</div>
                     <div class="article-list__cell-email">${user.email}</div>
@@ -753,38 +754,40 @@ function getUsers(page) {
 
       $('.paging').empty();
 
-      if (page != 1) {
-        pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
-      }
-
-      if (setion_page != 1) {
-        pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
-      }
-      // 페이징 번호 출력
-      for (var i = start; i < end; i++) {
-        if (page == i) {
-          pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
-          continue;
+      if (TOTAL_DATA > 0) {
+        if (page != 1) {
+          pageNums.push("<a href='#' id='p' class='first' data-page=" + first + ">처음</a>");
         }
-        pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
-      }
 
-      if (setion_page != TOTAL_SECTION) {
-        pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
-      }
+        if (setion_page != 1) {
+          pageNums.push("<a href='#' id='p' class='prev' data-page=" + prev + ">이전</a>");
+        }
+        // 페이징 번호 출력
+        for (var i = start; i < end; i++) {
+          if (page == i) {
+            pageNums.push('<a href="#" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+            continue;
+          }
+          pageNums.push('<a href="#" id="p" data-page=' + i + '>' + i + '</a>');
+        }
 
-      if (page != last) {
-        pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
-      }
+        if (setion_page != TOTAL_SECTION) {
+          pageNums.push("<a href='#' id='p' class='next' data-page=" + next + ">다음</a>");
+        }
 
-      $('.paging').append(pageNums);
+        if (page != last) {
+          pageNums.push("<a href='#' id='p' class='last' data-page=" + last + ">마지막</a>");
+        }
+
+        $('.paging').append(pageNums);
       }
+    }
   });
 }
 
 function suspend(index) {
   var settings = {
-  "url": `https://www.hotbody.store/api/admin/users/${index}/suspend`,
+  "url": `http://localhost:8080/api/admin/users/${index}/suspend`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -803,7 +806,7 @@ $.ajax(settings).done(function (response) {
 
 function activate(index) {
   var settings = {
-  "url": `https://www.hotbody.store/api/admin/users/${index}/normalize`,
+  "url": `http://localhost:8080/api/admin/users/${index}/normalize`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -822,7 +825,7 @@ $.ajax(settings).done(function (response) {
 
 function remove(index) {
   var settings = {
-  "url": `https://www.hotbody.store/api/admin/users/${index}`,
+  "url": `http://localhost:8080/api/admin/users/${index}`,
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -837,6 +840,135 @@ $.ajax(settings).done(function (response) {
 }).fail(function(response) {
   alert("이미 삭제되었거나 트레이너가 존재하지 않습니다.")
 });
+}
+
+// 페이징 버튼
+$(document).on('click', '#s', function (e) {
+page = parseInt($(this).data('page'));
+searchUsers(page)
+return false;
+});
+
+
+function searchUsers(page) {
+
+var searchKeyword = ($('#searchKeyword').val())
+
+var settings = {
+  "url": `http://localhost:8080/api/admin/users/search?page=` + page +`&size=10&isAsc=false&sortBy=id&searchKeyword=` + searchKeyword,
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.getItem('accessToken'),
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+
+  const TOTAL_DATA = response.totalElements; // 데이터 총개수
+  const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
+  const TOTAL_PAGE = response.totalPages // 총페이지
+
+  const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
+  const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
+
+  var start = VIEW_DATA - VIEW_DATA;
+  var end = VIEW_DATA;
+  var j = 0;
+
+
+
+  console.log('총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
+  console.log(response);
+  board_list(response.content);
+  paging_list();
+
+  // 게시물 목록
+  function board_list(data) {
+      var str = '';
+      var j = 1;
+      data.forEach((user) => {
+        var gender = ""
+        if (user.gender==1) {
+          var gender = "여성"
+        } else if (user.gender==0) {
+          var gender = "남성"
+        }
+        str += `<div class="main">
+                  <div v-for="article in filtered">
+                    <div class="article-list__cell-id">` + ((page-1) * 10 + j) + `</div>
+                    <div class="article-list__cell-nickname">
+                      <a :href="'article_' + article.id + '.html'" class="hover-pointer">${user.nickname}</a>
+                    </div>
+                    <div class="article-list__cell-gender">${gender}</div>
+                    <div class="article-list__cell-age">${user.age}</div>
+                    <div class="article-list__cell-region">${user.region}</div>
+                    <div class="article-list__cell-email">${user.email}</div>
+                    <div class="article-list__cell-func">`
+        if(user.role==="USER") {
+          str += `<button onclick="suspend(${user.id})" class="hover-pointer">정지</button>`
+        } else if(user.role==="REPORTED") {
+          str += `<button onclick="activate(${user.id})" class="hover-pointer">복구</button>`
+        }
+        str +=    `<button onclick="remove(${user.id})" class="hover-pointer" style="margin-left:5px">탈퇴</button>
+                  </div>
+                 </div>
+               </div>`
+        j++;
+      });
+
+    $('.article-list').empty();
+    $('.article-list').append(str);
+
+  }
+
+  function paging_list() {
+    //page  = page < 0 ? 0 : page;
+    var section_page = Math.ceil(page / VIEW_SECTION); // 구역의 현재페이지
+    var start = section_page * VIEW_SECTION - (VIEW_SECTION - 1); // 시작 1 6 11
+    var end = section_page * VIEW_SECTION + VIEW_SECTION - (VIEW_SECTION - 1); // 마지막 6 11 17
+    var prev = (start - 1 < 1 ? 1 : start - 1);  // 이전 페이지
+    var next = end = (section_page == TOTAL_SECTION) ? TOTAL_PAGE + 1 : end; // 다음페이지
+    var first = 1; // 처음 페이지
+    var last = TOTAL_PAGE; // 마지막 페이지
+    var pageNum = [];
+
+    console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
+
+    $('.paging').empty();
+
+    if (TOTAL_DATA > 0) {
+      if (page != 1) {
+        pageNum.push("<a href='#' id='s' class='first' data-page=" + first + ">처음</a>");
+      }
+
+      if (section_page != 1) {
+        pageNum.push("<a href='#' id='s' class='prev' data-page=" + prev + ">이전</a>");
+      }
+      // 페이징 번호 출력
+      for (var i = start; i < end; i++) {
+        if (page == i) {
+          pageNum.push('<a href="#" id="s" class="on" data-page=' + i + '>' + i + '</a>');
+          continue;
+        }
+        pageNum.push('<a href="#" id="s" data-page=' + i + '>' + i + '</a>');
+      }
+
+      if (section_page != TOTAL_SECTION) {
+        pageNum.push("<a href='#' id='s' class='next' data-page=" + next + ">다음</a>");
+      }
+
+      if (page != last) {
+        pageNum.push("<a href='#' id='s' class='last' data-page=" + last + ">마지막</a>");
+      }
+
+      $('.paging').append(pageNum);
+    }
+  }
+
+});
+
 }
 
 </script>

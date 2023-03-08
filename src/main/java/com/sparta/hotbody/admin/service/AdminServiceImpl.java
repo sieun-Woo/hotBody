@@ -20,6 +20,15 @@ import com.sparta.hotbody.exception.ExceptionStatus;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.repository.PostRepository;
+import com.sparta.hotbody.report.dto.CommentReportResponseDto;
+import com.sparta.hotbody.report.dto.PostReportResponseDto;
+import com.sparta.hotbody.report.dto.UserReportResponseDto;
+import com.sparta.hotbody.report.entity.CommentReportHistory;
+import com.sparta.hotbody.report.entity.PostReportHistory;
+import com.sparta.hotbody.report.entity.UserReportHistory;
+import com.sparta.hotbody.report.repository.CommentReportRepository;
+import com.sparta.hotbody.report.repository.PostReportRepository;
+import com.sparta.hotbody.report.repository.UserReportRepository;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.TrainerResponseDto;
 import com.sparta.hotbody.user.dto.UserProfileRequestDto;
@@ -60,6 +69,9 @@ public class AdminServiceImpl implements AdminService {
   private final CommentRepository commentRepository;
   private final PromoteRepository promoteRepository;
   private final AdminRepository adminRepository;
+  private final UserReportRepository userReportRepository;
+  private final PostReportRepository postReportRepository;
+  private final CommentReportRepository commentReportRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
   private final RefreshTokenRedisRepository refreshTokenRedisRepository;
@@ -117,18 +129,12 @@ public class AdminServiceImpl implements AdminService {
     }
   }
 
-
   @Override
   @Transactional
   public Page<TrainerResponseDto> getRegistrations(GetPageModel getPageModel) {
     Pageable pageable = new PageDto().toPageable(getPageModel);
-    Page<Trainer> trainerList = promoteRepository.findAll(pageable);
-    if (trainerList.isEmpty()) {
-      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
-    }
-    Page<TrainerResponseDto> result = trainerList
-        .map(m -> new TrainerResponseDto(m.getUser()));
-    return result;
+    Page<Trainer> trainers = promoteRepository.findAll(pageable);
+    return trainers.map(m -> new TrainerResponseDto(m.getUser()));
   }
 
   @Override
@@ -203,14 +209,35 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getUserList(GetPageModel getPageModel) {
+  public Page<UsersResponseDto> getUsers(GetPageModel getPageModel) {
     Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<User> userPage = userRepository.findAllByRoleOrRole(UserRole.USER, UserRole.REPORTED, pageable);
-    if (userPage.isEmpty()) {
-      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
-    }
-    Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
-    return userResponseDtoPage;
+    return new UsersResponseDto().toDtoPage(userPage);
+  }
+
+  @Override
+  public Page<UsersResponseDto> searchUsers(String searchKeyword, GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<User> userPage = userRepository.findAllByRoleAndNicknameContainingOrRoleAndNicknameContaining(
+        UserRole.USER, searchKeyword, UserRole.REPORTED, searchKeyword, pageable);
+    return new UsersResponseDto().toDtoPage(userPage);
+  }
+
+  @Override
+  @Transactional
+  public Page<UserReportResponseDto> getReportedUsers(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<UserReportHistory> userPage = userReportRepository.findAll(pageable);
+    return userPage.map(UserReportResponseDto::new);
+  }
+
+  @Override
+  public Page<UserReportResponseDto> searchReportedUsers(String searchKeyword,
+      GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<UserReportHistory> userPage = userReportRepository
+        .findAllByReportedNicknameContaining(searchKeyword, pageable);
+    return userPage.map(UserReportResponseDto::new);
   }
 
   @Override
@@ -221,21 +248,16 @@ public class AdminServiceImpl implements AdminService {
     if (!user.getRole().equals(UserRole.USER)) {
       throw new CustomException(ExceptionStatus.NOT_USER);
     }
-    UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(user);
-    return userProfileResponseDto;
+    return new UserProfileResponseDto(user);
   }
 
   @Override
   @Transactional
-  public Page<UsersResponseDto> getTrainerList(GetPageModel getPageModel) {
+  public Page<UsersResponseDto> getTrainers(GetPageModel getPageModel) {
     Pageable pageable = new PageDto().toPageable(getPageModel);
     Page<User> userPage = userRepository.findAllByRoleOrRole(
         UserRole.TRAINER, UserRole.REPORTED_TRAINER, pageable);
-    if (userPage.isEmpty()) {
-      throw new CustomException(ExceptionStatus.PAGINATION_IS_NOT_EXIST);
-    }
-      Page<UsersResponseDto> userResponseDtoPage = new UsersResponseDto().toDtoPage(userPage);
-    return userResponseDtoPage;
+    return new UsersResponseDto().toDtoPage(userPage);
   }
 
   @Override
@@ -246,8 +268,7 @@ public class AdminServiceImpl implements AdminService {
     if (!user.getRole().equals(UserRole.TRAINER)) {
       throw new CustomException(ExceptionStatus.NOT_TRAINER);
     }
-    TrainerResponseDto trainerResponseDto = new TrainerResponseDto(user);
-    return trainerResponseDto;
+    return new TrainerResponseDto(user);
   }
 
   @Override
@@ -395,5 +416,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     return stringBuffer.toString();
+  }
+
+  @Override
+  public Page<PostReportResponseDto> getReportedPosts(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<PostReportHistory> postPage = postReportRepository.findAll(pageable);
+    return postPage.map(PostReportResponseDto::new);
+  }
+
+  @Override
+  public Page<CommentReportResponseDto> getReportedComments(GetPageModel getPageModel) {
+    Pageable pageable = new PageDto().toPageable(getPageModel);
+    Page<CommentReportHistory> postPage = commentReportRepository.findAll(pageable);
+    return postPage.map(CommentReportResponseDto::new);
   }
 }

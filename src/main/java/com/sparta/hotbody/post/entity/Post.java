@@ -4,6 +4,7 @@ import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.timestamp.TimeStamp;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
 import com.sparta.hotbody.post.dto.PostRequestDto;
+import com.sparta.hotbody.report.entity.PostReportHistory;
 import com.sparta.hotbody.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,9 @@ public class Post extends TimeStamp {
   // 게시글과 게시글 좋아요의 연관 관계(1 : N)
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PostLike> postLikeList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "reportedPost", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<PostReportHistory> postReportHistories = new ArrayList<>();
 
   /**
    * 생성자 - 약속된 형태로만 생성가능하도록 합니다.

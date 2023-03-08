@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 public class UsersResponseDto {
   private Long id;
   private String nickname;
-  private int gender;
+  private Integer gender;
   private int age;
   private String introduce;
   private String region;
@@ -35,7 +35,7 @@ public class UsersResponseDto {
   }
 
   @Builder
-  public UsersResponseDto(Long id, String nickname, int gender, int age, String region, String email, UserRole role, String introduce){
+  public UsersResponseDto(Long id, String nickname, Integer gender, int age, String region, String email, UserRole role, String introduce){
     this.id = id;
     this.nickname = nickname;
     this.gender = gender;

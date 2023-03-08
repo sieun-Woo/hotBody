@@ -18,6 +18,8 @@ public class CommentResponseDto {
 
   private LocalDateTime modifiedAt;
 
+  private Long postId;
+
   public CommentResponseDto(Comment comment) {
     this.id = comment.getId();
     this.nickname = comment.getNickname();
@@ -25,5 +27,6 @@ public class CommentResponseDto {
     this.likes = comment.getCommentLikeList().size();
     this.createdAt = comment.getCreatedAt();
     this.modifiedAt = comment.getModifiedAt();
+    this.postId = comment.getPost().getId();
   }
 }

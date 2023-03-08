@@ -692,7 +692,7 @@ getPosts(1);
 function logout() {
 
 var settings = {
-  "url": "https://www.hotbody.store/api/user/log-out",
+  "url": "http://localhost:8080/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -720,7 +720,7 @@ return false;
 
 function getPosts(page) {
 var settings = {
-  "url": `https://www.hotbody.store/api/posts?category=EXERCISE&page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `http://localhost:8080/api/posts?category=EXERCISE&page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -834,7 +834,7 @@ var searchKeyword = ($('#searchKeyword').val())
 
 
 var settings = {
-  "url": `https://www.hotbody.store/api/posts/search?category=EXERCISE&page=` + page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
+  "url": `http://localhost:8080/api/posts/search?category=EXERCISE&page=` + page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -901,32 +901,33 @@ $.ajax(settings).done(function (response) {
     console.log('page:', page, ' section_page:', section_page, ' :start:', start, ' end:', end);
 
     $('.paging').empty();
+if (TOTAL_DATA > 0) {
+          if (page != 1) {
+            pageNums.push("<a href='#;' id='p' class='first' data-page=" + first + ">처음</a>");
+          }
 
-    if (page != 1) {
-      pageNum.push("<a href='#' id='s' class='first' data-page=" + first + ">처음</a>");
-    }
+          if (setion_page != 1) {
+            pageNums.push("<a href='#;' id='p' class='prev' data-page=" + prev + ">이전</a>");
+          }
+          // 페이징 번호 출력
+          for (var i = start; i < end; i++) {
+            if (page == i) {
+              pageNums.push('<a href="#;" id="p" class="on" data-page=' + i + '>' + i + '</a>');
+              continue;
+            }
+            pageNums.push('<a href="#;" id="p" data-page=' + i + '>' + i + '</a>');
+          }
 
-    if (section_page != 1) {
-      pageNum.push("<a href='#' id='s' class='prev' data-page=" + prev + ">이전</a>");
-    }
-    // 페이징 번호 출력
-    for (var i = start; i < end; i++) {
-      if (page == i) {
-        pageNum.push('<a href="#" id="s" class="on" data-page=' + i + '>' + i + '</a>');
-        continue;
-      }
-      pageNum.push('<a href="#" id="s" data-page=' + i + '>' + i + '</a>');
-    }
+          if (setion_page != TOTAL_SECTION) {
+            pageNums.push("<a href='#;' id='p' class='next' data-page=" + next + ">다음</a>");
+          }
 
-    if (section_page != TOTAL_SECTION) {
-      pageNum.push("<a href='#' id='s' class='next' data-page=" + next + ">다음</a>");
-    }
+          if (page != last) {
+            pageNums.push("<a href='#;' id='p' class='last' data-page=" + last + ">마지막</a>");
+          }
 
-    if (page != last) {
-      pageNum.push("<a href='#' id='s' class='last' data-page=" + last + ">마지막</a>");
-    }
-
-    $('.paging').append(pageNum);
+          $('.paging').append(pageNums);
+        }
   }
 
 });

@@ -14,7 +14,9 @@
 <!-- Wordpress Site header-bar -->
 <header class="wp-header" role="banner">
   <ul>
-    <li><a href="index.html">로그아웃</a></li>
+    <li id="signup"><a href="signup.html">회원가입</a></li>
+    <li id="signin"><a href="login.html">로그인</a></li>
+    <li id="logout"><a onclick="logout()">로그아웃</a></li>
   </ul>
 </header>
 
@@ -151,7 +153,7 @@
                   placeholder="횟수를 입력 해주세요.">
     </div>
     <input type="submit" id="postRecord" class="btn" onclick="recordExercise()" value="올리기"/>
-    <input type="submit" id="modifyRecord" class="btn" onclick="updateExerciseRecord()"
+    <input type="submit" id="modifyComplete" class="btn" onclick="updateExerciseRecord()"
            value="수정완료"/>
 
   </form>
@@ -765,9 +767,63 @@
     color: #fff;
     background-color: grey;
   }
+
+  @keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  40% { opacity: 0.2; }
+  60% { opacity: 1; }
+  80% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+#modifyComplete {
+  animation: blink 3s linear 1;
+}
+
 </style>
 
 <script>
+  
+
+jQuery(document).ready(function ($) {
+
+$("#logout").hide();
+$("#signup").show();
+$("#signin").show();
+$("modifyComplete").hide();
+
+if (localStorage.getItem('accessToken')) {
+  $("#logout").show();
+  $("#signup").hide();
+  $("#signin").hide();
+} else {
+
+}
+
+})
+
+function logout() {
+
+var settings = {
+  "url": "http://localhost:8080/api/user/log-out",
+  "method": "DELETE",
+  "timeout": 0,
+  "headers": {
+    "Authorization": localStorage.removeItem('accessToken')
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+  localStorage.removeItem('accessToken');
+  var now = new Date();
+  now.setDate(now.getDate() - 1);
+  document.cookie = "RefreshToken=; expires=" + now.toUTCString();
+});
+
+location.href = "index.html";
+}
 
   function localTime() {
     var timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
@@ -798,10 +854,10 @@
     return false;
   })
 
-  function recordExercise() {
-
+  function recordExercise() {   
+  
     var settings = {
-      "url": "https://www.hotbody.store/api/record",
+      "url": "http://localhost:8080/api/record",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -823,12 +879,12 @@
 
   $(document).ready(function () {
     getExerciseRecords(1);
-    $("#modifyRecord").hide();
+    $("#modifyComplete").hide();
   });
-
+  
   function getExerciseRecord(recordId) {
     var settings = {
-      "url": `https://www.hotbody.store/api/records/${recordId}`,
+      "url": `http://localhost:8080/api/records/${recordId}`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -837,7 +893,7 @@
     };
 
     $.ajax(settings).done(function (response) {
-      $("#modifyRecord").show();
+      $("#modifyComplete").show();
       $('input[name=date]').val(response.date);
       $('select[name=exercise]').val(response.exercise);
       $('input[name=time]').attr('value', response.time);
@@ -849,7 +905,7 @@
 
   function deleteExerciseRecord(recordId) {
     var settings = {
-      "url": `https://www.hotbody.store/api/records/${recordId}`,
+      "url": `http://localhost:8080/api/records/${recordId}`,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -872,7 +928,7 @@
   function updateExerciseRecord() {
     recordId = selectedId;
     var settings = {
-      "url": `https://www.hotbody.store/api/records/${recordId}`,
+      "url": `http://localhost:8080/api/records/${recordId}`,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -893,17 +949,18 @@
   }
 
   function getExerciseRecords(page) {
+    
     var settings = {
-      "url": `https://www.hotbody.store/api/records?page=${page}&size=5&sortBy=id&isAsc=false`,
+      "url": `http://localhost:8080/api/records?page=${page}&size=5&sortBy=id&isAsc=false`,
       "method": "GET",
       "timeout": 0,
       "headers": {
         "Authorization": localStorage.getItem('accessToken')
       },
     };
-
+    
     $.ajax(settings).done(function (response) {
-
+      
       const TOTAL_DATA = response.totalElements; // 데이터 총개수
       const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
       const TOTAL_PAGE = response.totalPages // 총페이지

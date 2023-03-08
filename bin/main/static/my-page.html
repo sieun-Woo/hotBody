@@ -135,13 +135,13 @@
             </a>
             <ul>
               <li>
-                <a href="my_posts.html" class="block">
+                <a href="my-posts.html" class="block">
                   <i class="fa-regular fa-message"></i>
                   <span>나의 글</span>
                 </a>
               </li>
               <li>
-                <a href="my_comments.html" class="block">
+                <a href="my-comments.html" class="block">
                   <i class="fa-regular fa-comment"></i>
                   <span>나의 댓글</span>
                 </a>
@@ -715,7 +715,7 @@
 
   function getImage() {
     var settings = {
-      "url": "https://www.hotbody.store/api/user/profile/image",
+      "url": "http://localhost:8080/api/user/profile/image",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -731,7 +731,7 @@
 
   function getUser() {
     var settings = {
-      "url": "https://www.hotbody.store/api/user/profile",
+      "url": "http://localhost:8080/api/user/profile",
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -751,7 +751,7 @@
   function logout() {
 
     var settings = {
-      "url": "https://www.hotbody.store/api/user/log-out",
+      "url": "http://localhost:8080/api/user/log-out",
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -778,7 +778,7 @@
     }
 
     var settings = {
-      "url": "https://www.hotbody.store/api/user/profile",
+      "url": "http://localhost:8080/api/user/profile",
       "method": "PUT",
       "timeout": 0,
       "headers": {
@@ -806,7 +806,7 @@
     form.append("file", $("#upload-image")[0].files[0]);
 
     var settings = {
-      "url": "https://www.hotbody.store/api/user/profile/image",
+      "url": "http://localhost:8080/api/user/profile/image",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -833,7 +833,7 @@
     }
 
     var settings = {
-      "url": "https://www.hotbody.store/api/user/delete",
+      "url": "http://localhost:8080/api/user/delete",
       "method": "DELETE",
       "timeout": 0,
       "headers": {

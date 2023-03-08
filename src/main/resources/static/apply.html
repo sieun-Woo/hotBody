@@ -135,13 +135,13 @@
             </a>
             <ul>
               <li>
-                <a href="my_posts.html" class="block">
+                <a href="my-posts.html" class="block">
                   <i class="fa-regular fa-message"></i>
                   <span>나의 글</span>
                 </a>
               </li>
               <li>
-                <a href="my_comments.html" class="block">
+                <a href="my-comments.html" class="block">
                   <i class="fa-regular fa-comment"></i>
                   <span>나의 댓글</span>
                 </a>
@@ -621,7 +621,7 @@ a {
   function logout() {
 
     var settings = {
-    "url": "https://www.hotbody.store/api/user/log-out",
+    "url": "http://localhost:8080/api/user/log-out",
     "method": "DELETE",
     "timeout": 0,
     "headers": {
@@ -641,7 +641,7 @@ a {
 
   function apply() {
     var settings = {
-      "url": "https://www.hotbody.store/api/user/promote",
+      "url": "http://localhost:8080/api/user/promote",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -663,7 +663,7 @@ a {
 
   function cancel() {
     var settings = {
-      "url": "https://www.hotbody.store/api/user/permission",
+      "url": "http://localhost:8080/api/user/permission",
       "method": "DELETE",
       "timeout": 0,
       "headers": {

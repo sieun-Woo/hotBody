@@ -634,7 +634,7 @@ a {
 function logout() {
 
   var settings = {
-  "url": "http://https://www.hotbody.store//api/user/log-out",
+  "url": "https://www.hotbody.store/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -678,7 +678,7 @@ $(document).on('click', '#p', function (e) {
 
 function getApplications(page) {
   var settings = {
-  "url": `http://https://www.hotbody.store//api/admin/apply?page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `https://www.hotbody.store/api/admin/apply?page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -779,7 +779,7 @@ function getApplications(page) {
 
 function accept(index) {
   var settings = {
-  "url": `http://https://www.hotbody.store//api/admin/requests/${index}`,
+  "url": `https://www.hotbody.store/api/admin/requests/${index}`,
   "method": "PUT",
   "timeout": 0,
   "headers": {
@@ -801,7 +801,7 @@ function reject(index) {
 
 
   var settings = {
-  "url": `http://https://www.hotbody.store//api/admin/requests/${index}`,
+  "url": `https://www.hotbody.store/api/admin/requests/${index}`,
   "method": "DELETE",
   "timeout": 0,
   "headers": {

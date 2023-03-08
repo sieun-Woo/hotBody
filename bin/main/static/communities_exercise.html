@@ -692,7 +692,7 @@ getPosts(1);
 function logout() {
 
 var settings = {
-  "url": "http://https://www.hotbody.store//api/user/log-out",
+  "url": "https://www.hotbody.store/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -720,7 +720,7 @@ return false;
 
 function getPosts(page) {
 var settings = {
-  "url": `http://https://www.hotbody.store//api/posts?category=EXERCISE&page=${page}&size=10&sortBy=id&isAsc=false`,
+  "url": `https://www.hotbody.store/api/posts?category=EXERCISE&page=${page}&size=10&sortBy=id&isAsc=false`,
   "method": "GET",
   "timeout": 0,
   "headers": {
@@ -834,7 +834,7 @@ var searchKeyword = ($('#searchKeyword').val())
 
 
 var settings = {
-  "url": `http://https://www.hotbody.store//api/posts/search?category=EXERCISE&page=` + page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
+  "url": `https://www.hotbody.store/api/posts/search?category=EXERCISE&page=` + page +`&size=10&isAsc=false&sortBy=id&searchType=` + searchType + `&searchKeyword=` + searchKeyword,
   "method": "GET",
   "timeout": 0,
   "headers": {

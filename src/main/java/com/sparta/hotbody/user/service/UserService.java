@@ -187,20 +187,16 @@ public class UserService {
 
   //7. 유저 프로필 업로드
   @Transactional
-  public Image uploadImage(MultipartFile file, UserDetails userDetails) throws IOException {
+  public String uploadImage(MultipartFile file, UserDetails userDetails) {
 
     User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
-    if (user.getImage() != null) {
-      Image image = imageRepository.findByResourcePath(user.getImage()).get();
-      uploadService.remove(image.getResourcePath());
-    }
     Image image = uploadService.storeFile(file);
     String resourcePath = image.getResourcePath();
     user.updateImage(resourcePath);
 
-    return image;
+    return image.getStoreFileName();
   }
 
   //8. 이미지 불러오기

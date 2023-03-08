@@ -111,26 +111,23 @@ public class UserController {
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
   public ResponseEntity<String> createProfile(
       @RequestBody UserProfileRequestDto requestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.createProfile(requestDto, userDetails);
   }
 
   //6-1. 유저 프로필 사진 첨부
   @PostMapping("/profile/image")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
-  public ResponseEntity<String> uploadImage(
-      @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+  public String uploadImage(
+      @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return userService.uploadImage(file, userDetails);
 
-    userService.uploadImage(file, userDetails);
-
-    return ResponseEntity.ok("이미지가 업로드 되었습니다.");
   }
 
   //7. 프로필 이미지 조회
   @GetMapping("/profile/image")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN', 'REPORTED', 'REPORTED_TRAINER')")
-  public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails)
-      throws MalformedURLException {
+  public String downloadImage(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     return userService.viewImage(userDetails);
   }
 

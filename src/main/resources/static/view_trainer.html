@@ -132,13 +132,23 @@
         </div>
         <input type="hidden" id = "trainerId">
         <div class="textForm">
-          <div type="nickname" id="nickname" name="nickname" disabled></div>
           <img src="" id="image">
+          <div type="nickname" id="nickname" name="nickname" disabled></div>
           <br/>
         </div> 
 
         <div class="textForm">
-          <div id="introduce"></div>
+          <div id="age"></div>
+          <br />
+        </div>
+
+        <div class="textForm">
+          <div id="region"></div>
+          <br />
+        </div>
+
+        <div class="textForm">
+          <div id="email"></div>
           <br />
         </div>
 
@@ -676,8 +686,10 @@
   $.ajax(settings).done(function (response) {
     $('#nickname').text(response.nickname);
     $('#introduce').text(response.introduce);
+    $('#age').text(response.age);
+    $('#region').text(response.region);
+    $('#email').text(response.email);
     $('#CountLove').text(response.likes);
-    $('#image').text(response.image);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)

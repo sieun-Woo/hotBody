@@ -671,7 +671,7 @@
 <script>
   var page = 0;
   var trainerId = localStorage.getItem('currentTrainerId');
-  console.log("트레이너 아이디 : "+$('#trainerId').val());
+  console.log("트레이너 아이디 : "+trainerId);
 
   jQuery(document).ready(function () {
     page = trainerId;
@@ -690,7 +690,7 @@
     $('#nickname').text(response.nickname);
     $('#introduce').text(response.introduce);
     $('#CountLove').text(response.likes);
-    $('#category').text(response.category);
+    $('#image').text(response.image);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)
@@ -744,8 +744,8 @@
       };
 
     $.ajax(settings).done(function (response) {
-      console.log("좋아요 눌렀습니다.");
-      window.location.reload();
+      alert(response);
+      location.reload();
     });
   }
 
@@ -761,8 +761,8 @@
       };
 
     $.ajax(settings).done(function (response) {
-      console.log("좋아요를 취소했습니다.");
-      window.location.reload();
+      alert(response);
+      location.reload();
     });
   }
 

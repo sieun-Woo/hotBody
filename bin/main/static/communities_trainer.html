@@ -982,7 +982,7 @@
         var str = '';
         data.forEach((trainer) => {
           var k = TOTAL_DATA - j
-          str += `<figure class="card card--1" style="--image-src: url('https://source.unsplash.com/78A265wPiO4')">
+          str += `<figure class="card card--1" style="--image-src: url('${trainer.image}')">
                     <figcaption>
                       <span class="info">
                         <h3 id="nickname"><a onclick=goView(${trainer.id}) class="hover-pointer">${trainer.nickname}</a></h3>

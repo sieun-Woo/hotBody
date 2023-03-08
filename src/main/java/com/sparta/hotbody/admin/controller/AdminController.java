@@ -9,6 +9,7 @@ import com.sparta.hotbody.admin.service.AdminService;
 import com.sparta.hotbody.comment.dto.CommentModifyRequestDto;
 import com.sparta.hotbody.common.GetPageModel;
 import com.sparta.hotbody.post.dto.PostModifyRequestDto;
+import com.sparta.hotbody.report.dto.CommentReportResponseDto;
 import com.sparta.hotbody.report.dto.PostReportResponseDto;
 import com.sparta.hotbody.report.dto.UserReportResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
@@ -229,5 +230,12 @@ public class AdminController {
   @PreAuthorize("hasRole('ADMIN')")
   public Page<PostReportResponseDto> getReportedPosts(GetPageModel getPageModel) {
     return adminService.getReportedPosts(getPageModel);
+  }
+
+  // 신고된 댓글 조회
+  @GetMapping("/comments/report")
+  @PreAuthorize("hasRole('ADMIN')")
+  public Page<CommentReportResponseDto> getReportedComments(GetPageModel getPageModel) {
+    return adminService.getReportedComments(getPageModel);
   }
 }

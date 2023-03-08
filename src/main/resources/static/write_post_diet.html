@@ -132,7 +132,7 @@
         <br /><br />
       </div>
       <div class="textForm">
-        <div id="post_category"disabled>DIET</div>
+        <div id="post_category" disabled>DIET</div>
         <br />
       </div>
       <div class="textForm">
@@ -152,6 +152,8 @@
       </div>
 
       <input type="submit" class="btn" value="글 올리기" id="upload" onclick="createImage()" />
+
+      <input type="submit" class="btn" value="글 올리기" id="upload" onclick="image1()" />
     </div>
   </div>
   </body>
@@ -694,12 +696,13 @@
       }
       form.append("file", $('#image')[0].files[0]);
 
+
       var settings = {
         "url": "https://www.hotbody.store/api/posts/image",
         "method": "POST",
         "timeout": 0,
         "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+          "Authorization": localStorage.getItem('accessToken'),
         },
         "processData": false,
         "mimeType": "multipart/form-data",
@@ -708,11 +711,11 @@
       };
 
       $.ajax(settings).done(function (response) {
-        console.log(response);
-        createPost(response)
+        getPresignedUrl(response.split("&")[1]);
+        createPost(response.split("&")[0])
       });
     }
-    
+
     function createPost(response) {
 
       $.ajax(settings).done(function (response) {
@@ -741,6 +744,62 @@
 
     }
 
+
+    var settings = {
+      "url": "https://www.hotbody.store/api/image?storeFileName=123.jpg",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": "{{token}}"
+      },
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+
+    function getPresignedUrl(storeFileName) {
+      const selectedFile = document.getElementById('image').files[0];
+
+      var form = new FormData();
+
+      form.append("file", $('#image')[0].files[0]);
+
+      var settings = {
+        "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+          "Authorization": "{{token}}"
+        },
+      };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        image(response)
+      });
+
+      function image(response) {
+
+        var settings = {
+          "url": response,
+          "method": "PUT",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": selectedFile.type
+          },
+          "data": selectedFile,
+          contentType: false,
+          processData: false,
+        };
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+        });
+
+      }
+
+    }
 
   </script>
 

@@ -37,7 +37,7 @@
       </div>
     </header>
     <!-- 로고바 끝 -->
-    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
+    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 트레이너
     </div>
     <!-- 메뉴바 시작 -->
     <header class="menu-bar con-min-width">
@@ -121,11 +121,6 @@
     </header>
     <!-- 메뉴바 끝 -->
 
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티 <i class="fa-solid fa-circle-right"></i> 트레이너</li>
-      </ol>
-    </nav>
 
       <div class="con">
 
@@ -157,6 +152,7 @@
               <i onclick="dislikeTrainer()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
             </div>
           </div>
+
       </div>
 
     <!-- <div id="article-list-wrap" class="section-1 con-min-width">
@@ -503,12 +499,27 @@
     margin-left: 50%;
   }
 
+  .write-center {
+    margin-left: 46%;
+  }
+
+
   .write>ul>li {
     margin-bottom: 10px;
   }
 
   .write>ul>li>div {
     margin-left: 5px;
+  }
+
+  .postLike-box{
+    display: flex;
+    left: 20%;
+    align-items: center;
+  }
+  
+  .postLike-box>*{
+    margin: 3px;
   }
 
   .commentForm {
@@ -660,7 +671,7 @@
 <script>
   var page = 0;
   var trainerId = localStorage.getItem('currentTrainerId');
-  console.log("트레이너 아이디 : "+$('#trainerId').val());
+  console.log("트레이너 아이디 : "+trainerId);
 
   jQuery(document).ready(function () {
     page = trainerId;
@@ -679,7 +690,7 @@
     $('#nickname').text(response.nickname);
     $('#introduce').text(response.introduce);
     $('#CountLove').text(response.likes);
-    $('#category').text(response.category);
+    $('#image').text(response.image);
 
     if(response.image != null) {
       $('#image').attr("src", response.image)
@@ -733,8 +744,8 @@
       };
 
     $.ajax(settings).done(function (response) {
-      console.log("좋아요 눌렀습니다.");
-      window.location.reload();
+      alert(response);
+      location.reload();
     });
   }
 
@@ -750,8 +761,8 @@
       };
 
     $.ajax(settings).done(function (response) {
-      console.log("좋아요를 취소했습니다.");
-      window.location.reload();
+      alert(response);
+      location.reload();
     });
   }
 

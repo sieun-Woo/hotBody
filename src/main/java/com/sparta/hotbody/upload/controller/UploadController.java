@@ -19,47 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class UploadController {
-
-  private final ImageRepository imageRepository;
   private final UploadService uploadService;
-
-  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
-  @GetMapping("/upload")
-  public String newFile() {
-    return "upload-form";
+  @PostMapping ("/image")
+  public String putImage(@RequestParam String storeFileName) {
+    return uploadService.putImage(storeFileName);
   }
 
-
-  @GetMapping("/image")
-  public String putImage() {
-    return uploadService.putImage();
-  }
-
-
-  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
-  @PostMapping("/upload")
-  public String saveFile(
-      @RequestParam MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-
-    Image image = uploadService.storeFile(file);
-    redirectAttributes.addAttribute("itemId", image.getId());
-
-    return "redirect:/api/upload/{itemId}";
-  }
-
-  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
-  @GetMapping("/upload/{id}")
-  public String items(@PathVariable Long id, Model model) {
-    Image image = imageRepository.findById(id).get();
-    model.addAttribute("item", image);
-    return "item-view";
-  }
-
-  // 이미지 조회
-  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")
-  @ResponseBody
-  @GetMapping("/image/{filename}")
-  public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-    return uploadService.viewImage(filename);
-  }
 }

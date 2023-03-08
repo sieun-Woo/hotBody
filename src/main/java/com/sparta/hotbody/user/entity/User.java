@@ -140,7 +140,6 @@ public class User extends TimeStamp {
     this.role = UserRole.TRAINER;
   }
 
-
   //카카오 아이디 업데이트
   public User kakaoIdUpdate(Long kakaoId) {
     this.kakaoId = kakaoId;

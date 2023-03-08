@@ -19,6 +19,7 @@ public class TrainerResponseDto {
   private String email;
   private String introduce;
   private int isPromoted;
+  private Integer likes;
 
   public TrainerResponseDto(User user) {
     this.id = user.getTrainer().getId();
@@ -29,5 +30,6 @@ public class TrainerResponseDto {
     this.email = user.getEmail();
     this.introduce = user.getTrainer().getIntroduce();
     this.isPromoted = user.getTrainer().getIsPromoted();
+    this.likes = user.getTrainerLikeList().size();
   }
 }

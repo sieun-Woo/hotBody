@@ -666,7 +666,7 @@
   jQuery(document).ready(function () {
 
     var settings = {
-      url: "http://www.hotbody.store/api/posts/" + postId,
+      url: "https://www.hotbody.store/api/posts/" + postId,
       method: "GET",
       timeout: 0,
       headers: {
@@ -702,7 +702,7 @@
 
   function logout() {
     var settings = {
-      url: "http://www.hotbody.store/api/user/log-out",
+      url: "https://www.hotbody.store/api/user/log-out",
       method: "DELETE",
       timeout: 0,
       headers: {
@@ -733,7 +733,7 @@
     form.append("file", $("#image")[0].files[0]);
 
     var settings = {
-      url: "http://www.hotbody.store/api/posts/" + postId + "/image",
+      url: "https://www.hotbody.store/api/posts/" + postId + "/image",
       method: "POST",
       timeout: 0,
       headers: {
@@ -768,7 +768,7 @@
     console.log(selectedFile);
 
     var settings = {
-      "url": "http://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+      "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -807,7 +807,7 @@
 
   function updatePost() {
     var settings = {
-      url: "http://www.hotbody.store/api/posts/" + postId,
+      url: "https://www.hotbody.store/api/posts/" + postId,
       method: "PATCH",
       timeout: 0,
       headers: {

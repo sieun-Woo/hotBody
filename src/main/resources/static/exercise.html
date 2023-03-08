@@ -806,7 +806,7 @@ if (localStorage.getItem('accessToken')) {
 function logout() {
 
 var settings = {
-  "url": "http://www.hotbody.store/api/user/log-out",
+  "url": "https://www.hotbody.store/api/user/log-out",
   "method": "DELETE",
   "timeout": 0,
   "headers": {
@@ -857,7 +857,7 @@ location.href = "index.html";
   function recordExercise() {   
   
     var settings = {
-      "url": "http://www.hotbody.store/api/record",
+      "url": "https://www.hotbody.store/api/record",
       "method": "POST",
       "timeout": 0,
       "headers": {
@@ -884,7 +884,7 @@ location.href = "index.html";
   
   function getExerciseRecord(recordId) {
     var settings = {
-      "url": `http://www.hotbody.store/api/records/${recordId}`,
+      "url": `https://www.hotbody.store/api/records/${recordId}`,
       "method": "GET",
       "timeout": 0,
       "headers": {
@@ -905,7 +905,7 @@ location.href = "index.html";
 
   function deleteExerciseRecord(recordId) {
     var settings = {
-      "url": `http://www.hotbody.store/api/records/${recordId}`,
+      "url": `https://www.hotbody.store/api/records/${recordId}`,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -928,7 +928,7 @@ location.href = "index.html";
   function updateExerciseRecord() {
     recordId = selectedId;
     var settings = {
-      "url": `http://www.hotbody.store/api/records/${recordId}`,
+      "url": `https://www.hotbody.store/api/records/${recordId}`,
       "method": "PATCH",
       "timeout": 0,
       "headers": {
@@ -951,7 +951,7 @@ location.href = "index.html";
   function getExerciseRecords(page) {
     
     var settings = {
-      "url": `http://www.hotbody.store/api/records?page=${page}&size=5&sortBy=id&isAsc=false`,
+      "url": `https://www.hotbody.store/api/records?page=${page}&size=5&sortBy=id&isAsc=false`,
       "method": "GET",
       "timeout": 0,
       "headers": {

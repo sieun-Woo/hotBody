@@ -747,13 +747,11 @@
 
     function image1() {
 
-
-
       const selectedFile = document.getElementById('image').files[0];
 
       var form = new FormData();
 
-      form.append("multipartFile",  $('#image')[0].files[0]);
+      form.append("file", $('#image')[0].files[0]);
 
       console.log(form)
 
@@ -762,7 +760,7 @@
         "method": "GET",
         "timeout": 0,
         "headers": {
-          "Authorization": "{{token}}"
+          "Authorization": "{{token}}",
         },
         "processData": false,
         "mimeType": "multipart/form-data",

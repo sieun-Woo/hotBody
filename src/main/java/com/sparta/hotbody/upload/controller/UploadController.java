@@ -30,8 +30,8 @@ public class UploadController {
 //  }
 
   @GetMapping("/image")
-  public String putImage(@RequestPart MultipartFile multipartFile) {
-    return uploadService.putImage(multipartFile);
+  public String putImage(@RequestPart MultipartFile file) {
+    return uploadService.putImage(file);
   }
 
 //  @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'TRAINER')")

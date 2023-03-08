@@ -727,6 +727,7 @@
     var form = new FormData();
     if ($("#image")[0].files[0] == null) {
       updatePost();
+      history.back();
       return;
     }
 
@@ -754,9 +755,7 @@
     }).fail(function (response) {
       alert("수정 권한이 없습니다.");
     });
-
   }
-
     // 글 수정
 
 

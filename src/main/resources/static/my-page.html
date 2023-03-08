@@ -796,7 +796,7 @@
     $.ajax(settings).done(function (response) {
       console.log(response);
       alert("수정이 완료되었습니다.")
-      location.reload();
+      // location.reload();
     });
   }
 
@@ -833,7 +833,7 @@
       form.append("file", $('#image')[0].files[0]);
 
       var settings = {
-        "url": "http://localhost:8080/api/image?storeFileName=" + storeFileName,
+        "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
         "method": "POST",
         "timeout": 0,
         "headers": {

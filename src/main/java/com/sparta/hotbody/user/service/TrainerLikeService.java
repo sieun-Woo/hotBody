@@ -27,16 +27,17 @@ public class TrainerLikeService {
   private final UserRepository userRepository;
 
   // 1. 트레이너 좋아요
-  public ResponseEntity<String> addLike(Long trainerId, Long userId) {
+  public ResponseEntity<String> addLike(Long trainerId, User user) {
     User trainer = userRepository.findById(trainerId).orElseThrow(
         () -> new CustomException(ExceptionStatus.TRAINER_IS_NOT_EXIST)
     );
     if (trainerLikeRepository.existsByUserIdAndTrainerId(user.getId(), trainerId)) {
       throw new CustomException(ExceptionStatus.ADDED_LIKE);
     }
-    TrainerLike trainerLike = new TrainerLike(user.getId(), trainer);
-    trainerLikeRepository.countAllByTrainerLike(trainerId);
-    trainerLikeRepository.save(trainerLike);
+    if(trainer.getRole().equals(UserRole.TRAINER)) {
+      TrainerLike trainerLike = new TrainerLike(trainer, user.getId());
+      trainerLikeRepository.save(trainerLike);
+    }
     return ResponseEntity.ok("좋아요 눌렀습니다.");
   }
 

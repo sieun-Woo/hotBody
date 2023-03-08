@@ -28,7 +28,7 @@ public class TrainerLikeController {
   public ResponseEntity<String> addLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    return trainerLikeService.addLike(trainerId, userDetailsImpl.getUser().getId());
+    return trainerLikeService.addLike(trainerId, userDetailsImpl.getUser());
   }
 
   //2. 트레이너 좋아요 취소
@@ -37,7 +37,7 @@ public class TrainerLikeController {
   public ResponseEntity<String> cancelLike(
       @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
       @PathVariable Long trainerId) {
-    return trainerLikeService.cancelLike(trainerId, userDetailsImpl.getUser().getId());
+    return trainerLikeService.cancelLike(trainerId, userDetailsImpl.getUser());
   }
 
 }

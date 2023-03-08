@@ -6,6 +6,7 @@ import com.sparta.hotbody.user.dto.FindUserIdRequestDto;
 import com.sparta.hotbody.user.dto.FindUserIdResponseDto;
 import com.sparta.hotbody.user.dto.FindUserPwRequestDto;
 import com.sparta.hotbody.user.dto.FindUserPwResponseDto;
+import com.sparta.hotbody.user.dto.LikedTrainerResponseDto;
 import com.sparta.hotbody.user.dto.LoginRequestDto;
 import com.sparta.hotbody.user.dto.SignUpRequestDto;
 import com.sparta.hotbody.user.dto.TrainerRequestDto;
@@ -168,6 +169,14 @@ public class UserController {
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public UsersResponseDto getTrainer(@PathVariable Long trainerId) {
     return userService.getTrainer(trainerId);
+  }
+
+  //12. 좋아요 누른 트레이너 조회
+  @GetMapping("/my-trainers")
+  @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
+  public Page<LikedTrainerResponseDto> getLikedTrainers(
+      @AuthenticationPrincipal UserDetailsImpl userDetails, GetPageModel getPageModel) {
+    return userService.getLikedTrainers(userDetails, getPageModel);
   }
 
 }

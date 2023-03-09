@@ -56,6 +56,7 @@ public class UsersResponseDto {
             .region(m.getRegion())
             .role(m.getRole())
             .introduce(m.getIntroduce())
+            .email(m.getEmail())
             .build());
     return usersResponseDtoPage;
   };

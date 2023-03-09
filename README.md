@@ -1,6 +1,6 @@
 # HotBody
 
-![로고_사이즈_수정.png](HotBody%201e943056db35429795c61e4f93b846ed/%25EB%25A1%259C%25EA%25B3%25A0_%25EC%2582%25AC%25EC%259D%25B4%25EC%25A6%2588_%25EC%2588%2598%25EC%25A0%2595.png)
+![B반6조_로고](https://user-images.githubusercontent.com/62333360/223961598-a1e0dd62-98fa-41c9-b49d-9003b9450e06.png)
 
 # **Fitness Information Community**
 
@@ -36,36 +36,121 @@
 
 ---
 
-|  | 우시은 | 박상욱 | 송지은 https://www.instagram.com/ddorong._.0226/ | https://github.com/tae993136  | https://github.com/milnil0228 |
-| --- | --- | --- | --- | --- | --- |
-| 직책 | 리더 | 부리더 | 팀원 | 팀원 | 팀원 |
-| 이메일 | https://www.notion.sotldms6352@gmail.com | https://www.notion.sopsw1375@gmail.com | HotBody%201e943056db35429795c61e4f93b846ed.md | https://www.notion.sotae993136@gmail.com | https://www.notion.somilnil0228@gamil.com |
-| 깃허브 & 블로그 | https://github.com/sieun-Woo  / https://tldms6352.tistory.com/ | https://github.com/Newbie1031  / https://t1021.tistory.com/ | https://github.com/dorong0226 | https://github.com/tae993136 / https://codingprac.tistory.com/ | https://github.com/milnil0228  / blog |
-| 백엔드 | 이미지 CRUD, CI/CD | 글&댓글 CRUD | 유저, 트레이너 CRUD | 운동 기록 CRUD, 신고 기능,  
-카카오 로그인 | 관리자 CRUD, 테스트 코드 |
-| 프론트 엔드 | 식단 기록, 페이징 |  | 커뮤니티  | 신고, 카카오 로그인,
-주소 입력, 운동 기록 | 관리자, 유저 프로필, 메인 페이지, 지도 API |
+<table id="dfca6147-5fdf-402b-a556-e4151bbd8350" class="simple-table">
+      <thead class="simple-table-header">
+      <tr id="425ae2cd-a660-4ba9-ae60-7dc61d8e999f">
+        <th id="hR@n" class="simple-table-header-color simple-table-header"
+            style="width:147px"></th>
+        <th id="]BXh" class="simple-table-header-color simple-table-header"
+            style="width:160.921875px">우시은
+        </th>
+        <th id="\VOL" class="simple-table-header-color simple-table-header"
+            style="width:150.828125px">박상욱
+        </th>
+        <th id="`|N}" class="simple-table-header-color simple-table-header"
+            style="width:170.171875px">송지은
+        </th>
+        <th id="yj[&gt;" class="simple-table-header-color simple-table-header"
+            style="width:196.5625px">김석진</th>
+        <th id="aETP" class="simple-table-header-color simple-table-header" style="width:184px">홍승엽</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr id="a3a2619f-71d5-4015-ac04-94dc2ac4a118">
+        <th id="hR@n" class="simple-table-header-color simple-table-header" style="width:147px">직책
+        </th>
+        <td id="]BXh" class="" style="width:160.921875px">리더</td>
+        <td id="\VOL" class="" style="width:150.828125px">부리더</td>
+        <td id="`|N}" class="" style="width:170.171875px">팀원</td>
+        <td id="yj[&gt;" class="" style="width:196.5625px">팀원</td>
+        <td id="aETP" class="" style="width:184px">팀원</td>
+      </tr>
+      <tr id="4a433c1c-717a-4e44-bea9-944f8e8b3d1f">
+        <th id="hR@n" class="simple-table-header-color simple-table-header" style="width:147px">
+          이메일
+        </th>
+        <td id="]BXh" class="" style="width:160.921875px"><a
+            href="https://www.notion.sotldms6352@gmail.com">tldms6352@gmail.com</a></td>
+        <td id="\VOL" class="" style="width:150.828125px"><a
+            href="https://www.notion.sopsw1375@gmail.com">psw1375@gmail.com</a></td>
+        <td id="`|N}" class="" style="width:170.171875px"><a
+            href="https://www.notion.so/HotBody-1e943056db35429795c61e4f93b846ed">jieuns2max@gmail.com</a>
+        </td>
+        <td id="yj[&gt;" class="" style="width:196.5625px"><a
+            href="https://www.notion.sotae993136@gmail.com">tae993136@gmail.com</a></td>
+        <td id="aETP" class="" style="width:184px"><a
+            href="https://www.notion.somilnil0228@gamil.com">milnil0228@gamil.com</a></td>
+      </tr>
+      <tr id="c8bbab05-5610-4c85-8bed-679be3b94625">
+        <th id="hR@n" class="simple-table-header-color simple-table-header" style="width:147px">깃허브
+          &amp; 블로그
+        </th>
+        <td id="]BXh" class="" style="width:160.921875px"><a href="https://github.com/sieun-Woo">Github</a>
+          / <a href="https://tldms6352.tistory.com/">blog</a></td>
+        <td id="\VOL" class="" style="width:150.828125px"><a href="https://github.com/Newbie1031">Github</a>
+          / <a href="https://t1021.tistory.com/">blog</a></td>
+        <td id="`|N}" class="" style="width:170.171875px"><a href="https://github.com/dorong0226">Github</a>
+        </td>
+        <td id="yj[&gt;" class="" style="width:196.5625px"><a href="https://github.com/tae993136">Github</a>
+          / <a href="https://codingprac.tistory.com/">blog</a></td>
+        <td id="aETP" class="" style="width:184px"><a
+            href="https://github.com/milnil0228">Github</a> / blog
+        </td>
+      </tr>
+      <tr id="cc102f44-1e84-4eec-a65a-5907ff9d89a8">
+        <th id="hR@n" class="simple-table-header-color simple-table-header" style="width:147px">
+          백엔드
+        </th>
+        <td id="]BXh" class="" style="width:160.921875px">이미지 CRUD, CI/CD</td>
+        <td id="\VOL" class="" style="width:150.828125px">글&amp;댓글 CRUD</td>
+        <td id="`|N}" class="" style="width:170.171875px">유저, 트레이너 CRUD</td>
+        <td id="yj[&gt;" class="" style="width:196.5625px">운동 기록 CRUD, 신고 기능,
+          카카오 로그인
+        </td>
+        <td id="aETP" class="" style="width:184px">관리자 CRUD, 테스트 코드</td>
+      </tr>
+      <tr id="7dc37a68-5e63-4a0c-b6b6-34d44d4a85e1">
+        <th id="hR@n" class="simple-table-header-color simple-table-header" style="width:147px">프론트
+          엔드
+        </th>
+        <td id="]BXh" class="" style="width:160.921875px">식단 기록, 페이징</td>
+        <td id="\VOL" class="" style="width:150.828125px"></td>
+        <td id="`|N}" class="" style="width:170.171875px">커뮤니티</td>
+        <td id="yj[&gt;" class="" style="width:196.5625px">신고, 카카오 로그인,
+          주소 입력, 운동 기록
+        </td>
+        <td id="aETP" class="" style="width:184px">관리자, 유저 프로필, 메인 페이지, 지도 API</td>
+      </tr>
+      </tbody>
+    </table>
 
 # 💻개발 및 배포 환경
 
 ---
 
-- Back-End
-    
-    ### 개발환경
+<details>
+<summary>Back-End</summary>
+<div markdown="1">
+
+### 개발환경
     
     이 프로젝트는 아래의 환경에서 작성되었습니다.
     
     - `spring-boot` : 2.7.8
     - `JDK` : 17
 
+</div>
+</details>
+
 # 🐣 서비스 아키텍쳐
 
 ---
 
-![Untitled](HotBody%201e943056db35429795c61e4f93b846ed/Untitled.png)
+![Untitled (1)](https://user-images.githubusercontent.com/62333360/223961728-fa9dc6bc-9451-40c4-8c96-a8fe94fd374e.png)
+
 
 # 🔎주요 기술
+
 
 [툴을 사용한 CI CD.md](CICD_with_tool.md)
 

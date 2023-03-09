@@ -10,4 +10,4 @@
 
 로 연결 해주어야한다.
 
-![Untitled](../../../../../../Downloads/Export-de55d96f-bbae-4c99-8e37-db659fd210c4/HotBody%201e943056db35429795c61e4f93b846ed/Https%202b816148f82643e1a122838e342ec641/Untitled.png)
+![Untitled (3)](https://user-images.githubusercontent.com/62333360/223970121-5ac86eac-5534-4f05-b12b-5492962d1566.png)

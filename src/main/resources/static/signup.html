@@ -421,7 +421,7 @@
   }
   function signup() {
 
-    let username = $('#id').val();
+    let username = $('#inputId').val();
     let password = $('#password').val();
     let nickname = $('#nickname').val();
 
@@ -456,7 +456,7 @@
     $.ajax(settings).done(function (response) {
       console.log(response);
       alert("회원가입 완료")
-      location.href="https://www.hotbody.store/index.html"
+      location.href="https://www.hotbody.store/login.html"
     });
   }
 </script>

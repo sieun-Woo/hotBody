@@ -693,7 +693,6 @@
       }
       form.append("file", $('#image')[0].files[0]);
 
-
       var settings = {
         "url": "https://www.hotbody.store/api/posts/image",
         "method": "POST",
@@ -714,9 +713,6 @@
     }
 
     function createPost(response) {
-
-      $.ajax(settings).done(function (response) {
-      });
 
       var settings = {
         "url": "https://www.hotbody.store/api/post",
@@ -744,16 +740,12 @@
     function getPresignedUrl(storeFileName) {
       const selectedFile = document.getElementById('image').files[0];
 
-      var form = new FormData();
-
-      form.append("file", $('#image')[0].files[0]);
-
       var settings = {
         "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
         "method": "POST",
         "timeout": 0,
         "headers": {
-          "Authorization": "{{token}}"
+          "Authorization": localStorage.getItem("accessToken")
         },
       };
 

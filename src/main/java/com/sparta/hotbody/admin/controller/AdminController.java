@@ -204,7 +204,6 @@ public class AdminController {
   }
 
   // 유저 회원 탈퇴
-  @CacheEvict
   @DeleteMapping("/users/{userId}")
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<String> deleteUser(@PathVariable Long userId) {

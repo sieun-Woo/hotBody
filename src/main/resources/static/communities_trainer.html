@@ -978,14 +978,15 @@
                     };
 
                     $.ajax(settings).done(function (response) {
-                        img = response
+                        img = response;
                         console.log(response);
                     });
                 }
 
                 data.forEach((trainer) => {
+                    console.log(img)
                     image(trainer.image)
-                    str += `<figure class="card card--1" style="--image-src: url('${img}')">
+                    str += `<figure class="card card--1" style="--image-src: url(`+ img +`)">
                     <figcaption>
                       <span class="info">
                         <h3 id="nickname"><a onclick=goView(${trainer.id}) class="hover-pointer">${trainer.nickname}</a></h3>

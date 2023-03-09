@@ -141,8 +141,7 @@ public class UserService {
       throw new CustomException(ExceptionStatus.ALREADY_LOGOUT);
     }
   }
-
-  @CacheEvict
+  
   //3. 회원탈퇴
   public ResponseEntity<String> deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 

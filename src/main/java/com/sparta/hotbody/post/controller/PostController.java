@@ -48,7 +48,7 @@ public class PostController {
   @PostMapping("/posts/image")
   @PreAuthorize("hasAnyRole('USER', 'TRAINER', 'ADMIN')")
   public String createImage(
-      @RequestPart MultipartFile file) throws IOException {
+      @RequestPart MultipartFile file) {
     return postService.createImage(file);
   }
 

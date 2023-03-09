@@ -50,9 +50,8 @@ public class PostService {
     @Transactional
     public String createImage(MultipartFile file) {
         Image image = uploadService.storeFile(file);
-        String resourcePath = image.getResourcePath();
         String storeFileName = image.getStoreFileName();
-        return resourcePath + "&" + storeFileName;
+        return storeFileName;
     }
 
     // 2-1 베스트 게시글 조회
@@ -151,8 +150,8 @@ public class PostService {
     public String modifyImage(Long postId, MultipartFile file) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new CustomException(ExceptionStatus.POST_IS_NOT_EXIST));
         Image image = uploadService.storeFile(file);
-        String resourcePath = image.getResourcePath();
-        post.updateImage(resourcePath);
+        String storeFileName = image.getStoreFileName();
+        post.updateImage(storeFileName);
         return image.getStoreFileName();
     }
 

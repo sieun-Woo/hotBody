@@ -683,8 +683,21 @@
       $("#category").text(response.category);
 
       if (response.image != null) {
-        $("#post_image").attr("src", response.image);
-        $("#post_image").attr("style", "max-width: 100%; height: auto;");
+
+        image(response.image)
+        function image(storeFileName) {
+          let settings = {
+            "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+            "method": "GET",
+            "timeout": 0,
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+            $("#image").attr("src", response)
+            $('#image').attr("style", "max-width: 100%; height: auto;")
+          });
+        }
       }
     });
 
@@ -719,9 +732,6 @@
     });
   }
 
-
-
-
   function updateImage() {
 
     var form = new FormData();
@@ -750,7 +760,6 @@
       getPresignedUrl(response)
       updatePost();
       alert("글 수정이 완료되었습니다.")
-      console.log("마지막?")
 
     }).fail(function (response) {
       alert("수정 권한이 없습니다.");

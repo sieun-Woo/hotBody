@@ -872,9 +872,8 @@
       if (response.image != null) {
 
         image(response.image)
-
         function image(storeFileName) {
-          var settings = {
+          let settings = {
             "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
             "method": "GET",
             "timeout": 0,

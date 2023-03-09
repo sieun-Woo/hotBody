@@ -67,8 +67,8 @@
 
 # 🔎주요 기술
 
-[툴을 사용한 CI/CD](HotBody%201e943056db35429795c61e4f93b846ed/%E1%84%90%E1%85%AE%E1%86%AF%E1%84%8B%E1%85%B3%E1%86%AF%20%E1%84%89%E1%85%A1%E1%84%8B%E1%85%AD%E1%86%BC%E1%84%92%E1%85%A1%E1%86%AB%20CI%20CD%205b0b7e909080452ab717d574edb72257.md)
+[툴을 사용한 CI CD.md](CICD_with_tool.md)
 
-[Https](HotBody%201e943056db35429795c61e4f93b846ed/Https%202b816148f82643e1a122838e342ec641.md)
+[Https.md](Https.md)
 
-[OAuth2 카카오 로그인](HotBody%201e943056db35429795c61e4f93b846ed/OAuth2%20%E1%84%8F%E1%85%A1%E1%84%8F%E1%85%A1%E1%84%8B%E1%85%A9%20%E1%84%85%E1%85%A9%E1%84%80%E1%85%B3%E1%84%8B%E1%85%B5%E1%86%AB%200c8d76fa1e5b4d65acbdd21ef3ca96c9.md)
+[OAuth2 카카오 로그인.md](OAuth2KakaoLogin.md)

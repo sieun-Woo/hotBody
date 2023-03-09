@@ -151,9 +151,9 @@
 
 # 🔎주요 기술
 
-[툴을 사용한 CI/CD](https://github.com/sieun-Woo/hotBody/files/10929339/CI.CD.5b0b7e909080452ab717d574edb72257.md)
 
-[Https](https://github.com/sieun-Woo/hotBody/files/10929345/Https.2b816148f82643e1a122838e342ec641.md)
+[툴을 사용한 CI CD.md](CICD_with_tool.md)
 
-[OAuth2 카카오 로그인](https://github.com/sieun-Woo/hotBody/files/10929349/OAuth2.0c8d76fa1e5b4d65acbdd21ef3ca96c9.md)
+[Https.md](Https.md)
 
+[OAuth2 카카오 로그인.md](OAuth2KakaoLogin.md)

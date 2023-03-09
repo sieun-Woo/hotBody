@@ -60,7 +60,6 @@
 
     <button type="submit" onclick="kakaoLogin()" class="btnkakao">카카오로 시작하기</button>
 
-    <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
     <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기
     </button>
 
@@ -427,7 +426,7 @@
 
     $.ajax().done(function () {
 
-          alert("로그인 완료");
+          //alert("로그인 완료");
 
         }
     ).fail(function (response) {
@@ -473,18 +472,6 @@
     })
   }
 
-  // 구글 로그인 버튼 클릭
-  function loginWithGoogle() {
-    var settings = {
-      "url": "https://www.hotbody.store/google/login",
-      "method": "GET",
-      "timeout": 0,
-      "headers": {}
-    };
 
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
-  }
 </script>
 </html>

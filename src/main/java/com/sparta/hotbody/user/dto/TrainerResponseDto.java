@@ -13,7 +13,7 @@ public class TrainerResponseDto {
 
   private Long id;
   private String nickname;
-  private int gender;
+  private Integer gender;
   private int age;
   private String region;
   private String email;

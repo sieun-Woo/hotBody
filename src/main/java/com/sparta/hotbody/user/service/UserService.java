@@ -78,6 +78,7 @@ public class UserService {
   private String from;
 
   //1. 회원가입
+  @Transactional
   public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = passwordEncoder.encode(requestDto.getPassword());
@@ -323,7 +324,7 @@ public class UserService {
     return null;
   }
 
-  @Transactional
+
   public Page<LikedTrainerResponseDto> getLikedTrainers(UserDetailsImpl userDetails, GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);

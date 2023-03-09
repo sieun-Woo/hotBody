@@ -136,8 +136,8 @@
     
     이 프로젝트는 아래의 환경에서 작성되었습니다.
     
-    - `spring-boot` : 2.7.8
-    - `JDK` : 17
+    - spring-boot : 2.7.8
+    - JDK : 17
 
 </div>
 </details>

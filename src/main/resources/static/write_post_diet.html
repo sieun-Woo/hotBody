@@ -150,10 +150,7 @@
         <input type="file" id="image">
         <br /><br />
       </div>
-
       <input type="submit" class="btn" value="글 올리기" id="upload" onclick="createImage()" />
-
-      <input type="submit" class="btn" value="글 올리기" id="upload" onclick="image1()" />
     </div>
   </div>
   </body>
@@ -711,8 +708,8 @@
       };
 
       $.ajax(settings).done(function (response) {
-        getPresignedUrl(response.split("&")[1]);
-        createPost(response.split("&")[0])
+        getPresignedUrl(response);
+        createPost(response)
       });
     }
 
@@ -744,20 +741,6 @@
 
     }
 
-
-    var settings = {
-      "url": "https://www.hotbody.store/api/image?storeFileName=123.jpg",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "Authorization": "{{token}}"
-      },
-    };
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
-
     function getPresignedUrl(storeFileName) {
       const selectedFile = document.getElementById('image').files[0];
 
@@ -776,10 +759,10 @@
 
       $.ajax(settings).done(function (response) {
         console.log(response);
-        image(response)
+        uploadImage(response)
       });
 
-      function image(response) {
+      function uploadImage(response) {
 
         var settings = {
           "url": response,

@@ -710,8 +710,8 @@
       };
 
       $.ajax(settings).done(function (response) {
-        getPresignedUrl(response.split("&")[1]);
-        createPost(response.split("&")[0])
+        getPresignedUrl(response);
+        createPost(response)
       });
     }
 

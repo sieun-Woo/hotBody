@@ -162,7 +162,7 @@
                 </div>
 
                 <div class="textForm">
-                    <label for="avatar">이미지 업로드 :</label><br/><br/>
+                    <label>이미지 업로드 :</label><br/><br/>
                     <input type="file" id="image"/>
                     <br/><br/>
                 </div>
@@ -661,8 +661,6 @@
     });
 
     var postId = localStorage.getItem("currentPostId");
-    var imageUrlList = [];
-
     jQuery(document).ready(function () {
 
         var settings = {
@@ -674,7 +672,6 @@
                 "Content-Type": "application/json",
             },
         };
-
         $.ajax(settings).done(function (response) {
             $("#title").text(response.title);
             $("#content").text(response.content);
@@ -691,7 +688,6 @@
                         "method": "GET",
                         "timeout": 0,
                     };
-
                     $.ajax(settings).done(function (response) {
                         console.log(response);
                         $("#post_image").attr("src", response)
@@ -712,7 +708,6 @@
         }
     });
 
-
     function logout() {
         var settings = {
             url: "https://www.hotbody.store/api/user/log-out",
@@ -732,16 +727,13 @@
         });
     }
 
-
     function updateImage() {
 
         var form = new FormData();
-
         if ($("#image")[0].files[0] == null) {
             updatePost();
             return;
         }
-
         form.append("file", $("#image")[0].files[0]);
 
         var settings = {
@@ -761,6 +753,7 @@
             getPresignedUrl(response)
         }).fail(function () {
             alert("수정 권한이 없습니다.");
+            history.back();
         });
     }
     function getPresignedUrl(storeFileName) {
@@ -780,7 +773,6 @@
         };
 
         $.ajax(settings).done(function (response) {
-            console.log(response);
             uploadImage(response)
         });
 
@@ -820,11 +812,9 @@
             }),
         };
 
-        $.ajax(settings).done(function (response) {
-            console.log(response);
+        $.ajax(settings).done(function () {
             alert(("수정되었습니다."))
             history.back();
-
         }).fail(function () {
             alert("수정 권한이 없습니다.");
             history.back();

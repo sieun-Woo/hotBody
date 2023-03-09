@@ -42,12 +42,13 @@
   <div class="joinForm">
     <h2>회원가입</h2>
     <div class="textForm">
-      <input name="loginId" type="text" class="id" placeholder="아이디" id="id">
-      </input>
+      <input name="loginId" type="text" class="id" placeholder="아이디" id="inputId" onblur="validateId()">
     </div>
+    <div id="idError" class="error"></div>
     <div class="textForm">
-      <input name="loginPw" type="password" class="pw" placeholder="비밀번호" id="password">
+      <input name="loginPw" type="password" class="pw" placeholder="비밀번호" id="password" onblur="validatePassword()">
     </div>
+    <div id="passwordError" class="error"></div>
     <div class="textForm">
       <input name="nickname" type="text" class="name" placeholder="닉네임" id="nickname">
     </div>
@@ -63,6 +64,7 @@
     </div>
     <button type="submit" class="btn" onclick="signup()">회원가입</button>
   </div>
+</div>
 </body>
 <style>
   /* vue 헤더 */
@@ -274,7 +276,7 @@
 
   .joinForm {
     position:absolute;
-    width:400px;
+    width:410px;
     height:400px;
     padding: 30px, 20px;
     background-color:#FFFFFF;
@@ -388,8 +390,35 @@
   .btn:hover {
     background-position: right;
   }
+  .error {
+    color: red;
+    font-size : small;
+  }
 </style>
 <script>
+
+  function validateId() {
+    var inputId = document.getElementById("inputId").value;
+    var regex = /^[a-z0-9]{4,10}$/;
+    if (!regex.test(inputId) && inputId) {
+      document.getElementById("idError").innerHTML = "4자 이상, 10자 이하의 알파벳과 숫자가 포함되어야 합니다.";
+      return false;
+    } else {
+      document.getElementById("idError").innerHTML = "";
+      return true;
+    }
+  }
+  function validatePassword() {
+    var password = document.getElementById("password").value;
+    var regex = /^(?=.*[a-zA-Z])(?=.*[0-9])^[a-zA-Z0-9~!@#$%^&*()+|=]{8,15}$/;
+    if (!regex.test(password) && password) {
+      document.getElementById("passwordError").innerHTML = "8자 이상, 15자 이하이며 알파벳과 숫자가 포함되어야 합니다.";
+      return false;
+    } else {
+      document.getElementById("passwordError").innerHTML = "";
+      return true;
+    }
+  }
   function signup() {
 
     let username = $('#id').val();
@@ -426,6 +455,8 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response);
+      alert("회원가입 완료")
+      location.href="https://www.hotbody.store/index.html"
     });
   }
 </script>

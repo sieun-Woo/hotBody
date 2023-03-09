@@ -775,8 +775,8 @@
             "method": "POST",
             "timeout": 0,
             "headers": {
-                "Authorization": "{{token}}"
-            },
+                "Authorization": localStorage.getItem("accessToken")
+            }
         };
 
         $.ajax(settings).done(function (response) {

@@ -693,8 +693,6 @@
         return;
       }
       form.append("file", $('#image')[0].files[0]);
-
-
       var settings = {
         "url": "https://www.hotbody.store/api/posts/image",
         "method": "POST",
@@ -754,7 +752,7 @@
         "method": "POST",
         "timeout": 0,
         "headers": {
-          "Authorization": "{{token}}"
+          "Authorization": localStorage.getItem("accessToken")
         },
       };
 

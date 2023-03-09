@@ -85,14 +85,14 @@ public class UploadService {
         amazonS3.deleteObject(bucket, image.getFilePath());
     }
 
-    public String getImage() {
+    public String getImage(String storeFileName) {
 
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
-        expTimeMillis += 1000 * 60 * 60; // 1시간
+        expTimeMillis += 1000 * 60; // 1분
         expiration.setTime(expTimeMillis);
 
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image/008bc7a2-5412-4c11-b24a-04ea13e76502.jpg").withMethod(HttpMethod.GET).withExpiration(expiration);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image" + "/" + storeFileName).withMethod(HttpMethod.GET).withExpiration(expiration);
 
         generatePresignedUrlRequest.addRequestParameter(Headers.S3_CANNED_ACL, CannedAccessControlList.PublicRead.toString());
 
@@ -105,7 +105,7 @@ public class UploadService {
 
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
-        expTimeMillis += 1000 * 60 * 60; // 1시간
+        expTimeMillis += 1000 * 60; // 1분
         expiration.setTime(expTimeMillis);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucket, "image" + "/" + storeFileName).withMethod(HttpMethod.PUT).withExpiration(expiration);

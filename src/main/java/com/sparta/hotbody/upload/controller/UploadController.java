@@ -24,5 +24,9 @@ public class UploadController {
   public String putImage(@RequestParam String storeFileName) {
     return uploadService.putImage(storeFileName);
   }
+  @GetMapping("/image")
+  public String getImage(@RequestParam String storeFileName) {
+    return uploadService.getImage(storeFileName);
+  }
 
 }

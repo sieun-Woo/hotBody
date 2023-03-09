@@ -728,8 +728,22 @@
 
     $.ajax(settings).done(function (response) {
       console.log(response)
-      $("#image").attr("src", response)
+      image(response)
     });
+
+
+    function image(storeFileName) {
+      var settings = {
+        "url": "http://localhost:8080/api/image?storeFileName=" + storeFileName,
+        "method": "GET",
+        "timeout": 0,
+      };
+
+      $.ajax(settings).done(function (response) {
+        console.log(response);
+        $("#image").attr("src", response)
+      });
+    }
   }
 
   function getUser() {
@@ -799,7 +813,6 @@
         updateImage();
         return;
       }
-      console.log("1")
       console.log(response);
       alert("수정이 완료되었습니다.")
       location.reload();
@@ -825,7 +838,6 @@
     };
 
     $.ajax(settings).done(function (response) {
-      console.log("2")
       console.log(response);
       getPresignedUrl(response);
     });
@@ -844,7 +856,6 @@
     };
 
     $.ajax(settings).done(function (response) {
-      console.log("3")
       console.log(response);
       uploadImage(response)
     });
@@ -864,7 +875,6 @@
       };
 
       $.ajax(settings).done(function (response) {
-        console.log("4")
         console.log(response);
         location.reload();
       });

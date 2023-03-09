@@ -78,6 +78,7 @@ public class UserService {
   private String from;
 
   //1. 회원가입
+  @Transactional
   public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {
     String username = requestDto.getUsername();
     String password = passwordEncoder.encode(requestDto.getPassword());

@@ -77,7 +77,7 @@ public class UserService {
   @Value("${spring.mail.username}")
   private String from;
 
-  @Transactional
+
   //1. 회원가입
   @Transactional
   public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {

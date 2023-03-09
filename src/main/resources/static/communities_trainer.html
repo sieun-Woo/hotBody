@@ -961,29 +961,30 @@
     };
 
     $.ajax(settings).done(function (response) {
-      const TOTAL_DATA = response.totalElements; // 데이터 총개수
-      const VIEW_DATA = response.numberOfElements;   // 화면에 출력 개수
-      const TOTAL_PAGE = response.totalPages // 총페이지
 
-      const VIEW_SECTION = 10; // 화면 출력 개수(페이지 버튼 출력개수)
-      const TOTAL_SECTION = Math.ceil(TOTAL_PAGE / VIEW_SECTION); // 총구역(총페이지) 
-
-      var start = VIEW_DATA - VIEW_DATA;
-      var end = VIEW_DATA;
-      var j = 0;
-
-      console.log('트레이너 총페이지 : ', TOTAL_PAGE, '총구역 : ', TOTAL_SECTION);
       trainer_list(response.content);
       paging_list();
-
-
 
       // 트레이너 목록
       function trainer_list(data) {
         var str = '';
-        data.forEach((trainer) => {
-          var k = TOTAL_DATA - j
-          str += `<figure class="card card--1" style="--image-src: url('${trainer.image}')">
+        let img = "";
+        function image(storeFileName) {
+          var settings = {
+            "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+            "method": "GET",
+            "timeout": 0,
+          };
+
+          $.ajax(settings).done(function (response) {
+            img = response
+            console.log(response);
+          });
+        }
+
+      data.forEach((trainer) => {
+          image(trainer.image)
+          str += `<figure class="card card--1" style="--image-src: url('${img}')">
                     <figcaption>
                       <span class="info">
                         <h3 id="nickname"><a onclick=goView(${trainer.id}) class="hover-pointer">${trainer.nickname}</a></h3>
@@ -992,7 +993,6 @@
                       </span>
                     </figcaption>
                   </figure>`
-          j++
         });
 
         $('.container').empty();

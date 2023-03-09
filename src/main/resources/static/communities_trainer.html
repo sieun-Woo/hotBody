@@ -965,8 +965,6 @@
         $.ajax(settings).done(function (response) {
 
             trainer_list(response.content);
-            paging_list();
-
             // 트레이너 목록
             function trainer_list(data) {
                 var str = '';

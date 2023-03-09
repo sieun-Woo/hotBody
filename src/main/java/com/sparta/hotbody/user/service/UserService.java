@@ -197,13 +197,13 @@ public class UserService {
         () -> new CustomException(ExceptionStatus.USER_IS_NOT_EXIST)
     );
     Image image = uploadService.storeFile(file);
-    String resourcePath = image.getResourcePath();
+    String resourcePath = image.getStoreFileName();
     user.updateImage(resourcePath);
 
     return image.getStoreFileName();
   }
 
-  //8. 이미지 불러오기
+  //8. 유저 프로필 이미지 불러오기
   public String viewImage(UserDetailsImpl userDetails) {
     Optional<String> image = Optional.of(userDetails.getUser().getImage());
     if(image.isPresent()){

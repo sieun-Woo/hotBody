@@ -146,7 +146,7 @@
     </select>
     </div>
     <div class="textForm">
-      시간 : <input name="time" id="time" type="number" class="text" placeholder="시간을 입력 해주세요.">
+      시간 : <input name="time" id="time" type="number" class="text" placeholder="운동 시간(분)">
     </div>
     <div class="textForm">
       횟수 : <input name="reps" value="1" id="reps" type="number" class="text"
@@ -162,6 +162,7 @@
   <div>
     <!-- 페이징 -->
     <div class="paging"></div>
+    <div style="font-size:small; text-align: center; ">프로필에서 몸무게를 설정하시면 소모 칼로리가 계산됩니다.</div>
     <table id="exercise-records">
       <thead>
       <tr>
@@ -784,7 +785,7 @@
 </style>
 
 <script>
-  
+
 
 jQuery(document).ready(function ($) {
 

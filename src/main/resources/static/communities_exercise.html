@@ -826,13 +826,11 @@ searchPost(page)
 return false;
 });
 
-  const inputBox = document.getElementById('searchKeyword');
-  const clickButton = document.getElementById('search-input');
-
-  inputBox.addEventListener('keyup', function(event) {
-    if (event.keyCode === 13) { // Enter 키 코드는 13입니다.
-      event.preventDefault(); // Enter 키의 기본 동작인 줄바꿈을 막습니다.
-      clickButton.click(); // 버튼을 클릭합니다.
+  const searchInput = document.getElementById('searchKeyword');
+  searchInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      searchPost(1);
     }
   });
 

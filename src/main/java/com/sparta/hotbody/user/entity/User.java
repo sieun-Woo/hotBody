@@ -2,6 +2,7 @@ package com.sparta.hotbody.user.entity;
 
 import com.sparta.hotbody.comment.entity.Comment;
 import com.sparta.hotbody.common.timestamp.TimeStamp;
+import com.sparta.hotbody.exerciseRecord.entity.ExerciseRecord;
 import com.sparta.hotbody.post.entity.Post;
 import com.sparta.hotbody.post.entity.PostLike;
 import com.sparta.hotbody.report.entity.PostReportHistory;
@@ -92,6 +93,9 @@ public class User extends TimeStamp {
 
   @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<UserReportHistory> userReporterHistoryList = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ExerciseRecord> exerciseRecordList = new ArrayList<>();
 
 
   public User(String username, String password, UserRole role, String nickname, Integer gender, int age, String email) {

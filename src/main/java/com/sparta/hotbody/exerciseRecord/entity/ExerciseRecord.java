@@ -28,8 +28,8 @@ public class ExerciseRecord extends TimeStamp {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "User_ID")
+  @ManyToOne
+  @JoinColumn(nullable = false)
   User user;
 
   @Column

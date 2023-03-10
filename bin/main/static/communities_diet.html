@@ -678,6 +678,14 @@
   }
 </style>
 <script>
+  const searchInput = document.getElementById('searchKeyword');
+  searchInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      searchPost(1);
+    }
+  });
+
   jQuery(document).ready(function ($) {
 
     $("#logout").hide();

@@ -154,7 +154,7 @@
     <!-- 검색 끝 -->
 
           <div class="article-header" style="position: relative; z-index: 1;">
-            <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">운동 게시판</div>
+            <div style="text-align: center; font-size: 24px; font-weight: 900; margin-top: 50px;">트레이너 게시판</div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
             <div class="first"><br/>
               <div class="second"><br/>
@@ -983,7 +983,7 @@
         var str = '';
         data.forEach((trainer) => {
           var k = TOTAL_DATA - j
-          str += `<figure class="card card--1" style="--image-src: url('${trainer.image}')">
+          str += `<figure class="card card--1" style="--image-src: url('https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAxMDRfMjgz%2FMDAxNjcyODE4NzAwMzE5.6bfJICPMBvveS2dgk0zd3u_NUU2lfQzagDUqJqf3jpIg.ipxBKqud-hY8_7kfEQLUOhVZXSF1JGZYM3TAGhpO9Qwg.JPEG.kissminam30%2F%25C8%25AD%25B8%25E9_%25C4%25B8%25C3%25B3_2023-01-04_165124.jpg&type=sc960_832')">
                     <figcaption>
                       <span class="info">
                         <h3 id="nickname"><a onclick=goView(${trainer.id}) class="hover-pointer">${trainer.nickname}</a></h3>

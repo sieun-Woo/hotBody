@@ -55,7 +55,7 @@
     <div class="textForm">
       <input name="loginPw" type="password" class="pw" id="pw" placeholder="비밀번호">
     </div>
-    <button type="submit" onclick="login()" class="btn">로그인</button>
+    <button type="submit" onclick="login()" id="login_btn" class="btn">로그인</button>
 
 
     <button type="submit" onclick="kakaoLogin()" class="btnkakao">카카오로 시작하기</button>
@@ -418,10 +418,16 @@
   }
 </style>
 <script>
+
+  $(document).keypress(function(e) {
+    if (e.which == 13) { // 엔터키 코드는 13입니다
+      $('#login_btn').click(); // 버튼의 id를 사용하여 클릭 이벤트를 호출합니다
+    }
+  });
   function kakaoLogin() {
 
 
-    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=d6e0af59d3a7e3c74ed6322647d2f3f7&redirect_uri=https://www.hotbody.store/index.html&response_type=code';
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=484f8393a48d5726c93471a759f3f4de&redirect_uri=https://www.hotbody.store/index.html&response_type=code';
 
 
     $.ajax().done(function () {

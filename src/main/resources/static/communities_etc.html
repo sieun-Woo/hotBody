@@ -147,7 +147,7 @@
                   </h1>
                   <input id="searchKeyword" type="text" @input="search" :value="searchKeyword" placeholder=" 검색어 입력"
                     style="width: 100%; height: 30px; font-size: 20px;">
-                  <h1 style="position: absolute; right: 10px; top: 5px" onclick="searchPost(1)">
+                  <h1 style="position: absolute; right: 10px; top: 5px" id="search-input" onclick="searchPost(1)">
                     <i class="fas fa-search"></i>
                   </h1>
                 </div>
@@ -179,6 +179,7 @@
                 <span>글쓰기</span>
               </a>
             </li>
+            </ul>
         </div>
 
         <div class="paging">
@@ -187,9 +188,9 @@
         <br><br>
 
 
-
+      </section>
     </div>
-    </section>
+
   </div>
 
   <footer class="bottom-bar con-min-width">
@@ -829,6 +830,15 @@
     return false;
   });
 
+  const inputBox = document.getElementById('searchKeyword');
+  const clickButton = document.getElementById('search-input');
+
+  inputBox.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13) { // Enter 키 코드는 13입니다.
+      event.preventDefault(); // Enter 키의 기본 동작인 줄바꿈을 막습니다.
+      clickButton.click(); // 버튼을 클릭합니다.
+    }
+  });
 
   function searchPost(page) {
 

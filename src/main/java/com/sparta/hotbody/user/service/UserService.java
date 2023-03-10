@@ -141,8 +141,7 @@ public class UserService {
       throw new CustomException(ExceptionStatus.ALREADY_LOGOUT);
     }
   }
-
-  @CacheEvict
+  
   //3. 회원탈퇴
   public ResponseEntity<String> deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 
@@ -325,7 +324,7 @@ public class UserService {
     return null;
   }
 
-  @Transactional
+
   public Page<LikedTrainerResponseDto> getLikedTrainers(UserDetailsImpl userDetails, GetPageModel getPageModel) {
     // 페이징 처리
     Pageable pageable = new PageDto().toPageable(getPageModel);

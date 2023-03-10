@@ -144,7 +144,7 @@ public class KakaoService {
 
         // email: kakao email
         String email = kakaoUserInfo.getEmail();
-        String notExistEmail = kakaoUserInfo.getId() +"@email.com";
+        String notExistEmail = String.valueOf(kakaoUserInfo.getId()) +"@email.com";
 
         if (email != null){
           kakaoUser = new User(kakaoUserInfo.getNickname(), kakaoId,kakaoUserInfo.getNickname(), encodedPassword, email, UserRole.USER);

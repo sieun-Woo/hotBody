@@ -122,50 +122,50 @@
     <!-- 메뉴바 끝 -->
 
 
-      <div class="con">
+    <div class="con">
 
-        <!-- 게시글 -->
+      <!-- 게시글 -->
 
-        <div class="textForm">
-          <div type="category" id="category" name="category" disabled>TRAINER</div>
-          <br />
-        </div>
-        <input type="hidden" id = "trainerId">
-        <div class="textForm">
-          <img src="" id="image">
-          <div type="nickname" id="nickname" name="nickname" disabled></div>
-          <br/>
-        </div> 
+      <div class="textForm">
+        <div type="category" id="category" name="category" disabled>TRAINER</div>
+        <br />
+      </div>
+      <input type="hidden" id="trainerId">
+      <div class="textForm">
+        <img src="" id="image">
+        <div type="nickname" id="nickname" name="nickname" disabled></div>
+        <br />
+      </div>
 
-        <div class="textForm">
-          <div id="age"></div>
-          <br />
-        </div>
+      <div class="textForm">
+        <div id="age"></div>
+        <br />
+      </div>
 
-        <div class="textForm">
-          <div id="region"></div>
-          <br />
-        </div>
+      <div class="textForm">
+        <div id="region"></div>
+        <br />
+      </div>
 
-        <div class="textForm">
-          <div id="email"></div>
-          <br />
-        </div>
+      <div class="textForm">
+        <div id="email"></div>
+        <br />
+      </div>
 
-        <!-- 좋아요 -->
+      <!-- 좋아요 -->
 
-        <div class="textForm3">
-          <div class="write-center" style="position:center;">
-            <div class="postLike-box" >
-              <i onclick="likeTrainer()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
-              <div id="CountLove"></div>
-              <i onclick="dislikeTrainer()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
-            </div>
+      <div class="textForm3">
+        <div class="write-center" style="position:center;">
+          <div class="postLike-box">
+            <i onclick="likeTrainer()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+            <div id="CountLove"></div>
+            <i onclick="dislikeTrainer()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
           </div>
+        </div>
 
       </div>
 
-  </div>
+    </div>
   </div>
 
 </body>
@@ -222,11 +222,11 @@
     cursor: pointer;
   }
 
-  .row{
-    padding : 20px;
+  .row {
+    padding: 20px;
   }
 
-  .row > button {
+  .row>button {
     display: row;
     width: 50px;
     align-items: center;
@@ -309,13 +309,13 @@
 
   .con {
     max-width: 1000px;
-    width : 95%
+    width: 95%
   }
 
   .info-article {
     border: 1px solid black;
     max-width: 300px;
-    width : 95%;
+    width: 95%;
     height: 200px;
   }
 
@@ -479,7 +479,7 @@
     padding: 10px 10px;
   }
 
-  .textForm3 > button {
+  .textForm3>button {
     display: row;
     max-width: 50px;
     width: 95%;
@@ -506,13 +506,13 @@
     margin-left: 5px;
   }
 
-  .postLike-box{
+  .postLike-box {
     display: flex;
     left: 20%;
     align-items: center;
   }
-  
-  .postLike-box>*{
+
+  .postLike-box>* {
     margin: 3px;
   }
 
@@ -623,7 +623,7 @@
     background-position: right;
   }
 
-  .main>button{
+  .main>button {
     display: row;
     max-width: 50px;
     width: 95%;
@@ -668,7 +668,7 @@
 <script>
   var page = 0;
   var trainerId = localStorage.getItem('currentTrainerId');
-  console.log("트레이너 아이디 : "+trainerId);
+  console.log("트레이너 아이디 : " + trainerId);
 
   jQuery(document).ready(function () {
     page = trainerId;
@@ -683,20 +683,35 @@
       }
     };
 
-  $.ajax(settings).done(function (response) {
-    $('#nickname').text(response.nickname);
-    $('#introduce').text(response.introduce);
-    $('#age').text(response.age);
-    $('#region').text(response.region);
-    $('#email').text(response.email);
-    $('#CountLove').text(response.likes);
+    $.ajax(settings).done(function (response) {
+      $('#nickname').text(response.nickname);
+      $('#introduce').text(response.introduce);
+      $('#age').text(response.age);
+      $('#region').text(response.region);
+      $('#email').text(response.email);
+      $('#CountLove').text(response.likes);
 
-    if(response.image != null) {
-      $('#image').attr("src", response.image)
-      $('#image').attr("style", "max-width: 100%; height: auto;")
 
-    }
-  })
+      if (response.image != null) {
+
+        image(response.image)
+        function image(storeFileName) {
+          let settings = {
+            "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+            "method": "GET",
+            "timeout": 0,
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+            $("#image").attr("src", response)
+            $('#image').attr("style", "max-width: 100%; height: auto;")
+          });
+        }
+
+      }
+
+    })
 
     if (localStorage.getItem('accessToken')) {
       $("#logout").show();
@@ -730,17 +745,17 @@
     });
   }
 
-    // 좋아요
-    function likeTrainer(){
-      var settings = {
-        "url": "https://www.hotbody.store/api/trainers/"+ localStorage.getItem('currentTrainerId'),
-        "method": "POST",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+  // 좋아요
+  function likeTrainer() {
+    var settings = {
+      "url": "https://www.hotbody.store/api/trainers/" + localStorage.getItem('currentTrainerId'),
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
 
-        },
-      };
+      },
+    };
 
     $.ajax(settings).done(function (response) {
       alert(response);
@@ -748,16 +763,16 @@
     });
   }
 
-  function dislikeTrainer(){
-      var settings = {
-        "url": "https://www.hotbody.store/api/trainers/"+localStorage.getItem('currentTrainerId'),
-        "method": "DELETE",
-        "timeout": 0,
-        "headers": {
-          "Authorization": localStorage.getItem('accessToken')
+  function dislikeTrainer() {
+    var settings = {
+      "url": "https://www.hotbody.store/api/trainers/" + localStorage.getItem('currentTrainerId'),
+      "method": "DELETE",
+      "timeout": 0,
+      "headers": {
+        "Authorization": localStorage.getItem('accessToken')
 
-        },
-      };
+      },
+    };
 
     $.ajax(settings).done(function (response) {
       alert(response);

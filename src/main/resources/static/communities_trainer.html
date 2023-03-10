@@ -951,7 +951,7 @@
         return false;
     });
 
-    async function getTrainers(page) {
+    function getTrainers(page) {
         var settings = {
             "url": `https://www.hotbody.store/api/user/trainers?page=${page}&size=4&sortBy=id&isAsc=true`,
             "method": "GET",
@@ -962,27 +962,13 @@
             }
         };
 
-        await $.ajax(settings).done(function (response) {
+        $.ajax(settings).done(function (response) {
 
             trainer_list(response.content);
             // 트레이너 목록
             function trainer_list(data) {
                 var str = '';
                 let img = "";
-
-                async function image(storeFileName) {
-                    var settings = {
-                        "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
-                        "method": "GET",
-                        "timeout": 0,
-                    };
-
-                    await $.ajax(settings).done(function (response) {
-                        img = response;
-                        console.log(response);
-                    });
-                }
-
 
                 data.forEach((trainer) => {
                     console.log(img)
@@ -1001,6 +987,20 @@
                 $('.container').empty();
                 $('.container').append(str);
             }
+        });
+    }
+
+    function image(storeFileName) {
+        var settings = {
+            "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+            "method": "GET",
+            "timeout": 0,
+            "async" : false
+        };
+
+        $.ajax(settings).done(function (response) {
+            img = response;
+            console.log(response);
         });
     }
 

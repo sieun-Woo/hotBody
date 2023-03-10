@@ -138,13 +138,19 @@ public class KakaoService {
       } else {
         // 신규 회원가입
         // password: random UUID
+
         String password = UUID.randomUUID().toString();
         String encodedPassword = passwordEncoder.encode(password);
 
         // email: kakao email
         String email = kakaoUserInfo.getEmail();
+        String notExistEmail = kakaoUserInfo.getId() +"@email.com";
 
-        kakaoUser = new User(kakaoUserInfo.getNickname(), kakaoId,kakaoUserInfo.getNickname(), encodedPassword, email, UserRole.USER);
+        if (email != null){
+          kakaoUser = new User(kakaoUserInfo.getNickname(), kakaoId,kakaoUserInfo.getNickname(), encodedPassword, email, UserRole.USER);
+        }else{
+          kakaoUser = new User(kakaoUserInfo.getNickname(), kakaoId,kakaoUserInfo.getNickname(), encodedPassword, notExistEmail, UserRole.USER);
+        }
       }
 
       userRepository.save(kakaoUser);

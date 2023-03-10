@@ -50,7 +50,8 @@
     </div>
     <div id="passwordError" class="error"></div>
     <div class="textForm">
-      <input name="nickname" type="text" class="name" placeholder="닉네임" id="nickname">
+      <input name="nickname" type="text" class="name" placeholder="닉네임" id="nickname" onblur="validateNickname()">
+      <div id="nicknameError" class="error"></div>
     </div>
     <div class="textForm">
       <input name="email" type="text" class="email" placeholder="이메일" id="email">
@@ -416,6 +417,18 @@
       return false;
     } else {
       document.getElementById("passwordError").innerHTML = "";
+      return true;
+    }
+  }
+
+  function validateNickname() {
+    var nickname = document.getElementById("nickname").value;
+    var regex = /^[a-zA-z0-9가-힣]{4,10}$/;
+    if (!regex.test(nickname) && nickname) {
+      document.getElementById("nicknameError").innerHTML = "4자 이상, 10자 이하이며 한글,알파벳,숫자로 구성되어야 합니다.";
+      return false;
+    } else {
+      document.getElementById("nicknameError").innerHTML = "";
       return true;
     }
   }

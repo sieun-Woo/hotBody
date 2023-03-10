@@ -77,6 +77,7 @@ public class UserService {
   @Value("${spring.mail.username}")
   private String from;
 
+
   //1. 회원가입
   @Transactional
   public ResponseEntity<String> signUp(SignUpRequestDto requestDto) {
@@ -140,8 +141,7 @@ public class UserService {
       throw new CustomException(ExceptionStatus.ALREADY_LOGOUT);
     }
   }
-
-  @CacheEvict
+  
   //3. 회원탈퇴
   public ResponseEntity<String> deleteUser(UserDeleteRequestDto deleteRequestDto, User user) {
 

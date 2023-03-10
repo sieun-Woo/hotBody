@@ -15,6 +15,7 @@ public class UsersResponseDto {
   private Integer gender;
   private int age;
   private String introduce;
+  private String image;
   private String region;
   private String email;
   private UserRole role;
@@ -31,6 +32,7 @@ public class UsersResponseDto {
     this.email = user.getEmail();
     this.role = user.getRole();
     this.introduce = user.getIntroduce();
+    this.image = user.getImage();
     this.likes=user.getTrainerLikeList().size();
   }
 
@@ -56,6 +58,7 @@ public class UsersResponseDto {
             .region(m.getRegion())
             .role(m.getRole())
             .introduce(m.getIntroduce())
+            .email(m.getEmail())
             .build());
     return usersResponseDtoPage;
   };

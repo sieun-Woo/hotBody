@@ -645,10 +645,7 @@
         $("#signup").show();
         $("#signin").show();
       }
-
       getUser();
-
-
     })
 
     function getUser() {
@@ -716,9 +713,6 @@
     }
 
     function createPost(response) {
-
-      $.ajax(settings).done(function (response) {
-      });
 
       var settings = {
         "url": "https://www.hotbody.store/api/post",

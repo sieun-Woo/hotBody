@@ -18,7 +18,7 @@ public class SignUpRequestDto {
   private String username;
   @Pattern(regexp = "(?=.*[a-zA-Z])(?=.*[0-9])^[a-zA-Z0-9~!@#$%^&*()+|=]{8,15}$", message = "최소 8자 이상, 15자 이하이며 알파벳 대소문자(a~z, A~Z), 숫자(0~9), 특수문자(~!@#$%^&*()+|=)")
   private String password;
-  @Pattern(regexp = "^[a-zA-z0-9]{4,10}$", message = "최소 4자 이상, 10자 이하이며 알파벳 대소문자(a~z, A~Z), 숫자(0~9)")
+  @Pattern(regexp = "^[a-zA-z0-9가-힣]{4,10}$", message = "최소 4자 이상, 10자 이하이며 한글, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)")
   private String nickname;
   private String email;
   private Integer gender; // 0남자 1여자

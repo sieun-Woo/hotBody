@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class KakaoUserInfoDto {
   private Long id;
-  private String email;
+  private String email = "default@Email.com";
   private String nickname;
 
   public KakaoUserInfoDto(Long id, String nickname, String email) {
@@ -15,4 +15,5 @@ public class KakaoUserInfoDto {
     this.nickname = nickname;
     this.email = email;
   }
+
 }

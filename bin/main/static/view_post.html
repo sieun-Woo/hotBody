@@ -10,212 +10,212 @@
 </head>
 
 <body>
-<!-- 로그아웃/ -->
-<!-- Wordpress Site header-bar -->
-<header class="wp-header" role="banner">
-  <ul>
-    <li><a href="index.html">로그아웃</a></li>
-  </ul>
-</header>
-<!-- 제이쿼리 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- 로그아웃/ -->
+  <!-- Wordpress Site header-bar -->
+  <header class="wp-header" role="banner">
+    <ul>
+      <li><a href="index.html">로그아웃</a></li>
+    </ul>
+  </header>
+  <!-- 제이쿼리 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- lodash 불러오기 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+  <!-- lodash 불러오기 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 
 
-<div class="body-content min-height-100vh flex flex-column">
-  <!-- 로고바 시작 -->
-  <header class="logo-bar con-min-width">
-    <div class="con height-100p flex flex-jc-c">
-      <a href="index.html" class="logo flex flex-ai-c">
-        <i class="fa-solid fa-dumbbell"></i>
-        <span>
+  <div class="body-content min-height-100vh flex flex-column">
+    <!-- 로고바 시작 -->
+    <header class="logo-bar con-min-width">
+      <div class="con height-100p flex flex-jc-c">
+        <a href="index.html" class="logo flex flex-ai-c">
+          <i class="fa-solid fa-dumbbell"></i>
+          <span>
             Hot<span></span>body
           </span>
-      </a>
+        </a>
+      </div>
+    </header>
+    <!-- 로고바 끝 -->
+    <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
     </div>
-  </header>
-  <!-- 로고바 끝 -->
-  <div style="text-align: center; font-size: 30px; height: 40px; margin-top: 10px;"><i class="fas fa-list"></i> 커뮤니티
-  </div>
-  <!-- 메뉴바 시작 -->
-  <header class="menu-bar con-min-width">
-    <div class="con height-100p" style="position: relative; z-index: 2;">
-      <nav class="menu-bar__menu-1">
+    <!-- 메뉴바 시작 -->
+    <header class="menu-bar con-min-width">
+      <div class="con height-100p" style="position: relative; z-index: 2;">
+        <nav class="menu-bar__menu-1">
 
-        <ul class="flex">
-          <li>
-            <a href="index.html" class="block">
-              <i class="fas fa-home"></i>
-              <span>홈</span>
-            </a>
-          </li>
-          <li>
-            <a class="block">
-              <i class="fas fa-list"></i>
-              <span>커뮤니티</span>
-            </a>
-            <ul>
-              <li>
-                <a href="communities_exercise.html" class="block">
-                  <i class="fa-solid fa-person-walking"></i>
-                  <span>운동 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_diet.html" class="block">
-                  <i class="fa-regular fa-clipboard"></i>
-                  <span>식단 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_trainer.html" class="block">
-                  <i class="fa-solid fa-square-h"></i>
-                  <span>트레이너 게시판</span>
-                </a>
-              </li>
-              <li>
-                <a href="communities_etc.html" class="block">
-                  <i class="fa-regular fa-comments"></i>
-                  <span>잡담 게시판</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a class="block">
-              <i class="fa-solid fa-gear"></i>
-              <span>마이페이지</span>
-            </a>
-            <ul>
-              <li>
-                <a href="exercise.html" class="block">
-                  <i class="fa-solid fa-person-walking"></i>
-                  <span>운동</span>
-                </a>
-              </li>
-              <li>
-                <a href="diet.html" class="block">
-                  <i class="fa-regular fa-clipboard"></i>
-                  <span>식단</span>
-                </a>
-              </li>
-              <li>
-                <a href="my-page.html" class="block">
-                  <i class="fa-regular fa-address-card"></i>
-                  <span>프로필</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <a href="map.html" class="block">
-              <i class="fa-solid fa-map-location-dot"></i>
-              <span>주변 헬스장</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <!-- 메뉴바 끝 -->
+          <ul class="flex">
+            <li>
+              <a href="index.html" class="block">
+                <i class="fas fa-home"></i>
+                <span>홈</span>
+              </a>
+            </li>
+            <li>
+              <a class="block">
+                <i class="fas fa-list"></i>
+                <span>커뮤니티</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="communities_exercise.html" class="block">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <span>운동 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_diet.html" class="block">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>식단 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_trainer.html" class="block">
+                    <i class="fa-solid fa-square-h"></i>
+                    <span>트레이너 게시판</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="communities_etc.html" class="block">
+                    <i class="fa-regular fa-comments"></i>
+                    <span>잡담 게시판</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a class="block">
+                <i class="fa-solid fa-gear"></i>
+                <span>마이페이지</span>
+              </a>
+              <ul>
+                <li>
+                  <a href="exercise.html" class="block">
+                    <i class="fa-solid fa-person-walking"></i>
+                    <span>운동</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="diet.html" class="block">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>식단</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="my-page.html" class="block">
+                    <i class="fa-regular fa-address-card"></i>
+                    <span>프로필</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="map.html" class="block">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span>주변 헬스장</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!-- 메뉴바 끝 -->
 
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티</li>
-    </ol>
-  </nav>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a> <i class="fa-solid fa-circle-right"></i> 커뮤니티</li>
+      </ol>
+    </nav>
 
 
 
-  <div class="con">
+    <div class="con">
 
-    <!-- 게시글 -->
+      <!-- 게시글 -->
 
-    <div class="textForm">
-      <div type="category" id="category" name="category" disabled></div>
-      <br />
-    </div>
+      <div class="textForm">
+        <div type="category" id="category" name="category" disabled></div>
+        <br />
+      </div>
 
 
-    <div class="textForm">
-      <div id="title"></div>
-      <br />
-      <img src="" id="image">
-    </div>
+      <div class="textForm">
+        <div id="title"></div>
+        <br />
+        <img src="" id="image">
+      </div>
 
-    <div class="textForm">
-      <div type="nickname" id="post_nickname" name="nickname" disabled></div>
-      <br />
-    </div>
+      <div class="textForm">
+        <div type="nickname" id="post_nickname" name="nickname" disabled></div>
+        <br />
+      </div>
 
-    <div class="textForm">
-      <div id="post_content"></div>
-      <br />
-    </div>
+      <div class="textForm">
+        <div id="post_content"></div>
+        <br />
+      </div>
 
-    <!-- 게시글 수정 & 삭제 -->
-    <div class="textForm3">
-      <div class="write-center" style="position:center;">
-        <div class="postLike-box" >
-          <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
-          <div id="CountLove"></div>
-          <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
+      <!-- 게시글 수정 & 삭제 -->
+      <div class="textForm3">
+        <div class="write-center" style="position:center;">
+          <div class="postLike-box">
+            <i onclick="likePost()" id="plus" class="fa-solid fa-heart-circle-plus"></i>
+            <div id="CountLove"></div>
+            <i onclick="dislikePost()" id="minus" class="fa-solid fa-heart-circle-minus"></i>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
+        <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
+
+      </div>
+
+      <!-- 신고 -->
+      <div>
+        <button type="button" class="btn4 btn-outline-dark" id="reportPostButton" title="게시물 신고하기"
+          onclick="openPostReportPopup()">🚨</button>
+      </div>
+
+      <!-- 게시물 신고 팝업 -->
+      <div class="overlay" id="overlay" style="display:none;"></div>
+
+      <div class="popup" id="popup-report-post" style="display:none;">
+        <h2>게시물 신고 하기</h2>
+
+        <textarea id="post-report-content" rows="4" cols="50" value></textarea>
+        <button class="dtn2" onclick="submitPostReport()">확인</button>
+        <button class="dtn2" onclick="closePostReport()">취소</button>
+      </div>
+
+      <!-- 댓글 신고 팝업 -->
+      <div class="popup" id="popup-report-comment" style="display:none;">
+        <h2>댓글 신고 하기</h2>
+
+        <textarea id="comment-report-content" rows="4" cols="50" value></textarea>
+        <button class="dtn2" onclick="submitCommentReport()">확인</button>
+        <button class="dtn2" onclick="closeCommentReport()">취소</button>
+      </div>
+      <!-- 신고 끝 -->
+
+      <div id="article-list-wrap" class="con-min-width">
+        <div class="comment-list">
+          <!-- 댓글 들어오는 공간 -->
+        </div>
+
+        <div class="paging">
+          <!-- 페이징 -->
         </div>
       </div>
 
-      <button type="button" class="btn btn-outline-dark" onclick="updatePost(postId)">수정</button>
-      <button type="button" class="btn btn-outline-dark" onclick="deletePost()">삭제</button>
-
-    </div>
-
-    <!-- 신고 -->
-    <div>
-      <button type="button" class="btn4 btn-outline-dark" id="reportPostButton" title="게시물 신고하기"
-              onclick="openPostReportPopup()">🚨</button>
-    </div>
-
-    <!-- 게시물 신고 팝업 -->
-    <div class="overlay" id="overlay" style="display:none;"></div>
-
-    <div class="popup" id="popup-report-post" style="display:none;">
-      <h2>게시물 신고 하기</h2>
-
-      <textarea id="post-report-content" rows="4" cols="50" value></textarea>
-      <button class="dtn2" onclick="submitPostReport()">확인</button>
-      <button class="dtn2" onclick="closePostReport()">취소</button>
-    </div>
-
-    <!-- 댓글 신고 팝업 -->
-    <div class="popup" id="popup-report-comment" style="display:none;">
-      <h2>댓글 신고 하기</h2>
-
-      <textarea id="comment-report-content" rows="4" cols="50" value></textarea>
-      <button class="dtn2" onclick="submitCommentReport()">확인</button>
-      <button class="dtn2" onclick="closeCommentReport()">취소</button>
-    </div>
-    <!-- 신고 끝 -->
-
-    <div id="article-list-wrap" class="con-min-width">
-      <div class="comment-list">
-        <!-- 댓글 들어오는 공간 -->
+      <div class="textForm2">
+        <div class="commentForm">
+          <textarea id="comment" class="text" style="resize: none; width: 700px; height: 100px;"></textarea>
+          <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()" />
+        </div>
       </div>
 
-      <div class="paging">
-        <!-- 페이징 -->
-      </div>
     </div>
-
-    <div class="textForm2">
-      <div class="commentForm">
-        <textarea id="comment" class="text" style="resize: none; width: 700px; height: 100px;"></textarea>
-        <input type="submit" class="commentbtn" value="등록" id="upload" onclick="commentUp()" />
-      </div>
-    </div>
-
   </div>
-</div>
 
 </body>
 <style>
@@ -322,6 +322,7 @@
     position: relative;
     margin: auto;
   }
+
   .con-comment {
     position: relative;
     margin: auto;
@@ -538,7 +539,8 @@
     margin: 30px;
     margin-bottom: 10px;
   }
-  .textForm2 > * {
+
+  .textForm2>* {
     display: flex;
     width: 50px;
     align-items: center;
@@ -551,7 +553,7 @@
     padding: 10px 10px;
   }
 
-  .textForm3 > button {
+  .textForm3>button {
     display: row;
     width: 50px;
     align-items: center;
@@ -576,13 +578,13 @@
     margin-left: 5px;
   }
 
-  .postLike-box{
+  .postLike-box {
     display: flex;
     left: 20%;
     align-items: center;
   }
 
-  .postLike-box>*{
+  .postLike-box>* {
     margin: 3px;
   }
 
@@ -616,12 +618,12 @@
     display: inline;
   }
 
-  .commentLike-box{
+  .commentLike-box {
     display: flex;
     align-items: center;
   }
 
-  .commentLike-box>*{
+  .commentLike-box>* {
     margin: 3px;
   }
 
@@ -634,14 +636,15 @@
     --comment-list__cell-content__width: calc(100% - var(--comment-list__cell-id__width) - var(--comment-list__cell-reg-date__width) - var(--comment-list__cell-writer__width) - var(--comment-list__cell-like__width));
   }
 
-  .commentModify{
+  .commentModify {
     display: flex;
   }
 
-  .inputComment{
+  .inputComment {
     width: 300px;
   }
-  .commentModify >div{
+
+  .commentModify>div {
     display: row;
   }
 
@@ -746,7 +749,7 @@
     background-size: 200%;
     color: white;
     font-weight: bold;
-    font-size:large;
+    font-size: large;
     border: none;
     cursor: pointer;
     transition: 0.4s;
@@ -768,7 +771,7 @@
     background-size: 200%;
     color: white;
     font-weight: bold;
-    font-size:large;
+    font-size: large;
     border: none;
     cursor: pointer;
     transition: 0.4s;
@@ -779,7 +782,7 @@
     background-position: right;
   }
 
-  .main>button{
+  .main>button {
     display: row;
     width: 50px;
     justify-content: left;
@@ -817,6 +820,7 @@
   .my_pointer {
     cursor: pointer;
   }
+
   .popup {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -827,6 +831,7 @@
     transform: translate(-50%, -50%);
     z-index: 9999;
   }
+
   .overlay {
     background-color: rgba(0, 0, 0, 0.5);
     height: 100%;
@@ -865,8 +870,21 @@
       console.log(response.id);
 
       if (response.image != null) {
-        $('#image').attr("src", response.image)
-        $('#image').attr("style", "max-width: 100%; height: auto;")
+
+        image(response.image)
+        function image(storeFileName) {
+          let settings = {
+            "url": "https://www.hotbody.store/api/image?storeFileName=" + storeFileName,
+            "method": "GET",
+            "timeout": 0,
+          };
+
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+            $("#image").attr("src", response)
+            $('#image').attr("style", "max-width: 100%; height: auto;")
+          });
+        }
 
       }
     })
@@ -905,17 +923,17 @@
 
   // 글 수정
 
-  function updatePost(postId){
+  function updatePost(postId) {
     localStorage.setItem("currentPostId", postId)
-    location.href='update_post.html';
-    console.log("수정 : "+ postId)
+    location.href = 'update_post.html';
+    console.log("수정 : " + postId)
   }
 
   // 글 삭제
 
-  function deletePost(){
+  function deletePost() {
     var settings = {
-      "url": "https://www.hotbody.store/api/posts/"+postId,
+      "url": "https://www.hotbody.store/api/posts/" + postId,
       "method": "DELETE",
       "timeout": 0,
       "headers": {
@@ -969,7 +987,7 @@
   // 댓글
 
   var selectedId;
-  function setSelectedId(id){
+  function setSelectedId(id) {
     selectedId = id;
   }
 
@@ -1211,7 +1229,7 @@
 
   // 게시물 신고
 
-  function reportPost(reportedPostId){
+  function reportPost(reportedPostId) {
 
     var settings = {
       "url": "https://www.hotbody.store/api/report/post",
@@ -1253,7 +1271,7 @@
 
 
   // 댓글 신고
-  function reportComment(reportedCommentId){
+  function reportComment(reportedCommentId) {
     var settings = {
       "url": "https://www.hotbody.store/api/report/comment",
       "method": "POST",

@@ -60,7 +60,6 @@
 
     <button type="submit" onclick="kakaoLogin()" class="btnkakao">카카오로 시작하기</button>
 
-    <button type="button" onclick="loginWithGoogle()" class="btn">구글 로그인</button>
     <button type="button" onclick="location.href='find-id-pw.html'" class="btn">아이디 / 비밀번호 찾기
     </button>
 
@@ -419,15 +418,21 @@
   }
 </style>
 <script>
+
+  $(document).keypress(function(e) {
+    if (e.which == 13) { // 엔터키 코드는 13입니다
+      $('#login_btn').click(); // 버튼의 id를 사용하여 클릭 이벤트를 호출합니다
+    }
+  });
   function kakaoLogin() {
 
 
-    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=d6e0af59d3a7e3c74ed6322647d2f3f7&redirect_uri=https://www.hotbody.store/index.html&response_type=code';
+    location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=484f8393a48d5726c93471a759f3f4de&redirect_uri=https://www.hotbody.store/index.html&response_type=code';
 
 
     $.ajax().done(function () {
 
-          alert("로그인 완료");
+          //alert("로그인 완료");
 
         }
     ).fail(function (response) {
@@ -473,18 +478,6 @@
     })
   }
 
-  // 구글 로그인 버튼 클릭
-  function loginWithGoogle() {
-    var settings = {
-      "url": "https://www.hotbody.store/google/login",
-      "method": "GET",
-      "timeout": 0,
-      "headers": {}
-    };
 
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
-  }
 </script>
 </html>

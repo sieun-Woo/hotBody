@@ -232,10 +232,10 @@ public class UserService {
 
     MimeMessage mimeMessage = javaMailSender.createMimeMessage();
     MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-    mimeMessageHelper.setSubject("[hotbody] 아이디 송부");
+    mimeMessageHelper.setSubject("[hotbody] 아이디 찾기 안내 이메일입니다.");
     mimeMessageHelper.setFrom(from);
     mimeMessageHelper.setTo(findUserIdRequestDto.getEmail());
-    mimeMessageHelper.setText("아이디: " + user.getUsername());
+    mimeMessageHelper.setText("요청하신 아이디는 " + user.getUsername() + " 입니다.");
 
     javaMailSender.send(mimeMessage);
 
@@ -260,10 +260,10 @@ public class UserService {
 
       MimeMessage mimeMessage = javaMailSender.createMimeMessage();
       MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-      mimeMessageHelper.setSubject("[hotbody] 임시 비밀번호 송부");
+      mimeMessageHelper.setSubject("[hotbody] 비밀번호 찾기 안내 이메일입니다.");
       mimeMessageHelper.setFrom(from);
       mimeMessageHelper.setTo(findUserPwRequestDto.getEmail());
-      mimeMessageHelper.setText("임시 비밀번호: " + password);
+      mimeMessageHelper.setText("아래의 임시 비밀번호로 로그인해 주세요./n임시 비밀번호 : " + password);
 
       javaMailSender.send(mimeMessage);
 
